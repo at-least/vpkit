@@ -59,6 +59,8 @@ export const LAYOUT = {
   VPHomeContent: { file: 'components/VPHomeContent.vue' },
   // the 404 page's content
   NotFound: { file: 'components/NotFound.vue' },
+  // the local search's dialog, over the page
+  VPLocalSearchBox: { file: 'components/VPLocalSearchBox.vue' },
   // the navbar and, on narrow screens, the nav screen
   VPNav: { file: 'components/VPNav.vue' },
   VPNavBar: { file: 'components/VPNavBar.vue' },
@@ -113,7 +115,11 @@ export const LAYOUT = {
 // VPLink and VPSocialLink set), and VitePress components vpkit does not
 // port that another's rules name (VPHomeContent stretches a VPHomeSponsors
 // or VPTeamPage in the home page's markdown to the window's width)
-export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon', 'VPHomeSponsors', 'VPTeamPage'];
+export const GLOBAL = [
+  'dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon', 'VPHomeSponsors', 'VPTeamPage',
+  // the markdown's code groups, in the local search's excerpts
+  'vp-code-group', 'tabs',
+];
 export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-');
 
 export function rootOf(component) {

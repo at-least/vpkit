@@ -155,11 +155,28 @@ function renameSelectorText(text, rename) {
   return out;
 }
 
+// a top-level selector naming no class matched only the component's own
+// elements under Vue's scoping (svg[data-v-…]); unscoped it would match
+// the whole page, so it goes under the component's block. A nested rule
+// is its parent's already.
+function scopeBare(prelude, block) {
+  return prelude
+    .split(',')
+    .map((part) => {
+      if (/\.[A-Za-z_-]/.test(part.replace(/\[[^\]]*\]/g, ''))) return part;
+      const lead = part.match(/^\s*/)[0];
+      return `${lead}.${block} ${part.slice(lead.length)}`;
+    })
+    .join(',');
+}
+
 // the CSS text with every rule's selector renamed; declarations, at-rule
-// preludes and comments stay as upstream wrote them
-export function renameCss(css, rename) {
+// preludes and comments stay as upstream wrote them; block: the
+// component's, which scopes its bare selectors
+export function renameCss(css, rename, block) {
   let out = '';
   let start = 0; // where the current prelude began
+  const open = []; // the blocks around: 'rule', 'at', 'keyframes'
   for (let i = 0; i < css.length; i++) {
     const ch = css[i];
     if (ch === '/' && css[i + 1] === '*') {
@@ -171,10 +188,15 @@ export function renameCss(css, rename) {
       i = css.indexOf(ch, i + 1);
     } else if (ch === '{') {
       const prelude = css.slice(start, i);
-      out += prelude.trimStart().startsWith('@') ? prelude : renameSelectorText(prelude, rename);
+      const at = prelude.trimStart().startsWith('@');
+      if (at) out += prelude;
+      else if (open.some((b) => b !== 'at')) out += renameSelectorText(prelude, rename);
+      else out += scopeBare(renameSelectorText(prelude, rename), block);
+      open.push(at ? (/^\s*@(-webkit-)?keyframes\b/.test(prelude) ? 'keyframes' : 'at') : 'rule');
       out += '{';
       start = i + 1;
     } else if (ch === '}' || ch === ';') {
+      if (ch === '}') open.pop();
       out += css.slice(start, i + 1);
       start = i + 1;
     }
@@ -202,7 +224,7 @@ export function cssClasses(css) {
 
 export function portCss(component) {
   const css = unwrapDeep(styleOf(component));
-  return renameCss(css, namer(component, rootStates(component, css))).trim();
+  return renameCss(css, namer(component, rootStates(component, css)), blockOf(component)).trim();
 }
 
 // vpkit's layout files, written whole by `--write`: the header, VitePress's
@@ -224,8 +246,8 @@ export const FILES = {
  * VPDocFooterLastUpdated), the site footer (VPFooter) and the home page
  * (VPHome: VPHero with VPButton, VPFeatures with VPFeature, VPHomeContent;
  * VPButton and VPFeature as VitePress has them, where button.css and
- * card.css change them for apps), and the 404 page's NotFound. An optional
- * import:
+ * card.css change them for apps), the 404 page's NotFound and the local
+ * search's dialog (VPLocalSearchBox). An optional import:
  * \`@import "vpkit/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
@@ -247,6 +269,8 @@ export const FILES = {
       'VPNavBarExtra', 'VPNavBarHamburger', 'VPNavBarAskAiButton', 'VPNavBarSearchButton', 'VPNavBarSearch',
       'VPNavBarTitle', 'VPNavMenuGroup', 'VPNavMenuLink', 'VPNavMenu', 'VPNavSocialLinks', 'VPNavBar',
       'VPNavScreen', 'VPNav', 'VPSidebarItem', 'VPSidebarGroup', 'VPSidebar', 'VPSkipLink', 'Layout',
+      // an async chunk in VitePress, whose CSS loads after the bundle's
+      'VPLocalSearchBox',
     ],
   },
   'content.css': {
