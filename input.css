@@ -9,7 +9,9 @@
  * border on the input background, a brand border on hover and focus, and
  * a 2px brand ring on focus drawn as a box-shadow: base.css removes the
  * focus outline. aria-invalid="true" turns the border danger and "false"
- * success, over hover and focus. Width is the page's: add w-full. */
+ * success, over hover and focus. Width is the page's: add w-full. The
+ * hover border is `@variant hover`, so like Tailwind's `hover:` it
+ * applies only on a device that can hover. */
 
 @layer components {
   .vp-input {
@@ -24,18 +26,18 @@
     background-color: var(--vp-input-bg-color);
     transition-property: border-color, box-shadow;
     transition-duration: 0.25s;
+
+    @variant hover {
+      border-color: var(--vp-c-brand-1);
+    }
   }
 
   .vp-input::placeholder {
     color: var(--vp-c-text-2);
   }
 
-  .vp-input:hover,
   .vp-input:focus {
     border-color: var(--vp-c-brand-1);
-  }
-
-  .vp-input:focus {
     box-shadow: 0 0 0 2px var(--vp-c-brand-1);
   }
 

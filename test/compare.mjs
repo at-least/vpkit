@@ -5,7 +5,10 @@
 // case compares computed styles in light and dark mode and, where the
 // component has them, in forced :hover and :active states. A case with
 // a `reference` instead of `upstream` compares two vpkit renderings
-// (a component nested in another against the same one standalone).
+// (a component nested in another against the same one standalone). A
+// case with `touch` renders both pages as a touch screen, where
+// (hover: none) matches; with a check's `refState`, the reference gets
+// a different forced state than vpkit (`[]`: none, at rest).
 //
 //   npm test
 //
@@ -82,12 +85,17 @@ function same(a, b, prop) {
 // totality and own-drive do), which these declarations stand in for.
 const BODY = 'color:var(--vp-c-text-1);background-color:var(--vp-c-bg)';
 
-async function open(browser, css, body, dark) {
+async function open(browser, css, body, dark, touch) {
   const page = await browser.newPage();
+  const cdp = await page.context().newCDPSession(page);
+  // Emulation.setEmulatedMedia takes a `hover` feature but Chromium
+  // ignores it; touch emulation is what makes (hover: none) match
+  if (touch) await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
   await page.setContent(
     `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body style="${BODY}">${body}</body></html>`,
   );
-  const cdp = await page.context().newCDPSession(page);
+  const hover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
+  if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);
   await cdp.send('DOM.enable');
   await cdp.send('CSS.enable');
   return { page, cdp };
@@ -104,7 +112,7 @@ async function nodeId(cdp, t) {
 }
 
 async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
-  const node = state ? await nodeId(cdp, on ?? target) : null;
+  const node = state?.length ? await nodeId(cdp, on ?? target) : null;
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: state });
   const values = await page.evaluate(
     ([target, pseudo, props]) => {
@@ -145,13 +153,17 @@ try {
         : ['upstream', sides.upstream, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
-        ref: await open(browser, refCss, refBody, dark),
-        vpkit: await open(browser, sides.vpkit, c.vpkit, dark),
+        ref: await open(browser, refCss, refBody, dark, c.touch),
+        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch),
       };
       for (const check of c.checks) {
         // refTarget: the reference's element when it isn't the same one
         // (VPFeature's padding lives on an inner box, vp-card's on itself)
-        const ref = await measure(pages.ref, { ...check, target: check.refTarget ?? check.target });
+        const ref = await measure(pages.ref, {
+          ...check,
+          target: check.refTarget ?? check.target,
+          state: 'refState' in check ? check.refState : check.state,
+        });
         const vpkit = await measure(pages.vpkit, check);
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;
         for (const prop of check.props) {

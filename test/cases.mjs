@@ -301,3 +301,27 @@ cases.push({
     { target: 'btn', state: ['hover'], props: [...COLORS, 'opacity'] },
   ],
 });
+
+// touch screens: a tapped element keeps :hover there, so with :hover
+// forced each component must look as it does at rest. vpkit's hover
+// styles are `@variant hover`, which like Tailwind's `hover:` applies only
+// where (hover: hover) matches (VitePress's apply on touch screens too)
+const AT_REST = { state: ['hover'], refState: [] };
+const touch = (name, markup, checks) =>
+  cases.push({ name: `${name} on a touch screen`, touch: true, reference: markup, vpkit: markup, checks });
+for (const [theme, themeClass] of Object.entries(THEMES)) {
+  const cls = ['vp-btn', themeClass].filter(Boolean).join(' ');
+  touch(`button ${theme}`, `<a data-t="btn" class="${cls}" href="#">Get Started</a>`, [
+    { target: 'btn', ...AT_REST, props: COLORS },
+  ]);
+}
+touch('input', `<input data-t="in" class="vp-input" placeholder="Coupon code">`, [
+  { target: 'in', ...AT_REST, props: [...COLORS, 'box-shadow'] },
+]);
+touch('card <a>', card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')), [
+  { target: 'card', ...AT_REST, props: COLORS },
+]);
+touch('alert link', `<div class="vp-alert vp-alert-tip">${alertBody('')}</div>`, [
+  { target: 'a', ...AT_REST, props: ['color', 'opacity'] },
+  { target: 'acode', on: 'a2', ...AT_REST, props: ['color'] },
+]);

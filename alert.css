@@ -19,7 +19,8 @@
  * code included. The rules for what is inside sit behind
  * :where(.vp-alert), which adds no specificity: a component inside an
  * alert, such as a vp-btn link, keeps its own look. Only the link hover
- * dimming (opacity) still reaches it. */
+ * dimming (opacity) still reaches it. The link hover is `@variant hover`:
+ * like Tailwind's `hover:`, only on a device that can hover. */
 
 @layer components {
   .vp-alert {
@@ -57,21 +58,21 @@
     text-decoration: underline;
     text-underline-offset: 0.125rem;
     transition: opacity 0.25s;
-  }
 
-  :where(.vp-alert) a:hover {
-    color: var(--vp-alert-link-hover);
-    opacity: 0.75;
+    @variant hover {
+      color: var(--vp-alert-link-hover);
+      opacity: 0.75;
+
+      & > code {
+        color: var(--vp-alert-link-hover);
+      }
+    }
   }
 
   :where(.vp-alert) code {
     font-size: var(--vp-custom-block-code-font-size);
     color: var(--vp-alert-link);
     background-color: var(--vp-alert-code-bg);
-  }
-
-  :where(.vp-alert) a:hover > code {
-    color: var(--vp-alert-link-hover);
   }
 
   .vp-alert-note.vp-alert {

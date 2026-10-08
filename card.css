@@ -9,7 +9,9 @@
  * One element where VPFeature has two (the surface and the padded box
  * inside it): the soft surface, 1.5rem padding, and a flex column in
  * which the details take the free height. A link card (`a.vp-card`)
- * takes the brand border on hover. Not ported: the feature icon. */
+ * takes the brand border on hover, `@variant hover`: like Tailwind's
+ * `hover:`, only on a device that can hover (VPFeature's also sticks to
+ * a tapped card on a touch screen). Not ported: the feature icon. */
 
 @layer components {
   .vp-card {
@@ -23,8 +25,10 @@
     transition: border-color 0.25s, background-color 0.25s;
   }
 
-  a.vp-card:hover {
-    border-color: var(--vp-c-brand-1);
+  a.vp-card {
+    @variant hover {
+      border-color: var(--vp-c-brand-1);
+    }
   }
 
   .vp-card-title {

@@ -12,7 +12,9 @@
  * Two additions VPButton doesn't have, because the apps need them: the
  * button is inline-flex, so an icon and its label sit centered side by
  * side 0.5rem apart, and a disabled button is dimmed with a not-allowed
- * cursor.
+ * cursor. And one change: the hover colors are `@variant hover`, so like
+ * Tailwind's `hover:` they apply only on a device that can hover;
+ * VPButton's also stick to a tapped button on a touch screen.
  *
  * The base sets every --vp-btn-* variable and the modifiers override them
  * from a compound selector (.vp-btn-brand.vp-btn): the higher specificity
@@ -55,12 +57,12 @@
     color: var(--vp-btn-text);
     background-color: var(--vp-btn-bg);
     transition: color 0.25s, border-color 0.25s, background-color 0.25s;
-  }
 
-  .vp-btn:hover {
-    border-color: var(--vp-btn-hover-border);
-    color: var(--vp-btn-hover-text);
-    background-color: var(--vp-btn-hover-bg);
+    @variant hover {
+      border-color: var(--vp-btn-hover-border);
+      color: var(--vp-btn-hover-text);
+      background-color: var(--vp-btn-hover-bg);
+    }
   }
 
   .vp-btn:active {
