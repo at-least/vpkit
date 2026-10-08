@@ -18,7 +18,8 @@ above:
     VPNavMenuGroup VPFlyout VPMenu VPMenuLink VPMenuGroup VPNavBarExtra \
     VPNavBarHamburger VPNavAppearance VPSwitch VPSwitchAppearance \
     VPNavSocialLinks VPSocialLinks VPSocialLink VPNavTranslations VPNavScreen \
-    VPDocFooter VPDocFooterLastUpdated VPFooter; do
+    VPDocFooter VPDocFooterLastUpdated VPFooter VPHome VPHero VPButton \
+    VPFeatures VPFeature VPHomeContent; do
     cp $U/components/$c.vue test/upstream/components/
   done
 

@@ -221,7 +221,10 @@ export const FILES = {
  * sidebar (VPSidebar, VPSidebarGroup, VPSidebarItem), the local nav
  * (VPLocalNav, VPLocalNavOutlineDropdown), the aside (VPDocAside,
  * VPDocAsideOutline, VPDocOutlineItem), the doc footer (VPDocFooter,
- * VPDocFooterLastUpdated) and the site footer (VPFooter). An optional import:
+ * VPDocFooterLastUpdated), the site footer (VPFooter) and the home page
+ * (VPHome: VPHero with VPButton, VPFeatures with VPFeature, VPHomeContent;
+ * VPButton and VPFeature as VitePress has them, where button.css and
+ * card.css change them for apps). An optional import:
  * \`@import "vpkit/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
@@ -237,7 +240,8 @@ export const FILES = {
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
     components: [
       'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDocFooterLastUpdated', 'VPDocFooter',
-      'VPDoc', 'VPImage', 'VPContent', 'VPFooter', 'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
+      'VPDoc', 'VPHomeContent', 'VPImage', 'VPFeature', 'VPFeatures', 'VPButton', 'VPHero', 'VPHome', 'VPContent',
+      'VPFooter', 'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
       'VPMenuLink', 'VPMenuGroup', 'VPMenu', 'VPFlyout', 'VPNavTranslations', 'VPSocialLink', 'VPSocialLinks',
       'VPNavBarExtra', 'VPNavBarHamburger', 'VPNavBarAskAiButton', 'VPNavBarSearchButton', 'VPNavBarSearch',
       'VPNavBarTitle', 'VPNavMenuGroup', 'VPNavMenuLink', 'VPNavMenu', 'VPNavSocialLinks', 'VPNavBar',

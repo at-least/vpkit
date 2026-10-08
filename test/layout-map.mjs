@@ -48,6 +48,15 @@ export const LAYOUT = {
   VPDocFooterLastUpdated: { file: 'components/VPDocFooterLastUpdated.vue', root: 'VPLastUpdated', block: 'vp-last-updated' },
   // the site's footer, on pages without a sidebar
   VPFooter: { file: 'components/VPFooter.vue' },
+  // the home page: the hero with its buttons and image, the features, the
+  // markdown below them. VPButton and VPFeature as VitePress has them,
+  // beside vpkit's own vp-btn and vp-card, which change them for apps
+  VPHome: { file: 'components/VPHome.vue' },
+  VPHero: { file: 'components/VPHero.vue' },
+  VPButton: { file: 'components/VPButton.vue' },
+  VPFeatures: { file: 'components/VPFeatures.vue' },
+  VPFeature: { file: 'components/VPFeature.vue' },
+  VPHomeContent: { file: 'components/VPHomeContent.vue' },
   // the navbar and, on narrow screens, the nav screen
   VPNav: { file: 'components/VPNav.vue' },
   VPNavBar: { file: 'components/VPNavBar.vue' },
@@ -99,8 +108,10 @@ export const LAYOUT = {
 // classes that keep their names in every component: global ones (mac: on
 // :root, VitePress's client sets it on Apple devices; vp-external-link-icon
 // and no-icon: what vp-doc.css draws the external link arrow by, which
-// VPLink and VPSocialLink set)
-export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon'];
+// VPLink and VPSocialLink set), and VitePress components vpkit does not
+// port that another's rules name (VPHomeContent stretches a VPHomeSponsors
+// or VPTeamPage in the home page's markdown to the window's width)
+export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon', 'VPHomeSponsors', 'VPTeamPage'];
 export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-');
 
 export function rootOf(component) {

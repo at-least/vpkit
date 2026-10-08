@@ -163,6 +163,15 @@ const cases = [
     select: '.VPDocFooter',
     widths: [375, 640, 1280],
   },
+  // the home page: the hero (name, text, tagline, buttons, image), the
+  // features (four: a row of four from 60rem), the markdown below them
+  {
+    name: 'home',
+    family: ['VPHome', 'VPHero', 'VPButton', 'VPImage', 'VPFeatures', 'VPFeature', 'VPHomeContent'],
+    page: 'home.html',
+    select: '.VPHome',
+    widths: [375, 640, 768, 960, 1280, 1440],
+  },
   // the site's footer: shown on a page without a sidebar, hidden beside one
   { component: 'VPFooter', name: 'home page', page: 'home.html', widths: [375, 768, 1280] },
   { component: 'VPFooter', name: 'doc page', page: 'guide_getting-started.html', widths: [375, 1280] },
@@ -185,6 +194,12 @@ const known = [
     element: /^img\.VPImage\.logo$/,
     prop: 'vertical-align',
     reason: "Tailwind's preflight gives replaced elements vertical-align: middle, VitePress's version of it leaves baseline; the logo is a flex item, where it does nothing",
+  },
+  {
+    case: /^home$/,
+    element: /^img\.VPImage\.image-src$/,
+    prop: 'vertical-align',
+    reason: "the same preflight rule; the hero image is absolutely positioned, where it does nothing",
   },
 ];
 
