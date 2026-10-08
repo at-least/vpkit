@@ -1,0 +1,87 @@
+/* vpkit — VitePress's global element rules, the few that cannot be
+ * utilities: CJK line breaking, bold at 600, the pointer cursor on
+ * buttons, overflow-wrap, no autospace in code, the focus-outline resets,
+ * reduced motion and the Alpine [x-cloak] rule. Unlayered, so they beat
+ * every utility: a project that draws its own focus rings should not take
+ * this file, since `button:focus { outline: none }` would remove them.
+ * Part of index.css; `@import "vpkit/base.css"` takes it alone. */
+
+[lang]:where(:lang(zh), :lang(ja), :lang(ko)) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  p {
+    line-break: strict;
+  }
+}
+
+/* ── Global rules that cannot be expressed as utilities ────────────────── */
+
+/* VitePress pins bold to 600 instead of preflight's `bolder`. */
+b,
+strong {
+  font-weight: 600;
+}
+
+/* VitePress base parity (Tailwind v4 preflight leaves buttons at the UA
+   default cursor). */
+button:enabled,
+[role='button']:enabled {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+p {
+  overflow-wrap: break-word;
+}
+
+pre,
+code,
+kbd,
+samp {
+  text-autospace: no-autospace;
+}
+
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 1px dotted;
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* https://web.dev/articles/prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Alpine pre-init cloak: with a deferred Alpine bundle, x-cloak elements
+   (nav screen, backdrop, dropdowns, search modal) would flash on first
+   paint without this. Outside every @layer so utilities can't outrank it. */
+[x-cloak] {
+  display: none !important;
+}

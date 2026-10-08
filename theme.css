@@ -1,0 +1,60 @@
+/* vpkit — the Tailwind CSS v4 wiring: the `dark:` variant on a `.dark`
+ * class, VitePress's px breakpoints (they replace Tailwind's), and the
+ * semantic utilities (`text-text-1`, `bg-bg-alt`, `border-divider`, …)
+ * that resolve to the --vp-* variables in tokens.css. Part of index.css;
+ * `@import "vpkit/theme.css"` takes it alone. */
+
+/* Class-based dark mode, matching a `.dark` class on <html> (set it
+   before first paint, or the page flashes light). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* VitePress responsive breakpoints (mobile-first). Upstream's media
+   queries are in px; the tokens must be px too, or a non-default
+   browser font size shifts every breakpoint against upstream. */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 960px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+}
+
+/* Semantic tokens mapped onto the --vp-* custom properties below. Because
+   the mapping is `inline`, utilities emit the var() directly and follow the
+   .dark overrides (e.g. `text-text-1`, `bg-bg-alt`, `border-divider`). */
+@theme inline {
+  --font-sans: var(--vp-font-family-base);
+  --font-mono: var(--vp-font-family-mono);
+
+  --color-bg: var(--vp-c-bg);
+  --color-bg-alt: var(--vp-c-bg-alt);
+  --color-bg-elv: var(--vp-c-bg-elv);
+  --color-bg-soft: var(--vp-c-bg-soft);
+
+  --color-text-1: var(--vp-c-text-1);
+  --color-text-2: var(--vp-c-text-2);
+  --color-text-3: var(--vp-c-text-3);
+
+  --color-border: var(--vp-c-border);
+  --color-divider: var(--vp-c-divider);
+  --color-gutter: var(--vp-c-gutter);
+
+  --color-brand-1: var(--vp-c-brand-1);
+  --color-brand-2: var(--vp-c-brand-2);
+  --color-brand-3: var(--vp-c-brand-3);
+  --color-brand-soft: var(--vp-c-brand-soft);
+
+  --color-default-1: var(--vp-c-default-1);
+  --color-default-2: var(--vp-c-default-2);
+  --color-default-3: var(--vp-c-default-3);
+  --color-default-soft: var(--vp-c-default-soft);
+
+  --color-sponsor: var(--vp-c-sponsor);
+
+  --shadow-1: var(--vp-shadow-1);
+  --shadow-2: var(--vp-shadow-2);
+  --shadow-3: var(--vp-shadow-3);
+  --shadow-4: var(--vp-shadow-4);
+  --shadow-5: var(--vp-shadow-5);
+}

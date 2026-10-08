@@ -23,6 +23,25 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 `@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in.
 
+### Taking only some parts
+
+`vpkit` (index.css) is four files, each importable on its own:
+
+| file | what it holds |
+| --- | --- |
+| `vpkit/theme.css` | the `dark:` variant, the breakpoints, the semantic utilities |
+| `vpkit/tokens.css` | the `--vp-*` variables (plain CSS, no Tailwind directive) |
+| `vpkit/doc.css` | code-block and external-link rules for rendered markdown |
+| `vpkit/base.css` | VitePress's global element rules |
+
+`base.css` is unlayered and resets focus outlines (`button:focus { outline: none }`), so a project that draws its own focus rings should leave it out:
+
+```css
+@import "tailwindcss" source(none);
+@import "vpkit/tokens.css";
+@import "vpkit/theme.css";
+```
+
 ## What you get
 
 - **Dark mode**: put `class="dark"` on `<html>`. The `dark:` variant and every `--vp-*` variable follow it.
@@ -31,7 +50,8 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
   `bg`, `bg-alt`, `bg-elv`, `bg-soft`, `text-1`, `text-2`, `text-3`, `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `sponsor`. So `text-text-1`, `bg-bg-alt`, `border-divider`, `text-brand-1`.
 - **Shadows and fonts**: `shadow-1` … `shadow-5`, `font-sans`, `font-mono`.
 - **The `--vp-*` variables** from VitePress's `vars.css`: colors, typography, z-indexes, and the per-component ones (nav, sidebar, code, buttons, custom blocks, badges, search). Use them directly in arbitrary values, e.g. `h-(--vp-nav-height)`.
-- **Global rules** that cannot be utilities: bold at 600, pointer cursor on buttons, focus outlines, reduced motion, the Alpine `[x-cloak]` rule, the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
+- **Global rules** that cannot be utilities (`base.css`): bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
+- **Markdown rules** (`doc.css`): the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
 - **Graded containers**: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors.
 
 ## Theming
