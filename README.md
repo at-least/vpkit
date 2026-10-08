@@ -194,4 +194,4 @@ Each component is rendered next to the VitePress original in headless Chromium a
 
 ## License
 
-MIT. The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress) (MIT). Inter itself is licensed under the SIL Open Font License 1.1.
+MIT (`LICENSE`). The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress), and `test/upstream/` holds verbatim copies of its files: VitePress is MIT too (`LICENSE-VitePress`). Inter itself is licensed under the SIL Open Font License 1.1 (`LICENSE-Inter`).
