@@ -5,4 +5,4 @@ above:
 
   U=../vitepress/src/client/theme-default
   cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue \
-    $U/components/VPBadge.vue test/upstream/
+    $U/components/VPBadge.vue $U/styles/components/custom-block.css test/upstream/

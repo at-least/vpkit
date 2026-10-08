@@ -1,0 +1,130 @@
+/* vpkit — alert, ported from VitePress's custom blocks (`::: tip` and
+ * friends). An optional import: `@import "vpkit/alert.css";`
+ *
+ *   <div class="vp-alert vp-alert-tip">
+ *     <p class="vp-alert-title">TIP</p>
+ *     <p>Body text, with <a href="/guide">links</a> and <code>code</code>.</p>
+ *   </div>
+ *
+ * `vp-alert` alone is the info type (gray). Modifiers, each used together
+ * with `vp-alert`:
+ *   vp-alert-note, vp-alert-tip, vp-alert-important,
+ *   vp-alert-warning, vp-alert-danger, vp-alert-caution
+ *
+ * Not ported: the `details` type, and the rules for tables and
+ * blockquotes inside a block (markdown-only content).
+ *
+ * Variables and modifiers work as in button.css. Every alert sets its
+ * own variables, so a nested alert keeps its own colors, its links and
+ * code included. The rules for what is inside sit behind
+ * :where(.vp-alert), which adds no specificity: a component inside an
+ * alert, such as a vp-btn link, keeps its own look. Only the link hover
+ * dimming (opacity) still reaches it. */
+
+@layer components {
+  .vp-alert {
+    --vp-alert-border: var(--vp-custom-block-info-border);
+    --vp-alert-text: var(--vp-custom-block-info-text);
+    --vp-alert-bg: var(--vp-custom-block-info-bg);
+    --vp-alert-link: var(--vp-c-brand-1);
+    --vp-alert-link-hover: var(--vp-c-brand-2);
+    --vp-alert-code-bg: var(--vp-custom-block-info-code-bg);
+
+    border: 1px solid var(--vp-alert-border);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    line-height: 1.7142857;
+    font-size: var(--vp-custom-block-font-size);
+    color: var(--vp-alert-text);
+    background-color: var(--vp-alert-bg);
+  }
+
+  .vp-alert:has(> .vp-alert-title) {
+    padding-top: 1rem;
+  }
+
+  .vp-alert-title {
+    font-weight: 600;
+  }
+
+  :where(.vp-alert) p + p {
+    margin: 0.5rem 0;
+  }
+
+  :where(.vp-alert) a {
+    color: var(--vp-alert-link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.125rem;
+    transition: opacity 0.25s;
+  }
+
+  :where(.vp-alert) a:hover {
+    color: var(--vp-alert-link-hover);
+    opacity: 0.75;
+  }
+
+  :where(.vp-alert) code {
+    font-size: var(--vp-custom-block-code-font-size);
+    color: var(--vp-alert-link);
+    background-color: var(--vp-alert-code-bg);
+  }
+
+  :where(.vp-alert) a:hover > code {
+    color: var(--vp-alert-link-hover);
+  }
+
+  .vp-alert.vp-alert-note {
+    --vp-alert-border: var(--vp-custom-block-note-border);
+    --vp-alert-text: var(--vp-custom-block-note-text);
+    --vp-alert-bg: var(--vp-custom-block-note-bg);
+    --vp-alert-link: var(--vp-c-brand-1);
+    --vp-alert-link-hover: var(--vp-c-brand-2);
+    --vp-alert-code-bg: var(--vp-custom-block-note-code-bg);
+  }
+
+  .vp-alert.vp-alert-tip {
+    --vp-alert-border: var(--vp-custom-block-tip-border);
+    --vp-alert-text: var(--vp-custom-block-tip-text);
+    --vp-alert-bg: var(--vp-custom-block-tip-bg);
+    --vp-alert-link: var(--vp-c-tip-1);
+    --vp-alert-link-hover: var(--vp-c-tip-2);
+    --vp-alert-code-bg: var(--vp-custom-block-tip-code-bg);
+  }
+
+  .vp-alert.vp-alert-important {
+    --vp-alert-border: var(--vp-custom-block-important-border);
+    --vp-alert-text: var(--vp-custom-block-important-text);
+    --vp-alert-bg: var(--vp-custom-block-important-bg);
+    --vp-alert-link: var(--vp-c-important-1);
+    --vp-alert-link-hover: var(--vp-c-important-2);
+    --vp-alert-code-bg: var(--vp-custom-block-important-code-bg);
+  }
+
+  .vp-alert.vp-alert-warning {
+    --vp-alert-border: var(--vp-custom-block-warning-border);
+    --vp-alert-text: var(--vp-custom-block-warning-text);
+    --vp-alert-bg: var(--vp-custom-block-warning-bg);
+    --vp-alert-link: var(--vp-c-warning-1);
+    --vp-alert-link-hover: var(--vp-c-warning-2);
+    --vp-alert-code-bg: var(--vp-custom-block-warning-code-bg);
+  }
+
+  .vp-alert.vp-alert-danger {
+    --vp-alert-border: var(--vp-custom-block-danger-border);
+    --vp-alert-text: var(--vp-custom-block-danger-text);
+    --vp-alert-bg: var(--vp-custom-block-danger-bg);
+    --vp-alert-link: var(--vp-c-danger-1);
+    --vp-alert-link-hover: var(--vp-c-danger-2);
+    --vp-alert-code-bg: var(--vp-custom-block-danger-code-bg);
+  }
+
+  .vp-alert.vp-alert-caution {
+    --vp-alert-border: var(--vp-custom-block-caution-border);
+    --vp-alert-text: var(--vp-custom-block-caution-text);
+    --vp-alert-bg: var(--vp-custom-block-caution-bg);
+    --vp-alert-link: var(--vp-c-caution-1);
+    --vp-alert-link-hover: var(--vp-c-caution-2);
+    --vp-alert-code-bg: var(--vp-custom-block-caution-code-bg);
+  }
+}

@@ -14,6 +14,26 @@ const TRANSITION = ['transition-property', 'transition-duration'];
 
 export const cases = [];
 
+// Intentional differences from upstream. A difference that matches an
+// entry (case name, element, property) is reported instead of failing;
+// an entry that matches nothing fails the run, so none outlives its cause.
+export const known = [
+  {
+    case: /^alert /,
+    target: 'code',
+    prop: 'font-size',
+    reason:
+      "--vp-custom-block-code-font-size is 0.875em, the size VitePress renders: inside .vp-doc, `.vp-doc :not(pre) > code` (0,1,2) beats `.custom-block code` (0,1,1), so upstream's declared 0.8125rem never shows in its docs",
+  },
+  {
+    case: /^alert info nested in tip$/,
+    target: 'code',
+    prop: 'background-color',
+    reason:
+      "VitePress's `.custom-block.tip code` also matches code inside a nested info block (it comes later in custom-block.css); a nested vp-alert keeps its own code background",
+  },
+];
+
 // button: VPButton's three themes × two sizes, as a link and as a button
 const BUTTON_BOX = [
   'display',
@@ -80,3 +100,83 @@ for (const type of TYPES) {
     });
   }
 }
+
+// alert: VitePress's custom blocks, each type with a title and the
+// things inside whose look the block sets (links, code, paragraphs)
+const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];
+const LINK = [
+  'color',
+  'font-weight',
+  'text-decoration-line',
+  'text-underline-offset',
+  ...TRANSITION,
+  'opacity',
+];
+const CODE = ['font-size', 'color', 'background-color'];
+const alertBody = (title) =>
+  `${title}<p>Body with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p>` +
+  `<p data-t="p2">Then <a data-t="a2" href="#"><code data-t="acode">linked code</code></a>.</p>`;
+for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'caution']) {
+  const modifier = type === 'info' ? '' : ` vp-alert-${type}`;
+  cases.push({
+    name: `alert ${type}`,
+    upstream: `<div data-t="box" class="custom-block ${type}">${alertBody('<p data-t="title" class="custom-block-title">TIP</p>')}</div>`,
+    vpkit: `<div data-t="box" class="vp-alert${modifier}">${alertBody('<p data-t="title" class="vp-alert-title">TIP</p>')}</div>`,
+    checks: [
+      { target: 'box', props: ALERT_BOX },
+      { target: 'title', props: ['font-weight'] },
+      { target: 'p2', props: ['margin-top', 'margin-bottom'] },
+      { target: 'a', props: LINK },
+      { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
+      { target: 'code', props: CODE },
+      { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+    ],
+  });
+}
+
+// without a title the block keeps its 0.5rem top padding (the :has() rule)
+cases.push({
+  name: 'alert info, no title',
+  upstream: `<div data-t="box" class="custom-block info">${alertBody('')}</div>`,
+  vpkit: `<div data-t="box" class="vp-alert">${alertBody('')}</div>`,
+  checks: [{ target: 'box', props: PADDING }],
+});
+
+// an info alert nested in a tip alert keeps the info look
+const nested = (outer, inner) =>
+  `<div class="${outer}"><div data-t="inner" class="${inner}">` +
+  `<p>Inner with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p></div></div>`;
+cases.push({
+  name: 'alert info nested in tip',
+  upstream: nested('custom-block tip', 'custom-block info'),
+  vpkit: nested('vp-alert vp-alert-tip', 'vp-alert'),
+  checks: [
+    { target: 'inner', props: COLORS },
+    { target: 'a', props: ['color'] },
+    { target: 'code', props: CODE },
+  ],
+});
+cases.push({
+  name: 'alert info nested in tip, against a standalone info alert',
+  reference: `<div data-t="inner" class="vp-alert"><p>Inner with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p></div>`,
+  vpkit: nested('vp-alert vp-alert-tip', 'vp-alert'),
+  checks: [
+    { target: 'inner', props: COLORS },
+    { target: 'a', props: ['color'] },
+    { target: 'a', state: ['hover'], props: ['color'] },
+    { target: 'code', props: CODE },
+  ],
+});
+
+// a vp-btn inside an alert keeps its own look: the alert's rules for
+// what is inside add no specificity (only its link hover opacity reaches
+// the button, so opacity isn't compared on hover)
+cases.push({
+  name: 'button inside an alert',
+  reference: `<a data-t="btn" class="vp-btn vp-btn-brand" href="#">Go</a>`,
+  vpkit: `<div class="vp-alert vp-alert-tip"><p><a data-t="btn" class="vp-btn vp-btn-brand" href="#">Go</a></p></div>`,
+  checks: [
+    { target: 'btn', props: [...BUTTON_BOX, ...COLORS, ...TRANSITION] },
+    { target: 'btn', state: ['hover'], props: COLORS },
+  ],
+});

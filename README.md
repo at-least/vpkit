@@ -54,6 +54,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 ```css
 @import "vpkit/button.css";
 @import "vpkit/badge.css";
+@import "vpkit/alert.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -87,6 +88,25 @@ VitePress's `VPBadge`.
 
 VitePress's adjustments for a badge inside doc headings and the doc footer are not included; they belong to those layouts.
 
+### Alert
+
+VitePress's custom blocks (`::: tip` and the others).
+
+```html
+<div class="vp-alert vp-alert-tip">
+  <p class="vp-alert-title">TIP</p>
+  <p>Body text, with <a href="/guide">links</a> and <code>code</code>.</p>
+</div>
+```
+
+- `vp-alert` alone: the info type (gray).
+- `vp-alert-note`, `vp-alert-tip`, `vp-alert-important`, `vp-alert-warning`, `vp-alert-danger`, `vp-alert-caution`: the other types.
+- `vp-alert-title`: the bold title line; a block with one gets the larger top padding.
+
+Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too (a `vp-btn` link is not restyled as a link), except that the alert's link hover dimming applies to it.
+
+Not included: the `details` type, and the rules for tables and blockquotes inside a block.
+
 ## Tests
 
 ```sh
@@ -94,7 +114,7 @@ npm install
 npm test
 ```
 
-Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`.
+Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
 
 ## License
 

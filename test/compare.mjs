@@ -3,7 +3,9 @@
 // from its own sources (test/upstream/, verbatim at the tag in SOURCE),
 // vpkit compiled through Tailwind the way a consumer compiles it. Each
 // case compares computed styles in light and dark mode and, where the
-// component has them, in forced :hover and :active states.
+// component has them, in forced :hover and :active states. A case with
+// a `reference` instead of `upstream` compares two vpkit renderings
+// (a component nested in another against the same one standalone).
 //
 //   npm test
 //
@@ -16,13 +18,13 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
-import { cases } from './cases.mjs';
+import { cases, known } from './cases.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // vars before the components that read them; base.css is layered, so its
 // position doesn't matter
-const UPSTREAM = ['vars.css', 'base.css', 'VPButton.vue', 'VPBadge.vue'];
+const UPSTREAM = ['vars.css', 'base.css', 'VPButton.vue', 'VPBadge.vue', 'custom-block.css'];
 
 function vpkitCss() {
   const dir = mkdtempSync(join(tmpdir(), 'vpkit-test-'));
@@ -99,23 +101,36 @@ async function measure({ page, cdp }, { target, on, state, props }) {
 const sides = { upstream: upstreamCss(), vpkit: vpkitCss() };
 const browser = await chromium.launch();
 const failures = [];
+const expected = [];
 let compared = 0;
 try {
   for (const c of cases) {
+    const [label, refCss, refBody] =
+      c.upstream === undefined
+        ? ['standalone', sides.vpkit, c.reference]
+        : ['upstream', sides.upstream, c.upstream];
     for (const dark of [false, true]) {
-      const pages = {};
-      for (const side of ['upstream', 'vpkit']) {
-        pages[side] = await open(browser, sides[side], c[side], dark);
-      }
+      const pages = {
+        ref: await open(browser, refCss, refBody, dark),
+        vpkit: await open(browser, sides.vpkit, c.vpkit, dark),
+      };
       for (const check of c.checks) {
-        const upstream = await measure(pages.upstream, check);
+        const ref = await measure(pages.ref, check);
         const vpkit = await measure(pages.vpkit, check);
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}`;
         for (const prop of check.props) {
           compared++;
-          if (upstream[prop] !== vpkit[prop]) {
-            failures.push(`${where} ${prop}: upstream ${upstream[prop]} | vpkit ${vpkit[prop]}`);
+          if (ref[prop] === vpkit[prop]) continue;
+          const line = `${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`;
+          const delta = known.find(
+            (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,
+          );
+          if (!delta) {
+            failures.push(line);
+            continue;
           }
+          delta.hits = (delta.hits ?? 0) + 1;
+          expected.push(line);
         }
       }
       for (const { page } of Object.values(pages)) await page.close();
@@ -125,8 +140,16 @@ try {
   await browser.close();
 }
 
+for (const k of known) {
+  if (k.hits) {
+    console.log(`KNOWN ${k.hits}× ${k.case} ${k.target} ${k.prop}: ${k.reason}`);
+  } else {
+    failures.push(`known difference no longer occurs, remove it: ${k.case} ${k.target} ${k.prop}`);
+  }
+}
 for (const f of failures) console.log(`DIFF  ${f}`);
 console.log(
-  `${cases.length} cases × light/dark: ${compared} computed values compared, ${failures.length} differ`,
+  `${cases.length} cases × light/dark: ${compared} computed values compared, ` +
+    `${failures.length} differ, ${expected.length} known`,
 );
 process.exit(failures.length ? 1 : 0);
