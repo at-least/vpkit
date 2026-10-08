@@ -30,9 +30,12 @@
 
 /* Component: External link icon — upstream vp-doc.css: an inline box
    (a 9px word joiner padded 11px wide) masked with the arrow and centered
-   on the line, not an em-sized inline-block on the baseline */
+   on the line, not an em-sized inline-block on the baseline; no arrow on a
+   link marked no-icon, a link inside an SVG or one holding an image */
 .vp-external-link-icon::after {
   content: '\2060';
+}
+.vp-external-link-icon:not(:is(.no-icon, svg a, :has(img, svg)))::after {
   display: inline;
   margin-left: 0.25rem;
   padding-left: 0.6875rem;
