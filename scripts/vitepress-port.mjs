@@ -222,21 +222,22 @@ export const FILES = {
   },
   'content.css': {
     header: `/* vpkit — markdown content, everything inside \`<div class="vp-doc">\`:
- * VitePress's styles/components/vp-doc.css, custom-block.css,
- * vp-code-group.css and vp-code.css (v2.0.0-alpha.20) verbatim. An optional
- * import: \`@import "vpkit/content.css";\`
+ * VitePress's styles/components/vp-doc.css, custom-block.css and
+ * vp-code-group.css (v2.0.0-alpha.20) verbatim. An optional import:
+ * \`@import "vpkit/content.css";\`
  *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
  * with \`.header-anchor\` links, \`div.custom-block\` containers and GitHub
  * alerts, \`div[class*='language-']\` code blocks with their copy button,
  * language label, highlighted, diff and focused lines and line numbers,
  * \`.vp-code-group\` tabs. Its classes are VitePress's own, not renamed.
- * Written by scripts/vitepress-port.mjs. */`,
+ * The code's colors are not here: they come with the highlighter (Shiki's
+ * two themes, vp-code.css, in VitePress). Written by
+ * scripts/vitepress-port.mjs. */`,
     globals: [
       ['vp-doc.css', 'headings, text, lists, tables, code blocks'],
       ['custom-block.css', 'containers and GitHub alerts'],
       ['vp-code-group.css', 'code groups'],
-      ['vp-code.css', "Shiki's two themes"],
     ],
     components: [],
   },

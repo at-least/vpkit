@@ -8,8 +8,7 @@ above:
     $U/components/VPBadge.vue $U/styles/components/custom-block.css \
     $U/styles/components/vp-doc.css $U/components/VPFeature.vue \
     $U/styles/icons.css $U/styles/utils.css $U/styles/fonts.css \
-    $U/styles/components/vp-code-group.css \
-    $U/styles/components/vp-code.css test/upstream/
+    $U/styles/components/vp-code-group.css test/upstream/
   cp $U/Layout.vue test/upstream/components/
   for c in VPContent VPDoc VPPage VPSkipLink VPBackdrop; do
     cp $U/components/$c.vue test/upstream/components/

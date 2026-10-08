@@ -56,7 +56,7 @@ const cases = [
     name: 'markdown content',
     page: 'guide_markdown.html',
     selector: '.vp-doc',
-    upstream: ['vp-doc.css', 'custom-block.css', 'vp-code-group.css', 'vp-code.css'],
+    upstream: ['vp-doc.css', 'custom-block.css', 'vp-code-group.css'],
     drop: '.vp-code-block-title, mjx-container',
     widths: [375, 1280],
   },

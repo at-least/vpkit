@@ -1,7 +1,7 @@
 {
   "name": "vpkit",
   "version": "0.1.0",
-  "description": "The VitePress default-theme look as a Tailwind CSS v4 theme: --vp-* variables, semantic utilities, components, color themes, code colors, Inter webfonts",
+  "description": "The VitePress default-theme look as a Tailwind CSS v4 theme: --vp-* variables, semantic utilities, components, color themes, Inter webfonts",
   "style": "index.css",
   "license": "MIT",
   "private": true,
