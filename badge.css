@@ -14,9 +14,11 @@
  * VitePress builds the others (--vp-c-success-1 text on
  * --vp-c-success-soft, transparent border).
  *
- * Variables and modifiers work as in button.css. VitePress's rules for a
- * badge inside .vp-doc headings and the doc footer are not here: they
- * belong to those contexts, not to the badge. */
+ * Variables and modifiers work as in button.css. VPBadge's own rules for a
+ * badge in a .vp-doc heading (h1 to h6, content.css's or doc.css's) and in
+ * the doc footer (layout.css's vp-doc-footer, where it is hidden) are here
+ * too, as VitePress keeps them with the badge; they set the properties
+ * themselves, so they win over vp-badge-small as VitePress's do. */
 
 @layer components {
   .vp-badge {
@@ -90,5 +92,31 @@
     --vp-badge-line-height: 1.8;
     --vp-badge-font-size: 0.625rem;
     --vp-badge-shift: -0.5rem;
+  }
+
+  /* VPBadge.vue: in the doc footer and in a doc's headings */
+  .vp-doc-footer .vp-badge {
+    display: none;
+  }
+
+  .vp-doc h1 > .vp-badge,
+  .vp-doc h2 > .vp-badge {
+    margin: 0 0 0 0.125rem;
+    vertical-align: middle;
+  }
+
+  .vp-doc h2 > .vp-badge {
+    padding: 0 0.5rem;
+  }
+
+  .vp-doc h3 > .vp-badge {
+    vertical-align: middle;
+  }
+
+  .vp-doc h4 > .vp-badge,
+  .vp-doc h5 > .vp-badge,
+  .vp-doc h6 > .vp-badge {
+    vertical-align: middle;
+    line-height: 1.5;
   }
 }

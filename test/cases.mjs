@@ -150,6 +150,25 @@ for (const small of [false, true]) {
   });
 }
 
+// a badge in a .vp-doc heading, each level, small or not, and in the doc
+// footer: VPBadge.vue's rules for those places
+for (const level of [1, 2, 3, 4, 5, 6]) {
+  for (const small of [false, true]) {
+    cases.push({
+      name: `badge in h${level}${small ? ', small' : ''}`,
+      upstream: `<div class="vp-doc"><h${level}>Title <span data-t="badge" class="VPBadge tip${small ? ' small' : ''}">beta</span></h${level}></div>`,
+      vpkit: `<div class="vp-doc"><h${level}>Title <span data-t="badge" class="vp-badge vp-badge-tip${small ? ' vp-badge-small' : ''}">beta</span></h${level}></div>`,
+      checks: [{ target: 'badge', props: [...BADGE_BOX, 'vertical-align', ...COLORS] }],
+    });
+  }
+}
+cases.push({
+  name: 'badge in the doc footer',
+  upstream: `<div class="VPDocFooter"><span data-t="badge" class="VPBadge tip">beta</span></div>`,
+  vpkit: `<div class="vp-doc-footer"><span data-t="badge" class="vp-badge vp-badge-tip">beta</span></div>`,
+  checks: [{ target: 'badge', props: ['display'] }],
+});
+
 // table: a VitePress markdown table (inside .vp-doc) against vp-table
 const TABLE_ROWS =
   '<thead><tr data-t="head"><th data-t="th">Plan</th><th>Price</th></tr></thead>' +

@@ -140,7 +140,7 @@ VitePress's `VPBadge`.
 - `vp-badge-success`: vpkit's addition (VitePress has no success badge), built the way VitePress builds the others: success text on the soft success tint.
 - `vp-badge-small`: the small size.
 
-VitePress's adjustments for a badge inside doc headings and the doc footer are not included; they belong to those layouts.
+VPBadge's own adjustments come with it: in a `.vp-doc` heading (h1 to h6) a badge sits centered on the line, with VitePress's margins, padding and line height for each level (small or not), and in the doc footer (`.vp-doc-footer`) it is hidden.
 
 ### Alert
 
