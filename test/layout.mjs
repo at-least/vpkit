@@ -74,6 +74,16 @@ const cases = [
   { component: 'VPSkipLink', page: 'guide_getting-started.html', states: [[], ['focus']] },
   // rendered only while the sidebar is open
   { component: 'VPBackdrop', markup: '<div class="VPBackdrop"></div>' },
+  // the 404 page's content, which VitePress renders in the browser only:
+  // its default texts
+  {
+    component: 'NotFound',
+    markup:
+      '<div class="NotFound"><p class="code">404</p><h1 class="title">PAGE NOT FOUND</h1><div class="divider"></div>' +
+      "<blockquote class=\"quote\">But if you don't change your direction, and if you keep looking, you may end up where you are heading.</blockquote>" +
+      '<div class="action"><a class="link" href="/" aria-label="go to home">Take me home</a></div></div>',
+    widths: [375, 768, 1280],
+  },
   // the navbar where its layout changes (VitePress's script moves menu items
   // into the extra menu as it narrows), a flyout open, the extra menu open,
   // and the nav screen of phones

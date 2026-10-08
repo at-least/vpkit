@@ -224,7 +224,8 @@ export const FILES = {
  * VPDocFooterLastUpdated), the site footer (VPFooter) and the home page
  * (VPHome: VPHero with VPButton, VPFeatures with VPFeature, VPHomeContent;
  * VPButton and VPFeature as VitePress has them, where button.css and
- * card.css change them for apps). An optional import:
+ * card.css change them for apps), and the 404 page's NotFound. An optional
+ * import:
  * \`@import "vpkit/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
@@ -239,7 +240,7 @@ export const FILES = {
  * VitePress's, verbatim. */`,
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
     components: [
-      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDocFooterLastUpdated', 'VPDocFooter',
+      'VPBackdrop', 'NotFound', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDocFooterLastUpdated', 'VPDocFooter',
       'VPDoc', 'VPHomeContent', 'VPImage', 'VPFeature', 'VPFeatures', 'VPButton', 'VPHero', 'VPHome', 'VPContent',
       'VPFooter', 'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
       'VPMenuLink', 'VPMenuGroup', 'VPMenu', 'VPFlyout', 'VPNavTranslations', 'VPSocialLink', 'VPSocialLinks',

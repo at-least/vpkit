@@ -57,6 +57,8 @@ export const LAYOUT = {
   VPFeatures: { file: 'components/VPFeatures.vue' },
   VPFeature: { file: 'components/VPFeature.vue' },
   VPHomeContent: { file: 'components/VPHomeContent.vue' },
+  // the 404 page's content
+  NotFound: { file: 'components/NotFound.vue' },
   // the navbar and, on narrow screens, the nav screen
   VPNav: { file: 'components/VPNav.vue' },
   VPNavBar: { file: 'components/VPNavBar.vue' },
