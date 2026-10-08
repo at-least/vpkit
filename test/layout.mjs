@@ -81,7 +81,7 @@ const PROPS = [
   'text-align', 'text-decoration-line', 'text-transform', 'white-space', 'text-overflow', 'vertical-align',
   'cursor', 'pointer-events', 'outline-style', 'outline-width', 'outline-offset',
   'transition-property', 'transition-duration', 'transition-timing-function', 'transition-delay',
-  'mask-image', 'list-style-type', 'scrollbar-width',
+  'mask-image', 'list-style-type', 'scrollbar-width', 'color-scheme',
 ];
 const PSEUDO_PROPS = [
   'content', 'display', 'position', ...SIDES, 'width', 'height', 'color', 'background-color',

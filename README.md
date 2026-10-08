@@ -44,14 +44,14 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 ## What you get
 
-- **Dark mode**: put `class="dark"` on `<html>`. The `dark:` variant and every `--vp-*` variable follow it.
+- **Dark mode**: put `class="dark"` on `<html>`. The `dark:` variant, every `--vp-*` variable and the color scheme (scrollbars, form controls) follow it.
 - **Page colors** are yours to set: put `bg-bg text-text-1` on `<body>`. vpkit colors its components, not the page.
 - **Breakpoints**: VitePress's, in px, replacing Tailwind's defaults: `sm` 640px, `md` 768px, `lg` 960px, `xl` 1280px, `2xl` 1440px.
 - **Semantic colors** for every color utility (`text-`, `bg-`, `border-`, …):
   `bg`, `bg-alt`, `bg-elv`, `bg-soft`, `text-1`, `text-2`, `text-3`, `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `text-text-1`, `bg-bg-alt`, `border-divider`, `text-brand-1`, `text-danger-1`.
 - **Shadows and fonts**: `shadow-1` … `shadow-5`, `font-sans`, `font-mono`.
 - **The `--vp-*` variables** from VitePress's `vars.css`: colors, typography, z-indexes, and the per-component ones (nav, sidebar, code, buttons, custom blocks, badges, search). Use them directly in arbitrary values, e.g. `h-(--vp-nav-height)`.
-- **Global rules** that cannot be utilities (`base.css`): bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
+- **Global rules** that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
 - **Markdown rules** (`doc.css`): the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
 - **Graded containers**: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors.
 - **Color themes**: 200 of them in `themes/`, one file each (see [Color themes](#color-themes)).
