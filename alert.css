@@ -58,7 +58,10 @@
     text-decoration: underline;
     text-underline-offset: 0.125rem;
     transition: opacity 0.25s;
+  }
 
+  /* a rule of its own, as in button.css */
+  :where(.vp-alert) a {
     @variant hover {
       color: var(--vp-alert-link-hover);
       opacity: 0.75;

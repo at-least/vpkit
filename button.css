@@ -57,7 +57,11 @@
     color: var(--vp-btn-text);
     background-color: var(--vp-btn-bg);
     transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  }
 
+  /* a rule of its own: nested in one that has declarations, the variant
+     would stay CSS nesting in an unminified build */
+  .vp-btn {
     @variant hover {
       border-color: var(--vp-btn-hover-border);
       color: var(--vp-btn-hover-text);

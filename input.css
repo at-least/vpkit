@@ -26,7 +26,10 @@
     background-color: var(--vp-input-bg-color);
     transition-property: border-color, box-shadow;
     transition-duration: 0.25s;
+  }
 
+  /* a rule of its own, as in button.css */
+  .vp-input {
     @variant hover {
       border-color: var(--vp-c-brand-1);
     }
