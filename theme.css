@@ -50,14 +50,14 @@
   --color-default-3: var(--vp-c-default-3);
   --color-default-soft: var(--vp-c-default-soft);
 
+  /* success and danger: only the text tone and the soft tint, the ones
+     the apps use. Every variable mapped here is one a color theme must
+     define (rustpress's bundled themes are tested for each var() this
+     package references), and rustpress's define no -2/-3 of these. */
   --color-success-1: var(--vp-c-success-1);
-  --color-success-2: var(--vp-c-success-2);
-  --color-success-3: var(--vp-c-success-3);
   --color-success-soft: var(--vp-c-success-soft);
 
   --color-danger-1: var(--vp-c-danger-1);
-  --color-danger-2: var(--vp-c-danger-2);
-  --color-danger-3: var(--vp-c-danger-3);
   --color-danger-soft: var(--vp-c-danger-soft);
 
   --color-sponsor: var(--vp-c-sponsor);
