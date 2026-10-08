@@ -1,3 +1,5 @@
+import { TOTALITY_INPUT } from './recipes.mjs';
+
 // The component matrix. Each case renders the same thing twice, with
 // VitePress's classes and with vpkit's; elements to measure carry data-t.
 // A check names the element, the properties to compare and, optionally,
@@ -188,6 +190,34 @@ for (const tag of ['a', 'div']) {
       { target: 'card', state: ['hover'], props: COLORS },
       { target: 'title', props: ['line-height', 'font-size', 'font-weight', 'color'] },
       { target: 'details', props: ['flex-grow', 'padding-top', 'line-height', 'font-size', 'font-weight', 'color'] },
+    ],
+  });
+}
+
+// input: no VitePress original; the reference is totality's recipe it
+// ports, compiled into the same stylesheet
+const INPUT_BOX = [
+  'display',
+  'height',
+  ...BORDER,
+  ...RADIUS,
+  ...PADDING,
+  'font-size',
+  'line-height',
+  ...COLORS,
+  ...TRANSITION,
+];
+for (const invalid of [null, 'true', 'false']) {
+  const attr = invalid ? ` aria-invalid="${invalid}"` : '';
+  cases.push({
+    name: `input${invalid ? ` aria-invalid=${invalid}` : ''}`,
+    reference: `<input data-t="in" class="${TOTALITY_INPUT}" placeholder="Coupon code"${attr}>`,
+    vpkit: `<input data-t="in" class="vp-input" placeholder="Coupon code"${attr}>`,
+    checks: [
+      { target: 'in', props: INPUT_BOX },
+      { target: 'in', pseudo: '::placeholder', props: ['color'] },
+      { target: 'in', state: ['hover'], props: COLORS },
+      { target: 'in', state: ['focus'], props: [...COLORS, 'box-shadow'] },
     ],
   });
 }

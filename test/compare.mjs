@@ -68,7 +68,11 @@ function upstreamCss() {
 // upstream and 23.984375px from the minified build. Everything else
 // compares exactly.
 const PX = /^-?\d+(\.\d+)?px$/;
-function same(a, b) {
+// A transparent shadow with no offset, blur or spread paints nothing;
+// Tailwind's shadow utilities put four of them before the real one.
+const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
+function same(a, b, prop) {
+  if (prop === 'box-shadow') [a, b] = [a.replace(NO_SHADOW, ''), b.replace(NO_SHADOW, '')];
   if (a === b) return true;
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
 }
@@ -99,17 +103,17 @@ async function nodeId(cdp, t) {
   return nodeId;
 }
 
-async function measure({ page, cdp }, { target, on, state, props }) {
+async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
   const node = state ? await nodeId(cdp, on ?? target) : null;
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: state });
   const values = await page.evaluate(
-    ([target, props]) => {
+    ([target, pseudo, props]) => {
       // getAnimations() flushes the style change the forced state just
       // made, so its transitions exist here; finish() jumps them to their
       // end values instead of reading a color halfway through
       for (const animation of document.getAnimations()) animation.finish();
       const el = document.querySelector(`[data-t="${target}"]`);
-      const style = getComputedStyle(el);
+      const style = getComputedStyle(el, pseudo ?? null);
       // geometry: the box's height, and its offset inside its parent's box
       const box = el.getBoundingClientRect();
       const parent = el.parentElement.getBoundingClientRect();
@@ -122,7 +126,7 @@ async function measure({ page, cdp }, { target, on, state, props }) {
         props.map((p) => [p, p in geometry ? `${geometry[p]}px` : style.getPropertyValue(p)]),
       );
     },
-    [target, props],
+    [target, pseudo, props],
   );
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: [] });
   return values;
@@ -137,7 +141,7 @@ try {
   for (const c of cases) {
     const [label, refCss, refBody] =
       c.upstream === undefined
-        ? ['standalone', sides.vpkit, c.reference]
+        ? ['reference', sides.vpkit, c.reference]
         : ['upstream', sides.upstream, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
@@ -149,10 +153,10 @@ try {
         // (VPFeature's padding lives on an inner box, vp-card's on itself)
         const ref = await measure(pages.ref, { ...check, target: check.refTarget ?? check.target });
         const vpkit = await measure(pages.vpkit, check);
-        const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}`;
+        const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;
         for (const prop of check.props) {
           compared++;
-          if (same(ref[prop], vpkit[prop])) continue;
+          if (same(ref[prop], vpkit[prop], prop)) continue;
           const line = `${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`;
           const delta = known.find(
             (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,

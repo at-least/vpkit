@@ -1,0 +1,49 @@
+/* vpkit — text input. VitePress has the input variables but no input
+ * component; this is totality's, on those variables. An optional
+ * import: `@import "vpkit/input.css";`
+ *
+ *   <input class="vp-input w-full" placeholder="Coupon code">
+ *   <input class="vp-input" aria-invalid="true">
+ *
+ * 44px tall with 16px text (iOS zooms into anything smaller), the input
+ * border on the input background, a brand border on hover and focus, and
+ * a 2px brand ring on focus drawn as a box-shadow: base.css removes the
+ * focus outline. aria-invalid="true" turns the border danger and "false"
+ * success, over hover and focus. Width is the page's: add w-full. */
+
+@layer components {
+  .vp-input {
+    display: block;
+    height: 2.75rem;
+    border: 1px solid var(--vp-input-border-color);
+    border-radius: 0.5rem;
+    padding: 0 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-input-bg-color);
+    transition-property: border-color, box-shadow;
+    transition-duration: 0.25s;
+  }
+
+  .vp-input::placeholder {
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-input:hover,
+  .vp-input:focus {
+    border-color: var(--vp-c-brand-1);
+  }
+
+  .vp-input:focus {
+    box-shadow: 0 0 0 2px var(--vp-c-brand-1);
+  }
+
+  .vp-input[aria-invalid="true"] {
+    border-color: var(--vp-c-danger-1);
+  }
+
+  .vp-input[aria-invalid="false"] {
+    border-color: var(--vp-c-success-1);
+  }
+}

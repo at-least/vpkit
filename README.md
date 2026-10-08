@@ -78,6 +78,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/alert.css";
 @import "vpkit/table.css";
 @import "vpkit/card.css";
+@import "vpkit/input.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -166,6 +167,20 @@ VitePress's `VPFeature`, the home page's feature boxes.
 
 Not included: the feature icon.
 
+### Input
+
+VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is totality's input, built on those variables.
+
+```html
+<input class="vp-input w-full" placeholder="Coupon code">
+<input class="vp-input" aria-invalid="true">
+```
+
+- 44px tall with 16px text (iOS zooms into anything smaller), the input border on the input background, a brand border on hover and focus.
+- Focus draws a 2px brand ring as a box-shadow, since `base.css` removes focus outlines.
+- `aria-invalid="true"` turns the border danger and `"false"` success, even on hover and focus.
+- The width is yours: add `w-full` or any width utility.
+
 ## Tests
 
 ```sh
@@ -173,7 +188,7 @@ npm install
 npm test
 ```
 
-Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
+Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
 
 ## License
 
