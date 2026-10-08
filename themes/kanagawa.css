@@ -1,4 +1,4 @@
-/* Built-in theme: kanagawa — wave and lotus: ink, sumi and ukiyo-e color. Both halves from the published palettes (vendored in assets/syntax-themes/helix/). Accents auto-adjusted for WCAG AA where the published colors fell short. */
+/* Built-in theme: kanagawa — wave and lotus: ink, sumi and ukiyo-e color. Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short. */
 :root {
   --vp-c-neutral-inverse: #ffffff;
   --vp-c-bg: #fdfcfb;

@@ -406,7 +406,7 @@ for spec in SPECS:
         pl = pal(ls["f"])
         pl2 = pal(ls["p2"]) if "p2" in ls else {}
         light_map = resolve(ls["m"], pl, pl2)
-        note = f"Both halves from the published palettes (vendored in assets/syntax-themes/helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."
+        note = f"Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."
     light = build_mode("light", light_map, adjusted)
 
     css = emit_css(spec["name"], spec["desc"], note, light, dark)

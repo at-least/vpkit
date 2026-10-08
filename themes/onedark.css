@@ -1,4 +1,4 @@
-/* Built-in theme: onedark — Atom's One: grey-blue surfaces, saturated accents. Both halves from the published palettes (vendored in assets/syntax-themes/helix/). Accents auto-adjusted for WCAG AA where the published colors fell short. */
+/* Built-in theme: onedark — Atom's One: grey-blue surfaces, saturated accents. Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short. */
 :root {
   --vp-c-neutral-inverse: #ffffff;
   --vp-c-bg: #fafafa;
