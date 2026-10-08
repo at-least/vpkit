@@ -136,6 +136,18 @@ for (const type of TYPES) {
   }
 }
 
+// vp-badge-success, vpkit's addition: VPBadge with success colors in the
+// pattern of the other types, written inline
+for (const small of [false, true]) {
+  const style = 'border-color:transparent;color:var(--vp-c-success-1);background-color:var(--vp-c-success-soft)';
+  cases.push({
+    name: `badge success${small ? ' small' : ''}`,
+    upstream: `<span data-t="badge" class="VPBadge${small ? ' small' : ''}" style="${style}">paid</span>`,
+    vpkit: `<span data-t="badge" class="vp-badge vp-badge-success${small ? ' vp-badge-small' : ''}">paid</span>`,
+    checks: [{ target: 'badge', props: [...BADGE_BOX, ...COLORS] }],
+  });
+}
+
 // alert: VitePress's custom blocks, each type with a title and the
 // things inside whose look the block sets (links, code, paragraphs)
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];

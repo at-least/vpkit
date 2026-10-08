@@ -110,6 +110,7 @@ VitePress's `VPBadge`.
 
 - `vp-badge` alone: the info type (gray).
 - `vp-badge-note`, `vp-badge-tip`, `vp-badge-important`, `vp-badge-caution`, `vp-badge-warning`, `vp-badge-danger`: the other types.
+- `vp-badge-success`: vpkit's addition (VitePress has no success badge), built the way VitePress builds the others: success text on the soft success tint.
 - `vp-badge-small`: the small size.
 
 VitePress's adjustments for a badge inside doc headings and the doc footer are not included; they belong to those layouts.
