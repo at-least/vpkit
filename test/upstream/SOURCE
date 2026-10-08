@@ -17,7 +17,8 @@ above:
     VPNavBarSearchButton VPNavBarAskAiButton VPNavMenu VPNavMenuLink \
     VPNavMenuGroup VPFlyout VPMenu VPMenuLink VPMenuGroup VPNavBarExtra \
     VPNavBarHamburger VPNavAppearance VPSwitch VPSwitchAppearance \
-    VPNavSocialLinks VPSocialLinks VPSocialLink VPNavTranslations VPNavScreen; do
+    VPNavSocialLinks VPSocialLinks VPSocialLink VPNavTranslations VPNavScreen \
+    VPDocFooter VPDocFooterLastUpdated VPFooter; do
     cp $U/components/$c.vue test/upstream/components/
   done
 

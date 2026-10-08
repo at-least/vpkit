@@ -219,8 +219,9 @@ export const FILES = {
  * menu with its flyouts, translations, appearance switch, social links,
  * hamburger, the extra menu) and the nav screen of narrow screens, the
  * sidebar (VPSidebar, VPSidebarGroup, VPSidebarItem), the local nav
- * (VPLocalNav, VPLocalNavOutlineDropdown) and the aside (VPDocAside,
- * VPDocAsideOutline, VPDocOutlineItem). An optional import:
+ * (VPLocalNav, VPLocalNavOutlineDropdown), the aside (VPDocAside,
+ * VPDocAsideOutline, VPDocOutlineItem), the doc footer (VPDocFooter,
+ * VPDocFooterLastUpdated) and the site footer (VPFooter). An optional import:
  * \`@import "vpkit/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
@@ -235,8 +236,8 @@ export const FILES = {
  * VitePress's, verbatim. */`,
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
     components: [
-      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDoc', 'VPImage', 'VPContent',
-      'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
+      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDocFooterLastUpdated', 'VPDocFooter',
+      'VPDoc', 'VPImage', 'VPContent', 'VPFooter', 'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
       'VPMenuLink', 'VPMenuGroup', 'VPMenu', 'VPFlyout', 'VPNavTranslations', 'VPSocialLink', 'VPSocialLinks',
       'VPNavBarExtra', 'VPNavBarHamburger', 'VPNavBarAskAiButton', 'VPNavBarSearchButton', 'VPNavBarSearch',
       'VPNavBarTitle', 'VPNavMenuGroup', 'VPNavMenuLink', 'VPNavMenu', 'VPNavSocialLinks', 'VPNavBar',

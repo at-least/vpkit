@@ -43,6 +43,11 @@ export const LAYOUT = {
   // vitepress.dev's sponsors and ads: no styles, named for VPDocAside's rules
   VPDocAsideSponsors: { file: 'components/VPDocAsideSponsors.vue' },
   VPDocAsideCarbonAds: { file: 'components/VPDocAsideCarbonAds.vue' },
+  // below the doc: the edit link, the last updated time, prev and next
+  VPDocFooter: { file: 'components/VPDocFooter.vue' },
+  VPDocFooterLastUpdated: { file: 'components/VPDocFooterLastUpdated.vue', root: 'VPLastUpdated', block: 'vp-last-updated' },
+  // the site's footer, on pages without a sidebar
+  VPFooter: { file: 'components/VPFooter.vue' },
   // the navbar and, on narrow screens, the nav screen
   VPNav: { file: 'components/VPNav.vue' },
   VPNavBar: { file: 'components/VPNavBar.vue' },

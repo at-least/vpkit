@@ -154,6 +154,18 @@ const cases = [
     select: '.VPDocAside',
     widths: [1280, 1600],
   },
+  // below the doc: the edit link and the last updated time beside it from
+  // 40rem, prev and next in two columns from 40rem
+  {
+    name: 'doc footer',
+    family: ['VPDocFooter', 'VPDocFooterLastUpdated'],
+    page: 'hydrated/guide_getting-started.1280.html',
+    select: '.VPDocFooter',
+    widths: [375, 640, 1280],
+  },
+  // the site's footer: shown on a page without a sidebar, hidden beside one
+  { component: 'VPFooter', name: 'home page', page: 'home.html', widths: [375, 768, 1280] },
+  { component: 'VPFooter', name: 'doc page', page: 'guide_getting-started.html', widths: [375, 1280] },
   // the markdown page: every block VitePress's markdown renders. Its code
   // blocks with a title bar and its MathJax formulas come from vitepress.dev's
   // plugins, which bring their own styles, not VitePress's.
