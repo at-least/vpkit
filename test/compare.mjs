@@ -32,7 +32,8 @@ function vpkitCss() {
     const out = join(dir, 'vpkit.css');
     execFileSync(
       join(ROOT, 'node_modules/.bin/tailwindcss'),
-      ['-i', join(ROOT, 'test/entry.css'), '-o', out],
+      // minified, as consumers ship it
+      ['-i', join(ROOT, 'test/entry.css'), '-o', out, '--minify'],
       { stdio: 'pipe' },
     );
     return readFileSync(out, 'utf8');
@@ -51,6 +52,17 @@ function upstreamCss() {
     if (!style) throw new Error(`no <style> block in ${file}`);
     return style[1];
   }).join('\n');
+}
+
+// Lengths match within 1/32 px. The minified build prints numbers to six
+// significant digits (2.7142857 -> 2.71429), which moves a line box by
+// 0.0001px and can tip layout's 1/64 px rounding: a badge measured 24px
+// upstream and 23.984375px from the minified build. Everything else
+// compares exactly.
+const PX = /^-?\d+(\.\d+)?px$/;
+function same(a, b) {
+  if (a === b) return true;
+  return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
 }
 
 async function open(browser, css, body, dark) {
@@ -120,7 +132,7 @@ try {
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}`;
         for (const prop of check.props) {
           compared++;
-          if (ref[prop] === vpkit[prop]) continue;
+          if (same(ref[prop], vpkit[prop])) continue;
           const line = `${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`;
           const delta = known.find(
             (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,

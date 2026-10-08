@@ -32,6 +32,13 @@ export const known = [
     reason:
       "VitePress's `.custom-block.tip code` also matches code inside a nested info block (it comes later in custom-block.css); a nested vp-alert keeps its own code background",
   },
+  {
+    case: /^button inside an alert$/,
+    target: 'btn',
+    prop: 'opacity',
+    reason:
+      "the alert's link hover dimming (opacity 0.75) also reaches a vp-btn link inside it; the button sets no opacity of its own",
+  },
 ];
 
 // button: VPButton's three themes × two sizes, as a link and as a button
@@ -170,13 +177,13 @@ cases.push({
 
 // a vp-btn inside an alert keeps its own look: the alert's rules for
 // what is inside add no specificity (only its link hover opacity reaches
-// the button, so opacity isn't compared on hover)
+// the button, listed in `known`)
 cases.push({
   name: 'button inside an alert',
   reference: `<a data-t="btn" class="vp-btn vp-btn-brand" href="#">Go</a>`,
   vpkit: `<div class="vp-alert vp-alert-tip"><p><a data-t="btn" class="vp-btn vp-btn-brand" href="#">Go</a></p></div>`,
   checks: [
-    { target: 'btn', props: [...BUTTON_BOX, ...COLORS, ...TRANSITION] },
-    { target: 'btn', state: ['hover'], props: COLORS },
+    { target: 'btn', props: [...BUTTON_BOX, ...COLORS, ...TRANSITION, 'opacity'] },
+    { target: 'btn', state: ['hover'], props: [...COLORS, 'opacity'] },
   ],
 });
