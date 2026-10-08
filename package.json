@@ -1,5 +1,5 @@
 {
-  "name": "vitecss",
+  "name": "vpkit",
   "version": "0.1.0",
   "description": "The VitePress default-theme look as a Tailwind CSS v4 theme: --vp-* variables, semantic utilities, Inter webfonts",
   "style": "index.css",

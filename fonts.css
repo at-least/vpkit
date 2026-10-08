@@ -1,5 +1,5 @@
-/* vitecss — Inter webfonts (generated subsets, ported from VitePress).
-   An optional import, separate from index.css: `@import "vitecss/fonts.css";`.
+/* vpkit — Inter webfonts (generated subsets, ported from VitePress).
+   An optional import, separate from index.css: `@import "vpkit/fonts.css";`.
    The url()s are relative to the compiled stylesheet (the Tailwind CLI
    leaves them as written), so serve this package's fonts/ directory next
    to it. */

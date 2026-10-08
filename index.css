@@ -1,9 +1,9 @@
-/* vitecss — the VitePress default-theme look as a Tailwind CSS v4 theme.
+/* vpkit — the VitePress default-theme look as a Tailwind CSS v4 theme.
  *
  * Import it after Tailwind (fonts.css is a separate, optional import):
  *
  *   @import "tailwindcss";
- *   @import "vitecss";
+ *   @import "vpkit";
  *
  * This file contains ONLY the design system: the dark variant, the
  * breakpoints, the semantic utilities, the --vp-* theme variables and the

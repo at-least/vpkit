@@ -1,4 +1,4 @@
-# vitecss
+# vpkit
 
 The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts. Extracted from [rustpress](https://github.com/at-least/rustpress).
 
@@ -9,7 +9,7 @@ It is plain CSS for Tailwind to compile. There is no build step and nothing to r
 Add it as a dependency (here from a sibling checkout):
 
 ```sh
-npm install --save-dev ../vitecss
+npm install --save-dev ../vpkit
 ```
 
 Then import it from your Tailwind entry stylesheet, after Tailwind itself:
@@ -17,8 +17,8 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 ```css
 @import "tailwindcss" source(none);
 @source "../src";             /* wherever your class strings live */
-@import "vitecss/fonts.css";  /* optional: the Inter webfonts */
-@import "vitecss";
+@import "vpkit/fonts.css";  /* optional: the Inter webfonts */
+@import "vpkit";
 ```
 
 `@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in.
