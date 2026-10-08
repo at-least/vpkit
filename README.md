@@ -1,6 +1,6 @@
 # vpkit
 
-The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …). Extracted from [rustpress](https://github.com/at-least/rustpress).
+The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …), 200 color themes and code colors. Extracted from [rustpress](https://github.com/at-least/rustpress).
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
@@ -55,6 +55,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 - **Markdown rules** (`doc.css`): the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
 - **Graded containers**: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors.
 - **Color themes**: 200 of them in `themes/`, one file each (see [Color themes](#color-themes)).
+- **Code colors**: `syntax.css`, for code highlighted with `tk-*` classes (see [Code colors](#code-colors)).
 
 ## Theming
 
@@ -84,6 +85,21 @@ A theme only sets variables, so the components and your utilities follow it.
 A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
 
 The generated themes come from `scripts/gen-themes.py` (Python 3.11+): edit its slot maps, run `python3 scripts/gen-themes.py`, then `npm test`. The four hand-tuned ones are edited directly.
+
+## Code colors
+
+`syntax.css` colors highlighted code with GitHub's light and dark code colors (Helix's `github_light` and `github_dark` themes), rustpress's defaults. It is an optional import. Declare the layer order before Tailwind, so its `syntax` layer is the lowest and any utility on a token still wins:
+
+```css
+@layer syntax, theme, base, components, utilities;
+@import "tailwindcss" source(none);
+@import "vpkit";
+@import "vpkit/syntax.css";
+```
+
+Without that first line the `syntax` layer comes after Tailwind's, and its colors beat your utilities.
+
+The classes come from a highlighter: `tk-` plus the tree-sitter capture name with dots turned into dashes (`<span class="tk-keyword-control-return">`), and `ansi-*` for terminal output: `ansi-bold`, `ansi-dim`, `ansi-italic`, `ansi-underline`, `ansi-fg-default`, `ansi-fg-<color>` and `ansi-fg-bright-<color>` for the eight ANSI colors. rustpress's highlighter emits them. Below its header comment the file is rustpress's default output byte for byte, and a rustpress test keeps the two equal; rustpress generates the same rules from any other Helix theme pair. Code colors are separate from the color themes.
 
 ## Fonts
 
