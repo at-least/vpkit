@@ -92,6 +92,12 @@ VitePress's `VPButton`.
 - `vp-btn-brand`, `vp-btn-sponsor`: the other two themes.
 - `vp-btn-big`: the big size.
 
+Two additions VitePress's button doesn't have: it is `inline-flex`, so an icon and its label sit centered side by side 0.5rem apart, and a `disabled` button is dimmed to half opacity with a not-allowed cursor.
+
+```html
+<button class="vp-btn vp-btn-big"><svg>…</svg>Sign in with Google</button>
+```
+
 Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
 
 ### Badge

@@ -97,11 +97,16 @@ async function measure({ page, cdp }, { target, on, state, props }) {
       for (const animation of document.getAnimations()) animation.finish();
       const el = document.querySelector(`[data-t="${target}"]`);
       const style = getComputedStyle(el);
+      // geometry: the box's height, and its offset inside its parent's box
+      const box = el.getBoundingClientRect();
+      const parent = el.parentElement.getBoundingClientRect();
+      const geometry = {
+        height: box.height,
+        'offset-top': box.top - parent.top,
+        'offset-left': box.left - parent.left,
+      };
       return Object.fromEntries(
-        props.map((p) => [
-          p,
-          p === 'height' ? `${el.getBoundingClientRect().height}px` : style.getPropertyValue(p),
-        ]),
+        props.map((p) => [p, p in geometry ? `${geometry[p]}px` : style.getPropertyValue(p)]),
       );
     },
     [target, props],

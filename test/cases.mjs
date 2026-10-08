@@ -19,6 +19,13 @@ export const cases = [];
 // an entry that matches nothing fails the run, so none outlives its cause.
 export const known = [
   {
+    case: /^button (brand|alt|sponsor) (medium|big) </,
+    target: 'btn',
+    prop: 'display',
+    reason:
+      'vp-btn is inline-flex (centered, 0.5rem gap) so an icon and its label sit side by side, as the apps need; VPButton is inline-block. The "button with an icon" case checks the flex layout against VPButton with that layout inline',
+  },
+  {
     case: /^alert /,
     target: 'code',
     prop: 'font-size',
@@ -76,6 +83,27 @@ for (const [theme, themeClass] of Object.entries(THEMES)) {
     }
   }
 }
+
+// vp-btn's additions, each against VPButton with the addition written
+// inline: the flex layout with an icon, and the disabled state
+const FLEX = 'display:inline-flex;align-items:center;justify-content:center;gap:0.5rem';
+const LAYOUT = ['display', 'align-items', 'justify-content', 'column-gap', 'height'];
+const ICON = '<svg data-t="icon" width="16" height="16" viewBox="0 0 16 16"></svg>';
+cases.push({
+  name: 'button with an icon',
+  upstream: `<a data-t="btn" class="VPButton medium brand" href="#" style="${FLEX}">${ICON}Sign in</a>`,
+  vpkit: `<a data-t="btn" class="vp-btn vp-btn-brand" href="#">${ICON}Sign in</a>`,
+  checks: [
+    { target: 'btn', props: [...BUTTON_BOX, ...LAYOUT, 'width'] },
+    { target: 'icon', props: ['offset-top', 'offset-left', 'height'] },
+  ],
+});
+cases.push({
+  name: 'button disabled',
+  upstream: `<button data-t="btn" class="VPButton medium brand" disabled style="${FLEX};opacity:0.5;cursor:not-allowed">Pay</button>`,
+  vpkit: `<button data-t="btn" class="vp-btn vp-btn-brand" disabled>Pay</button>`,
+  checks: [{ target: 'btn', props: [...BUTTON_BOX, ...LAYOUT, ...COLORS, 'opacity'] }],
+});
 
 // badge: VPBadge's seven types × two sizes; info is vpkit's bare class
 const BADGE_BOX = [

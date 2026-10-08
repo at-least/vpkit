@@ -9,6 +9,11 @@
  *   vp-btn-brand, vp-btn-sponsor   the other two themes
  *   vp-btn-big                     the big size
  *
+ * Two additions VPButton doesn't have, because the apps need them: the
+ * button is inline-flex, so an icon and its label sit centered side by
+ * side 0.5rem apart, and a disabled button is dimmed with a not-allowed
+ * cursor.
+ *
  * The base sets every --vp-btn-* variable and the modifiers override them
  * from a compound selector (.vp-btn.vp-btn-brand): the higher specificity
  * lets a modifier win whatever the rule order, and since every button
@@ -32,7 +37,10 @@
     --vp-btn-active-text: var(--vp-button-alt-active-text);
     --vp-btn-active-bg: var(--vp-button-alt-active-bg);
 
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     border: 1px solid var(--vp-btn-border);
     border-radius: var(--vp-btn-radius);
     padding: 0 var(--vp-btn-padding);
@@ -58,6 +66,11 @@
     color: var(--vp-btn-active-text);
     background-color: var(--vp-btn-active-bg);
     transition: color 0.1s, border-color 0.1s, background-color 0.1s;
+  }
+
+  .vp-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .vp-btn.vp-btn-brand {
