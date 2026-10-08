@@ -36,7 +36,10 @@ const DARK_AT = 1280;
 // page: a test/upstream/pages file to take the component from; markup:
 // upstream markup written out instead, for what no page renders; toggle:
 // root classes to add (true) or remove (false) on both sides; states:
-// pseudo-classes to force on the root, one run each
+// pseudo-classes to force on the root, one run each. A case without a
+// component (global styles) names its selector and its upstream
+// stylesheets, and takes the whole subtree as it is: no scope, no renaming;
+// drop removes elements first; widths replaces the default widths.
 const cases = [
   { component: 'Layout', page: 'guide_getting-started.html' },
   { component: 'VPContent', name: 'doc page', page: 'guide_getting-started.html' },
@@ -46,6 +49,17 @@ const cases = [
   { component: 'VPSkipLink', page: 'guide_getting-started.html', states: [[], ['focus']] },
   // rendered only while the sidebar is open
   { component: 'VPBackdrop', markup: '<div class="VPBackdrop"></div>' },
+  // the markdown page: every block VitePress's markdown renders. Its code
+  // blocks with a title bar and its MathJax formulas come from vitepress.dev's
+  // plugins, which bring their own styles, not VitePress's.
+  {
+    name: 'markdown content',
+    page: 'guide_markdown.html',
+    selector: '.vp-doc',
+    upstream: ['vp-doc.css', 'custom-block.css', 'vp-code-group.css', 'vp-code.css'],
+    drop: '.vp-code-block-title, mjx-container',
+    widths: [375, 1280],
+  },
 ];
 
 // intentional differences: { case: /name/, element: /path/, prop, reason }
@@ -80,7 +94,10 @@ function vpkitCss() {
     const out = join(dir, 'vpkit.css');
     execFileSync(
       join(ROOT, 'node_modules/.bin/tailwindcss'),
-      ['-i', join(ROOT, 'test/layout-entry.css'), '-o', out, '--minify'],
+      // unminified, as a docs theme should ship it: the minifier rounds
+      // numbers to six digits, and VitePress's line-height 1.3333333 as
+      // 1.33333 makes every h2 1/64px shorter, 0.375px down the markdown page
+      ['-i', join(ROOT, 'test/layout-entry.css'), '-o', out],
       { stdio: 'pipe' },
     );
     return readFileSync(out, 'utf8');
@@ -101,6 +118,26 @@ function upstreamGlobals() {
 // page: the component's root, its own elements (they carry its scope id),
 // child component roots with only this component's classes, text.
 function trees(browser, c) {
+  const html = c.markup ?? read(`test/upstream/pages/${c.page}`);
+  if (!c.component) {
+    return browser.newPage().then(async (page) => {
+      const tree = await page.evaluate(
+        ([html, selector, drop]) => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const root = doc.body.querySelector(selector);
+          if (!root) throw new Error(`no ${selector} in the page`);
+          if (drop) for (const el of root.querySelectorAll(drop)) el.remove();
+          for (const el of [root, ...root.querySelectorAll('*')]) {
+            for (const a of el.getAttributeNames()) if (a.startsWith('data-v-')) el.removeAttribute(a);
+          }
+          return root.outerHTML;
+        },
+        [html, c.selector, c.drop],
+      );
+      await page.close();
+      return { upstream: tree, vpkit: tree };
+    });
+  }
   const css = unwrapDeep(styleOf(c.component));
   const names = {
     root: rootOf(c.component),
@@ -108,7 +145,6 @@ function trees(browser, c) {
     own: [...cssClasses(css)],
     states: [...rootStates(c.component, css)],
   };
-  const html = c.markup ?? read(`test/upstream/pages/${c.page}`);
   return browser.newPage().then(async (page) => {
     const result = await page.evaluate(
       ([html, names, toggle, fromPage, globals]) => {
@@ -161,7 +197,7 @@ function trees(browser, c) {
   });
 }
 
-// lengths match within 1/32px, the minifier's rounding (see compare.mjs)
+// lengths match within 1/32px: layout rounds to 1/64px
 const PX = /^-?\d+(\.\d+)?px$/;
 const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
 function same(a, b, prop) {
@@ -231,18 +267,21 @@ const vpkit = vpkitCss();
 const browser = await chromium.launch();
 const expected = [];
 let compared = 0;
+let renders = 0;
 try {
   for (const c of cases) {
-    const label = c.name ? `${c.component} ${c.name}` : c.component;
+    const label = [c.component, c.name].filter(Boolean).join(' ');
     const tree = await trees(browser, c);
     const where = paths(tree.upstream);
-    const upstreamCss = `${upstreamBase}\n${unwrapDeep(styleOf(c.component))}`;
-    const runs = VIEWPORTS.map((w) => [w, false]).concat([[DARK_AT, true]]);
+    const own = c.component ? [unwrapDeep(styleOf(c.component))] : c.upstream.map((f) => read(`test/upstream/${f}`));
+    const upstreamCss = [upstreamBase, ...own].join('\n');
+    const runs = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
     for (const states of c.states ?? [[]]) {
       for (const [width, dark] of runs) {
         const up = await render(browser, upstreamCss, tree.upstream, width, dark, states);
         const vp = await render(browser, vpkit, tree.vpkit, width, dark, states);
         if (up.length !== vp.length) throw new Error(`${label}: ${up.length} elements upstream, ${vp.length} in vpkit`);
+        renders++;
         const run = `${label} [${width}px${dark ? ' dark' : ''}${states.length ? ' :' + states.join(':') : ''}]`;
         up.forEach((u, i) => {
           for (const prop of Object.keys(u)) {
@@ -271,7 +310,7 @@ for (const k of known) {
 }
 for (const f of failures) console.log(`DIFF  ${f}`);
 console.log(
-  `${cases.length} layout cases × ${VIEWPORTS.length} widths + dark: ${compared} values compared, ` +
+  `${cases.length} layout cases in ${renders} renders (widths, dark, states): ${compared} values compared, ` +
     `${failures.length} differ, ${expected.length} known`,
 );
 process.exit(failures.length ? 1 : 0);

@@ -234,10 +234,14 @@ BEM separators, because VitePress names child components after their parent's pa
 ```css
 @import "vpkit/icons.css";   /* the vpi-* icons */
 @import "vpkit/layout.css";  /* the page skeleton */
+@import "vpkit/content.css"; /* the markdown */
 ```
 
 - `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`).
 - `layout.css`: `vp-layout`, `vp-content`, `vp-doc-page`, `vp-skip-link`, `vp-backdrop`, and the `visually-hidden` helper.
+- `content.css`: the markdown inside `<div class="vp-doc">`, VitePress's own styles for it with its own class names: headings with `.header-anchor` links, `.custom-block` containers and GitHub alerts, `div[class*='language-']` code blocks (copy button, language label, highlighted, diff and focused lines, line numbers), `.vp-code-group` tabs.
+
+Compile these unminified: Tailwind's `--minify` rounds numbers to six digits, and VitePress's `line-height: 1.3333333` as `1.33333` makes each `h2` 1/64px shorter.
 
 The layout files are written by `scripts/vitepress-port.mjs` from VitePress's component styles, with the declarations unchanged; `node scripts/vitepress-port.mjs --write` rewrites them after a re-sync, and the tests fail if a file is not its output.
 
@@ -250,9 +254,9 @@ npm test
 
 `test/themes.mjs` checks every color theme against the contract and the contrast minimums above (ported from rustpress's tests, check for check).
 
-`test/layout.mjs` takes each layout component from pages VitePress rendered (`test/upstream/pages`), alone: its own elements, child components reduced to their roots. It renders that markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode.
-
 Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. On an emulated touch screen, each component with `:hover` forced must look as it does at rest. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
+
+`test/layout.mjs` takes each layout component from pages VitePress rendered (`test/upstream/pages`), alone: its own elements, child components reduced to their roots. It renders that markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode. The markdown is compared whole: the `.vp-doc` of VitePress's markdown guide, without the output of plugins vpkit does not style (code block titles, MathJax). vpkit is compiled unminified here, as a docs theme ships it, and lengths match within 1/32px, the rounding of layout.
 
 ## License
 
