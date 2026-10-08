@@ -7,10 +7,12 @@
 //
 // Fails unless the site still runs the VitePress version test/upstream/SOURCE
 // pins. Writes test/upstream/pages/hydrated/<name>.html: the document after
-// the snapshot's steps, scope ids (data-v-*) included. Requests to other
+// the snapshot's steps, scope ids (data-v-*) included; and in assets/ the
+// stylesheets those pages link, from the same deploy, for whoever renders
+// the snapshots as the site does (vpkit-zola's checks). Requests to other
 // hosts (ads, search) are blocked, so their markup stays out.
 
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
@@ -53,8 +55,10 @@ const SNAPSHOTS = [
 ];
 
 const browser = await chromium.launch();
+const stylesheets = new Set();
 try {
-  mkdirSync(OUT, { recursive: true });
+  rmSync(join(OUT, 'assets'), { recursive: true, force: true });
+  mkdirSync(join(OUT, 'assets'), { recursive: true });
   for (const s of SNAPSHOTS) {
     const context = await browser.newContext({ viewport: { width: s.width, height: 900 }, colorScheme: 'light' });
     await context.route('**/*', (route) =>
@@ -72,6 +76,15 @@ try {
     const html = await page.evaluate(() => `<!doctype html>\n${document.documentElement.outerHTML}\n`);
     writeFileSync(join(OUT, `${s.name}.html`), html);
     console.log(`${s.name}: ${html.length} bytes`);
+    for (const href of await page.$$eval('link[rel~="stylesheet"]', (links) => links.map((l) => l.href))) {
+      if (new URL(href).origin !== SITE || stylesheets.has(href)) continue;
+      stylesheets.add(href);
+      const response = await context.request.get(href);
+      if (!response.ok()) throw new Error(`${href}: ${response.status()}`);
+      const file = new URL(href).pathname.split('/').at(-1);
+      writeFileSync(join(OUT, 'assets', file), await response.body());
+      console.log(`  assets/${file}`);
+    }
     await context.close();
   }
 } finally {

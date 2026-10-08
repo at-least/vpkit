@@ -26,4 +26,6 @@ the new tag.
 pages/hydrated/: vitepress.dev in a browser, 2026-10-09, after VitePress's
 client ran and after a click where a state needs one (the open local nav
 outline, the open sidebar): `node scripts/snapshot-vitepress.mjs`, which
-fails unless the site's generator is the tag above.
+fails unless the site's generator is the tag above. pages/hydrated/assets/
+holds the stylesheets those pages link, from the same deploy (vpkit's tests
+do not read them; vpkit-zola renders the snapshots with them).
