@@ -15,6 +15,10 @@
 // box are compared at each viewport, and in dark mode at one.
 //
 // Exits 1, listing every differing value, when any case differs.
+//
+//   node test/layout.mjs --markup "navbar 1280"
+//
+// prints a case's markup with vpkit's classes instead.
 
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
@@ -38,8 +42,8 @@ const DARK_AT = 1280;
 // upstream markup written out instead, for what no page renders; toggle:
 // root classes to add (true) or remove (false) on both sides; states:
 // pseudo-classes to force on the root, one run each. A case without a
-// component (global styles) names its selector and its upstream
-// stylesheets, and takes the whole subtree as it is: no scope, no renaming;
+// component (global styles: the markdown's) names its selector, and takes
+// the whole subtree as it is: no scope, no renaming;
 // drop removes elements first; widths replaces the default widths.
 //
 // A family case takes a component with the components inside it, as
@@ -157,7 +161,6 @@ const cases = [
     name: 'markdown content',
     page: 'guide_markdown.html',
     selector: '.vp-doc',
-    upstream: ['vp-doc.css', 'custom-block.css', 'vp-code-group.css'],
     drop: '.vp-code-block-title, mjx-container',
     widths: [375, 1280],
   },
@@ -215,11 +218,14 @@ function vpkitCss() {
 }
 
 // VitePress's global stylesheets, as its theme loads them; of fonts.css
-// only the :root rule that puts Inter first (the rest fetches webfonts)
+// only the :root rule that puts Inter first (the rest fetches webfonts).
+// The markdown's (vp-doc.css …) come too: VitePress loads them on every page,
+// and vp-doc.css draws the external link arrow VPLink's class asks for.
 function upstreamGlobals() {
   const fontsRoot = read('test/upstream/fonts.css').match(/\n:root \{[^}]*\}/g).at(-1);
   return [read('test/upstream/vars.css'), fontsRoot, read('test/upstream/base.css'),
-    read('test/upstream/utils.css'), read('test/upstream/icons.css')].join('\n');
+    read('test/upstream/utils.css'), read('test/upstream/icons.css'), read('test/upstream/vp-doc.css'),
+    read('test/upstream/custom-block.css'), read('test/upstream/vp-code-group.css')].join('\n');
 }
 
 // What a case renders, upstream and vpkit, from the same tree. In the
@@ -326,9 +332,10 @@ function deepClasses(css) {
 // (deeper down, an outer component's slot content may carry its own), and a
 // component that wraps others (layout-map's wraps) has what is left.
 // vpkit's tree takes, for each class, the name every member whose scope the
-// element carries gives it (a class two components style gets both names),
-// and, below an element of a member, the name that member gives a class it
-// reaches with :deep() (Vue's [data-v-x] .class matches there).
+// element carries gives it (a class two components style gets both names;
+// a modifier only next to its block, where it can match), and, below an
+// element of a member, the name that member gives a class it reaches with
+// :deep() (Vue's [data-v-x] .class matches there).
 async function familyTrees(browser, c, html) {
   const members = c.family.map((name) => {
     const rename = namer(name, rootStates(name));
@@ -338,6 +345,7 @@ async function familyTrees(browser, c, html) {
       select: `.${rootOf(name)}`,
       wraps: (LAYOUT[name].wraps ?? []).filter((w) => c.family.includes(w)),
       deep: deepClasses(styleOf(name)),
+      roots: [rootOf(name), ...Object.keys(LAYOUT[name].modifiers ?? {})],
       rename: Object.fromEntries([...owned].map((n) => [n, rename(n)])),
     };
   });
@@ -376,7 +384,11 @@ async function familyTrees(browser, c, html) {
         const names = new Set();
         for (const n of el.classList) {
           if (isGlobal(n)) names.add(n);
-          for (const m of mine) if (Object.hasOwn(m.rename, n)) names.add(m.rename[n]);
+          for (const m of mine) {
+            if (!Object.hasOwn(m.rename, n)) continue;
+            if (m.rename[n].includes('--') && !m.roots.some((r) => el.classList.contains(r))) continue;
+            names.add(m.rename[n]);
+          }
           for (const m of reaching) {
             if (m.deep.includes(n) && el.parentElement?.closest(`[${scopeOf[m.name]}]`)) names.add(m.rename[n]);
           }
@@ -421,8 +433,15 @@ function familyCss(c, scopeOf) {
 // lengths match within 1/32px: layout rounds to 1/64px
 const PX = /^-?\d+(\.\d+)?px$/;
 const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
+// a data: URL's image, decoded and spelled one way: Tailwind's compiler
+// re-encodes VitePress's SVG URLs (' as %27, no space before />)
+const DATA_URL = /url\("data:image\/svg\+xml,([^"]*)"\)/g;
+const svgText = (v) =>
+  v.replace(DATA_URL, (_, data) => `url(svg:${decodeURIComponent(data).replace(/"/g, "'").replace(/\s*(\/?>)/g, '$1').replace(/\s+/g, ' ').trim()})`);
+
 function same(a, b, prop) {
   if (prop.endsWith('box-shadow')) [a, b] = [a.replace(NO_SHADOW, ''), b.replace(NO_SHADOW, '')];
+  if (typeof a === 'string' && typeof b === 'string' && a.includes('data:image/svg+xml')) [a, b] = [svgText(a), svgText(b)];
   if (a === b) return true;
   if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) <= 1 / 32;
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
@@ -483,6 +502,20 @@ for (const name of Object.keys(FILES)) {
   if (read(name) !== fileText(name)) failures.push(`${name} is not the port's output: node scripts/vitepress-port.mjs --write`);
 }
 
+// --markup <case>: print vpkit's markup for a case, VitePress's rendered
+// markup with vpkit's class names, the reference for building it elsewhere
+if (process.argv[2] === '--markup') {
+  const c = cases.find((x) => [x.component, x.name].filter(Boolean).join(' ') === process.argv[3]);
+  if (!c) throw new Error(`no case ${process.argv[3]}; cases: ${cases.map((x) => [x.component, x.name].filter(Boolean).join(' ')).join(', ')}`);
+  const browser = await chromium.launch();
+  try {
+    console.log((await trees(browser, c)).vpkit);
+  } finally {
+    await browser.close();
+  }
+  process.exit(0);
+}
+
 const upstreamBase = upstreamGlobals();
 const vpkit = vpkitCss();
 const browser = await chromium.launch();
@@ -494,11 +527,7 @@ try {
     const label = [c.component, c.name].filter(Boolean).join(' ');
     const tree = await trees(browser, c);
     const where = paths(tree.upstream);
-    const own = c.family
-      ? [familyCss(c, tree.scopeOf)]
-      : c.component
-        ? [unwrapDeep(styleOf(c.component))]
-        : c.upstream.map((f) => read(`test/upstream/${f}`));
+    const own = c.family ? [familyCss(c, tree.scopeOf)] : c.component ? [unwrapDeep(styleOf(c.component))] : [];
     const upstreamCss = [upstreamBase, ...own].join('\n');
     const runs = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
     for (const states of c.states ?? [[]]) {

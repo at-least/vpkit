@@ -92,8 +92,10 @@ export const LAYOUT = {
 };
 
 // classes that keep their names in every component: global ones (mac: on
-// :root, VitePress's client sets it on Apple devices)
-export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden'];
+// :root, VitePress's client sets it on Apple devices; vp-external-link-icon
+// and no-icon: what vp-doc.css draws the external link arrow by, which
+// VPLink and VPSocialLink set)
+export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon'];
 export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-');
 
 export function rootOf(component) {
