@@ -53,6 +53,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 
 ```css
 @import "vpkit/button.css";
+@import "vpkit/badge.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -71,6 +72,20 @@ VitePress's `VPButton`.
 - `vp-btn-big`: the big size.
 
 Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
+
+### Badge
+
+VitePress's `VPBadge`.
+
+```html
+<h2>Search <span class="vp-badge vp-badge-tip">new</span></h2>
+```
+
+- `vp-badge` alone: the info type (gray).
+- `vp-badge-note`, `vp-badge-tip`, `vp-badge-important`, `vp-badge-caution`, `vp-badge-warning`, `vp-badge-danger`: the other types.
+- `vp-badge-small`: the small size.
+
+VitePress's adjustments for a badge inside doc headings and the doc footer are not included; they belong to those layouts.
 
 ## Tests
 

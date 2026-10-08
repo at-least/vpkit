@@ -49,3 +49,34 @@ for (const [theme, themeClass] of Object.entries(THEMES)) {
     }
   }
 }
+
+// badge: VPBadge's seven types × two sizes; info is vpkit's bare class
+const BADGE_BOX = [
+  'display',
+  ...SIDES.map((s) => `margin-${s}`),
+  ...BORDER,
+  ...RADIUS,
+  ...PADDING,
+  'line-height',
+  'font-size',
+  'font-weight',
+  'white-space',
+  'transform',
+  'height',
+];
+const TYPES = ['info', 'note', 'tip', 'important', 'caution', 'warning', 'danger'];
+for (const type of TYPES) {
+  for (const small of [false, true]) {
+    const vpkit = [
+      'vp-badge',
+      type === 'info' ? '' : `vp-badge-${type}`,
+      small ? 'vp-badge-small' : '',
+    ].filter(Boolean).join(' ');
+    cases.push({
+      name: `badge ${type}${small ? ' small' : ''}`,
+      upstream: `<span data-t="badge" class="VPBadge ${type}${small ? ' small' : ''}">beta</span>`,
+      vpkit: `<span data-t="badge" class="${vpkit}">beta</span>`,
+      checks: [{ target: 'badge', props: [...BADGE_BOX, ...COLORS] }],
+    });
+  }
+}

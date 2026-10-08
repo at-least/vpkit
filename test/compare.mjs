@@ -22,7 +22,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // vars before the components that read them; base.css is layered, so its
 // position doesn't matter
-const UPSTREAM = ['vars.css', 'base.css', 'VPButton.vue'];
+const UPSTREAM = ['vars.css', 'base.css', 'VPButton.vue', 'VPBadge.vue'];
 
 function vpkitCss() {
   const dir = mkdtempSync(join(tmpdir(), 'vpkit-test-'));

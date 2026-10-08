@@ -4,4 +4,5 @@ plain copy from a clone checked out at the new tag, then update the tag
 above:
 
   U=../vitepress/src/client/theme-default
-  cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue test/upstream/
+  cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue \
+    $U/components/VPBadge.vue test/upstream/
