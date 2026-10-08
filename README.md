@@ -220,6 +220,27 @@ VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-col
 - `aria-invalid="true"` turns the border danger and `"false"` success, even on hover and focus.
 - The width is yours: add `w-full` or any width utility.
 
+## Layout
+
+VitePress's page layout as classes, for a docs theme (vpkit's Zola theme is built on them). Unlike the components above, these keep VitePress's markup: build it from VitePress's templates (`src/client/theme-default`) and rename the classes:
+
+- a component's root class becomes its block, in kebab case: `VPContent` → `vp-content`, `VPNavBar` → `vp-nav-bar`; `VPDoc` → `vp-doc-page`, since `vp-doc` is the class of the markdown inside it
+- a class its CSS sets together with the root becomes a modifier: `.VPContent.has-sidebar` → `vp-content--has-sidebar`
+- any other class of its own becomes a part: VPDoc's `.aside` → `vp-doc-page__aside`
+- global classes keep their names: `vp-doc`, `visually-hidden`, the `vpi-*` icons
+
+BEM separators, because VitePress names child components after their parent's parts (VPNavBar's `.title` holds VPNavBarTitle, `vp-nav-bar-title`).
+
+```css
+@import "vpkit/icons.css";   /* the vpi-* icons */
+@import "vpkit/layout.css";  /* the page skeleton */
+```
+
+- `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`).
+- `layout.css`: `vp-layout`, `vp-content`, `vp-doc-page`, `vp-skip-link`, `vp-backdrop`, and the `visually-hidden` helper.
+
+The layout files are written by `scripts/vitepress-port.mjs` from VitePress's component styles, with the declarations unchanged; `node scripts/vitepress-port.mjs --write` rewrites them after a re-sync, and the tests fail if a file is not its output.
+
 ## Tests
 
 ```sh
@@ -229,8 +250,10 @@ npm test
 
 `test/themes.mjs` checks every color theme against the contract and the contrast minimums above (ported from rustpress's tests, check for check).
 
+`test/layout.mjs` takes each layout component from pages VitePress rendered (`test/upstream/pages`), alone: its own elements, child components reduced to their roots. It renders that markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode.
+
 Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. On an emulated touch screen, each component with `:hover` forced must look as it does at rest. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
 
 ## License
 
-MIT (`LICENSE`). The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress), and `test/upstream/` holds verbatim copies of its files: VitePress is MIT too (`LICENSE-VitePress`). Inter itself is licensed under the SIL Open Font License 1.1 (`LICENSE-Inter`). The Helix palettes in `helix/`, which the color themes are generated from, are copies from the [Helix editor](https://github.com/helix-editor/helix) under the Mozilla Public License 2.0 (`helix/LICENSE`; where they come from: `helix/SOURCE`).
+MIT (`LICENSE`). The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress), and `test/upstream/` holds verbatim copies of its files: VitePress is MIT too (`LICENSE-VitePress`). Inter itself is licensed under the SIL Open Font License 1.1 (`LICENSE-Inter`). The icons in `icons.css` are Lucide's, under the ISC license (`LICENSE-Lucide`). The Helix palettes in `helix/`, which the color themes are generated from, are copies from the [Helix editor](https://github.com/helix-editor/helix) under the Mozilla Public License 2.0 (`helix/LICENSE`; where they come from: `helix/SOURCE`).

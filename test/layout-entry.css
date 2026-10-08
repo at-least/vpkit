@@ -1,0 +1,6 @@
+/* What the layout tests compile: vpkit the way a docs theme imports it,
+   Tailwind first, then the base and the layout files. */
+@import "tailwindcss" source(none);
+@import "../index.css";
+@import "../icons.css";
+@import "../layout.css";

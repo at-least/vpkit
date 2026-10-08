@@ -6,4 +6,17 @@ above:
   U=../vitepress/src/client/theme-default
   cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue \
     $U/components/VPBadge.vue $U/styles/components/custom-block.css \
-    $U/styles/components/vp-doc.css $U/components/VPFeature.vue test/upstream/
+    $U/styles/components/vp-doc.css $U/components/VPFeature.vue \
+    $U/styles/icons.css $U/styles/utils.css $U/styles/fonts.css \
+    $U/styles/components/vp-code-group.css \
+    $U/styles/components/vp-code.css test/upstream/
+  cp $U/Layout.vue test/upstream/components/
+  for c in VPContent VPDoc VPPage VPSkipLink VPBackdrop; do
+    cp $U/components/$c.vue test/upstream/components/
+  done
+
+pages/: vitepress.dev as VitePress v2.0.0-alpha.20 rendered it (each
+page's generator meta tag says so), fetched 2026-09-28 by rustpress's
+parity refresh (its parity/cache): the markup the layout tests take each
+component from. Re-sync by fetching the same pages from a site built with
+the new tag.

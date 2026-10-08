@@ -1,0 +1,257 @@
+/* vpkit — the page skeleton, ported from VitePress's Layout, VPContent,
+ * VPDoc, VPSkipLink and VPBackdrop components (v2.0.0-alpha.20). An
+ * optional import: `@import "vpkit/layout.css";`
+ *
+ * Layout components keep VitePress's markup and rename its classes
+ * (test/layout-map.mjs): a component's root class becomes its block
+ * (`VPContent` → `vp-content`; `VPDoc` → `vp-doc-page`, since `vp-doc` is
+ * the markdown's class), a class its CSS compounds on the root a modifier
+ * (`.VPContent.has-sidebar` → `vp-content--has-sidebar`), any other class
+ * of its own a part (VPDoc's `.aside` → `vp-doc-page__aside`). Build the
+ * markup from VitePress's templates (src/client/theme-default) with these
+ * names. Written by scripts/vitepress-port.mjs: the declarations are
+ * VitePress's, verbatim. */
+
+@layer components {
+  /* utils.css: hides an element but keeps it for screen readers */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    white-space: nowrap;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+  }
+
+  /* Layout (components/Layout.vue) */
+  .vp-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* VPContent (components/VPContent.vue) */
+  .vp-content {
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin: var(--vp-layout-top-height, 0px) auto 0;
+    width: 100%;
+  }
+
+  .vp-content.vp-content--is-home {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .vp-content.vp-content--has-sidebar {
+    margin: 0;
+  }
+
+  @media (min-width: 60rem) {
+    .vp-content {
+      padding-top: var(--vp-nav-height);
+    }
+
+    .vp-content.vp-content--has-sidebar {
+      margin: var(--vp-layout-top-height, 0px) 0 0;
+      padding-left: var(--vp-sidebar-width);
+    }
+  }
+
+  @media (min-width: 90rem) {
+    .vp-content.vp-content--has-sidebar {
+      padding-right: calc((100% - var(--vp-layout-max-width)) / 2);
+      padding-left: calc((100% - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
+    }
+  }
+
+  /* VPDoc (components/VPDoc.vue) */
+  .vp-doc-page {
+    padding: 2rem 1.5rem 6rem;
+    width: 100%;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-doc-page {
+      padding: 3rem 2rem 8rem;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .vp-doc-page {
+      padding: 3rem 2rem 0;
+    }
+
+    .vp-doc-page:not(.vp-doc-page--has-sidebar) .vp-doc-page__container {
+      display: flex;
+      justify-content: center;
+      max-width: 62rem;
+    }
+
+    .vp-doc-page:not(.vp-doc-page--has-sidebar) .vp-doc-page__content {
+      max-width: 47rem;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .vp-doc-page .vp-doc-page__container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .vp-doc-page .vp-doc-page__aside {
+      display: block;
+    }
+  }
+
+  @media (min-width: 90rem) {
+    .vp-doc-page:not(.vp-doc-page--has-sidebar) .vp-doc-page__content {
+      max-width: 49rem;
+    }
+
+    .vp-doc-page:not(.vp-doc-page--has-sidebar) .vp-doc-page__container {
+      max-width: 69rem;
+    }
+  }
+
+  .vp-doc-page__container {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .vp-doc-page__aside {
+    position: relative;
+    display: none;
+    order: 2;
+    flex-grow: 1;
+    padding-left: 2rem;
+    width: 100%;
+    max-width: 16rem;
+  }
+
+  .vp-doc-page__left-aside {
+    order: 1;
+    padding-left: unset;
+    padding-right: 2rem;
+  }
+
+  .vp-doc-page__aside-container {
+    position: fixed;
+    top: 0;
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + var(--vp-doc-top-height, 0px) + 3rem);
+    width: 14rem;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .vp-doc-page__aside-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vp-doc-page__aside-curtain {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    width: 14rem;
+    height: 2rem;
+    background: linear-gradient(transparent, var(--vp-c-bg) 70%);
+    pointer-events: none;
+  }
+
+  .vp-doc-page__aside-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - (var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 3rem));
+    padding-bottom: 2rem;
+  }
+
+  .vp-doc-page__content {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media (min-width: 60rem) {
+    .vp-doc-page__content {
+      padding: 0 2rem 8rem;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .vp-doc-page__content {
+      order: 1;
+      margin: 0;
+      min-width: 40rem;
+    }
+  }
+
+  .vp-doc-page__content-container {
+    margin: 0 auto;
+  }
+
+  .vp-doc-page.vp-doc-page--has-aside .vp-doc-page__content-container {
+    max-width: 43rem;
+  }
+
+  /* VPSkipLink (components/VPSkipLink.vue) */
+  .vp-skip-link {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--vp-c-brand-1);
+    box-shadow: var(--vp-shadow-3);
+    background-color: var(--vp-c-bg);
+  }
+
+  .vp-skip-link:focus {
+    height: auto;
+    width: auto;
+    clip: auto;
+    clip-path: none;
+  }
+
+  @media (min-width: 80rem) {
+    .vp-skip-link {
+      top: 0.875rem;
+      left: 1rem;
+    }
+  }
+
+  /* VPBackdrop (components/VPBackdrop.vue) */
+  .vp-backdrop {
+    position: fixed;
+    top: 0;
+    /*rtl:ignore*/
+    right: 0;
+    bottom: 0;
+    /*rtl:ignore*/
+    left: 0;
+    z-index: var(--vp-z-index-backdrop);
+    background: var(--vp-backdrop-bg-color);
+    transition: opacity 0.5s;
+  }
+
+  .vp-backdrop.vp-backdrop--fade-enter-from,
+  .vp-backdrop.vp-backdrop--fade-leave-to {
+    opacity: 0;
+  }
+
+  .vp-backdrop.vp-backdrop--fade-leave-active {
+    transition-duration: 0.25s;
+  }
+
+  @media (min-width: 80rem) {
+    .vp-backdrop {
+      display: none;
+    }
+  }
+}
