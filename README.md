@@ -54,6 +54,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 - **Global rules** that cannot be utilities (`base.css`): bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
 - **Markdown rules** (`doc.css`): the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
 - **Graded containers**: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors.
+- **Color themes**: 200 of them in `themes/`, one file each (see [Color themes](#color-themes)).
 
 ## Theming
 
@@ -63,6 +64,26 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 :root { --vp-c-brand-1: #0969da; }
 .dark { --vp-c-brand-1: #4493f8; }
 ```
+
+### Color themes
+
+`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
+
+```css
+@import "vpkit";
+@import "vpkit/themes/nord.css";
+```
+
+A theme only sets variables, so the components and your utilities follow it.
+
+- 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
+- 176 are mapped automatically from the Helix editor's palettes (`helix/`), with accents adjusted where the published colors fall short of WCAG AA.
+
+`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` the base references) in both modes, and to contrast minimums: body text 7:1, secondary text 4.5:1 on the page and on the soft surfaces, muted text 3:1, links 4.5:1, white button labels 3:1, each badge and alert color 4.5:1 on its own tint.
+
+A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
+
+The generated themes come from `scripts/gen-themes.py` (Python 3.11+): edit its slot maps, run `python3 scripts/gen-themes.py`, then `npm test`. The four hand-tuned ones are edited directly.
 
 ## Fonts
 
@@ -190,8 +211,10 @@ npm install
 npm test
 ```
 
+`test/themes.mjs` checks every color theme against the contract and the contrast minimums above (ported from rustpress's tests, check for check).
+
 Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. On an emulated touch screen, each component with `:hover` forced must look as it does at rest. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
 
 ## License
 
-MIT (`LICENSE`). The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress), and `test/upstream/` holds verbatim copies of its files: VitePress is MIT too (`LICENSE-VitePress`). Inter itself is licensed under the SIL Open Font License 1.1 (`LICENSE-Inter`).
+MIT (`LICENSE`). The CSS variables and the Inter font files are ported from [VitePress](https://github.com/vuejs/vitepress), and `test/upstream/` holds verbatim copies of its files: VitePress is MIT too (`LICENSE-VitePress`). Inter itself is licensed under the SIL Open Font License 1.1 (`LICENSE-Inter`). The Helix palettes in `helix/`, which the color themes are generated from, are copies from the [Helix editor](https://github.com/helix-editor/helix) under the Mozilla Public License 2.0 (`helix/LICENSE`; where they come from: `helix/SOURCE`).

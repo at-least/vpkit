@@ -1,0 +1,9 @@
+Verbatim copies of helix-editor/helix runtime/themes/*.toml (MPL-2.0,
+see LICENSE here). Byte-identical to that directory at Helix commit
+0ca8da6c5a41 (2026-07-20, the last change to it), unchanged through
+master ba40e547426b (checked 2026-10-08). Never edit them; re-sync with
+a plain copy of runtime/themes from a Helix checkout, then rerun
+scripts/gen-themes.py and update this note.
+
+scripts/gen-themes.py reads their [palette] tables to build themes/;
+rustpress also embeds them as its syntax-highlighting color schemes.
