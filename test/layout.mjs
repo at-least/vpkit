@@ -25,7 +25,7 @@ import { compileStyle } from '@vue/compiler-sfc';
 import { chromium } from 'playwright-chromium';
 
 import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
-import { LAYOUT, blockOf, isGlobal, rootOf } from './layout-map.mjs';
+import { GLOBAL, LAYOUT, blockOf, isGlobal, rootOf } from './layout-map.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
@@ -49,6 +49,18 @@ const DARK_AT = 1280;
 // id the page shows for it, in the bundle's order. vpkit renames each class
 // by the component it belongs to: an element's own component, then the one
 // that passed it the class.
+// the navbar's components, and the nav screen's
+const NAVBAR = [
+  'VPNav', 'VPNavBar', 'VPNavBarTitle', 'VPImage', 'VPNavBarSearch', 'VPNavBarSearchButton', 'VPNavBarAskAiButton',
+  'VPNavMenu', 'VPNavMenuLink', 'VPNavMenuGroup', 'VPFlyout', 'VPMenu', 'VPMenuLink', 'VPNavTranslations',
+  'VPNavAppearance', 'VPSwitch', 'VPSwitchAppearance', 'VPNavSocialLinks', 'VPSocialLinks', 'VPSocialLink',
+  'VPNavBarHamburger',
+];
+const NAV_SCREEN = [
+  'VPNavScreen', 'VPNavMenu', 'VPNavMenuLink', 'VPNavMenuGroup', 'VPMenuLink', 'VPNavTranslations', 'VPNavAppearance',
+  'VPSwitch', 'VPSwitchAppearance', 'VPNavSocialLinks', 'VPSocialLinks', 'VPSocialLink',
+];
+
 const cases = [
   { component: 'Layout', page: 'guide_getting-started.html' },
   { component: 'VPContent', name: 'doc page', page: 'guide_getting-started.html' },
@@ -58,6 +70,42 @@ const cases = [
   { component: 'VPSkipLink', page: 'guide_getting-started.html', states: [[], ['focus']] },
   // rendered only while the sidebar is open
   { component: 'VPBackdrop', markup: '<div class="VPBackdrop"></div>' },
+  // the navbar where its layout changes (VitePress's script moves menu items
+  // into the extra menu as it narrows), a flyout open, the extra menu open,
+  // and the nav screen of phones
+  ...[
+    ['375', [375, 640], []],
+    ['768', [768, 800], ['VPNavBarExtra']],
+    ['960', [960, 1100], ['VPNavBarExtra']],
+    ['1280', [1280, 1440, 1600], []],
+  ].map(([at, widths, more]) => ({
+    name: `navbar ${at}`,
+    family: [...NAVBAR, ...more],
+    page: `hydrated/guide_getting-started.${at}.html`,
+    select: '.VPNav',
+    widths,
+  })),
+  {
+    name: 'navbar, flyout open',
+    family: NAVBAR,
+    page: 'hydrated/guide_getting-started.1280.flyout-open.html',
+    select: '.VPNav',
+    widths: [1280],
+  },
+  {
+    name: 'navbar, extra menu open',
+    family: [...NAVBAR, 'VPNavBarExtra'],
+    page: 'hydrated/guide_getting-started.768.extra-open.html',
+    select: '.VPNav',
+    widths: [768],
+  },
+  ...['screen-open', 'screen-groups-open'].map((state) => ({
+    name: `nav screen, ${state}`,
+    family: NAV_SCREEN,
+    page: `hydrated/guide_getting-started.375.${state}.html`,
+    select: '.VPNavScreen',
+    widths: [375, 640],
+  })),
   // the sidebar: its sections (VPSidebarGroup) and items, nested
   {
     name: 'sidebar',
@@ -116,7 +164,14 @@ const cases = [
 ];
 
 // intentional differences: { case: /name/, element: /path/, prop, reason }
-const known = [];
+const known = [
+  {
+    case: /^navbar/,
+    element: /^img\.VPImage\.logo$/,
+    prop: 'vertical-align',
+    reason: "Tailwind's preflight gives replaced elements vertical-align: middle, VitePress's version of it leaves baseline; the logo is a flex item, where it does nothing",
+  },
+];
 
 const SIDES = ['top', 'right', 'bottom', 'left'];
 const PROPS = [
@@ -244,21 +299,47 @@ function trees(browser, c) {
         }
         return { upstream, vpkit: tree.outerHTML };
       },
-      [html, names, c.toggle, !c.markup, ['dark', 'vp-doc', 'visually-hidden']],
+      [html, names, c.toggle, !c.markup, GLOBAL],
     );
     await page.close();
     return result;
   });
 }
 
-// A family's trees and the scope id each member has in the page. A member's
-// own scope is the one its root carries and the root's parent does not (the
-// order of data-v attributes differs between server and client renders).
+// the classes inside a stylesheet's :deep(…)
+function deepClasses(css) {
+  const out = new Set();
+  for (let at = css.indexOf(':deep('); at !== -1; at = css.indexOf(':deep(', at + 1)) {
+    let depth = 1;
+    let end = at + ':deep('.length;
+    for (; depth > 0; end++) depth += css[end] === '(' ? 1 : css[end] === ')' ? -1 : 0;
+    for (const m of css.slice(at, end).matchAll(/\.([A-Za-z_-][\w-]*)/g)) out.add(m[1]);
+  }
+  return [...out];
+}
+
+// A family's trees and the scope id each member has in the page. A
+// member's scope is on its root and not on the root's parent (the order of
+// data-v attributes differs between server and client renders). Where one
+// element is the root of several components (VPNavSocialLinks renders a
+// VPSocialLinks), the innermost one's scope is the one its children carry
+// (deeper down, an outer component's slot content may carry its own), and a
+// component that wraps others (layout-map's wraps) has what is left.
+// vpkit's tree takes, for each class, the name every member whose scope the
+// element carries gives it (a class two components style gets both names),
+// and, below an element of a member, the name that member gives a class it
+// reaches with :deep() (Vue's [data-v-x] .class matches there).
 async function familyTrees(browser, c, html) {
   const members = c.family.map((name) => {
     const rename = namer(name, rootStates(name));
     const owned = new Set([rootOf(name), ...rootStates(name), ...cssClasses(unwrapDeep(styleOf(name)))]);
-    return { name, select: `.${rootOf(name)}`, rename: Object.fromEntries([...owned].map((n) => [n, rename(n)])) };
+    return {
+      name,
+      select: `.${rootOf(name)}`,
+      wraps: (LAYOUT[name].wraps ?? []).filter((w) => c.family.includes(w)),
+      deep: deepClasses(styleOf(name)),
+      rename: Object.fromEntries([...owned].map((n) => [n, rename(n)])),
+    };
   });
   const page = await browser.newPage();
   const result = await page.evaluate(
@@ -268,34 +349,39 @@ async function familyTrees(browser, c, html) {
       const root = doc.body.querySelector(select);
       if (!root) throw new Error(`no ${select} in the page`);
       const scopes = (el) => (el ? el.getAttributeNames().filter((a) => a.startsWith('data-v-')) : []);
-      const own = (el) => {
-        const mine = scopes(el);
-        const fresh = mine.filter((s) => !scopes(el.parentElement).includes(s));
-        return fresh.length === 1 ? fresh[0] : mine.length === 1 ? mine[0] : null;
-      };
+      const fresh = (el) => scopes(el).filter((s) => !scopes(el.parentElement).includes(s));
+      const on = (els) => new Set([...els].flatMap(scopes));
       const scopeOf = {};
-      for (const m of members) {
-        const el = root.matches(m.select) ? root : root.querySelector(m.select);
+      const find = (m) => (root.matches(m.select) ? root : root.querySelector(m.select));
+      for (const m of [...members.filter((m) => !m.wraps.length), ...members.filter((m) => m.wraps.length)]) {
+        const el = find(m);
         if (!el) continue;
-        const s = own(el);
-        if (!s) throw new Error(`${m.name}: no scope of its own on ${el.outerHTML.slice(0, 120)}`);
-        scopeOf[m.name] = s;
+        let candidates = fresh(el);
+        if (!candidates.length && scopes(el).length === 1) candidates = scopes(el);
+        if (m.wraps.length) candidates = candidates.filter((s) => !m.wraps.some((w) => scopeOf[w] === s));
+        else if (candidates.length > 1) {
+          const children = on(el.children);
+          const inner = candidates.filter((s) => children.has(s));
+          candidates = inner.length ? inner : candidates.filter((s) => on(el.querySelectorAll('*')).has(s));
+        }
+        if (candidates.length !== 1) throw new Error(`${m.name}: ${candidates.length} scopes to choose from on ${el.outerHTML.slice(0, 160)}`);
+        scopeOf[m.name] = candidates[0];
       }
       const memberOf = Object.fromEntries(members.filter((m) => scopeOf[m.name]).map((m) => [scopeOf[m.name], m]));
+      const reaching = members.filter((m) => scopeOf[m.name] && m.deep.length);
       const upstream = root.cloneNode(true);
       const vpkit = root.cloneNode(true);
       const rename = (el) => {
-        const first = own(el);
-        const order = [first, ...scopes(el).filter((s) => s !== first)].filter((s) => memberOf[s]);
-        const names = [];
+        const mine = scopes(el).map((s) => memberOf[s]).filter(Boolean);
+        const names = new Set();
         for (const n of el.classList) {
-          if (isGlobal(n)) names.push(n);
-          else {
-            const m = order.map((s) => memberOf[s]).find((m) => Object.hasOwn(m.rename, n));
-            if (m) names.push(m.rename[n]);
+          if (isGlobal(n)) names.add(n);
+          for (const m of mine) if (Object.hasOwn(m.rename, n)) names.add(m.rename[n]);
+          for (const m of reaching) {
+            if (m.deep.includes(n) && el.parentElement?.closest(`[${scopeOf[m.name]}]`)) names.add(m.rename[n]);
           }
         }
-        return names;
+        return [...names];
       };
       // rename on the original (its scopes), write to the copy
       const originals = [root, ...root.querySelectorAll('*')];
@@ -308,7 +394,7 @@ async function familyTrees(browser, c, html) {
       });
       return { upstream: upstream.outerHTML, vpkit: vpkit.outerHTML, scopeOf };
     },
-    [html, c.select, members, ['dark', 'vp-doc', 'visually-hidden']],
+    [html, c.select, members, GLOBAL],
   );
   await page.close();
   for (const name of c.family) {

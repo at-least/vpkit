@@ -52,6 +52,44 @@ const SNAPSHOTS = [
     width: 375,
     steps: async (page) => page.click('.VPLocalNav .menu'),
   },
+  // the navbar at rest where its layout changes: VitePress moves menu items
+  // into the extra menu (…) as the bar narrows, so its markup differs by width
+  { name: 'guide_getting-started.375', path: '/guide/getting-started', width: 375 },
+  { name: 'guide_getting-started.768', path: '/guide/getting-started', width: 768 },
+  { name: 'guide_getting-started.960', path: '/guide/getting-started', width: 960 },
+  // a flyout open under the pointer: the version menu
+  {
+    name: 'guide_getting-started.1280.flyout-open',
+    path: '/guide/getting-started',
+    width: 1280,
+    steps: async (page) => page.hover('.VPNavBar .VPNavMenuGroup > .button'),
+  },
+  // the extra menu (…) open where the bar has one
+  {
+    name: 'guide_getting-started.768.extra-open',
+    path: '/guide/getting-started',
+    width: 768,
+    steps: async (page) => page.click('.VPNavBarExtra > .button'),
+  },
+  // the nav screen on a phone, and with its groups open
+  {
+    name: 'guide_getting-started.375.screen-open',
+    path: '/guide/getting-started',
+    width: 375,
+    steps: async (page) => page.click('.VPNavBarHamburger'),
+  },
+  {
+    name: 'guide_getting-started.375.screen-groups-open',
+    path: '/guide/getting-started',
+    width: 375,
+    steps: async (page) => {
+      await page.click('.VPNavBarHamburger');
+      await settle(page);
+      for (const button of await page.$$('.VPNavScreen .VPNavScreenMenuGroup > .button, .VPNavScreen .VPNavScreenTranslations > .title')) {
+        await button.click();
+      }
+    },
+  },
 ];
 
 const browser = await chromium.launch();

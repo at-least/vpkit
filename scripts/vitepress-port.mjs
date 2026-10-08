@@ -98,9 +98,11 @@ export function namer(component, states) {
   const root = rootOf(component);
   const block = blockOf(component);
   const deep = LAYOUT[component].deep ?? {};
+  const modifiers = LAYOUT[component].modifiers ?? {};
   return (name) => {
     if (name === root) return block;
     if (isGlobal(name)) return name;
+    if (modifiers[name]) return `${block}--${modifiers[name]}`;
     if (deep[name]) return namer(deep[name], rootStates(deep[name]))(name);
     const other = componentOfRoot(name);
     if (other) return blockOf(other);
@@ -108,10 +110,11 @@ export function namer(component, states) {
   };
 }
 
-// the classes the component's CSS compounds on its root, and those
+// the classes the component's CSS compounds on its root or on a variant of
+// it (VPNavTranslations' .VPNavScreenTranslations.open), and those
 // test/layout-map.mjs names as its states
 export function rootStates(component, css = unwrapDeep(styleOf(component))) {
-  const root = rootOf(component);
+  const roots = [rootOf(component), ...Object.keys(LAYOUT[component].modifiers ?? {})];
   const states = new Set(LAYOUT[component].states);
   transform({
     filename: `${component}.css`,
@@ -120,7 +123,7 @@ export function rootStates(component, css = unwrapDeep(styleOf(component))) {
       Selector(selector) {
         eachCompound(selector, (compound) => {
           const names = classesOf(compound);
-          if (names.includes(root)) for (const n of names) if (n !== root) states.add(n);
+          if (names.some((n) => roots.includes(n))) for (const n of names) if (!roots.includes(n)) states.add(n);
         });
         return selector;
       },
@@ -212,8 +215,11 @@ export const FILES = {
   'layout.css': {
     header: `/* vpkit — the page layout, ported from VitePress's components
  * (v2.0.0-alpha.20): the skeleton (Layout, VPContent, VPDoc, VPSkipLink,
- * VPBackdrop), the sidebar (VPSidebar, VPSidebarGroup, VPSidebarItem), the
- * local nav (VPLocalNav, VPLocalNavOutlineDropdown) and the aside (VPDocAside,
+ * VPBackdrop), the navbar (VPNav, VPNavBar and its parts: the title, search,
+ * menu with its flyouts, translations, appearance switch, social links,
+ * hamburger, the extra menu) and the nav screen of narrow screens, the
+ * sidebar (VPSidebar, VPSidebarGroup, VPSidebarItem), the local nav
+ * (VPLocalNav, VPLocalNavOutlineDropdown) and the aside (VPDocAside,
  * VPDocAsideOutline, VPDocOutlineItem). An optional import:
  * \`@import "vpkit/layout.css";\`
  *
@@ -229,9 +235,12 @@ export const FILES = {
  * VitePress's, verbatim. */`,
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
     components: [
-      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDoc', 'VPContent',
-      'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSidebarItem', 'VPSidebarGroup', 'VPSidebar',
-      'VPSkipLink', 'Layout',
+      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDoc', 'VPImage', 'VPContent',
+      'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSwitch', 'VPSwitchAppearance', 'VPNavAppearance',
+      'VPMenuLink', 'VPMenuGroup', 'VPMenu', 'VPFlyout', 'VPNavTranslations', 'VPSocialLink', 'VPSocialLinks',
+      'VPNavBarExtra', 'VPNavBarHamburger', 'VPNavBarAskAiButton', 'VPNavBarSearchButton', 'VPNavBarSearch',
+      'VPNavBarTitle', 'VPNavMenuGroup', 'VPNavMenuLink', 'VPNavMenu', 'VPNavSocialLinks', 'VPNavBar',
+      'VPNavScreen', 'VPNav', 'VPSidebarItem', 'VPSidebarGroup', 'VPSidebar', 'VPSkipLink', 'Layout',
     ],
   },
   'content.css': {

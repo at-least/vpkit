@@ -13,7 +13,10 @@
 // name without VP) won't do; states: classes the template puts on the root
 // that its CSS uses without the root class, modifiers all the same; deep:
 // classes its CSS reaches inside a child component with :deep(), and whose
-// they are
+// they are; modifiers: the class VitePress v2 adds to a root by variant
+// (VPNavMenu's VPNavBarMenu in the bar) → the modifier's name (bar); wraps:
+// the components whose root this component's root also is (VPNavSocialLinks
+// renders a VPSocialLinks)
 export const LAYOUT = {
   Layout: { file: 'components/Layout.vue', root: 'Layout' },
   VPContent: { file: 'components/VPContent.vue' },
@@ -40,11 +43,58 @@ export const LAYOUT = {
   // vitepress.dev's sponsors and ads: no styles, named for VPDocAside's rules
   VPDocAsideSponsors: { file: 'components/VPDocAsideSponsors.vue' },
   VPDocAsideCarbonAds: { file: 'components/VPDocAsideCarbonAds.vue' },
+  // the navbar and, on narrow screens, the nav screen
+  VPNav: { file: 'components/VPNav.vue' },
+  VPNavBar: { file: 'components/VPNavBar.vue' },
+  VPNavBarTitle: { file: 'components/VPNavBarTitle.vue' },
+  VPImage: { file: 'components/VPImage.vue' },
+  VPNavBarSearch: { file: 'components/VPNavBarSearch.vue' },
+  VPNavBarSearchButton: { file: 'components/VPNavBarSearchButton.vue' },
+  VPNavBarAskAiButton: { file: 'components/VPNavBarAskAiButton.vue' },
+  VPNavMenu: { file: 'components/VPNavMenu.vue', modifiers: { VPNavBarMenu: 'bar' } },
+  VPNavMenuLink: {
+    file: 'components/VPNavMenuLink.vue',
+    modifiers: { VPNavBarMenuLink: 'bar', VPNavScreenMenuLink: 'screen' },
+  },
+  // a flyout in the bar, a group in a menu, a collapsible group on the screen
+  VPNavMenuGroup: {
+    file: 'components/VPNavMenuGroup.vue',
+    modifiers: { VPNavScreenMenuGroup: 'screen' },
+    wraps: ['VPFlyout', 'VPMenuGroup'],
+  },
+  VPFlyout: { file: 'components/VPFlyout.vue' },
+  // its :deep(.group) and :deep(.item) style what fills its slot: their
+  // elements carry vp-menu__group and vp-menu__item as well as their own
+  VPMenu: { file: 'components/VPMenu.vue' },
+  VPMenuLink: { file: 'components/VPMenuLink.vue' },
+  VPMenuGroup: { file: 'components/VPMenuGroup.vue' },
+  VPNavBarExtra: { file: 'components/VPNavBarExtra.vue', wraps: ['VPFlyout'] },
+  VPNavBarHamburger: { file: 'components/VPNavBarHamburger.vue' },
+  VPNavAppearance: {
+    file: 'components/VPNavAppearance.vue',
+    modifiers: { VPNavBarAppearance: 'bar', VPNavScreenAppearance: 'screen' },
+  },
+  VPSwitch: { file: 'components/VPSwitch.vue' },
+  VPSwitchAppearance: { file: 'components/VPSwitchAppearance.vue', wraps: ['VPSwitch'], deep: { check: 'VPSwitch' } },
+  VPNavSocialLinks: {
+    file: 'components/VPNavSocialLinks.vue',
+    modifiers: { VPNavBarSocialLinks: 'bar' },
+    wraps: ['VPSocialLinks'],
+  },
+  VPSocialLinks: { file: 'components/VPSocialLinks.vue' },
+  VPSocialLink: { file: 'components/VPSocialLink.vue' },
+  VPNavTranslations: {
+    file: 'components/VPNavTranslations.vue',
+    modifiers: { VPNavBarTranslations: 'bar', VPNavScreenTranslations: 'screen' },
+    wraps: ['VPFlyout'],
+  },
+  VPNavScreen: { file: 'components/VPNavScreen.vue' },
 };
 
-// classes that keep their names in every component: global ones
-const GLOBAL = new Set(['dark', 'vp-doc', 'visually-hidden']);
-export const isGlobal = (name) => GLOBAL.has(name) || name.startsWith('vpi-');
+// classes that keep their names in every component: global ones (mac: on
+// :root, VitePress's client sets it on Apple devices)
+export const GLOBAL = ['dark', 'mac', 'vp-doc', 'visually-hidden'];
+export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-');
 
 export function rootOf(component) {
   return LAYOUT[component].root ?? component;
