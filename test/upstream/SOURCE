@@ -1,0 +1,7 @@
+Verbatim copies from vuejs/vitepress v2.0.0-alpha.20: the originals the
+component tests compare vpkit against. Never edit them; re-sync with a
+plain copy from a clone checked out at the new tag, then update the tag
+above:
+
+  U=../vitepress/src/client/theme-default
+  cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue test/upstream/

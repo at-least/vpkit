@@ -1,0 +1,93 @@
+/* vpkit — button, ported from VitePress's VPButton. An optional import:
+ * `@import "vpkit/button.css";`
+ *
+ *   <a class="vp-btn vp-btn-brand" href="/guide">Get Started</a>
+ *   <button class="vp-btn">Cancel</button>
+ *
+ * `vp-btn` alone is VPButton's medium size in the alt (gray) theme.
+ * Modifiers, each used together with `vp-btn`:
+ *   vp-btn-brand, vp-btn-sponsor   the other two themes
+ *   vp-btn-big                     the big size
+ *
+ * The base sets every --vp-btn-* variable and the modifiers override them
+ * from a compound selector (.vp-btn.vp-btn-brand): the higher specificity
+ * lets a modifier win whatever the rule order, and since every button
+ * sets its own variables, none inherits another's. This is the
+ * components layer, so any utility on the element overrides it. */
+
+@layer components {
+  .vp-btn {
+    --vp-btn-radius: 1.25rem;
+    --vp-btn-padding: 1.25rem;
+    --vp-btn-line-height: 2.7142857;
+    --vp-btn-font-size: 0.875rem;
+
+    --vp-btn-border: var(--vp-button-alt-border);
+    --vp-btn-text: var(--vp-button-alt-text);
+    --vp-btn-bg: var(--vp-button-alt-bg);
+    --vp-btn-hover-border: var(--vp-button-alt-hover-border);
+    --vp-btn-hover-text: var(--vp-button-alt-hover-text);
+    --vp-btn-hover-bg: var(--vp-button-alt-hover-bg);
+    --vp-btn-active-border: var(--vp-button-alt-active-border);
+    --vp-btn-active-text: var(--vp-button-alt-active-text);
+    --vp-btn-active-bg: var(--vp-button-alt-active-bg);
+
+    display: inline-block;
+    border: 1px solid var(--vp-btn-border);
+    border-radius: var(--vp-btn-radius);
+    padding: 0 var(--vp-btn-padding);
+    line-height: var(--vp-btn-line-height);
+    font-size: var(--vp-btn-font-size);
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--vp-btn-text);
+    background-color: var(--vp-btn-bg);
+    transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  }
+
+  .vp-btn:hover {
+    border-color: var(--vp-btn-hover-border);
+    color: var(--vp-btn-hover-text);
+    background-color: var(--vp-btn-hover-bg);
+  }
+
+  .vp-btn:active {
+    border-color: var(--vp-btn-active-border);
+    color: var(--vp-btn-active-text);
+    background-color: var(--vp-btn-active-bg);
+    transition: color 0.1s, border-color 0.1s, background-color 0.1s;
+  }
+
+  .vp-btn.vp-btn-brand {
+    --vp-btn-border: var(--vp-button-brand-border);
+    --vp-btn-text: var(--vp-button-brand-text);
+    --vp-btn-bg: var(--vp-button-brand-bg);
+    --vp-btn-hover-border: var(--vp-button-brand-hover-border);
+    --vp-btn-hover-text: var(--vp-button-brand-hover-text);
+    --vp-btn-hover-bg: var(--vp-button-brand-hover-bg);
+    --vp-btn-active-border: var(--vp-button-brand-active-border);
+    --vp-btn-active-text: var(--vp-button-brand-active-text);
+    --vp-btn-active-bg: var(--vp-button-brand-active-bg);
+  }
+
+  .vp-btn.vp-btn-sponsor {
+    --vp-btn-border: var(--vp-button-sponsor-border);
+    --vp-btn-text: var(--vp-button-sponsor-text);
+    --vp-btn-bg: var(--vp-button-sponsor-bg);
+    --vp-btn-hover-border: var(--vp-button-sponsor-hover-border);
+    --vp-btn-hover-text: var(--vp-button-sponsor-hover-text);
+    --vp-btn-hover-bg: var(--vp-button-sponsor-hover-bg);
+    --vp-btn-active-border: var(--vp-button-sponsor-active-border);
+    --vp-btn-active-text: var(--vp-button-sponsor-active-text);
+    --vp-btn-active-bg: var(--vp-button-sponsor-active-bg);
+  }
+
+  .vp-btn.vp-btn-big {
+    --vp-btn-radius: 1.5rem;
+    --vp-btn-padding: 1.5rem;
+    --vp-btn-line-height: 2.875;
+    --vp-btn-font-size: 1rem;
+  }
+}

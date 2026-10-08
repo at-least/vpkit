@@ -1,0 +1,5 @@
+/* What the component tests compile: vpkit imported the way a consumer
+   imports it, Tailwind first, then the theme and every component. */
+@import "tailwindcss" source(none);
+@import "../index.css";
+@import "../button.css";

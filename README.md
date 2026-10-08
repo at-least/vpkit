@@ -1,8 +1,8 @@
 # vpkit
 
-The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts. Extracted from [rustpress](https://github.com/at-least/rustpress).
+The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …). Extracted from [rustpress](https://github.com/at-least/rustpress).
 
-It is plain CSS for Tailwind to compile. There is no build step and nothing to run.
+It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
 ## Use
 
@@ -46,6 +46,40 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 ## Fonts
 
 `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Serve this package's `fonts/` directory next to your built CSS.
+
+## Components
+
+VitePress's components as CSS classes, one optional import each, so a site ships only the ones it uses:
+
+```css
+@import "vpkit/button.css";
+```
+
+They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
+
+### Button
+
+VitePress's `VPButton`.
+
+```html
+<a class="vp-btn vp-btn-brand" href="/guide">Get Started</a>
+<button class="vp-btn">Cancel</button>
+```
+
+- `vp-btn` alone: the medium size, alt (gray) theme.
+- `vp-btn-brand`, `vp-btn-sponsor`: the other two themes.
+- `vp-btn-big`: the big size.
+
+Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
+
+## Tests
+
+```sh
+npm install
+npm test
+```
+
+Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`.
 
 ## License
 
