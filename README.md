@@ -45,6 +45,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 ## What you get
 
 - **Dark mode**: put `class="dark"` on `<html>`. The `dark:` variant and every `--vp-*` variable follow it.
+- **Page colors** are yours to set: put `bg-bg text-text-1` on `<body>`. vpkit colors its components, not the page.
 - **Breakpoints**: VitePress's, in px, replacing Tailwind's defaults: `sm` 640px, `md` 768px, `lg` 960px, `xl` 1280px, `2xl` 1440px.
 - **Semantic colors** for every color utility (`text-`, `bg-`, `border-`, …):
   `bg`, `bg-alt`, `bg-elv`, `bg-soft`, `text-1`, `text-2`, `text-3`, `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`2`/`3`/`soft`, `danger-1`/`2`/`3`/`soft`, `sponsor`. So `text-text-1`, `bg-bg-alt`, `border-divider`, `text-brand-1`, `text-danger-1`.
@@ -75,6 +76,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/button.css";
 @import "vpkit/badge.css";
 @import "vpkit/alert.css";
+@import "vpkit/table.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -133,6 +135,19 @@ VitePress's custom blocks (`::: tip` and the others).
 Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too (a `vp-btn` link is not restyled as a link), except that the alert's link hover dimming applies to it.
 
 Not included: the `details` type, and the rules for tables and blockquotes inside a block.
+
+### Table
+
+VitePress's markdown tables.
+
+```html
+<table class="vp-table">
+  <thead><tr><th>Plan</th><th>Price</th></tr></thead>
+  <tbody><tr><td>Pro</td><td>$9</td></tr></tbody>
+</table>
+```
+
+The table scrolls sideways on its own rather than squeezing its columns, and every second row is banded. It keeps VitePress's 1.25rem vertical margin; `my-0` removes it.
 
 ## Tests
 

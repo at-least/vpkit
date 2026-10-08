@@ -148,6 +148,28 @@ for (const small of [false, true]) {
   });
 }
 
+// table: a VitePress markdown table (inside .vp-doc) against vp-table
+const TABLE_ROWS =
+  '<thead><tr data-t="head"><th data-t="th">Plan</th><th>Price</th></tr></thead>' +
+  '<tbody><tr data-t="row1"><td data-t="td">Pro</td><td>$9</td></tr>' +
+  '<tr data-t="row2"><td>Team</td><td>$29</td></tr></tbody>';
+cases.push({
+  name: 'table',
+  upstream: `<div class="vp-doc"><table data-t="table">${TABLE_ROWS}</table></div>`,
+  vpkit: `<table data-t="table" class="vp-table">${TABLE_ROWS}</table>`,
+  checks: [
+    {
+      target: 'table',
+      props: ['display', 'border-collapse', ...SIDES.map((s) => `margin-${s}`), 'overflow-x', 'height', 'width'],
+    },
+    { target: 'head', props: ['background-color', 'border-top-width', 'border-top-style', 'border-top-color', ...TRANSITION] },
+    { target: 'row1', props: ['background-color', 'border-top-color'] },
+    { target: 'row2', props: ['background-color'] },
+    { target: 'th', props: [...BORDER, ...COLORS, ...PADDING, 'text-align', 'font-size', 'font-weight'] },
+    { target: 'td', props: [...BORDER, ...COLORS, ...PADDING, 'text-align', 'font-size', 'font-weight'] },
+  ],
+});
+
 // alert: VitePress's custom blocks, each type with a title and the
 // things inside whose look the block sets (links, code, paragraphs)
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];

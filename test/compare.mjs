@@ -24,7 +24,14 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // vars before the components that read them; base.css is layered, so its
 // position doesn't matter
-const UPSTREAM = ['vars.css', 'base.css', 'VPButton.vue', 'VPBadge.vue', 'custom-block.css'];
+const UPSTREAM = [
+  'vars.css',
+  'base.css',
+  'VPButton.vue',
+  'VPBadge.vue',
+  'custom-block.css',
+  'vp-doc.css',
+];
 
 function vpkitCss() {
   const dir = mkdtempSync(join(tmpdir(), 'vpkit-test-'));
@@ -65,10 +72,15 @@ function same(a, b) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
 }
 
+// The page colors, on both sides: upstream's base.css sets them on body,
+// a vpkit page through `bg-bg text-text-1` on <body> (as rustpress,
+// totality and own-drive do), which these declarations stand in for.
+const BODY = 'color:var(--vp-c-text-1);background-color:var(--vp-c-bg)';
+
 async function open(browser, css, body, dark) {
   const page = await browser.newPage();
   await page.setContent(
-    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body>${body}</body></html>`,
+    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body style="${BODY}">${body}</body></html>`,
   );
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('DOM.enable');
