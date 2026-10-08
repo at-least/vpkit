@@ -77,6 +77,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/badge.css";
 @import "vpkit/alert.css";
 @import "vpkit/table.css";
+@import "vpkit/card.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -148,6 +149,22 @@ VitePress's markdown tables.
 ```
 
 The table scrolls sideways on its own rather than squeezing its columns, and every second row is banded. It keeps VitePress's 1.25rem vertical margin; `my-0` removes it.
+
+### Card
+
+VitePress's `VPFeature`, the home page's feature boxes.
+
+```html
+<a class="vp-card" href="/guide">
+  <h2 class="vp-card-title">Fast</h2>
+  <p class="vp-card-details">Instant server start.</p>
+</a>
+```
+
+- `vp-card`: the soft surface with 1.5rem padding, a flex column filling its container's height. As a link (`<a class="vp-card">`) its border turns brand on hover.
+- `vp-card-title`, `vp-card-details`: the bold title and the secondary text under it, which takes the free height.
+
+Not included: the feature icon.
 
 ## Tests
 

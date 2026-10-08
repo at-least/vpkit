@@ -170,6 +170,28 @@ cases.push({
   ],
 });
 
+// card: VPFeature as a link and as a plain box. VPFeature's padding and
+// flex column live on an inner .box, vp-card's on the card itself
+const card = (tag, cls, inner) =>
+  `<${tag} data-t="card" class="${cls}"${tag === 'a' ? ' href="#"' : ''}>${inner}</${tag}>`;
+const CARD_TEXT = (title, details) =>
+  `<h2 data-t="title" class="${title}">Fast</h2><p data-t="details" class="${details}">Instant server start, always.</p>`;
+for (const tag of ['a', 'div']) {
+  const upstreamBox = `<article data-t="box" class="box">${CARD_TEXT('title', 'details')}</article>`;
+  cases.push({
+    name: `card <${tag}>`,
+    upstream: card(tag, tag === 'a' ? 'VPFeature link' : 'VPFeature', upstreamBox),
+    vpkit: card(tag, 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')),
+    checks: [
+      { target: 'card', props: [...BORDER, ...RADIUS, ...COLORS, ...TRANSITION, 'height', 'width'] },
+      { target: 'card', refTarget: 'box', props: ['display', 'flex-direction', ...PADDING] },
+      { target: 'card', state: ['hover'], props: COLORS },
+      { target: 'title', props: ['line-height', 'font-size', 'font-weight', 'color'] },
+      { target: 'details', props: ['flex-grow', 'padding-top', 'line-height', 'font-size', 'font-weight', 'color'] },
+    ],
+  });
+}
+
 // alert: VitePress's custom blocks, each type with a title and the
 // things inside whose look the block sets (links, code, paragraphs)
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];

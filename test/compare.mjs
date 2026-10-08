@@ -31,6 +31,7 @@ const UPSTREAM = [
   'VPBadge.vue',
   'custom-block.css',
   'vp-doc.css',
+  'VPFeature.vue',
 ];
 
 function vpkitCss() {
@@ -144,7 +145,9 @@ try {
         vpkit: await open(browser, sides.vpkit, c.vpkit, dark),
       };
       for (const check of c.checks) {
-        const ref = await measure(pages.ref, check);
+        // refTarget: the reference's element when it isn't the same one
+        // (VPFeature's padding lives on an inner box, vp-card's on itself)
+        const ref = await measure(pages.ref, { ...check, target: check.refTarget ?? check.target });
         const vpkit = await measure(pages.vpkit, check);
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}`;
         for (const prop of check.props) {

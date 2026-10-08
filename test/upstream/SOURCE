@@ -6,4 +6,4 @@ above:
   U=../vitepress/src/client/theme-default
   cp $U/styles/vars.css $U/styles/base.css $U/components/VPButton.vue \
     $U/components/VPBadge.vue $U/styles/components/custom-block.css \
-    $U/styles/components/vp-doc.css test/upstream/
+    $U/styles/components/vp-doc.css $U/components/VPFeature.vue test/upstream/

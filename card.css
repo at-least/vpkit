@@ -1,0 +1,44 @@
+/* vpkit — card, ported from VitePress's VPFeature (the home page's
+ * feature boxes). An optional import: `@import "vpkit/card.css";`
+ *
+ *   <a class="vp-card" href="/guide">
+ *     <h2 class="vp-card-title">Fast</h2>
+ *     <p class="vp-card-details">Instant server start.</p>
+ *   </a>
+ *
+ * One element where VPFeature has two (the surface and the padded box
+ * inside it): the soft surface, 1.5rem padding, and a flex column in
+ * which the details take the free height. A link card (`a.vp-card`)
+ * takes the brand border on hover. Not ported: the feature icon. */
+
+@layer components {
+  .vp-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--vp-c-bg-soft);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    height: 100%;
+    background-color: var(--vp-c-bg-soft);
+    transition: border-color 0.25s, background-color 0.25s;
+  }
+
+  a.vp-card:hover {
+    border-color: var(--vp-c-brand-1);
+  }
+
+  .vp-card-title {
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .vp-card-details {
+    flex-grow: 1;
+    padding-top: 0.5rem;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+}
