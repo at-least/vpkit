@@ -21,10 +21,11 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { compileStyle } from '@vue/compiler-sfc';
 import { chromium } from 'playwright-chromium';
 
-import { FILES, cssClasses, fileText, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
-import { blockOf, isGlobal, rootOf } from './layout-map.mjs';
+import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
+import { LAYOUT, blockOf, isGlobal, rootOf } from './layout-map.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
@@ -40,6 +41,14 @@ const DARK_AT = 1280;
 // component (global styles) names its selector and its upstream
 // stylesheets, and takes the whole subtree as it is: no scope, no renaming;
 // drop removes elements first; widths replaces the default widths.
+//
+// A family case takes a component with the components inside it, as
+// VitePress rendered them (select: the subtree's root), so rules that cross
+// components count too (:deep(), a sibling's group). Upstream keeps Vue's
+// scoping: each member's <style> compiled by @vue/compiler-sfc with the scope
+// id the page shows for it, in the bundle's order. vpkit renames each class
+// by the component it belongs to: an element's own component, then the one
+// that passed it the class.
 const cases = [
   { component: 'Layout', page: 'guide_getting-started.html' },
   { component: 'VPContent', name: 'doc page', page: 'guide_getting-started.html' },
@@ -49,6 +58,50 @@ const cases = [
   { component: 'VPSkipLink', page: 'guide_getting-started.html', states: [[], ['focus']] },
   // rendered only while the sidebar is open
   { component: 'VPBackdrop', markup: '<div class="VPBackdrop"></div>' },
+  // the sidebar: its sections (VPSidebarGroup) and items, nested
+  {
+    name: 'sidebar',
+    family: ['VPSidebar', 'VPSidebarGroup', 'VPSidebarItem'],
+    page: 'hydrated/guide_getting-started.1280.html',
+    select: '.VPSidebar',
+  },
+  {
+    name: 'sidebar open',
+    family: ['VPSidebar', 'VPSidebarGroup', 'VPSidebarItem'],
+    page: 'hydrated/guide_getting-started.375.sidebar-open.html',
+    select: '.VPSidebar',
+    widths: [375, 768],
+  },
+  // the bar under the navbar on narrow screens (hidden from 80rem)
+  {
+    name: 'local nav',
+    family: ['VPLocalNav', 'VPLocalNavOutlineDropdown'],
+    page: 'hydrated/guide_getting-started.1280.html',
+    select: '.VPLocalNav',
+    widths: [375, 768, 960, 1280],
+  },
+  {
+    name: 'local nav, outline open',
+    family: ['VPLocalNav', 'VPLocalNavOutlineDropdown', 'VPDocOutlineItem'],
+    page: 'hydrated/guide_getting-started.375.outline-open.html',
+    select: '.VPLocalNav',
+    widths: [375, 768, 960],
+  },
+  // the aside beside the doc from 80rem: the outline, nested for deep pages
+  {
+    name: 'aside',
+    family: ['VPDocAside', 'VPDocAsideOutline', 'VPDocOutlineItem'],
+    page: 'hydrated/guide_getting-started.1280.html',
+    select: '.VPDocAside',
+    widths: [1280, 1440, 1600],
+  },
+  {
+    name: 'aside, nested outline',
+    family: ['VPDocAside', 'VPDocAsideOutline', 'VPDocOutlineItem'],
+    page: 'hydrated/guide_markdown.1280.html',
+    select: '.VPDocAside',
+    widths: [1280, 1600],
+  },
   // the markdown page: every block VitePress's markdown renders. Its code
   // blocks with a title bar and its MathJax formulas come from vitepress.dev's
   // plugins, which bring their own styles, not VitePress's.
@@ -119,6 +172,7 @@ function upstreamGlobals() {
 // child component roots with only this component's classes, text.
 function trees(browser, c) {
   const html = c.markup ?? read(`test/upstream/pages/${c.page}`);
+  if (c.family) return familyTrees(browser, c, html);
   if (!c.component) {
     return browser.newPage().then(async (page) => {
       const tree = await page.evaluate(
@@ -197,6 +251,87 @@ function trees(browser, c) {
   });
 }
 
+// A family's trees and the scope id each member has in the page. A member's
+// own scope is the one its root carries and the root's parent does not (the
+// order of data-v attributes differs between server and client renders).
+async function familyTrees(browser, c, html) {
+  const members = c.family.map((name) => {
+    const rename = namer(name, rootStates(name));
+    const owned = new Set([rootOf(name), ...rootStates(name), ...cssClasses(unwrapDeep(styleOf(name)))]);
+    return { name, select: `.${rootOf(name)}`, rename: Object.fromEntries([...owned].map((n) => [n, rename(n)])) };
+  });
+  const page = await browser.newPage();
+  const result = await page.evaluate(
+    ([html, select, members, globals]) => {
+      const isGlobal = (n) => globals.includes(n) || n.startsWith('vpi-');
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const root = doc.body.querySelector(select);
+      if (!root) throw new Error(`no ${select} in the page`);
+      const scopes = (el) => (el ? el.getAttributeNames().filter((a) => a.startsWith('data-v-')) : []);
+      const own = (el) => {
+        const mine = scopes(el);
+        const fresh = mine.filter((s) => !scopes(el.parentElement).includes(s));
+        return fresh.length === 1 ? fresh[0] : mine.length === 1 ? mine[0] : null;
+      };
+      const scopeOf = {};
+      for (const m of members) {
+        const el = root.matches(m.select) ? root : root.querySelector(m.select);
+        if (!el) continue;
+        const s = own(el);
+        if (!s) throw new Error(`${m.name}: no scope of its own on ${el.outerHTML.slice(0, 120)}`);
+        scopeOf[m.name] = s;
+      }
+      const memberOf = Object.fromEntries(members.filter((m) => scopeOf[m.name]).map((m) => [scopeOf[m.name], m]));
+      const upstream = root.cloneNode(true);
+      const vpkit = root.cloneNode(true);
+      const rename = (el) => {
+        const first = own(el);
+        const order = [first, ...scopes(el).filter((s) => s !== first)].filter((s) => memberOf[s]);
+        const names = [];
+        for (const n of el.classList) {
+          if (isGlobal(n)) names.push(n);
+          else {
+            const m = order.map((s) => memberOf[s]).find((m) => Object.hasOwn(m.rename, n));
+            if (m) names.push(m.rename[n]);
+          }
+        }
+        return names;
+      };
+      // rename on the original (its scopes), write to the copy
+      const originals = [root, ...root.querySelectorAll('*')];
+      const copies = [vpkit, ...vpkit.querySelectorAll('*')];
+      originals.forEach((el, i) => {
+        const names = rename(el);
+        const out = copies[i];
+        for (const a of out.getAttributeNames()) if (a.startsWith('data-v-') || a === 'class') out.removeAttribute(a);
+        if (names.length) out.setAttribute('class', names.join(' '));
+      });
+      return { upstream: upstream.outerHTML, vpkit: vpkit.outerHTML, scopeOf };
+    },
+    [html, c.select, members, ['dark', 'vp-doc', 'visually-hidden']],
+  );
+  await page.close();
+  for (const name of c.family) {
+    if (styleOf(name) && !result.scopeOf[name]) throw new Error(`${c.name}: ${name} is not in the subtree`);
+  }
+  return result;
+}
+
+// a family's VitePress styles, scoped as Vue scopes them, in the bundle's
+// order (FILES, as layout.css has them)
+function familyCss(c, scopeOf) {
+  const order = FILES['layout.css'].components.filter((n) => c.family.includes(n));
+  if (order.length !== c.family.length) throw new Error(`${c.name}: every member must be in layout.css`);
+  return order
+    .filter((n) => styleOf(n))
+    .map((n) => {
+      const r = compileStyle({ source: styleOf(n), id: scopeOf[n], scoped: true, filename: LAYOUT[n].file });
+      if (r.errors.length) throw r.errors[0];
+      return r.code;
+    })
+    .join('\n');
+}
+
 // lengths match within 1/32px: layout rounds to 1/64px
 const PX = /^-?\d+(\.\d+)?px$/;
 const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
@@ -273,7 +408,11 @@ try {
     const label = [c.component, c.name].filter(Boolean).join(' ');
     const tree = await trees(browser, c);
     const where = paths(tree.upstream);
-    const own = c.component ? [unwrapDeep(styleOf(c.component))] : c.upstream.map((f) => read(`test/upstream/${f}`));
+    const own = c.family
+      ? [familyCss(c, tree.scopeOf)]
+      : c.component
+        ? [unwrapDeep(styleOf(c.component))]
+        : c.upstream.map((f) => read(`test/upstream/${f}`));
     const upstreamCss = [upstreamBase, ...own].join('\n');
     const runs = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
     for (const states of c.states ?? [[]]) {

@@ -92,23 +92,27 @@ function renamed(selector, rename) {
   });
 }
 
-// the component's own class → vpkit's name for it
+// the component's own class → vpkit's name for it; a class it reaches
+// inside a child with :deep() takes the child's name for it
 export function namer(component, states) {
   const root = rootOf(component);
   const block = blockOf(component);
+  const deep = LAYOUT[component].deep ?? {};
   return (name) => {
     if (name === root) return block;
     if (isGlobal(name)) return name;
+    if (deep[name]) return namer(deep[name], rootStates(deep[name]))(name);
     const other = componentOfRoot(name);
     if (other) return blockOf(other);
     return states.has(name) ? `${block}--${name}` : `${block}__${name}`;
   };
 }
 
-// the classes the component's CSS compounds on its root
-export function rootStates(component, css) {
+// the classes the component's CSS compounds on its root, and those
+// test/layout-map.mjs names as its states
+export function rootStates(component, css = unwrapDeep(styleOf(component))) {
   const root = rootOf(component);
-  const states = new Set();
+  const states = new Set(LAYOUT[component].states);
   transform({
     filename: `${component}.css`,
     code: Buffer.from(unwrapDeep(css)),
@@ -200,25 +204,35 @@ export function portCss(component) {
 
 // vpkit's layout files, written whole by `--write`: the header, VitePress's
 // global stylesheets the components rely on (verbatim, first, as VitePress
-// loads them before any component), then each component's port, all in
-// @layer components
+// loads them before any component), then each component's port in the
+// order VitePress's bundle has them (vitepress.dev's style.css: a child's
+// styles before its parent's), so rules of two components that tie resolve
+// as there; all in @layer components
 export const FILES = {
   'layout.css': {
-    header: `/* vpkit — the page skeleton, ported from VitePress's Layout, VPContent,
- * VPDoc, VPSkipLink and VPBackdrop components (v2.0.0-alpha.20). An
- * optional import: \`@import "vpkit/layout.css";\`
+    header: `/* vpkit — the page layout, ported from VitePress's components
+ * (v2.0.0-alpha.20): the skeleton (Layout, VPContent, VPDoc, VPSkipLink,
+ * VPBackdrop), the sidebar (VPSidebar, VPSidebarGroup, VPSidebarItem), the
+ * local nav (VPLocalNav, VPLocalNavOutlineDropdown) and the aside (VPDocAside,
+ * VPDocAsideOutline, VPDocOutlineItem). An optional import:
+ * \`@import "vpkit/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
  * (test/layout-map.mjs): a component's root class becomes its block
  * (\`VPContent\` → \`vp-content\`; \`VPDoc\` → \`vp-doc-page\`, since \`vp-doc\` is
  * the markdown's class), a class its CSS compounds on the root a modifier
- * (\`.VPContent.has-sidebar\` → \`vp-content--has-sidebar\`), any other class
- * of its own a part (VPDoc's \`.aside\` → \`vp-doc-page__aside\`). Build the
+ * (\`.VPContent.has-sidebar\` → \`vp-content--has-sidebar\`), as do the few
+ * classes test/layout-map.mjs names (VPDocOutlineItem's \`.root\`), any other
+ * class of its own a part (VPDoc's \`.aside\` → \`vp-doc-page__aside\`). Build the
  * markup from VitePress's templates (src/client/theme-default) with these
  * names. Written by scripts/vitepress-port.mjs: the declarations are
  * VitePress's, verbatim. */`,
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
-    components: ['Layout', 'VPContent', 'VPDoc', 'VPSkipLink', 'VPBackdrop'],
+    components: [
+      'VPBackdrop', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDoc', 'VPContent',
+      'VPLocalNavOutlineDropdown', 'VPLocalNav', 'VPSidebarItem', 'VPSidebarGroup', 'VPSidebar',
+      'VPSkipLink', 'Layout',
+    ],
   },
   'content.css': {
     header: `/* vpkit — markdown content, everything inside \`<div class="vp-doc">\`:

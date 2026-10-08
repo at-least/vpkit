@@ -10,7 +10,10 @@ above:
     $U/styles/icons.css $U/styles/utils.css $U/styles/fonts.css \
     $U/styles/components/vp-code-group.css test/upstream/
   cp $U/Layout.vue test/upstream/components/
-  for c in VPContent VPDoc VPPage VPSkipLink VPBackdrop; do
+  for c in VPContent VPDoc VPPage VPSkipLink VPBackdrop VPSidebar \
+    VPSidebarGroup VPSidebarItem VPLocalNav VPLocalNavOutlineDropdown \
+    VPDocAside VPDocAsideOutline VPDocOutlineItem VPDocAsideSponsors \
+    VPDocAsideCarbonAds; do
     cp $U/components/$c.vue test/upstream/components/
   done
 
@@ -19,3 +22,8 @@ page's generator meta tag says so), fetched 2026-09-28 by rustpress's
 parity refresh (its parity/cache): the markup the layout tests take each
 component from. Re-sync by fetching the same pages from a site built with
 the new tag.
+
+pages/hydrated/: vitepress.dev in a browser, 2026-10-09, after VitePress's
+client ran and after a click where a state needs one (the open local nav
+outline, the open sidebar): `node scripts/snapshot-vitepress.mjs`, which
+fails unless the site's generator is the tag above.

@@ -209,20 +209,22 @@ VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-col
 VitePress's page layout as classes, for a docs theme (vpkit's Zola theme is built on them). Unlike the components above, these keep VitePress's markup: build it from VitePress's templates (`src/client/theme-default`) and rename the classes:
 
 - a component's root class becomes its block, in kebab case: `VPContent` → `vp-content`, `VPNavBar` → `vp-nav-bar`; `VPDoc` → `vp-doc-page`, since `vp-doc` is the class of the markdown inside it
-- a class its CSS sets together with the root becomes a modifier: `.VPContent.has-sidebar` → `vp-content--has-sidebar`
-- any other class of its own becomes a part: VPDoc's `.aside` → `vp-doc-page__aside`
+- a class its CSS sets together with the root becomes a modifier: `.VPContent.has-sidebar` → `vp-content--has-sidebar`; so do the few classes a template puts on its root that `test/layout-map.mjs` names (VPDocOutlineItem's `root` and `nested`)
+- any other class of its own becomes a part: VPDoc's `.aside` → `vp-doc-page__aside`; a class its CSS reaches inside a child with `:deep()` keeps the child's name (VPSidebarGroup's `.caret-icon` is `vp-sidebar-item__caret-icon`)
 - global classes keep their names: `vp-doc`, `visually-hidden`, the `vpi-*` icons
+
+A component without a root class of its own takes the one `test/layout-map.mjs` gives it: VPSidebarGroup's `div.group` elements are `vp-sidebar-group`.
 
 BEM separators, because VitePress names child components after their parent's parts (VPNavBar's `.title` holds VPNavBarTitle, `vp-nav-bar-title`).
 
 ```css
 @import "vpkit/icons.css";   /* the vpi-* icons */
-@import "vpkit/layout.css";  /* the page skeleton */
+@import "vpkit/layout.css";  /* the page layout */
 @import "vpkit/content.css"; /* the markdown */
 ```
 
 - `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`).
-- `layout.css`: `vp-layout`, `vp-content`, `vp-doc-page`, `vp-skip-link`, `vp-backdrop`, and the `visually-hidden` helper.
+- `layout.css`: the skeleton (`vp-layout`, `vp-content`, `vp-doc-page`, `vp-skip-link`, `vp-backdrop`, the `visually-hidden` helper), the sidebar (`vp-sidebar`, `vp-sidebar-group`, `vp-sidebar-item`), the local nav under the navbar on narrow screens (`vp-local-nav`, `vp-local-nav-outline-dropdown`) and the aside with the outline (`vp-doc-aside`, `vp-doc-aside-outline`, `vp-doc-outline-item`). Their states are classes a script toggles, as VitePress's Vue components do: `vp-sidebar--open`, `vp-sidebar-item--collapsed`, `vp-local-nav-outline-dropdown__open`.
 - `content.css`: the markdown inside `<div class="vp-doc">`, VitePress's own styles for it with its own class names: headings with `.header-anchor` links, `.custom-block` containers and GitHub alerts, `div[class*='language-']` code blocks (copy button, language label, highlighted, diff and focused lines, line numbers), `.vp-code-group` tabs. Not the code's colors: those come with the highlighter, as Shiki's do in VitePress (vpkit-zola uses Giallo's).
 
 Compile these unminified: Tailwind's `--minify` rounds numbers to six digits, and VitePress's `line-height: 1.3333333` as `1.33333` makes each `h2` 1/64px shorter.
@@ -240,7 +242,7 @@ npm test
 
 Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. On an emulated touch screen, each component with `:hover` forced must look as it does at rest. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run.
 
-`test/layout.mjs` takes each layout component from pages VitePress rendered (`test/upstream/pages`), alone: its own elements, child components reduced to their roots. It renders that markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode. The markdown is compared whole: the `.vp-doc` of VitePress's markdown guide, without the output of plugins vpkit does not style (code block titles, MathJax). vpkit is compiled unminified here, as a docs theme ships it, and lengths match within 1/32px, the rounding of layout.
+`test/layout.mjs` takes the layout components from pages VitePress rendered (`test/upstream/pages`). The skeleton's components are taken alone: their own elements, child components reduced to their roots. The sidebar, the local nav and the aside are taken as families, each with the components inside it, so rules that cross components count too; there VitePress's side keeps Vue's scoping, each `<style>` compiled by `@vue/compiler-sfc` (the version VitePress locks) with the scope id the page shows. What VitePress renders only in the browser, the outline or the open sidebar, comes from snapshots of vitepress.dev (`test/upstream/pages/hydrated`, taken by `scripts/snapshot-vitepress.mjs`, which refuses a site running another VitePress version). Each case renders VitePress's markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode. The markdown is compared whole: the `.vp-doc` of VitePress's markdown guide, without the output of plugins vpkit does not style (code block titles, MathJax). vpkit is compiled unminified here, as a docs theme ships it, and lengths match within 1/32px, the rounding of layout.
 
 ## License
 

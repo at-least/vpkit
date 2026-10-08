@@ -8,8 +8,12 @@
 // separators, because VitePress names child components after their parent's
 // parts: VPNavBar's `.title` holds VPNavBarTitle (`vp-nav-bar-title`).
 
-// file: the copy in test/upstream; root: its root class; block: vpkit's name
-// when the default (kebab case of the name without VP) won't do
+// file: the copy in test/upstream; root: its root class, when not the
+// component's name; block: vpkit's name when the default (kebab case of the
+// name without VP) won't do; states: classes the template puts on the root
+// that its CSS uses without the root class, modifiers all the same; deep:
+// classes its CSS reaches inside a child component with :deep(), and whose
+// they are
 export const LAYOUT = {
   Layout: { file: 'components/Layout.vue', root: 'Layout' },
   VPContent: { file: 'components/VPContent.vue' },
@@ -18,6 +22,24 @@ export const LAYOUT = {
   VPPage: { file: 'components/VPPage.vue' },
   VPSkipLink: { file: 'components/VPSkipLink.vue' },
   VPBackdrop: { file: 'components/VPBackdrop.vue' },
+  VPSidebar: { file: 'components/VPSidebar.vue' },
+  // one div.group per sidebar section, no root of its own
+  VPSidebarGroup: {
+    file: 'components/VPSidebarGroup.vue',
+    root: 'group',
+    states: ['no-transition'],
+    deep: { 'caret-icon': 'VPSidebarItem' },
+  },
+  VPSidebarItem: { file: 'components/VPSidebarItem.vue' },
+  VPLocalNav: { file: 'components/VPLocalNav.vue' },
+  VPLocalNavOutlineDropdown: { file: 'components/VPLocalNavOutlineDropdown.vue' },
+  VPDocAside: { file: 'components/VPDocAside.vue' },
+  VPDocAsideOutline: { file: 'components/VPDocAsideOutline.vue' },
+  // the outline's list: .root at the top, .nested below
+  VPDocOutlineItem: { file: 'components/VPDocOutlineItem.vue', states: ['root', 'nested'] },
+  // vitepress.dev's sponsors and ads: no styles, named for VPDocAside's rules
+  VPDocAsideSponsors: { file: 'components/VPDocAsideSponsors.vue' },
+  VPDocAsideCarbonAds: { file: 'components/VPDocAsideCarbonAds.vue' },
 };
 
 // classes that keep their names in every component: global ones
@@ -36,7 +58,8 @@ export function blockOf(component) {
   return `vp-${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`;
 }
 
-// the component whose root class this is, if any
+// the component whose root class this is, if any; a root that is a plain
+// word (VPSidebarGroup's group) names no component outside its own CSS
 export function componentOfRoot(name) {
-  return Object.keys(LAYOUT).find((c) => rootOf(c) === name);
+  return Object.keys(LAYOUT).find((c) => rootOf(c) === name && /^[A-Z]/.test(name));
 }
