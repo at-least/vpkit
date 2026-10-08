@@ -15,10 +15,12 @@
  * cursor.
  *
  * The base sets every --vp-btn-* variable and the modifiers override them
- * from a compound selector (.vp-btn.vp-btn-brand): the higher specificity
+ * from a compound selector (.vp-btn-brand.vp-btn): the higher specificity
  * lets a modifier win whatever the rule order, and since every button
- * sets its own variables, none inherits another's. This is the
- * components layer, so any utility on the element overrides it. */
+ * sets its own variables, none inherits another's. The modifier class
+ * comes first so tools that look for a class at the start of a selector
+ * (totality's CSS coverage test) find its rule. This is the components
+ * layer, so any utility on the element overrides it. */
 
 @layer components {
   .vp-btn {
@@ -73,7 +75,7 @@
     cursor: not-allowed;
   }
 
-  .vp-btn.vp-btn-brand {
+  .vp-btn-brand.vp-btn {
     --vp-btn-border: var(--vp-button-brand-border);
     --vp-btn-text: var(--vp-button-brand-text);
     --vp-btn-bg: var(--vp-button-brand-bg);
@@ -85,7 +87,7 @@
     --vp-btn-active-bg: var(--vp-button-brand-active-bg);
   }
 
-  .vp-btn.vp-btn-sponsor {
+  .vp-btn-sponsor.vp-btn {
     --vp-btn-border: var(--vp-button-sponsor-border);
     --vp-btn-text: var(--vp-button-sponsor-text);
     --vp-btn-bg: var(--vp-button-sponsor-bg);
@@ -97,7 +99,7 @@
     --vp-btn-active-bg: var(--vp-button-sponsor-active-bg);
   }
 
-  .vp-btn.vp-btn-big {
+  .vp-btn-big.vp-btn {
     --vp-btn-radius: 1.5rem;
     --vp-btn-padding: 1.5rem;
     --vp-btn-line-height: 2.875;
