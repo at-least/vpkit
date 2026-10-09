@@ -757,3 +757,12 @@ cases.push({
     },
   ],
 });
+
+// mark: the search box's highlighted hit (.titles mark) against vp-mark
+cases.push({
+  name: 'mark',
+  upstreamFiles: ['components/VPLocalSearchBox.vue'],
+  upstream: `<div class="titles"><span><mark data-t="mark">Badge</mark> component</span></div>`,
+  vpkit: `<p><mark data-t="mark" class="vp-mark">Badge</mark> component</p>`,
+  checks: [{ target: 'mark', props: ['color', 'background-color', ...RADIUS, ...PADDING] }],
+});

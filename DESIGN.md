@@ -97,6 +97,7 @@ For a component from an app recipe:
 | `vp-icon-btn` | VPSocialLink, with own-drive's hover ground | a `vpi-*` icon or an SVG inside |
 | `vp-tabs` | `vp-code-group.css`: `.tabs`, `label` | `vp-tabs-tab`; `aria-selected` |
 | `vp-kbd` | VPLocalSearchBox: `.search-keyboard-shortcuts kbd` | — |
+| `vp-mark` | VPLocalSearchBox: `mark` | — |
 
 ### Tier 1: next
 
@@ -234,7 +235,7 @@ The originals exist at the pinned tag; neither app draws one today (measured ove
 | `vp-alert-details` (built 2026-10-10) | `custom-block.css`: `.custom-block.details`; `vp-doc.css`: `summary` | the alert's missing type, on `<details class="vp-alert vp-alert-details">` with `<summary class="vp-alert-title">`: the info colors, the summary `font-weight: 700`, `cursor: pointer`, `user-select: none`, `margin: 0 0 0.5rem`, the `summary + p` margins | the `[open]` state is the element's; nothing else |
 | `vp-tabs` (built 2026-10-10) | `vp-code-group.css`: `.tabs`, `label` | the bar (`--vp-code-tab-bg`, an inset 1px `--vp-code-tab-divider`, `overflow-x: auto`, 0.5rem top radii from 640px) and the tab (`0 0.75rem` padding, line height 3.4285714, 0.875rem/500, `--vp-code-tab-text-color`, the hover and selected text colors, the selected tab's 2px `--vp-code-tab-active-bar-color` bar as `::after`); `role="tab"` buttons with `aria-selected` where VitePress has `input:checked + label` | showing the panels is the app's |
 | `vp-kbd` (built 2026-10-10) | VPLocalSearchBox: `.search-keyboard-shortcuts kbd` | inline-block, `rgba(128,128,128,0.1)` inside a `rgba(128,128,128,0.15)` border, 0.25rem radius, `0.1875rem 0.375rem` padding, `min-width: 1.5rem`, centered, `0 2px 2px 0 rgba(0,0,0,0.1)` | VitePress's literal grays, the same in both modes: the one original with no token to read, so rule 9 is kept by copying them |
-| `vp-mark` | VPLocalSearchBox: `mark` | `--vp-local-search-highlight-bg` on `--vp-local-search-highlight-text`, 0.125rem radius, `0 0.125rem` padding | the tokens are the search's, `brand-1` and `neutral-inverse` |
+| `vp-mark` (built 2026-10-10) | VPLocalSearchBox: `mark` | `--vp-local-search-highlight-bg` on `--vp-local-search-highlight-text`, 0.125rem radius, `0 0.125rem` padding | the tokens are the search's, `brand-1` and `neutral-inverse` |
 
 ### Tier 3: an app recipe, one consumer
 

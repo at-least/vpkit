@@ -109,6 +109,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/icon-btn.css";
 @import "vpkit/tabs.css";
 @import "vpkit/kbd.css";
+@import "vpkit/mark.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -368,6 +369,17 @@ The key caps of VitePress's local search box, which lists its shortcuts with the
 
 - A faint gray cap in a fainter gray border with a soft shadow, at least 1.5rem wide, centered on the line. Its text is the page's size.
 - The grays are VitePress's own, half-transparent and the same in both modes, so the key sits on any ground; it reads no theme color.
+- In running text, a smaller size (`text-xs`) keeps it from opening up the line, as the search box's 0.8rem list does.
+
+### Highlight
+
+The highlight of VitePress's local search box, which marks the matched words in its results.
+
+```html
+<p>Found: the <mark class="vp-mark">badge</mark> component.</p>
+```
+
+- The search's highlight colors, the brand under the page's inverse text, with a 0.125rem radius and 0.125rem of padding at each side.
 
 ## Layout
 

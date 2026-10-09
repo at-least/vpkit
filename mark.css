@@ -1,0 +1,18 @@
+/* vpkit — highlight, ported from VitePress's local search box, where it
+ * marks the matched words in the results (`.titles mark`, `.excerpt
+ * mark`). An optional import: `@import "vpkit/mark.css";`
+ *
+ *   <p>Result: <mark class="vp-mark">badge</mark> component</p>
+ *
+ * The search's highlight colors (--vp-local-search-highlight-bg, the
+ * brand; --vp-local-search-highlight-text, the page's inverse) with a
+ * 0.125rem radius and 0.125rem of padding at each side. */
+
+@layer components {
+  .vp-mark {
+    border-radius: 0.125rem;
+    padding: 0 0.125rem;
+    color: var(--vp-local-search-highlight-text);
+    background-color: var(--vp-local-search-highlight-bg);
+  }
+}
