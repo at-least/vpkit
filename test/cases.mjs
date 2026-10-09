@@ -446,3 +446,25 @@ cases.push({
 touch('toggle', toggle('vp-toggle', 'vp-toggle-check', null, ''), [
   { target: 'toggle', ...AT_REST, props: COLORS },
 ]);
+
+// link: VitePress's markdown link (.vp-doc a) against vp-link, as a link
+// and as a button drawn as one, with code inside: its colors at rest and
+// while the link is hovered
+for (const tag of ['a', 'button']) {
+  const attrs = tag === 'a' ? ' href="#"' : ' type="button"';
+  cases.push({
+    name: `link <${tag}>`,
+    upstream: `<div class="vp-doc"><p><a data-t="a" href="#">Orders with <code data-t="code">code</code></a></p></div>`,
+    vpkit: `<p><${tag} data-t="a" class="vp-link"${attrs}>Orders with <code data-t="code">code</code></${tag}></p>`,
+    checks: [
+      { target: 'a', props: [...LINK, 'font-size'] },
+      { target: 'a', state: ['hover'], props: ['color'] },
+      { target: 'code', props: ['color'] },
+      { target: 'code', on: 'a', state: ['hover'], props: ['color'] },
+    ],
+  });
+}
+touch('link', `<a data-t="a" class="vp-link" href="#">Orders <code data-t="code">code</code></a>`, [
+  { target: 'a', ...AT_REST, props: ['color'] },
+  { target: 'code', on: 'a', ...AT_REST, props: ['color'] },
+]);

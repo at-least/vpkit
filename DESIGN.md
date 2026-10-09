@@ -89,6 +89,7 @@ For a component from an app recipe:
 | `vp-card` | VPFeature | `vp-card-title`, `vp-card-details` |
 | `vp-input` | totality's `input_base!` | `aria-invalid`; on `<input>`, `<select>` and `<textarea>` |
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
+| `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors |
 
 ### Tier 1: next
 
@@ -96,7 +97,6 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-link` | `vp-doc.css`: `.vp-doc a` | totality `ui.rs`: `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` and `PROSE_LEDE` |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | totality `ui.rs`: `CODE`, the `[&_code]` of `PROSE` |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"` |
@@ -146,7 +146,9 @@ The block padding is 9px, not the 10px first drafted here: the input's 24px line
 - Cases (built): `select.vp-input` against `input.vp-input` in the same stylesheet, box and colors without the line height, hovered and focused, plain and `aria-invalid="true"`; `textarea.vp-input` against the recipe on a textarea with the rule written inline, as `vp-btn`'s additions are tested, plain and `aria-invalid="true"`; a one-row textarea against the input, for its height. A mutation run (the padding at 0.625rem, a select with 16px of left padding) turns 18 values red.
 - The option list of a `<select>` is the browser's to draw. UNVERIFIED (the headless browser does not render the popup): that it follows `color-scheme`, which `base.css` sets from `.dark`.
 
-#### `vp-link`
+#### `vp-link` (built 2026-10-10)
+
+Demand: totality `ui.rs`, `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` and `PROSE_LEDE`.
 
 VitePress's link, `.vp-doc a`, as a class: for a link outside the markdown, and for a button drawn as a link.
 
@@ -155,11 +157,11 @@ VitePress's link, `.vp-doc a`, as a class: for a link outside the markdown, and 
 <button class="vp-link min-h-10 px-2" type="button">Cancel</button>
 ```
 
-- `vp-link`: `--vp-link-color: var(--vp-c-brand-1); --vp-link-hover: var(--vp-c-brand-2)` (rule 5: totality overrides the hover for AA, `text-link-hover` in its `store.css`, and this makes that override `.vp-link { --vp-link-hover: … }`); `font-weight: 500; color: var(--vp-link-color); text-decoration: underline; text-underline-offset: 0.125rem; transition: color 0.25s, opacity 0.25s`; hover `color: var(--vp-link-hover)`.
-- `:where(.vp-link) > code { color: var(--vp-code-link-color) }`, and on hover `var(--vp-code-link-hover-color)`: VitePress's two rules for code in a link.
+- `vp-link`: `--vp-link-text: var(--vp-c-brand-1); --vp-link-hover-text: var(--vp-c-brand-2)`, the names button.css gives its colors (rule 5: totality overrides the hover for AA, `text-link-hover` in its `store.css`, and this makes that override `.vp-link { --vp-link-hover-text: … }`); `font-weight: 500; color: var(--vp-link-text); text-decoration: underline; text-underline-offset: 0.125rem; transition: color 0.25s, opacity 0.25s`; hover `color: var(--vp-link-hover-text)`.
+- `.vp-link > code { color: var(--vp-code-link-color) }`, and on hover `var(--vp-code-link-hover-color)`: VitePress's two rules for code in a link. Not behind `:where()`, unlike rule 6: at one class and one element it wins over `vp-code`'s color, as `.vp-doc a > code` does over the markdown's code, since code in a link is meant to take the link's color.
 - Tokens: `brand-1`, `brand-2`, `--vp-code-link-color`, `--vp-code-link-hover-color` (both `brand-1`/`-2`), in the contract.
-- On a `<button>`: UNVERIFIED (not probed) that Tailwind's preflight leaves nothing else to reset for a button to render as the `<a>` does; the case will say. The 40px hit area totality gives its text buttons stays utilities (`min-h-10 px-2`).
-- Cases: an `<a>` and a `<button>` against `.vp-doc a` (color, weight, decoration, offset, transition; hover; a `<code>` inside, at rest and on hover); touch.
+- On a `<button>`: measured, the `<button>` case renders every compared property as `.vp-doc a` does, so Tailwind's preflight leaves nothing else to reset. The 40px hit area totality gives its text buttons stays utilities (`min-h-10 px-2`).
+- Cases (built): an `<a>` and a `<button>` against `.vp-doc a` (color, weight, decoration, offset, font size, transition; hover; a `<code>` inside, at rest and while the link is hovered); touch. Before link.css existed they differed in 36 of 48 values.
 
 #### `vp-code`
 
@@ -258,7 +260,7 @@ What each app's recipe becomes, and what stands in the way. The apps decide; thi
 | `BLOCK_INFO`, `BLOCK_TIP`, `BLOCK_DANGER`, `BLOCK_TITLE` | `vp-alert my-4`, `vp-alert-tip`, `vp-alert-danger`, `vp-alert-title` | totality's blocks drop VitePress's 0.75 hover dim on links (AA) and color every type's links `brand-1`; `vp-alert` keeps the dim and VitePress's per-type link colors. An override in its `store.css` (`.vp-alert a:hover { opacity: 1 }`), or accept |
 | `BADGE_SUCCESS`, `BADGE_DANGER` | `vp-badge vp-badge-success`, `vp-badge-danger` | measured by totality (the comment in its `ui.rs`): VitePress's translucent success tint over a `bg-soft` card leaves the text at 4.42:1 in light, so its badge is opaque `bg` with a soft border. Decision 5 |
 | `SPINNER` | `vp-spinner size-4` with the htmx indicator utilities | the recipe's ring is `currentColor` with a transparent quarter, the original's a divider ring with a brand quarter: the look changes |
-| `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` | `vp-link`, `vp-link min-h-10 px-2`, `vp-doc` | the store's AA hover (`text-link-hover`) becomes `.vp-link { --vp-link-hover: var(--store-link-hover) }` |
+| `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` | `vp-link`, `vp-link min-h-10 px-2`, `vp-doc` | the store's AA hover (`text-link-hover`) becomes `.vp-link { --vp-link-hover-text: var(--store-link-hover) }` |
 | `CODE`, the `[&_code]` of `PROSE` | `vp-code`, `vp-doc` | — |
 | `H1`, `H2`, `H3`, `LEDE`, `LIST_*`, `PROSE`, `PROSE_LEDE` | `vp-doc` (`content.css`, 2.5 KB gzipped) around class-less markup; the classed headings stay utilities or move inside it | `PROSE_LEDE`'s `text-2` body stays a utility on the wrapper |
 | the appearance switch (`views.rs:196`) | `vp-toggle vp-toggle-appearance` with `vpi-sun` and `vpi-moon` from `icons.css` | the store's inline `SUN_SVG` and `MOON_SVG`, or keep them inside `vp-toggle-icon` |
@@ -285,7 +287,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 2. **`compare.mjs` learns `:deep()`** (done 2026-10-09). Originals run through `unwrapDeep`. No visible change; the existing cases stay green.
 3. `vp-toggle`, with `vp-toggle-appearance` (done 2026-10-09).
 4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the cases, the README's input section (done 2026-10-10).
-5. `vp-link`.
+5. `vp-link` (done 2026-10-10).
 6. `vp-code`.
 7. `vp-spinner`.
 8. `vp-dialog`.

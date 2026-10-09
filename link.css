@@ -1,0 +1,48 @@
+/* vpkit — link, VitePress's markdown link (`.vp-doc a`) as a class: for a
+ * link outside the markdown, or a button drawn as one. An optional import:
+ * `@import "vpkit/link.css";`
+ *
+ *   <a class="vp-link" href="/orders">All orders</a>
+ *   <button class="vp-link" type="button">Cancel</button>
+ *
+ * Brand text at weight 500, underlined 0.125rem below, brand-2 on hover.
+ * A <code> inside takes VitePress's colors for code in a link
+ * (--vp-code-link-color, --vp-code-link-hover-color): those rules are
+ * `.vp-link > code`, one class and one element, so they win over
+ * vp-code's own color as `.vp-doc a > code` does over the markdown's
+ * code. Unlike alert.css, which puts its rules for what is inside behind
+ * :where() so a component inside keeps its look, this one is meant to
+ * win: code in a link takes the link's color.
+ *
+ * The two colors are the link's own variables, as in button.css, so a
+ * site retunes them in one rule: `.vp-link { --vp-link-hover-text: … }`.
+ * The hover is `@variant hover`, like Tailwind's `hover:`. On a button,
+ * the hit area is the page's (`min-h-10 px-2`). */
+
+@layer components {
+  .vp-link {
+    --vp-link-text: var(--vp-c-brand-1);
+    --vp-link-hover-text: var(--vp-c-brand-2);
+
+    font-weight: 500;
+    color: var(--vp-link-text);
+    text-decoration: underline;
+    text-underline-offset: 0.125rem;
+    transition: color 0.25s, opacity 0.25s;
+  }
+
+  .vp-link > code {
+    color: var(--vp-code-link-color);
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-link {
+    @variant hover {
+      color: var(--vp-link-hover-text);
+
+      & > code {
+        color: var(--vp-code-link-hover-color);
+      }
+    }
+  }
+}
