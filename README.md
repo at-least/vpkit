@@ -67,7 +67,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ### Color themes
 
-`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). The `-2` of tip, important, warning, danger and caution, the hover color of a link in that alert or custom block, is the role's `-1` stepped 15% toward black in light and toward white in dark, the step the generator gives `brand-2`; a theme with a second accent step of its own can set it by hand. Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). The `-2` of tip, important, warning, danger and caution, the hover color of a link in that alert or custom block, is the role's `-1` stepped 15% toward black in light and toward white in dark, the step the generator gives `brand-2` (so `tip-2` no longer follows `brand-2` as in VitePress's `vars.css`: a theme's `brand-2` is fit for white text on it, not for text on the tip tint); a theme with a second accent step of its own can set it by hand. Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
