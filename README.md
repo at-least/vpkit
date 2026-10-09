@@ -332,7 +332,7 @@ VitePress's `VPMenu`, the panel of a navbar flyout, with `VPMenuLink` items and 
 ```
 
 - `vp-dropdown`: the panel, the elevated surface with `shadow-3`, at least 8rem wide, scrolling once it is as tall as the viewport under the navbar.
-- `vp-dropdown-item`: a row, a link or a button; brand on a soft gray when hovered, brand while it is the current one (`aria-current`, or `aria-checked="true"`).
+- `vp-dropdown-item`: a row, a link or a button; brand on a soft gray when hovered, brand while it is the current one: `aria-current` with a value such as `page`, or `aria-checked="true"`. An empty `aria-current` is not current, as WAI-ARIA has it.
 - `vp-dropdown-group`, with an optional `vp-dropdown-title`: every group but the first has a rule above it. The markup is flat where VitePress's is nested lists, so items that follow a group go in a group of their own.
 - Placing the panel and opening it are the page's.
 

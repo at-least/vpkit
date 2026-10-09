@@ -867,3 +867,21 @@ cases.push({
   vpkit: `<span class="vp-progress" style="width:7rem"><span data-t="fill" class="vp-progress-bar"></span></span>`,
   checks: [{ target: 'fill', props: ['width'] }],
 });
+
+// the current item by aria-current: a value marks it, and the values WAI-ARIA
+// 1.2 treats as false ("false", "", and a template's stringified undefined)
+// leave it plain
+cases.push({
+  name: 'dropdown item aria-current=page',
+  reference: `<div class="vp-dropdown">${ddItem('Settings', 'item', ' type="button" role="menuitemradio" aria-checked="true"', 'button')}</div>`,
+  vpkit: `<div class="vp-dropdown">${ddItem('Settings', 'item', ' href="#" aria-current="page"')}</div>`,
+  checks: [{ target: 'item', props: ['color'] }],
+});
+for (const value of ['', 'undefined']) {
+  cases.push({
+    name: `dropdown item aria-current="${value}"`,
+    reference: `<div class="vp-dropdown">${ddItem('Settings', 'item')}</div>`,
+    vpkit: `<div class="vp-dropdown">${ddItem('Settings', 'item', ` href="#" aria-current="${value}"`)}</div>`,
+    checks: [{ target: 'item', props: ['color'] }],
+  });
+}

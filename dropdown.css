@@ -16,7 +16,8 @@
  * the viewport's height under the navbar, scrolling past it.
  * `vp-dropdown-item` is a row, a link or a button: text-1, brand on a soft
  * gray when hovered (`@variant hover`), brand while it is the current one,
- * `aria-current` (not "false") or `aria-checked="true"`, where VPMenuLink
+ * `aria-current` with a value (not "false", "" or "undefined") or
+ * `aria-checked="true"`, where VPMenuLink
  * has `.active`. `vp-dropdown-group` holds items under an optional
  * `vp-dropdown-title`; every group but the first has a rule above it.
  *
@@ -63,7 +64,12 @@
     }
   }
 
-  .vp-dropdown-item:is([aria-current]:not([aria-current="false"]), [aria-checked="true"]) {
+  /* aria-current with a value; "false", "" and a template's stringified
+     undefined mean not current (WAI-ARIA 1.2) */
+  .vp-dropdown-item:is(
+      [aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]),
+      [aria-checked="true"]
+    ) {
     color: var(--vp-c-brand-1);
   }
 
