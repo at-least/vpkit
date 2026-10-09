@@ -1,0 +1,26 @@
+/* vpkit — keyboard key, ported from VitePress's local search box, whose
+ * footer lists its shortcuts (`.search-keyboard-shortcuts kbd`). An
+ * optional import: `@import "vpkit/kbd.css";`
+ *
+ *   <p>Press <kbd class="vp-kbd">Esc</kbd> to close.</p>
+ *
+ * A key cap: a faint gray in a fainter gray border, a 0.25rem radius, a
+ * soft shadow under it, at least 1.5rem wide, centered on the line. Its
+ * text is the page's size (the search box sets 0.8rem on the list around
+ * its keys; add `text-xs` or the like). The grays are VitePress's literal
+ * ones, the same in both modes, half-transparent so they sit on any
+ * ground: the one component with no theme token to read. */
+
+@layer components {
+  .vp-kbd {
+    display: inline-block;
+    min-width: 1.5rem;
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    border-radius: 0.25rem;
+    padding: 0.1875rem 0.375rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgba(128, 128, 128, 0.1);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  }
+}

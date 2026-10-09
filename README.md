@@ -108,6 +108,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/dropdown.css";
 @import "vpkit/icon-btn.css";
 @import "vpkit/tabs.css";
+@import "vpkit/kbd.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -356,6 +357,17 @@ VitePress's code group tab bar.
 - `vp-tabs`: the bar, on the code block's ground with a divider along its bottom and rounded top corners; it scrolls sideways when the tabs don't fit.
 - `vp-tabs-tab`: a 48px tab, `text-1` on hover and while `aria-selected="true"`, when a 2px brand bar marks it.
 - Showing the selected tab's panel, and moving the selection with the arrow keys, are the page's.
+
+### Key
+
+The key caps of VitePress's local search box, which lists its shortcuts with them.
+
+```html
+<p>Press <kbd class="vp-kbd">Esc</kbd> to close.</p>
+```
+
+- A faint gray cap in a fainter gray border with a soft shadow, at least 1.5rem wide, centered on the line. Its text is the page's size.
+- The grays are VitePress's own, half-transparent and the same in both modes, so the key sits on any ground; it reads no theme color.
 
 ## Layout
 

@@ -740,3 +740,20 @@ cases.push({
 touch('tab', `<div class="vp-tabs" role="tablist"><button data-t="tab" class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button></div>`, [
   { target: 'tab', ...AT_REST, props: ['color'] },
 ]);
+
+// kbd: the search box's shortcut keys (.search-keyboard-shortcuts kbd)
+// against vp-kbd in a line of text. The original is a flex item, so its
+// display is a block's, and its size is its container's: the key's own
+// look is compared
+cases.push({
+  name: 'kbd',
+  upstreamFiles: ['components/VPLocalSearchBox.vue'],
+  upstream: `<div class="search-keyboard-shortcuts"><span><kbd data-t="kbd">Esc</kbd> to close</span></div>`,
+  vpkit: `<p><kbd data-t="kbd" class="vp-kbd">Esc</kbd> to close</p>`,
+  checks: [
+    {
+      target: 'kbd',
+      props: [...BORDER, ...SIDES.map((s) => `border-${s}-color`), ...RADIUS, ...PADDING, 'min-width', 'text-align', 'vertical-align', 'background-color', 'box-shadow'],
+    },
+  ],
+});
