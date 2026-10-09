@@ -536,3 +536,89 @@ cases.push({
     { target: 'actions', props: ['display', 'justify-content', 'column-gap', 'margin-top'] },
   ],
 });
+
+// dropdown: VPMenu with VPMenuLink items and VPMenuGroup groups, as
+// VitePress renders them (ul/li), against vp-dropdown's flat markup: items
+// and groups straight in the panel. A <button> item stands where upstream
+// has a link, and aria-checked marks the current item where VPMenuLink has
+// .active. Each wrapper is inline-block, as the flyout's absolute box
+// sizes the menu to its content. The originals' styles are loaded for
+// these cases alone: they name .link and .title
+const MENU_FILES = ['components/VPMenu.vue', 'components/VPMenuLink.vue', 'components/VPMenuGroup.vue'];
+const menuLink = (text, extra = '', t = '') =>
+  `<li class="VPMenuLink"><a${t ? ` data-t="${t}"` : ''} class="VPLink link${extra}" href="#"><span>${text}</span></a></li>`;
+const menuGroup = (t, title, links) =>
+  `<li data-t="${t}" class="VPMenuGroup">${title ? `<p data-t="${t}-title" class="title">${title}</p>` : ''}<ul>${links}</ul></li>`;
+const ddItem = (text, t = '', attrs = ' href="#"', tag = 'a') =>
+  `<${tag}${t ? ` data-t="${t}"` : ''} class="vp-dropdown-item"${attrs}>${text}</${tag}>`;
+const ddGroup = (t, title, items) =>
+  `<div data-t="${t}" class="vp-dropdown-group" role="group">${title ? `<p data-t="${t}-title" class="vp-dropdown-title">${title}</p>` : ''}${items}</div>`;
+// The heights of a panel and of a group sum their 32px rows, and the
+// minified build makes each row 1/64px short (2.2857143 printed as 2.28571),
+// so each height check allows 1/64px per row it holds; a wrong margin or
+// padding is a pixel or more
+const PANEL = [...BORDER, ...RADIUS, ...PADDING, ...COLORS, 'box-shadow', 'min-width', 'max-height', 'overflow-y', ...TRANSITION, 'width'];
+const rows = (target, n) => ({ target, props: ['height'], tolerance: n / 64 });
+const ITEM = ['display', ...PADDING, ...RADIUS, 'line-height', 'font-size', 'font-weight', 'color', 'background-color', 'text-align', 'white-space', ...TRANSITION, 'width', 'height'];
+const GROUP = [...SIDES.map((s) => `margin-${s}`), 'border-top-width', 'border-top-style', 'border-top-color', ...PADDING];
+const MENU_TITLE = [...PADDING, 'line-height', 'font-size', 'font-weight', 'color', 'white-space', ...TRANSITION];
+cases.push({
+  name: 'dropdown',
+  upstreamFiles: MENU_FILES,
+  upstream:
+    `<div style="display:inline-block"><div data-t="menu" class="VPMenu"><ul class="items">` +
+    menuLink('Profile', '', 'item') + menuLink('Settings', ' active', 'current') +
+    menuGroup('group', 'Sort by', menuLink('Name', '', 'gitem') + menuLink('Date')) +
+    menuGroup('group2', 'View', menuLink('As a list')) +
+    `</ul></div></div>`,
+  vpkit:
+    `<div style="display:inline-block"><div data-t="menu" class="vp-dropdown" role="menu">` +
+    ddItem('Profile', 'item') + ddItem('Settings', 'current', ' type="button" role="menuitemradio" aria-checked="true"', 'button') +
+    ddGroup('group', 'Sort by', ddItem('Name', 'gitem') + ddItem('Date')) +
+    ddGroup('group2', 'View', ddItem('As a list')) +
+    `</div></div>`,
+  checks: [
+    { target: 'menu', props: PANEL },
+    rows('menu', 7),
+    { target: 'item', props: ITEM },
+    { target: 'item', state: ['hover'], props: ['color', 'background-color'] },
+    { target: 'current', props: ITEM },
+    { target: 'gitem', props: ITEM },
+    { target: 'group', props: GROUP },
+    rows('group', 3),
+    { target: 'group-title', props: MENU_TITLE },
+    { target: 'group2', props: GROUP },
+    rows('group2', 2),
+  ],
+});
+// groups only: the first group has no rule above it, a group without a title
+cases.push({
+  name: 'dropdown of groups',
+  upstreamFiles: MENU_FILES,
+  upstream:
+    `<div style="display:inline-block"><div data-t="menu" class="VPMenu"><ul class="items">` +
+    menuGroup('group', 'Sort by', menuLink('Name') + menuLink('Date')) + menuGroup('group2', '', menuLink('Sign out')) +
+    `</ul></div></div>`,
+  vpkit:
+    `<div style="display:inline-block"><div data-t="menu" class="vp-dropdown" role="menu">` +
+    ddGroup('group', 'Sort by', ddItem('Name') + ddItem('Date')) + ddGroup('group2', '', ddItem('Sign out')) +
+    `</div></div>`,
+  checks: [
+    { target: 'menu', props: PANEL },
+    rows('menu', 4),
+    { target: 'group', props: GROUP },
+    rows('group', 3),
+    { target: 'group2', props: GROUP },
+    rows('group2', 1),
+  ],
+});
+// aria-current="false" is not current
+cases.push({
+  name: 'dropdown item aria-current=false',
+  reference: `<div class="vp-dropdown">${ddItem('Settings', 'item')}</div>`,
+  vpkit: `<div class="vp-dropdown">${ddItem('Settings', 'item', ' href="#" aria-current="false"')}</div>`,
+  checks: [{ target: 'item', props: ['color'] }],
+});
+touch('dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'item')}</div>`, [
+  { target: 'item', ...AT_REST, props: ['color', 'background-color'] },
+]);

@@ -1,0 +1,96 @@
+/* vpkit — dropdown, ported from VitePress's VPMenu (the panel of a
+ * flyout), VPMenuLink (an item) and VPMenuGroup (a group with its title).
+ * An optional import: `@import "vpkit/dropdown.css";`
+ *
+ *   <div class="vp-dropdown" role="menu">
+ *     <a class="vp-dropdown-item" role="menuitem" href="/profile">Profile</a>
+ *     <button class="vp-dropdown-item" role="menuitemradio" aria-checked="true">Comfortable</button>
+ *     <div class="vp-dropdown-group" role="group" aria-labelledby="sort">
+ *       <p class="vp-dropdown-title" id="sort">Sort by</p>
+ *       <button class="vp-dropdown-item" role="menuitem">Name</button>
+ *     </div>
+ *   </div>
+ *
+ * `vp-dropdown` is the panel: the elevated surface in a divider border,
+ * 0.75rem radius and padding, --vp-shadow-3, at least 8rem wide, at most
+ * the viewport's height under the navbar, scrolling past it.
+ * `vp-dropdown-item` is a row, a link or a button: text-1, brand on a soft
+ * gray when hovered (`@variant hover`), brand while it is the current one,
+ * `aria-current` (not "false") or `aria-checked="true"`, where VPMenuLink
+ * has `.active`. `vp-dropdown-group` holds items under an optional
+ * `vp-dropdown-title`; every group but the first has a rule above it.
+ *
+ * The markup is flat where VitePress's is two lists (ul.items of li), so
+ * VPMenuLink's rule for a link right after a group, which draws the rule
+ * on the li, has no element to go on: items after a group go in a group
+ * of their own, with or without a title. vpkit's one addition: an item is
+ * `width: 100%`, so a button fills its row as a link does. Not ported:
+ * nested groups (VPMenuGroup's .sub-groups), the nav screen's variants.
+ * Where the panel sits, and opening it, are the page's. */
+
+@layer components {
+  .vp-dropdown {
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    min-width: 8rem;
+    border: 1px solid var(--vp-c-divider);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-3);
+    transition: background-color 0.5s;
+    max-height: calc(100vh - var(--vp-nav-height));
+    overflow-y: auto;
+  }
+
+  .vp-dropdown-item {
+    display: block;
+    width: 100%;
+    border-radius: 0.375rem;
+    padding: 0 0.75rem;
+    line-height: 2.2857143;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    text-align: left;
+    white-space: nowrap;
+    transition: background-color 0.25s, color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-dropdown-item {
+    @variant hover {
+      color: var(--vp-c-brand-1);
+      background-color: var(--vp-c-default-soft);
+    }
+  }
+
+  .vp-dropdown-item:is([aria-current]:not([aria-current="false"]), [aria-checked="true"]) {
+    color: var(--vp-c-brand-1);
+  }
+
+  .vp-dropdown-group {
+    margin: 0.75rem -0.75rem 0;
+    border-top: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 0.75rem 0;
+  }
+
+  .vp-dropdown-group:first-child {
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .vp-dropdown-group + .vp-dropdown-group {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  .vp-dropdown-title {
+    padding: 0 0.75rem;
+    line-height: 2.2857143;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--vp-c-text-2);
+    white-space: nowrap;
+    transition: color 0.25s;
+  }
+}

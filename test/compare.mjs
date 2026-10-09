@@ -79,16 +79,18 @@ function upstreamCss(files) {
 // Lengths match within 1/32 px. The minified build prints numbers to six
 // significant digits (2.7142857 -> 2.71429), which moves a line box by
 // 0.0001px and can tip layout's 1/64 px rounding: a badge measured 24px
-// upstream and 23.984375px from the minified build. Everything else
-// compares exactly.
+// upstream and 23.984375px from the minified build. A check's `tolerance`
+// widens that for a stack of such lines, which sums their 1/64s (a menu
+// of seven 32px rows, each 31.984375px from the minified 2.28571).
+// Everything else compares exactly.
 const PX = /^-?\d+(\.\d+)?px$/;
 // A transparent shadow with no offset, blur or spread paints nothing;
 // Tailwind's shadow utilities put four of them before the real one.
 const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
-function same(a, b, prop) {
+function same(a, b, prop, tolerance = 1 / 32) {
   if (prop === 'box-shadow') [a, b] = [a.replace(NO_SHADOW, ''), b.replace(NO_SHADOW, '')];
   if (a === b) return true;
-  return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
+  return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
 // The page colors, on both sides: upstream's base.css sets them on body,
@@ -189,7 +191,7 @@ try {
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;
         for (const prop of check.props) {
           compared++;
-          if (same(ref[prop], vpkit[prop], prop)) continue;
+          if (same(ref[prop], vpkit[prop], prop, check.tolerance)) continue;
           const line = `${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`;
           const delta = known.find(
             (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,

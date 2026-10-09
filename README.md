@@ -105,6 +105,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/code.css";
 @import "vpkit/spinner.css";
 @import "vpkit/dialog.css";
+@import "vpkit/dropdown.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -297,6 +298,26 @@ VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, w
 - `vp-dialog-title`: the 1.05rem semibold title. `vp-dialog-actions`: the buttons, at the end of a row 0.5rem apart.
 - Open it with `showModal()`. The browser centers a modal dialog with `margin: auto`, which Tailwind's preflight removes from every element, so the dialog sets it back.
 - 26rem wide, at most 92vw: unlike the other components it has a width, since a dialog without one shrinks to its content. A width utility replaces it.
+
+### Dropdown
+
+VitePress's `VPMenu`, the panel of a navbar flyout, with `VPMenuLink` items and `VPMenuGroup` groups.
+
+```html
+<div class="vp-dropdown" role="menu">
+  <a class="vp-dropdown-item" role="menuitem" href="/profile">Profile</a>
+  <button class="vp-dropdown-item" role="menuitemradio" aria-checked="true">Comfortable</button>
+  <div class="vp-dropdown-group" role="group" aria-labelledby="sort">
+    <p class="vp-dropdown-title" id="sort">Sort by</p>
+    <button class="vp-dropdown-item" role="menuitem">Name</button>
+  </div>
+</div>
+```
+
+- `vp-dropdown`: the panel, the elevated surface with `shadow-3`, at least 8rem wide, scrolling once it is as tall as the viewport under the navbar.
+- `vp-dropdown-item`: a row, a link or a button; brand on a soft gray when hovered, brand while it is the current one (`aria-current`, or `aria-checked="true"`).
+- `vp-dropdown-group`, with an optional `vp-dropdown-title`: every group but the first has a rule above it. The markup is flat where VitePress's is nested lists, so items that follow a group go in a group of their own.
+- Placing the panel and opening it are the page's.
 
 ## Layout
 

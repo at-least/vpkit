@@ -93,6 +93,7 @@ For a component from an app recipe:
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | — |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | — |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | `vp-dialog-title`, `vp-dialog-actions`; `::backdrop` |
+| `vp-dropdown` | VPMenu, VPMenuLink, VPMenuGroup | `vp-dropdown-item`, `vp-dropdown-group`, `vp-dropdown-title`; `aria-current`, `aria-checked` |
 
 ### Tier 1: next
 
