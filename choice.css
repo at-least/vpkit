@@ -1,0 +1,59 @@
+/* vpkit — choice: a radio or a checkbox drawn as a selectable card.
+ * VitePress has none; this is totality's, on VitePress's tokens. An
+ * optional import: `@import "vpkit/choice.css";`
+ *
+ *   <label class="vp-choice">
+ *     <input type="radio" name="plan" value="monthly">
+ *     <span>Monthly<br>NT$300 a month</span>
+ *   </label>
+ *
+ * The page ground in a divider border, a 0.5rem radius, 1rem padding,
+ * 14px text on 24px lines, the control first, 0.75rem from its text. A
+ * brand border on hover (`@variant hover`); while its control is checked,
+ * the brand border on the brand tint; while the control has the
+ * keyboard's focus, a 2px brand outline 2px outside the card, which the
+ * control itself, inside, does not need to draw. The control is 16px,
+ * aligned with the first line, in the brand color (accent-color). The
+ * card's states are its control's (`:has(:checked)`,
+ * `:has(:focus-visible)`): nothing to toggle but the control. */
+
+@layer components {
+  .vp-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    background-color: var(--vp-c-bg);
+    cursor: pointer;
+    transition: border-color 0.25s, background-color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-choice {
+    @variant hover {
+      border-color: var(--vp-c-brand-1);
+    }
+  }
+
+  .vp-choice:has(:checked) {
+    border-color: var(--vp-c-brand-1);
+    background-color: var(--vp-c-brand-soft);
+  }
+
+  .vp-choice:has(:focus-visible) {
+    outline: 2px solid var(--vp-c-brand-1);
+    outline-offset: 2px;
+  }
+
+  :where(.vp-choice) > input {
+    margin-top: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    accent-color: var(--vp-c-brand-1);
+  }
+}

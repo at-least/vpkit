@@ -24,3 +24,11 @@ export const OWN_DRIVE_BTN_DANGER =
   ' rounded-[1.25rem] h-[2.5rem] px-[1.25rem]' +
   ' border border-[color:var(--vp-button-alt-border)]' +
   ' text-[color:var(--vp-c-danger-1)] bg-[color:var(--vp-c-danger-soft)] hover:bg-[color:var(--vp-c-danger-soft)] active:bg-[color:var(--vp-c-danger-soft)]';
+
+// totality crates/store/src/ui.rs `CHOICE`, verbatim as of 2026-10-10
+export const TOTALITY_CHOICE =
+  'flex cursor-pointer items-start gap-3 rounded-lg border border-divider bg-bg p-4' +
+  ' text-[0.875rem] leading-6 transition-colors duration-[250ms] hover:border-brand-1' +
+  ' has-checked:border-brand-1 has-checked:bg-brand-soft' +
+  ' has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-1' +
+  ' [&>input]:mt-1 [&>input]:size-4 [&>input]:shrink-0 [&>input]:accent-(--vp-c-brand-1)';

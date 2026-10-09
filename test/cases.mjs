@@ -3,6 +3,7 @@ import {
   OWN_DRIVE_BTN_ROW,
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
+  TOTALITY_CHOICE,
   TOTALITY_INPUT,
 } from './recipes.mjs';
 
@@ -787,3 +788,28 @@ cases.push({
     { target: 'btn', state: ['hover', 'active'], props: COLORS },
   ],
 });
+
+// choice: totality's selectable card around a radio against vp-choice, at
+// rest, hovered, checked, and with the radio focused from the keyboard.
+// The transition is not compared: the recipe's is Tailwind's
+// transition-colors list and easing, vp-choice's the two colors that
+// change, in VitePress's 0.25s
+const CHOICE_BOX = ['display', 'align-items', 'column-gap', ...BORDER, ...RADIUS, ...PADDING, ...COLORS, 'font-size', 'line-height', 'cursor', 'height'];
+const OUTLINE = ['outline-width', 'outline-style', 'outline-color', 'outline-offset'];
+const choice = (cls, checked) =>
+  `<label data-t="choice" class="${cls}"><input data-t="radio" type="radio" name="plan"${checked ? ' checked' : ''}>` +
+  `<span>Monthly<br>NT$300 a month, cancel any time</span></label>`;
+for (const checked of [false, true]) {
+  cases.push({
+    name: `choice${checked ? ' checked' : ''}`,
+    reference: choice(TOTALITY_CHOICE, checked),
+    vpkit: choice('vp-choice', checked),
+    checks: [
+      { target: 'choice', props: [...CHOICE_BOX, ...OUTLINE] },
+      { target: 'choice', state: ['hover'], props: COLORS },
+      { target: 'choice', on: 'radio', state: ['focus-visible'], props: OUTLINE },
+      { target: 'radio', props: ['margin-top', 'width', 'height', 'flex-shrink', 'accent-color'] },
+    ],
+  });
+}
+touch('choice', choice('vp-choice', false), [{ target: 'choice', ...AT_REST, props: COLORS }]);

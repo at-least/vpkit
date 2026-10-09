@@ -110,6 +110,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/tabs.css";
 @import "vpkit/kbd.css";
 @import "vpkit/mark.css";
+@import "vpkit/choice.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -381,6 +382,21 @@ The highlight of VitePress's local search box, which marks the matched words in 
 ```
 
 - The search's highlight colors, the brand under the page's inverse text, with a 0.125rem radius and 0.125rem of padding at each side.
+
+### Choice
+
+A radio or a checkbox drawn as a selectable card. VitePress has none; this is totality's, on VitePress's tokens.
+
+```html
+<label class="vp-choice">
+  <input type="radio" name="plan" value="monthly">
+  <span>Monthly<br>NT$300 a month</span>
+</label>
+```
+
+- The page ground in a divider border, 1rem padding, 14px text; the control first, 16px, in the brand color.
+- A brand border on hover. While its control is checked: the brand border on the brand tint. While the control has the keyboard's focus: a 2px brand outline around the card.
+- Its states are its control's, read with `:has()`: there is nothing to toggle but the control.
 
 ## Layout
 
