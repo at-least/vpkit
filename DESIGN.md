@@ -125,7 +125,7 @@ VPSwitch, the track with a sliding knob, with VPSwitchAppearance's sun and moon 
 - `vp-toggle-appearance`: the appearance switch. The knob moves under `.dark` as VPSwitchAppearance's does (so it is right before any script runs), `vpi-sun` shows in light and `vpi-moon` in dark. An app's script toggles `.dark` on `<html>` and syncs `aria-checked`; vpkit ships no script (vpkit-zola's `static/vpkit-zola.js` has VitePress's behavior).
 - Tokens read: `--vp-input-border-color`, `--vp-input-switch-bg-color`, `--vp-c-brand-1`, `--vp-c-neutral-inverse`, `--vp-shadow-1`, `--vp-c-text-1`, `--vp-c-text-2`, all in the contract.
 - Differences from the original: the knob follows `aria-checked` (VPSwitch has no checked state of its own; only the appearance switch moves it, by `.dark`); the hover is `@variant hover`. Nothing omitted.
-- Cases: the box, the knob and the icon against VPSwitch at rest and `:hover`; `aria-checked="true"` against VPSwitchAppearance in a `.dark` page (the same mode on both sides, the transform compared); `vp-toggle-appearance` in light and dark against VPSwitchAppearance (the transform, the two icons' opacities, the icon color); touch. Both originals need `unwrapDeep`.
+- Cases: the box, the knob and the icon against VPSwitch at rest and `:hover`; `aria-checked="true"` against VPSwitch with the knob's transform written inline, as `vp-btn`'s additions are tested (the harness renders every case in both modes, so a comparison with VPSwitchAppearance, whose knob moves only under `.dark`, would differ in light); `vp-toggle-appearance` in light and dark against VPSwitchAppearance (the transform, the two icons' opacities, the icon color); touch. Both originals need `unwrapDeep`.
 
 #### `vp-input` on `<select>` and `<textarea>`
 
