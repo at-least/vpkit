@@ -8,9 +8,13 @@
 // (a component nested in another against the same one standalone). A
 // case with `touch` renders both pages as a touch screen, where
 // (hover: none) matches; with a check's `refState`, the reference gets
-// a different forced state than vpkit (`[]`: none, at rest).
+// a different forced state than vpkit (`[]`: none, at rest). A case's
+// `upstreamFiles` are originals only that case's upstream page loads, for
+// components whose stylesheets name generic classes (`.title`, `.link`)
+// that the other cases' markup also uses.
 //
 //   npm test
+//   CASES='^toggle' node test/compare.mjs   only the cases it matches
 //
 // Exits 1, listing every differing property, when any case differs.
 
@@ -62,8 +66,8 @@ function vpkitCss() {
 // attribute selector, which an isolated page doesn't need, and a
 // `:deep(x)` is unwrapped to `x` as the layout port does (a browser drops
 // a selector with :deep() in it, and with it the rule)
-function upstreamCss() {
-  return UPSTREAM.map((file) => {
+function upstreamCss(files) {
+  return files.map((file) => {
     const src = readFileSync(join(ROOT, 'test/upstream', file), 'utf8');
     if (!file.endsWith('.vue')) return src;
     const style = src.match(/<style[^>]*>([\s\S]*?)<\/style>/);
@@ -147,17 +151,23 @@ async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
   return values;
 }
 
-const sides = { upstream: upstreamCss(), vpkit: vpkitCss() };
+// CASES=<regex>: only the matching cases, for a quick loop while building
+// a component; then only the known differences of those cases are expected
+const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
+const selected = only ? cases.filter((c) => only.test(c.name)) : cases;
+if (!selected.length) throw new Error(`CASES=${process.env.CASES} matches no case`);
+
+const sides = { upstream: upstreamCss(UPSTREAM), vpkit: vpkitCss() };
 const browser = await chromium.launch();
 const failures = [];
 const expected = [];
 let compared = 0;
 try {
-  for (const c of cases) {
+  for (const c of selected) {
     const [label, refCss, refBody] =
       c.upstream === undefined
         ? ['reference', sides.vpkit, c.reference]
-        : ['upstream', sides.upstream, c.upstream];
+        : ['upstream', `${sides.upstream}\n${upstreamCss(c.upstreamFiles ?? [])}`, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
         ref: await open(browser, refCss, refBody, dark, c.touch),
@@ -196,6 +206,7 @@ try {
 }
 
 for (const k of known) {
+  if (only && !selected.some((c) => k.case.test(c.name))) continue;
   if (k.hits) {
     console.log(`KNOWN ${k.hits}× ${k.case} ${k.target} ${k.prop}: ${k.reason}`);
   } else {
@@ -204,7 +215,7 @@ for (const k of known) {
 }
 for (const f of failures) console.log(`DIFF  ${f}`);
 console.log(
-  `${cases.length} cases × light/dark: ${compared} computed values compared, ` +
+  `${selected.length} cases × light/dark: ${compared} computed values compared, ` +
     `${failures.length} differ, ${expected.length} known`,
 );
 process.exit(failures.length ? 1 : 0);
