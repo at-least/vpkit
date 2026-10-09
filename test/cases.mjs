@@ -765,18 +765,22 @@ cases.push({
   checks: [{ target: 'mark', props: ['color', 'background-color', ...RADIUS, ...PADDING] }],
 });
 
+const DANGER_GROUND =
+  'background-color:var(--vp-c-bg);background-image:linear-gradient(var(--vp-c-danger-soft),var(--vp-c-danger-soft))';
 // danger button: own-drive's grounded danger button against vp-btn
 // vp-btn-danger: danger text on the danger tint, the same hovered and
 // pressed. Its box is vp-btn's, so only the parts the two share are
 // compared with it (own-drive's gap and line height are its own)
 cases.push({
   name: 'button danger',
-  reference: `<button data-t="btn" class="${OWN_DRIVE_BTN_DANGER}" type="button">Delete forever</button>`,
+  // vpkit's addition, written inline: the tint laid over the page's color,
+  // so the ground is opaque and the same on any surface
+  reference: `<button data-t="btn" class="${OWN_DRIVE_BTN_DANGER}" type="button" style="${DANGER_GROUND}">Delete forever</button>`,
   vpkit: `<button data-t="btn" class="vp-btn vp-btn-danger" type="button">Delete forever</button>`,
   checks: [
-    { target: 'btn', props: [...COLORS, ...RADIUS, 'padding-left', 'padding-right', 'height', 'font-size', 'font-weight'] },
-    { target: 'btn', state: ['hover'], props: COLORS },
-    { target: 'btn', state: ['hover', 'active'], props: COLORS },
+    { target: 'btn', props: [...COLORS, 'background-image', ...RADIUS, 'padding-left', 'padding-right', 'height', 'font-size', 'font-weight'] },
+    { target: 'btn', state: ['hover'], props: [...COLORS, 'background-image'] },
+    { target: 'btn', state: ['hover', 'active'], props: [...COLORS, 'background-image'] },
   ],
 });
 
