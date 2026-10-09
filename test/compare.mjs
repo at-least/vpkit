@@ -158,7 +158,8 @@ async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
 }
 
 // CASES=<regex>: only the matching cases, for a quick loop while building
-// a component; then only the known differences of those cases are expected
+// a component; a known difference that none of them hits is then not
+// required, since the case that hits it may not have run
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 const selected = only ? cases.filter((c) => only.test(c.name)) : cases;
 if (!selected.length) throw new Error(`CASES=${process.env.CASES} matches no case`);
@@ -212,7 +213,7 @@ try {
 }
 
 for (const k of known) {
-  if (only && !selected.some((c) => k.case.test(c.name))) continue;
+  if (only && !k.hits) continue;
   if (k.hits) {
     console.log(`KNOWN ${k.hits}× ${k.case} ${k.target} ${k.prop}: ${k.reason}`);
   } else {
