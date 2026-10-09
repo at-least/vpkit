@@ -929,3 +929,16 @@ cases.push({
   vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-dialog"></dialog>${OPEN}`,
   checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
 });
+
+// a spinner in a button turns in the label's color, a 30% ring of it with
+// the full color turning: the label's color is what each button holds
+// against its ground (the reference writes that out inline)
+const SPIN_IN_BUTTON = 'border-color:color-mix(in srgb, currentColor 30%, transparent);border-top-color:currentColor';
+for (const [theme, cls] of [['brand', 'vp-btn vp-btn-brand'], ['alt', 'vp-btn'], ['danger', 'vp-btn vp-btn-danger']]) {
+  cases.push({
+    name: `spinner in a ${theme} button`,
+    reference: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner" style="${SPIN_IN_BUTTON}"></span>Paying</button>`,
+    vpkit: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner"></span>Paying</button>`,
+    checks: [{ target: 'spin', props: SIDES.map((s) => `border-${s}-color`) }],
+  });
+}
