@@ -32,3 +32,8 @@ export const TOTALITY_CHOICE =
   ' has-checked:border-brand-1 has-checked:bg-brand-soft' +
   ' has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-1' +
   ' [&>input]:mt-1 [&>input]:size-4 [&>input]:shrink-0 [&>input]:accent-(--vp-c-brand-1)';
+
+// totality crates/store/src/ui.rs `FIELD_LABEL` and `MSG_ERROR`, verbatim
+// as of 2026-10-10
+export const TOTALITY_FIELD_LABEL = 'mb-1.5 block text-[0.875rem] leading-6 font-medium text-text-1';
+export const TOTALITY_MSG_ERROR = 'mt-2 text-[0.875rem] leading-6 text-danger-1';

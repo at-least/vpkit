@@ -4,7 +4,9 @@ import {
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
   TOTALITY_CHOICE,
+  TOTALITY_FIELD_LABEL,
   TOTALITY_INPUT,
+  TOTALITY_MSG_ERROR,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -813,3 +815,20 @@ for (const checked of [false, true]) {
   });
 }
 touch('choice', choice('vp-choice', false), [{ target: 'choice', ...AT_REST, props: COLORS }]);
+
+// field: totality's label and inline error around a vp-input against
+// vp-label and vp-field-error
+const field = (label, error) =>
+  `<label data-t="label" class="${label}" for="code">Coupon code</label>` +
+  `<input id="code" class="vp-input" aria-invalid="true" aria-describedby="code-error">` +
+  `<p data-t="error" class="${error}" id="code-error">This code has expired.</p>`;
+const FIELD_TEXT = ['display', 'margin-top', 'margin-bottom', 'font-size', 'line-height', 'font-weight', 'color', 'height'];
+cases.push({
+  name: 'field',
+  reference: field(TOTALITY_FIELD_LABEL, TOTALITY_MSG_ERROR),
+  vpkit: field('vp-label', 'vp-field-error'),
+  checks: [
+    { target: 'label', props: FIELD_TEXT },
+    { target: 'error', props: FIELD_TEXT },
+  ],
+});

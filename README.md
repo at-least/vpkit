@@ -111,6 +111,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/kbd.css";
 @import "vpkit/mark.css";
 @import "vpkit/choice.css";
+@import "vpkit/field.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -397,6 +398,20 @@ A radio or a checkbox drawn as a selectable card. VitePress has none; this is to
 - The page ground in a divider border, 1rem padding, 14px text; the control first, 16px, in the brand color.
 - A brand border on hover. While its control is checked: the brand border on the brand tint. While the control has the keyboard's focus: a 2px brand outline around the card.
 - Its states are its control's, read with `:has()`: there is nothing to toggle but the control.
+
+### Field
+
+A form field's label and its error line, to go with `vp-input`. VitePress has no form fields; these are totality's.
+
+```html
+<label class="vp-label" for="code">Coupon code</label>
+<input class="vp-input w-full" id="code" aria-invalid="true" aria-describedby="code-error">
+<p class="vp-field-error" id="code-error">This code has expired.</p>
+```
+
+- `vp-label`: 14px `text-1` at weight 500, 0.375rem above its control.
+- `vp-field-error`: 14px danger text, 0.5rem under the control.
+- The two margins are the field's own spacing; `mb-0` and `mt-0` remove them. Tie the error to its control with `aria-describedby`, and mark the control `aria-invalid`, which turns `vp-input`'s border danger.
 
 ## Layout
 

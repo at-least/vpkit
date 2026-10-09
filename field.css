@@ -1,0 +1,32 @@
+/* vpkit — a form field's label and its error line. VitePress has no form
+ * fields; these are totality's, on VitePress's tokens, to go with
+ * vp-input. An optional import: `@import "vpkit/field.css";`
+ *
+ *   <label class="vp-label" for="code">Coupon code</label>
+ *   <input class="vp-input w-full" id="code" aria-invalid="true" aria-describedby="code-error">
+ *   <p class="vp-field-error" id="code-error">This code has expired.</p>
+ *
+ * `vp-label`: a block of 14px text-1 at weight 500 on a 24px line,
+ * 0.375rem above its control. `vp-field-error`: 14px danger text on a 24px
+ * line, 0.5rem under the control. The two margins are the field's own
+ * spacing, kept from the recipe (`mb-0`, `mt-0` remove them). Tie the
+ * error to its control with aria-describedby, and mark the control
+ * aria-invalid, which turns vp-input's border danger. */
+
+@layer components {
+  .vp-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-field-error {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--vp-c-danger-1);
+  }
+}
