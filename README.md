@@ -1,6 +1,6 @@
 # vpkit
 
-The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 200 color themes. Extracted from [rustpress](https://github.com/at-least/rustpress).
+The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 222 color themes. Extracted from [rustpress](https://github.com/at-least/rustpress).
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
@@ -54,7 +54,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 - **Global rules** that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
 - **Markdown rules** (`doc.css`): the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon.
 - **Graded containers**: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors.
-- **Color themes**: 200 of them in `themes/`, one file each (see [Color themes](#color-themes)).
+- **Color themes**: 222 of them in `themes/`, one file each (see [Color themes](#color-themes)).
 
 ## Theming
 
@@ -67,7 +67,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ### Color themes
 
-`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 222 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
@@ -76,12 +76,12 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 A theme only sets variables, so the components and your utilities follow it.
 
-In a theme `brand-2` and each role's `-2` (`tip-2`, `important-2`, `warning-2`, `danger-2`, `caution-2`) are a hovered link's color, which is what VitePress's stylesheets use them for; `default-2` keeps its job as the alt button's hover background. VitePress's `vars.css` describes `-2` as the button's hover color, and makes `brand-2` the brand button's hover background, but in dark mode no one color can be both a white-labelled button's background and a hovered link that reads on the page, so a theme gives the brand button its hover color through `--vp-button-brand-hover-bg`, a variable VitePress has for it. Where a container's tint would leave a hovered link no room, the generator thins the tint, never below 0.06.
+In a theme `brand-2` and each role's `-2` (`tip-2`, `important-2`, `warning-2`, `danger-2`, `caution-2`) are a hovered link's color, which is what VitePress's stylesheets use them for; `default-2` keeps its job as the alt button's hover background. VitePress's `vars.css` describes `-2` as the button's hover color, and makes `brand-2` the brand button's hover background, but in dark mode no one color can be both a white-labelled button's background and a hovered link that reads on the page, so a theme gives the brand button its hover color through `--vp-button-brand-hover-bg`, a variable VitePress has for it. Where a container's tint would leave a hovered link no room, the generator thins the tint, never below 0.06, and a dark page too light to leave room even then is darkened until it does.
 
 - 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
-- 176 are mapped automatically from the Helix editor's palettes (`helix/`), with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
+- 198 are mapped automatically from the Helix editor's palettes (`helix/`), each read as Helix reads it, its `inherits` followed, with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
 
-`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` vpkit's stylesheets reference: the base, the components, the layout, the markdown and the icons, less VitePress's own undefined `--vp-c-shadow-3` in VPSidebar.vue) in both modes, and to contrast minimums: body text 7:1 on the page and on the elevated surface of menus and dialogs, secondary text 4.5:1 on the page, the soft surfaces and the elevated one, muted text 3:1, links 4.5:1 on the page and the elevated surface, white button labels 3:1 on the brand button at rest and hovered, each badge and alert color 4.5:1 on its own tint, and each `-2` 4.5:1 as a hovered link, dimmed to 0.75 where a container dims it, on the container's tint and on code inside it. A shortfall the generator can't fit is listed in the test with its cause, and the run fails once it stops occurring; one is listed, the dark half of `wolf-alabaster-light-mono`.
+`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` vpkit's stylesheets reference: the base, the components, the layout, the markdown and the icons, less VitePress's own undefined `--vp-c-shadow-3` in VPSidebar.vue) in both modes, and to contrast minimums: body text 7:1 on the page and on the elevated surface of menus and dialogs, secondary text 4.5:1 on the page, the soft surfaces and the elevated one, muted text 3:1, links 4.5:1 on the page and the elevated surface, white button labels 3:1 on the brand button at rest and hovered, each badge and alert color 4.5:1 on its own tint, and each `-2` 4.5:1 as a hovered link, dimmed to 0.75 where a container dims it, on the container's tint and on code inside it. A shortfall the generator can't fit is listed in the test with its cause, and the run fails once it stops occurring; none is listed.
 
 A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
 

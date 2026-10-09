@@ -5,5 +5,6 @@ master ba40e547426b (checked 2026-10-08). Never edit them; re-sync with
 a plain copy of runtime/themes from a Helix checkout, then rerun
 scripts/gen-themes.py and update this note.
 
-scripts/gen-themes.py reads their [palette] tables to build themes/;
+scripts/gen-themes.py reads their [palette] tables, following a file's
+`inherits` as Helix does, to build themes/;
 rustpress also embeds them as its syntax-highlighting color schemes.

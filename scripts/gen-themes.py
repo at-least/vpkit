@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate vpkit's color themes from the vendored Helix palettes.
 
-Reads helix/*.toml [palette] tables, maps each scheme onto the
+Reads helix/*.toml [palette] tables, following a file's `inherits` as
+Helix does (merge_themes below), maps each scheme onto the
 design-token contract (hand-written slot maps below), derives monotonic
 text/border ramps and the neutral ramp, auto-fits accents for WCAG AA
 (the same ratios test/themes.mjs enforces), and emits
@@ -12,7 +13,7 @@ it reads at AA where it is drawn, dimmed to 0.75 in a container as
 custom-block.css and alert.css dim a hovered link. vars.css describes -2
 as the button's hover ground; the brand button's is emitted as its own
 --vp-button-brand-hover-bg instead, since in dark mode no one color can
-be both (measured over all 200 themes).
+be both (measured over all 222 themes).
 
 The emitted files are the source of truth once committed — rerun after
 editing the slot maps, then pass `npm test` (rustpress regenerates its
@@ -118,8 +119,24 @@ def _checked_hex(v, stem, k):
         )
     return _norm_hex(v)
 
+def merge_themes(parent, child):
+    """A theme that `inherits` another, merged as Helix merges them
+    (helix-view/src/theme.rs, merge_themes): the child's top-level keys
+    replace the parent's whole, a scope's table included, and the two
+    palettes merge entry by entry, the child's entries winning."""
+    theme = {**parent, **child}
+    theme["palette"] = {**parent.get("palette", {}), **child.get("palette", {})}
+    return theme
+
+def load(stem):
+    """A vendored Helix theme with its `inherits` chain followed."""
+    data = tomllib.load(open(f"{HELVIX}/{stem}.toml", "rb"))
+    if "inherits" in data:
+        return merge_themes(load(data["inherits"]), data)
+    return data
+
 def pal(file):
-    data = tomllib.load(open(f"{HELVIX}/{file}.toml", "rb"))
+    data = load(file)
     p = data.get("palette")
     if p:
         return {k: _checked_hex(v, file, k) for k, v in p.items()}
@@ -524,7 +541,7 @@ def bucket_of(h):
 def auto_slots(stem):
     """Infer the contract slots from a palette table. Returns
     (mode, slots) where mode is the palette's own half."""
-    data = tomllib.load(open(f"{HELVIX}/{stem}.toml", "rb"))
+    data = load(stem)
     p = {k: _checked_hex(v, stem, k) for k, v in (data.get("palette") or {}).items()}
     if len(p) < 6:
         return None
@@ -652,6 +669,19 @@ def auto_slots(stem):
     if not light_palette:
         if lum(bg) > 0.082:
             bg = toward(bg, black, 0.082)
+        # and a hovered link in a container must be able to reach AA: white
+        # dimmed to 0.75 on the thinnest tint the room rule leaves (0.06,
+        # here of white, the lightest a tint can be) and on code's tint
+        # inside it. A mid-gray "soft" page (seoul256-dark-soft's #4e4e4e)
+        # moves toward black until it can; the lightest gray that can is
+        # #484848
+        def leaves_room(page):
+            tint = composite(white, 0.06, page)
+            return all(contrast(composite(white, 0.75, g), g) >= 4.5 + EPS
+                       for g in (tint, composite(white, 0.06, tint)))
+        if not leaves_room(bg):
+            start = bg
+            bg = next(x for x in (mix(start, black, k / 100) for k in range(101)) if leaves_room(x))
     else:
         if lum(bg) < 0.30:
             bg = toward(bg, white, 0.30)

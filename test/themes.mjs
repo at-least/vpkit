@@ -75,15 +75,7 @@ const isRamp = (token) => RAMPS.some((ramp) => token === ramp || token.startsWit
 // Shortfalls the generator cannot fit, each with its cause; a failure that
 // matches one is reported instead of failing, and an entry that matches
 // nothing fails the run, so none outlives its cause.
-const SHORTFALLS = [
-  {
-    theme: 'wolf-alabaster-light-mono',
-    selector: '.dark',
-    pattern: /--vp-c-(tip|important|warning|danger|caution)-2 \S+ hovered in a container paints/,
-    reason:
-      "the palette inherits wolf-alabaster-light's, and the generator doesn't follow Helix's `inherits`: it maps the few colors the file itself has and reads its red as a dark page (#962828), where a hovered link in a container, even white dimmed to 0.75, reaches 3.4 to 4.4:1 on the tints",
-  },
-];
+const SHORTFALLS = [];
 
 const failures = [];
 const expected = [];

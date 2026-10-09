@@ -1,4 +1,4 @@
-/* Built-in theme: wolf-alabaster-dark-bg — auto-mapped from the vendored Helix palette <wolf-alabaster-dark-bg>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: wolf-alabaster-dark-mono — auto-mapped from the vendored Helix palette <wolf-alabaster-dark-mono>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-neutral-inverse: #ffffff;
   --vp-c-bg: #f1f1f1;
@@ -32,12 +32,12 @@
   --vp-c-warning-1: #63633f;
   --vp-c-warning-2: #323220;
   --vp-c-warning-soft: rgba(99, 99, 63, 0.12);
-  --vp-c-danger-1: #3f1f1f;
-  --vp-c-danger-2: #3f1f1f;
-  --vp-c-danger-soft: rgba(63, 31, 31, 0.12);
-  --vp-c-caution-1: #3f1f1f;
-  --vp-c-caution-2: #3f1f1f;
-  --vp-c-caution-soft: rgba(63, 31, 31, 0.12);
+  --vp-c-danger-1: #8a5200;
+  --vp-c-danger-2: #492b00;
+  --vp-c-danger-soft: rgba(138, 82, 0, 0.12);
+  --vp-c-caution-1: #8a5200;
+  --vp-c-caution-2: #492b00;
+  --vp-c-caution-soft: rgba(138, 82, 0, 0.12);
   --vp-c-sponsor: #a02f6f;
   --vp-button-brand-hover-bg: #6093c4;
 
@@ -81,12 +81,12 @@
   --vp-c-warning-1: #dfdf8e;
   --vp-c-warning-2: #e2e297;
   --vp-c-warning-soft: rgba(223, 223, 142, 0.15);
-  --vp-c-danger-1: #9b8a8a;
-  --vp-c-danger-2: #c8bfbf;
-  --vp-c-danger-soft: rgba(155, 138, 138, 0.15);
-  --vp-c-caution-1: #9b8a8a;
-  --vp-c-caution-2: #c8bfbf;
-  --vp-c-caution-soft: rgba(155, 138, 138, 0.15);
+  --vp-c-danger-1: #ff9800;
+  --vp-c-danger-2: #ffc063;
+  --vp-c-danger-soft: rgba(255, 152, 0, 0.15);
+  --vp-c-caution-1: #ff9800;
+  --vp-c-caution-2: #ffc063;
+  --vp-c-caution-soft: rgba(255, 152, 0, 0.15);
   --vp-c-sponsor: #a02f6f;
   --vp-button-brand-hover-bg: #6d97c0;
 }
