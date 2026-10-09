@@ -907,3 +907,12 @@ for (const [name, markup, checks] of [
     checks,
   });
 }
+
+// a progress bar alone in a flex row is as wide as the row, as it is in
+// block flow (an empty flex item is otherwise 0px wide)
+cases.push({
+  name: 'progress in a flex row',
+  reference: `<div style="width:300px"><span data-t="track" class="vp-progress"><span data-t="fill" class="vp-progress-bar" style="width:40%"></span></span></div>`,
+  vpkit: `<div style="width:300px;display:flex"><span data-t="track" class="vp-progress"><span data-t="fill" class="vp-progress-bar" style="width:40%"></span></span></div>`,
+  checks: [{ target: 'track', props: ['width'] }, { target: 'fill', props: ['width'] }],
+});
