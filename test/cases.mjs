@@ -42,6 +42,13 @@ export const known = [
       "VitePress's `.custom-block.tip code` also matches code inside a nested info block (it comes later in custom-block.css); a nested vp-alert keeps its own code background",
   },
   {
+    case: /^alert details$/,
+    target: 'code',
+    prop: 'color',
+    reason:
+      "VitePress's details rules give code a background and no color: in its docs the markdown's code color applies (`.vp-doc :not(pre, h1, …) > code`, brand-1), which vp-alert-details sets as every alert type sets its code's; on a page without .vp-doc the original's code takes the text color",
+  },
+  {
     case: /^button inside an alert$/,
     target: 'btn',
     prop: 'opacity',
@@ -668,3 +675,36 @@ cases.push({
 touch('icon button', `<a data-t="btn" class="vp-icon-btn" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`, [
   { target: 'btn', ...AT_REST, props: ['color', 'background-color'] },
 ]);
+
+// alert details: VitePress's details block (.custom-block.details on a
+// <details>) against vp-alert-details, open and closed. The open block's
+// height is left to its parts: its code is 0.875em where upstream declares
+// 0.8125rem (the known difference of every alert), and the smaller mono
+// line box makes that line 0.5625px shorter; the closed block, the summary
+// alone, compares its height
+const detailsBody =
+  `<summary data-t="title">Details</summary>` +
+  `<p data-t="p1">Body with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p>` +
+  `<p data-t="p2">Then <a data-t="a2" href="#"><code data-t="acode">linked code</code></a>.</p>`;
+const SUMMARY = ['display', ...SIDES.map((s) => `margin-${s}`), 'font-weight', 'cursor', 'user-select'];
+cases.push({
+  name: 'alert details',
+  upstream: `<details data-t="box" class="custom-block details" open>${detailsBody}</details>`,
+  vpkit: `<details data-t="box" class="vp-alert vp-alert-details" open>${detailsBody}</details>`,
+  checks: [
+    { target: 'box', props: ALERT_BOX },
+    { target: 'title', props: SUMMARY },
+    { target: 'p1', props: ['margin-top', 'margin-bottom'] },
+    { target: 'p2', props: ['margin-top', 'margin-bottom'] },
+    { target: 'a', props: LINK },
+    { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
+    { target: 'code', props: CODE },
+    { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+  ],
+});
+cases.push({
+  name: 'alert details, closed',
+  upstream: `<details data-t="box" class="custom-block details">${detailsBody}</details>`,
+  vpkit: `<details data-t="box" class="vp-alert vp-alert-details">${detailsBody}</details>`,
+  checks: [{ target: 'box', props: [...PADDING, 'height'] }],
+});

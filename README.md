@@ -165,10 +165,18 @@ VitePress's custom blocks (`::: tip` and the others).
 - `vp-alert` alone: the info type (gray).
 - `vp-alert-note`, `vp-alert-tip`, `vp-alert-important`, `vp-alert-warning`, `vp-alert-danger`, `vp-alert-caution`: the other types.
 - `vp-alert-title`: the bold title line; a block with one gets the larger top padding.
+- `vp-alert-details`: the details block, on a `<details>`. Its `<summary>` is the title, bold, with the pointer; the block opens and closes as the element does.
+
+```html
+<details class="vp-alert vp-alert-details">
+  <summary>Details</summary>
+  <p>Body text.</p>
+</details>
+```
 
 Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too (a `vp-btn` link is not restyled as a link), except that the alert's link hover dimming applies to it.
 
-Not included: the `details` type, and the rules for tables and blockquotes inside a block.
+Not included: the rules for tables and blockquotes inside a block.
 
 ### Table
 

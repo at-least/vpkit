@@ -10,9 +10,16 @@
  * with `vp-alert`:
  *   vp-alert-note, vp-alert-tip, vp-alert-important,
  *   vp-alert-warning, vp-alert-danger, vp-alert-caution
+ *   vp-alert-details   the details block, on a <details> whose <summary>
+ *                      is the title: bold, the pointer, not selectable
  *
- * Not ported: the `details` type, and the rules for tables and
- * blockquotes inside a block (markdown-only content).
+ *   <details class="vp-alert vp-alert-details">
+ *     <summary>Details</summary>
+ *     <p>Body text.</p>
+ *   </details>
+ *
+ * Not ported: the rules for tables and blockquotes inside a block
+ * (markdown-only content).
  *
  * Variables and modifiers work as in button.css. Every alert sets its
  * own variables, so a nested alert keeps its own colors, its links and
@@ -40,7 +47,7 @@
     background-color: var(--vp-alert-bg);
   }
 
-  .vp-alert:has(> .vp-alert-title) {
+  .vp-alert:has(> .vp-alert-title, > summary) {
     padding-top: 1rem;
   }
 
@@ -121,6 +128,26 @@
     --vp-alert-link: var(--vp-c-danger-1);
     --vp-alert-link-hover: var(--vp-c-danger-2);
     --vp-alert-code-bg: var(--vp-custom-block-danger-code-bg);
+  }
+
+  .vp-alert-details.vp-alert {
+    --vp-alert-border: var(--vp-custom-block-details-border);
+    --vp-alert-text: var(--vp-custom-block-details-text);
+    --vp-alert-bg: var(--vp-custom-block-details-bg);
+    --vp-alert-link: var(--vp-c-brand-1);
+    --vp-alert-link-hover: var(--vp-c-brand-2);
+    --vp-alert-code-bg: var(--vp-custom-block-details-code-bg);
+  }
+
+  .vp-alert-details.vp-alert > summary {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  :where(.vp-alert-details) > summary + p {
+    margin: 0.5rem 0;
   }
 
   .vp-alert-caution.vp-alert {
