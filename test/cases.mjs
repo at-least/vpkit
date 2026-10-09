@@ -241,6 +241,46 @@ for (const invalid of [null, 'true', 'false']) {
   });
 }
 
+// vp-input on a <select> and a <textarea>. A select takes the class as it
+// is, so it is compared with an input in the same stylesheet, except for
+// the line height: Chromium computes `normal` on a select where the class
+// sets 1.5 (measured; the height is fixed, so the box doesn't move). The
+// textarea rule is vpkit's addition, tested as the button's are: against
+// the recipe with the addition written inline. A one-row textarea is the
+// input's height.
+const TEXTAREA_ADDITION = 'height:auto;min-height:2.75rem;padding-block:0.5625rem';
+for (const invalid of [null, 'true']) {
+  const attr = invalid ? ` aria-invalid="${invalid}"` : '';
+  const label = invalid ? ` aria-invalid=${invalid}` : '';
+  cases.push({
+    name: `input on a select${label}`,
+    reference: `<input data-t="in" class="vp-input" value="7 days"${attr}>`,
+    vpkit: `<select data-t="in" class="vp-input"${attr}><option>7 days</option><option>30 days</option></select>`,
+    checks: [
+      { target: 'in', props: INPUT_BOX.filter((p) => p !== 'line-height') },
+      { target: 'in', state: ['hover'], props: COLORS },
+      { target: 'in', state: ['focus'], props: [...COLORS, 'box-shadow'] },
+    ],
+  });
+  cases.push({
+    name: `input on a textarea${label}`,
+    reference: `<textarea data-t="in" class="${TOTALITY_INPUT}" rows="3" placeholder="A note" style="${TEXTAREA_ADDITION}"${attr}></textarea>`,
+    vpkit: `<textarea data-t="in" class="vp-input" rows="3" placeholder="A note"${attr}></textarea>`,
+    checks: [
+      { target: 'in', props: [...INPUT_BOX, 'min-height'] },
+      { target: 'in', pseudo: '::placeholder', props: ['color'] },
+      { target: 'in', state: ['hover'], props: COLORS },
+      { target: 'in', state: ['focus'], props: [...COLORS, 'box-shadow'] },
+    ],
+  });
+}
+cases.push({
+  name: 'input on a one-row textarea, against the input',
+  reference: `<input data-t="in" class="vp-input" value="A note">`,
+  vpkit: `<textarea data-t="in" class="vp-input" rows="1">A note</textarea>`,
+  checks: [{ target: 'in', props: ['height', 'line-height', 'font-size'] }],
+});
+
 // alert: VitePress's custom blocks, each type with a title and the
 // things inside whose look the block sets (links, code, paragraphs)
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];

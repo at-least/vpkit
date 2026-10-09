@@ -87,7 +87,7 @@ For a component from an app recipe:
 | `vp-alert` | the custom blocks | six types, `vp-alert-title` |
 | `vp-table` | the markdown table | — |
 | `vp-card` | VPFeature | `vp-card-title`, `vp-card-details` |
-| `vp-input` | totality's `input_base!` | `aria-invalid` |
+| `vp-input` | totality's `input_base!` | `aria-invalid`; on `<input>`, `<select>` and `<textarea>` |
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
 
 ### Tier 1: next
@@ -96,7 +96,6 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-input` on `<select>` and `<textarea>` | the input itself | own-drive `web.rs:704`, `web.rs:2358`: two selects styled as its text inputs are (the pattern; own-drive's input recipe is its own look, not `vp-input`) |
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | totality `ui.rs`: `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` and `PROSE_LEDE` |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | totality `ui.rs`: `CODE`, the `[&_code]` of `PROSE` |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
@@ -127,22 +126,25 @@ VPSwitch, the track with a sliding knob, with VPSwitchAppearance's sun and moon 
 - Differences from the original: the knob follows `aria-checked` (VPSwitch has no checked state of its own; only the appearance switch moves it, by `.dark`); the hover is `@variant hover`. Nothing omitted.
 - Cases: the box, the knob and the icon against VPSwitch at rest and `:hover`; `aria-checked="true"` against VPSwitch with the knob's transform written inline, as `vp-btn`'s additions are tested (the harness renders every case in both modes, so a comparison with VPSwitchAppearance, whose knob moves only under `.dark`, would differ in light); `vp-toggle-appearance` in light and dark against VPSwitchAppearance (the transform, the two icons' opacities, the icon color); touch. Both originals need `unwrapDeep`.
 
-#### `vp-input` on `<select>` and `<textarea>`
+#### `vp-input` on `<select>` and `<textarea>` (built 2026-10-10)
 
-No `vp-select` or `vp-textarea`: the one class is the box for the three text-like controls. Measured (a probe in headless Chromium on the shipped build, 2026-10-09, fifteen assertions): `select.vp-input` already renders the input's box exactly, 44px tall, the input border, background, 8px radius, 16px text and 12px side padding, and keeps the native arrow (`appearance: auto`). `textarea.vp-input` keeps the box too but is clamped to the input's 44px with no vertical padding, so `input.css` gains one element-qualified rule:
+Demand: own-drive styles its two selects (`web.rs:704`, `web.rs:2358`) as its text inputs; that is the pattern, its input recipe being its own look.
+
+No `vp-select` or `vp-textarea`: the one class is the box for the three text-like controls. Measured (a probe in headless Chromium on the shipped build, 2026-10-09, fifteen assertions): `select.vp-input` already renders the input's box exactly, 44px tall, the input border, background, 8px radius, 16px text and 12px side padding; a screenshot in both modes (2026-10-10) shows the browser's arrow, dark on light and light on dark. `textarea.vp-input` keeps the box too but is clamped to the input's 44px with no vertical padding, so `input.css` gains one element-qualified rule:
 
 ```css
 textarea.vp-input {
   height: auto;
   min-height: 2.75rem;
-  padding-block: 0.625rem;
+  padding-block: 0.5625rem;
 }
 ```
 
-Measured with that rule in place: a three-row textarea renders 94px tall with 10px block padding, the input's border and background, and the input itself is unchanged. `rows` and `resize` stay the markup's. The hover, focus, placeholder and `aria-invalid` rules are the class's and so apply to all three.
+The block padding is 9px, not the 10px first drafted here: the input's 24px line sits 9px inside its 42px content box, so with 9px a one-row textarea is the input's 44px box and its text lands on the input's pixels (measured: the insides of an input and a one-row textarea holding the same text, 20,160 device pixels, are identical). A three-row textarea is 92px. `rows` and `resize` stay the markup's. The hover, focus, placeholder and `aria-invalid` rules are the class's and so apply to all three.
 
-- Cases: `select.vp-input` against `input.vp-input` in the same stylesheet (a `reference` case: box and colors, hover, focus); `textarea.vp-input` against the input for the shared properties and against the rule written inline for its own, as `vp-btn`'s additions are tested.
-- The option list of a `<select>` is the browser's and follows `color-scheme`, which `base.css` sets from `.dark`; nothing to style.
+- Where a select's text sits is the browser's: Chromium sets it 4px further in than an input's, and 1px lower, as it centers the text on a line height of its own (computed `normal` whatever the class sets); measured. Decision 8.
+- Cases (built): `select.vp-input` against `input.vp-input` in the same stylesheet, box and colors without the line height, hovered and focused, plain and `aria-invalid="true"`; `textarea.vp-input` against the recipe on a textarea with the rule written inline, as `vp-btn`'s additions are tested, plain and `aria-invalid="true"`; a one-row textarea against the input, for its height. A mutation run (the padding at 0.625rem, a select with 16px of left padding) turns 18 values red.
+- The option list of a `<select>` is the browser's to draw. UNVERIFIED (the headless browser does not render the popup): that it follows `color-scheme`, which `base.css` sets from `.dark`.
 
 #### `vp-link`
 
@@ -282,7 +284,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 1. **The contract** (done 2026-10-09). `test/themes.mjs` reads every root stylesheet into the base it derives the required tokens from, with `--vp-c-shadow-3` excluded by name as VitePress's own undefined variable; the themes define the five `-2` (Decision 1). Before any component, because every one below is held to it.
 2. **`compare.mjs` learns `:deep()`** (done 2026-10-09). Originals run through `unwrapDeep`. No visible change; the existing cases stay green.
 3. `vp-toggle`, with `vp-toggle-appearance` (done 2026-10-09).
-4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the two cases, the README's input section.
+4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the cases, the README's input section (done 2026-10-10).
 5. `vp-link`.
 6. `vp-code`.
 7. `vp-spinner`.
@@ -300,3 +302,4 @@ Numbered, each with a recommendation; the owner decides.
 5. **Badge contrast on soft surfaces**: totality measured 4.42:1 for success text on VitePress's translucent tint over `bg-soft`. A `vp-badge-outline` (opaque `bg`, a soft border, totality's shape) as vpkit's addition, or leave it to the app. Recommended: leave it until a second app hits it; VitePress's badge sits on the page background, where its tint is right.
 6. **`vp-label` and `vp-field-error`**: five utilities each, one consumer. Recommended: not yet.
 7. **A floating surface**: `vp-dropdown`, `vp-dialog` and `vp-toast` share `bg-elv` inside a divider border with a 0.75rem radius and a shadow (VitePress's outline dropdown and own-drive's uploads panel too). A shared primitive would be premature with none of the three built; revisit when two are.
+8. **The select's text inset** (found 2026-10-10). Chromium sets a select's text 4px further in than an input's. `select.vp-input { padding-inline-start: 0.5rem }` aligns the two in Chromium (measured), but the tests run Chromium only: Firefox and Safari are not measured here, and a compensation tuned to Chromium could misalign them instead. Recommended: leave it to the page (`ps-2`, as the README says) until a consumer stacks a select under an input.

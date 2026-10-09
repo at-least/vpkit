@@ -200,12 +200,16 @@ VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-col
 ```html
 <input class="vp-input w-full" placeholder="Coupon code">
 <input class="vp-input" aria-invalid="true">
+<select class="vp-input w-full"><option>7 days</option><option>30 days</option></select>
+<textarea class="vp-input w-full" rows="4"></textarea>
 ```
 
 - 44px tall with 16px text (iOS zooms into anything smaller), the input border on the input background, a brand border on hover and focus.
 - Focus draws a 2px brand ring as a box-shadow, since `base.css` removes focus outlines.
 - `aria-invalid="true"` turns the border danger and `"false"` success, even on hover and focus.
 - The width is yours: add `w-full` or any width utility.
+- On a `<select>` it is the same box, and the browser draws the arrow. Where the text sits is the browser's: Chromium sets it 4px further in than an input's, and 1px lower, as it centers the text on a line height of its own. `ps-2` on the select aligns the start edges in Chromium.
+- On a `<textarea>` the height follows `rows`, never less than the input's, with 9px above and below the text, so a one-row textarea is the input's box with its text on the same pixels. `rows` and the resize handle are the markup's.
 
 ### Toggle
 

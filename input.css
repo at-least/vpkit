@@ -4,6 +4,8 @@
  *
  *   <input class="vp-input w-full" placeholder="Coupon code">
  *   <input class="vp-input" aria-invalid="true">
+ *   <select class="vp-input w-full"><option>7 days</option></select>
+ *   <textarea class="vp-input w-full" rows="4"></textarea>
  *
  * 44px tall with 16px text (iOS zooms into anything smaller), the input
  * border on the input background, a brand border on hover and focus, and
@@ -11,7 +13,17 @@
  * focus outline. aria-invalid="true" turns the border danger and "false"
  * success, over hover and focus. Width is the page's: add w-full. The
  * hover border is `@variant hover`, so like Tailwind's `hover:` it
- * applies only on a device that can hover. */
+ * applies only on a device that can hover.
+ *
+ * The one class is the box of the three text-like controls. A <select>
+ * takes it as it is: the input's box, with the browser's arrow (where the
+ * text sits is the browser's: Chromium sets it 4px further in). A
+ * <textarea> takes vpkit's one rule for an element, an addition the
+ * recipe doesn't have: its height is freed to follow `rows` (never less
+ * than the input's), and it is padded 0.5625rem (9px) above and below, the
+ * inset of the input's 24px line in its 42px content box, so a one-row
+ * textarea is the input's box with its line where the input's text is.
+ * Its rows and its resize handle are the markup's. */
 
 @layer components {
   .vp-input {
@@ -26,6 +38,13 @@
     background-color: var(--vp-input-bg-color);
     transition-property: border-color, box-shadow;
     transition-duration: 0.25s;
+  }
+
+  /* vpkit's addition: a textarea grows with its rows from the input's box */
+  textarea.vp-input {
+    height: auto;
+    min-height: 2.75rem;
+    padding-block: 0.5625rem;
   }
 
   /* a rule of its own, as in button.css */
