@@ -31,4 +31,18 @@
     height: 100%;
     background-color: var(--vp-c-brand-1);
   }
+
+  /* Forced colors replace both grounds with the page's, and the bar shows
+     nothing: the track gets a frame (a transparent outline becomes one in
+     the system's text color) and the fill the system's highlight color */
+  @media (forced-colors: active) {
+    .vp-progress {
+      outline: 1px solid transparent;
+    }
+
+    .vp-progress-bar {
+      forced-color-adjust: none;
+      background-color: Highlight;
+    }
+  }
 }

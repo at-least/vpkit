@@ -75,6 +75,16 @@
     transition: transform 0.25s;
   }
 
+  /* Forced colors replace the knob's ground with the track's and drop its
+     shadow, so the knob vanishes and on looks like off; a transparent
+     outline there becomes a ring in the system's text color */
+  @media (forced-colors: active) {
+    .vp-toggle-check {
+      outline: 1px solid transparent;
+      outline-offset: -1px;
+    }
+  }
+
   /* vpkit's state: the knob at the right while the switch is on */
   .vp-toggle[aria-checked="true"] .vp-toggle-check {
     transform: translateX(1.125rem);
