@@ -38,7 +38,7 @@ Every component follows these. They are read off the six files that exist, not i
 
 9. **Tokens: only the theme's, only the contract's.** A component reads the `--vp-*` variables of `tokens.css` and no literal color; vpkit adds no theme token (each of the 200 color themes would have to define it). It reads only the tokens every color theme must define, the contract `test/themes.mjs` derives, and derives anything else from them: `vp-badge-success` is `--vp-c-success-1` on `--vp-c-success-soft`, the two success tokens the contract has. See [The token contract](#the-token-contract) for how the test enforces it and the gap it closed.
 
-10. **VitePress's motion.** Colors transition in 0.25s (0.1s on `:active`, as VPButton), surfaces that follow the appearance in 0.5s (the table rows, the menu). `base.css` neutralizes every transition and animation under `prefers-reduced-motion`, so a component carries no reduced-motion rule of its own.
+10. **VitePress's motion.** Colors transition in 0.25s (0.1s on `:active`, as VPButton), surfaces that follow the appearance in 0.5s (the table rows, the menu). `base.css` neutralizes every transition and animation under `prefers-reduced-motion`, so a component carries no reduced-motion rule of its own, unless its original does: the spinner keeps VitePress's, so it stops on a page without `base.css` too.
 
 11. **Dark mode comes through the tokens.** A component has no `.dark` rule unless its original has one (measured: none in the six files; VPSwitch colors its icon by `.dark`, and the appearance toggle will keep that rule).
 
@@ -91,6 +91,7 @@ For a component from an app recipe:
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | — |
+| `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | — |
 
 ### Tier 1: next
 
@@ -98,7 +99,6 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"` |
 
 #### `vp-toggle` (built 2026-10-09)
@@ -178,7 +178,9 @@ VitePress's inline code as a class, for code outside the markdown: an order id, 
 - Where not to use it: inside a `vp-alert`, a plain `<code>` takes the alert's tint (`:where(.vp-alert) code`) and `vp-code` would beat it (rule 6 is what lets a component inside an alert keep its look); inside a `vp-link`, a plain `<code>` takes the link's color; inside `.vp-doc`, `content.css` styles every `code`.
 - Cases (built): against `.vp-doc p > code` (font size and family, color, radius, padding, background, transition), and inside a `vp-link` against code in a markdown link, at rest and while the link is hovered; light and dark. Before code.css existed they differed in 50 of 58 values.
 
-#### `vp-spinner`
+#### `vp-spinner` (built 2026-10-10)
+
+Demand: totality `ui.rs`, `SPINNER`.
 
 VPLocalSearchBox's loading ring, the one spinner VitePress draws.
 
@@ -187,10 +189,10 @@ VPLocalSearchBox's loading ring, the one spinner VitePress draws.
 <button class="vp-btn vp-btn-brand" disabled><span class="vp-spinner size-4"></span>Paying…</button>
 ```
 
-- `vp-spinner` ← `.search-loading.active`: `display: inline-block; width: 1.125rem; height: 1.125rem; flex: none; border: 2px solid var(--vp-c-divider); border-top-color: var(--vp-c-brand-1); border-radius: 50%; animation: vp-spin 0.8s linear infinite`, with the keyframes `to { transform: rotate(360deg) }`. It spins whenever it is rendered; showing and hiding it is the app's (`hidden`, htmx's `htmx-indicator`).
-- Omitted: the original's `visibility: hidden` at rest (that is the showing and hiding) and its `margin: 0.5rem` (placement). The reduced-motion rule is `base.css`'s.
+- `vp-spinner` ← `.search-loading.active`: `display: inline-block; width: 1.125rem; height: 1.125rem; flex: none; border: 2px solid var(--vp-c-divider); border-top-color: var(--vp-c-brand-1); border-radius: 50%; animation: vp-spinner 0.8s linear infinite`, with the keyframes `to { transform: rotate(360deg) }`. It spins whenever it is rendered; showing and hiding it is the app's (`hidden`, htmx's `htmx-indicator`).
+- Omitted: the original's `visibility: hidden` at rest (that is the showing and hiding) and its `margin: 0.5rem` (placement). Kept: its own `prefers-reduced-motion` rule, `animation: none` (rule 10).
 - Tokens: `divider`, `brand-1`, in the contract.
-- Cases: against `.search-loading.active` (box, borders, radius, animation duration, timing and iteration count), light and dark. The keyframes' names differ, so `animation-name` is not compared.
+- Cases (built): against `.search-loading.active` in a flex row, as the search bar holds it (size, borders, radius, visibility, flex, animation duration, timing and iteration count), light and dark; the original's styles are loaded for that case alone, since the search box's stylesheet names generic classes (`.title`). The keyframes' names differ, so `animation-name` is not compared. The height is compared as `block-size`: the bounding box of a turning ring is wider than 18px at most angles, which first showed as a false difference in dark mode. The harness now finishes only transitions before it measures: `finish()` throws on an infinite animation. Before spinner.css existed the case differed in 36 of 52 values.
 
 #### `vp-dialog`
 
@@ -291,7 +293,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the cases, the README's input section (done 2026-10-10).
 5. `vp-link` (done 2026-10-10).
 6. `vp-code` (done 2026-10-10).
-7. `vp-spinner`.
+7. `vp-spinner` (done 2026-10-10).
 8. `vp-dialog`.
 9. Tier 2 and Tier 3 as demand appears, in the shapes above; a row here is revised when it is built.
 

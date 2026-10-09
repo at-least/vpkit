@@ -487,3 +487,22 @@ cases.push({
     { target: 'code', on: 'a', state: ['hover'], props: ['color'] },
   ],
 });
+
+// spinner: VPLocalSearchBox's loading ring (.search-loading.active), in a
+// flex row as the search bar holds it. Its margin is placement and is left
+// out; the keyframes' names differ, so the animation is compared by its
+// duration, timing and count. The height is `block-size`, the style's:
+// the harness's `height` is the bounding box, which the turning ring
+// widens past 18px at most angles
+const SPIN = [
+  'width', 'block-size', 'box-sizing', ...BORDER, ...SIDES.map((s) => `border-${s}-color`), ...RADIUS,
+  'visibility', 'flex-grow', 'flex-shrink', 'flex-basis',
+  'animation-duration', 'animation-timing-function', 'animation-iteration-count',
+];
+cases.push({
+  name: 'spinner',
+  upstreamFiles: ['components/VPLocalSearchBox.vue'],
+  upstream: `<div class="search-actions"><span data-t="spin" class="search-loading active"></span></div>`,
+  vpkit: `<div style="display:flex"><span data-t="spin" class="vp-spinner"></span></div>`,
+  checks: [{ target: 'spin', props: SPIN }],
+});

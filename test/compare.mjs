@@ -129,8 +129,12 @@ async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
     ([target, pseudo, props]) => {
       // getAnimations() flushes the style change the forced state just
       // made, so its transitions exist here; finish() jumps them to their
-      // end values instead of reading a color halfway through
-      for (const animation of document.getAnimations()) animation.finish();
+      // end values instead of reading a color halfway through. Only the
+      // transitions: an infinite animation (a spinner) has no end to jump
+      // to, and finish() throws on one
+      for (const animation of document.getAnimations()) {
+        if (animation instanceof CSSTransition) animation.finish();
+      }
       const el = document.querySelector(`[data-t="${target}"]`);
       const style = getComputedStyle(el, pseudo ?? null);
       // geometry: the box's height, and its offset inside its parent's box

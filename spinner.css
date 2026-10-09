@@ -1,0 +1,40 @@
+/* vpkit — spinner, VitePress's loading ring (VPLocalSearchBox's
+ * `.search-loading.active`). An optional import:
+ * `@import "vpkit/spinner.css";`
+ *
+ *   <span class="vp-spinner" role="status" aria-label="Loading"></span>
+ *   <button class="vp-btn vp-btn-brand" disabled><span class="vp-spinner size-4"></span>Paying…</button>
+ *
+ * An 18px ring of the divider color with a brand quarter, a turn every
+ * 0.8s. It turns whenever it is rendered: showing and hiding it is the
+ * page's (`hidden`, htmx's indicator). Left out of the original: its
+ * `visibility: hidden` until `.active` (that is the showing and hiding)
+ * and its margin (placement). It is inline-block, where the original is
+ * a flex item of the search bar, so it also stands in a line of text; in
+ * a flex row both are blocks. It stops under `prefers-reduced-motion`, by
+ * VitePress's own rule, carried over with it. */
+
+@layer components {
+  .vp-spinner {
+    display: inline-block;
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+    border: 2px solid var(--vp-c-divider);
+    border-top-color: var(--vp-c-brand-1);
+    border-radius: 50%;
+    animation: vp-spinner 0.8s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vp-spinner {
+      animation: none;
+    }
+  }
+
+  @keyframes vp-spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

@@ -103,6 +103,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/toggle.css";
 @import "vpkit/link.css";
 @import "vpkit/code.css";
+@import "vpkit/spinner.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -262,6 +263,19 @@ VitePress's inline code (`.vp-doc :not(pre) > code`) as a class, for code outsid
 - 0.875em code in the brand color on the soft gray, a 0.25rem radius; the face is the page's code face.
 - In a `vp-link` it takes the link's colors, as code in a markdown link does.
 - Not for code inside an alert: a plain `<code>` there takes the alert's tint, which `vp-code` would override. Inside `.vp-doc`, `content.css` styles every `code` already.
+
+### Spinner
+
+VitePress's loading ring, the one in the local search box.
+
+```html
+<span class="vp-spinner" role="status" aria-label="Loading"></span>
+<button class="vp-btn vp-btn-brand" disabled><span class="vp-spinner size-4"></span>Paying…</button>
+```
+
+- An 18px ring of the divider color with a brand quarter, a turn every 0.8s; `size-4` or any size utility resizes it.
+- It turns whenever it is rendered: show and hide it with `hidden` or your request library's indicator.
+- It stops under `prefers-reduced-motion`, as VitePress's does.
 
 ## Layout
 
