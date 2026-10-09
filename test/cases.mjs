@@ -1,4 +1,10 @@
-import { OWN_DRIVE_BTN_ROW, OWN_DRIVE_MODAL, OWN_DRIVE_MODAL_H3, TOTALITY_INPUT } from './recipes.mjs';
+import {
+  OWN_DRIVE_BTN_DANGER,
+  OWN_DRIVE_BTN_ROW,
+  OWN_DRIVE_MODAL,
+  OWN_DRIVE_MODAL_H3,
+  TOTALITY_INPUT,
+} from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
 // VitePress's classes and with vpkit's; elements to measure carry data-t.
@@ -765,4 +771,19 @@ cases.push({
   upstream: `<div class="titles"><span><mark data-t="mark">Badge</mark> component</span></div>`,
   vpkit: `<p><mark data-t="mark" class="vp-mark">Badge</mark> component</p>`,
   checks: [{ target: 'mark', props: ['color', 'background-color', ...RADIUS, ...PADDING] }],
+});
+
+// danger button: own-drive's grounded danger button against vp-btn
+// vp-btn-danger: danger text on the danger tint, the same hovered and
+// pressed. Its box is vp-btn's, so only the parts the two share are
+// compared with it (own-drive's gap and line height are its own)
+cases.push({
+  name: 'button danger',
+  reference: `<button data-t="btn" class="${OWN_DRIVE_BTN_DANGER}" type="button">Delete forever</button>`,
+  vpkit: `<button data-t="btn" class="vp-btn vp-btn-danger" type="button">Delete forever</button>`,
+  checks: [
+    { target: 'btn', props: [...COLORS, ...RADIUS, 'padding-left', 'padding-right', 'height', 'font-size', 'font-weight'] },
+    { target: 'btn', state: ['hover'], props: COLORS },
+    { target: 'btn', state: ['hover', 'active'], props: COLORS },
+  ],
 });

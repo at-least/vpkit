@@ -7,6 +7,9 @@
  * `vp-btn` alone is VPButton's medium size in the alt (gray) theme.
  * Modifiers, each used together with `vp-btn`:
  *   vp-btn-brand, vp-btn-sponsor   the other two themes
+ *   vp-btn-danger                  vpkit's: danger text on the danger tint,
+ *                                  the same hovered and pressed (own-drive's
+ *                                  grounded danger button)
  *   vp-btn-big                     the big size
  *
  * Two additions VPButton doesn't have, because the apps need them: the
@@ -103,6 +106,18 @@
     --vp-btn-active-border: var(--vp-button-sponsor-active-border);
     --vp-btn-active-text: var(--vp-button-sponsor-active-text);
     --vp-btn-active-bg: var(--vp-button-sponsor-active-bg);
+  }
+
+  .vp-btn-danger.vp-btn {
+    --vp-btn-border: transparent;
+    --vp-btn-text: var(--vp-c-danger-1);
+    --vp-btn-bg: var(--vp-c-danger-soft);
+    --vp-btn-hover-border: transparent;
+    --vp-btn-hover-text: var(--vp-c-danger-1);
+    --vp-btn-hover-bg: var(--vp-c-danger-soft);
+    --vp-btn-active-border: transparent;
+    --vp-btn-active-text: var(--vp-c-danger-1);
+    --vp-btn-active-bg: var(--vp-c-danger-soft);
   }
 
   .vp-btn-big.vp-btn {

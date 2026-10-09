@@ -129,6 +129,7 @@ VitePress's `VPButton`.
 
 - `vp-btn` alone: the medium size, alt (gray) theme.
 - `vp-btn-brand`, `vp-btn-sponsor`: the other two themes.
+- `vp-btn-danger`: vpkit's addition, own-drive's danger button: danger text on the danger tint, the same hovered and pressed, since the ground is the warning.
 - `vp-btn-big`: the big size.
 
 Two additions VitePress's button doesn't have: it is `inline-flex`, so an icon and its label sit centered side by side 0.5rem apart, and a `disabled` button is dimmed to half opacity with a not-allowed cursor.

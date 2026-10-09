@@ -16,3 +16,11 @@ export const OWN_DRIVE_MODAL =
   'bg-[color:var(--vp-c-bg-elv)] text-text-1 border border-divider rounded-[.75rem] px-[1.25rem] py-[1.15rem] w-[26rem] max-w-[92vw] shadow-4';
 export const OWN_DRIVE_MODAL_H3 = 'mt-0 mb-[.6rem] text-[1.05rem] font-semibold';
 export const OWN_DRIVE_BTN_ROW = 'flex justify-end gap-[.5rem] mt-4';
+
+// own-drive src/web.rs at 8a2c523, verbatim as of 2026-10-10: the grounded
+// danger button, `BTN_DANGER` = BTN_BASE BTN_PILL BTN_FRAME DANGER_C
+export const OWN_DRIVE_BTN_DANGER =
+  'inline-flex items-center justify-center gap-[.3rem] text-[.875rem] font-semibold whitespace-nowrap cursor-pointer no-underline transition-[color,border-color,background-color] duration-[250ms] active:duration-100 disabled:opacity-50 disabled:cursor-default' +
+  ' rounded-[1.25rem] h-[2.5rem] px-[1.25rem]' +
+  ' border border-[color:var(--vp-button-alt-border)]' +
+  ' text-[color:var(--vp-c-danger-1)] bg-[color:var(--vp-c-danger-soft)] hover:bg-[color:var(--vp-c-danger-soft)] active:bg-[color:var(--vp-c-danger-soft)]';
