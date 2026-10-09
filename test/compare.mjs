@@ -21,6 +21,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
+import { unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { cases, known } from './cases.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -54,14 +55,16 @@ function vpkitCss() {
 }
 
 // a .vue file contributes its <style> block: `scoped` only adds an
-// attribute selector, which an isolated page doesn't need
+// attribute selector, which an isolated page doesn't need, and a
+// `:deep(x)` is unwrapped to `x` as the layout port does (a browser drops
+// a selector with :deep() in it, and with it the rule)
 function upstreamCss() {
   return UPSTREAM.map((file) => {
     const src = readFileSync(join(ROOT, 'test/upstream', file), 'utf8');
     if (!file.endsWith('.vue')) return src;
     const style = src.match(/<style[^>]*>([\s\S]*?)<\/style>/);
     if (!style) throw new Error(`no <style> block in ${file}`);
-    return style[1];
+    return unwrapDeep(style[1]);
   }).join('\n');
 }
 
