@@ -916,3 +916,19 @@ cases.push({
   vpkit: `<div style="width:300px;display:flex"><span data-t="track" class="vp-progress"><span data-t="fill" class="vp-progress-bar" style="width:40%"></span></span></div>`,
   checks: [{ target: 'track', props: ['width'] }, { target: 'fill', props: ['width'] }],
 });
+
+// a panel with other padding, set through --vp-dropdown-padding: its
+// groups still reach both edges (the reference writes that out inline)
+cases.push({
+  name: 'dropdown with 0.5rem of padding',
+  reference:
+    `<div style="display:inline-block"><div data-t="menu" class="vp-dropdown" style="padding:0.5rem">${ddItem('Profile')}` +
+    `<div data-t="group" class="vp-dropdown-group" style="margin:0.75rem -0.5rem 0;padding:0.75rem 0.5rem 0">${ddItem('Name')}</div></div></div>`,
+  vpkit:
+    `<div style="display:inline-block"><div data-t="menu" class="vp-dropdown" style="--vp-dropdown-padding:0.5rem">${ddItem('Profile')}` +
+    `<div data-t="group" class="vp-dropdown-group">${ddItem('Name')}</div></div></div>`,
+  checks: [
+    { target: 'menu', props: [...PADDING, 'width'] },
+    { target: 'group', props: [...SIDES.map((s) => `margin-${s}`), ...PADDING, 'offset-left'] },
+  ],
+});

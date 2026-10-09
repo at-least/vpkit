@@ -29,12 +29,19 @@
  * `text-decoration: none`, so an alert's rule for links doesn't underline
  * one placed inside it. Not ported:
  * nested groups (VPMenuGroup's .sub-groups), the nav screen's variants.
- * Where the panel sits, and opening it, are the page's. */
+ * Where the panel sits, and opening it, are the page's.
+ *
+ * The panel's padding is --vp-dropdown-padding (0.75rem), which the groups
+ * read to reach the panel's edges with their rules. Change it there,
+ * `[--vp-dropdown-padding:0.5rem]`: a padding utility on the panel moves
+ * its edge but not the groups', which then overhang it. */
 
 @layer components {
   .vp-dropdown {
+    --vp-dropdown-padding: 0.75rem;
+
     border-radius: 0.75rem;
-    padding: 0.75rem;
+    padding: var(--vp-dropdown-padding);
     min-width: 8rem;
     border: 1px solid var(--vp-c-divider);
     background-color: var(--vp-c-bg-elv);
@@ -77,9 +84,9 @@
   }
 
   .vp-dropdown-group {
-    margin: 0.75rem -0.75rem 0;
+    margin: 0.75rem calc(-1 * var(--vp-dropdown-padding)) 0;
     border-top: 1px solid var(--vp-c-divider);
-    padding: 0.75rem 0.75rem 0;
+    padding: 0.75rem var(--vp-dropdown-padding) 0;
   }
 
   .vp-dropdown-group:first-child {
