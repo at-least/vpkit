@@ -1,0 +1,31 @@
+/* vpkit — progress bar. VitePress has none; this is own-drive's (its
+ * storage quota bar). An optional import: `@import "vpkit/progress.css";`
+ *
+ *   <span class="vp-progress w-28" role="progressbar" aria-label="Storage used"
+ *         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+ *     <span class="vp-progress-bar" style="width: 40%"></span>
+ *   </span>
+ *
+ * `vp-progress` is the track: a 0.3rem bar of the soft gray with
+ * 0.15rem-rounded ends, as wide as its container (a width utility sets
+ * another). `vp-progress-bar` is the brand fill inside it, empty until
+ * the page sets its width, which carries the value; the track clips it.
+ * The value for assistive technology is the page's, in the progressbar's
+ * aria-value* attributes. */
+
+@layer components {
+  .vp-progress {
+    display: block;
+    height: 0.3rem;
+    border-radius: 0.15rem;
+    background-color: var(--vp-c-default-soft);
+    overflow: hidden;
+  }
+
+  .vp-progress-bar {
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: var(--vp-c-brand-1);
+  }
+}

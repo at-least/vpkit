@@ -1,4 +1,6 @@
 import {
+  OWN_DRIVE_BAR,
+  OWN_DRIVE_BAR_FILL,
   OWN_DRIVE_BTN_DANGER,
   OWN_DRIVE_BTN_ROW,
   OWN_DRIVE_MODAL,
@@ -842,4 +844,26 @@ cases.push({
   reference: `<div data-t="toast" class="${OWN_DRIVE_MSG}" role="status">Saved notes.txt</div>`,
   vpkit: `<div data-t="toast" class="vp-toast" role="status">Saved notes.txt</div>`,
   checks: [{ target: 'toast', props: [...BORDER, ...RADIUS, ...PADDING, ...COLORS, 'box-shadow'] }],
+});
+
+// progress: own-drive's bar against vp-progress, the track 7rem wide and
+// the fill at 40%, as its quota bar sets them inline
+const bar = (track, fill) =>
+  `<span data-t="track" class="${track}" style="width:7rem" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">` +
+  `<span data-t="fill" class="${fill}" style="width:40%"></span></span>`;
+cases.push({
+  name: 'progress',
+  reference: bar(OWN_DRIVE_BAR, OWN_DRIVE_BAR_FILL),
+  vpkit: bar('vp-progress', 'vp-progress-bar'),
+  checks: [
+    { target: 'track', props: ['display', 'width', 'height', ...RADIUS, 'background-color', 'overflow-x', 'overflow-y'] },
+    { target: 'fill', props: ['display', 'width', 'height', 'background-color'] },
+  ],
+});
+// without a width of its own, the fill is empty
+cases.push({
+  name: 'progress, no width set',
+  reference: `<span class="${OWN_DRIVE_BAR}" style="width:7rem"><span data-t="fill" class="${OWN_DRIVE_BAR_FILL}"></span></span>`,
+  vpkit: `<span class="vp-progress" style="width:7rem"><span data-t="fill" class="vp-progress-bar"></span></span>`,
+  checks: [{ target: 'fill', props: ['width'] }],
 });

@@ -42,3 +42,9 @@ export const TOTALITY_MSG_ERROR = 'mt-2 text-[0.875rem] leading-6 text-danger-1'
 // message `#msg` (its class list; placed fixed at the bottom center)
 export const OWN_DRIVE_MSG =
   'fixed left-1/2 -translate-x-1/2 bottom-4 z-[var(--od-z-msg)] bg-[color:var(--vp-c-bg-elv)] text-text-1 border border-divider rounded-[.5rem] px-[.9rem] py-[.5rem] shadow-3 max-w-[90vw] empty:hidden';
+
+// own-drive src/web.rs at 8a2c523, verbatim as of 2026-10-10: the bar's
+// track (`BAR`) and its fill (`BAR_FILL`); the quota bar sets the track
+// 7rem wide and the fill's width inline
+export const OWN_DRIVE_BAR = 'block h-[.3rem] bg-[color:var(--vp-c-default-soft)] rounded-[.15rem] overflow-hidden';
+export const OWN_DRIVE_BAR_FILL = 'block h-full bg-brand-1 w-0';

@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Six exist. This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, which components come next and why, what stays a utility, and how the apps built on vpkit move onto them. The README documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty exist, one file each, as of 2026-10-10. This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, which components come next and why, what stays a utility, and how the apps built on vpkit move onto them. The README documents what ships; this documents what is decided.
 
 What is called measured here was measured on 2026-10-09 against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts of that day (`../totality`, `../own-drive`); a claim marked *guessed* is one nobody measured.
 
@@ -18,9 +18,9 @@ Two applications import vpkit components, and they are the evidence for what an 
 
 ## Rules
 
-Every component follows these. They are read off the six files that exist, not invented for the ones to come; where a rule is already followed, the file that follows it is named.
+Every component follows these. They were read off the six files that existed when this was written, not invented for the ones to come, and the fourteen built since follow them; where a rule is already followed, the file that follows it is named.
 
-1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the six files).
+1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the twenty component files).
 
 2. **Flat names.** The block is `vp-<name>`; a modifier is `vp-<name>-<modifier>`, used only together with the block; a part is `vp-<name>-<part>`. No BEM separators: `vp-btn-brand`, `vp-card-title`, `vp-alert-title`. (`layout.css` is BEM, `vp-content--has-sidebar`, because VitePress names child components after their parents' parts; app components have no such collisions.) A part keeps VitePress's own name where the original has one: VPFeature's `.title` is `vp-card-title`, the custom block's `.custom-block-title` is `vp-alert-title`. A modifier's rule is the compound `.vp-x-mod.vp-x`, modifier first, so it wins over the block whatever the file order, and so tools that look for a class at the start of a selector find it (totality's CSS coverage test).
 
@@ -36,11 +36,11 @@ Every component follows these. They are read off the six files that exist, not i
 
 8. **Size and placement are the page's.** No width, no margin, no position: `vp-input w-full`, `vp-btn w-full`, a dialog placed by `showModal()`. The exceptions are VitePress's own and the README names them: `vp-table`'s `margin: 1.25rem 0`, `vp-badge`'s `margin-left: 0.125rem`, `vp-card`'s `height: 100%` (VPFeature's, for a grid of equal boxes); `my-0`, `ml-0`, `h-auto` remove them. So do `vp-label`'s 0.375rem below it and `vp-field-error`'s 0.5rem above it, a field's own spacing, kept from totality's recipes. `vp-dialog` has a width (Decision 4) and `margin: auto`, which gives the browser back its centering of a modal dialog rather than placing it.
 
-9. **Tokens: only the theme's, only the contract's.** A component reads the `--vp-*` variables of `tokens.css` and no literal color; vpkit adds no theme token (each of the 200 color themes would have to define it). It reads only the tokens every color theme must define, the contract `test/themes.mjs` derives, and derives anything else from them: `vp-badge-success` is `--vp-c-success-1` on `--vp-c-success-soft`, the two success tokens the contract has. See [The token contract](#the-token-contract) for how the test enforces it and the gap it closed.
+9. **Tokens: only the theme's, only the contract's.** A component reads the `--vp-*` variables of `tokens.css` and no literal color; vpkit adds no theme token (each of the 200 color themes would have to define it). The one exception is `vp-kbd`, whose original has no token to read: VitePress's half-transparent grays, the same in both modes, copied. It reads only the tokens every color theme must define, the contract `test/themes.mjs` derives, and derives anything else from them: `vp-badge-success` is `--vp-c-success-1` on `--vp-c-success-soft`, the two success tokens the contract has. See [The token contract](#the-token-contract) for how the test enforces it and the gap it closed.
 
 10. **VitePress's motion.** Colors transition in 0.25s (0.1s on `:active`, as VPButton), surfaces that follow the appearance in 0.5s (the table rows, the menu). `base.css` neutralizes every transition and animation under `prefers-reduced-motion`, so a component carries no reduced-motion rule of its own, unless its original does: the spinner keeps VitePress's, so it stops on a page without `base.css` too.
 
-11. **Dark mode comes through the tokens.** A component has no `.dark` rule unless its original has one (measured: none in the six files; VPSwitch colors its icon by `.dark`, and the appearance toggle will keep that rule).
+11. **Dark mode comes through the tokens.** A component has no `.dark` rule unless its original has one (measured: only `toggle.css` has one, VPSwitch's, which colors its icon by `.dark` and moves the appearance switch's knob).
 
 12. **Additions are allowed, listed and tested.** Where an app needs what the original lacks, the component adds it: `vp-btn` is `inline-flex` with a 0.5rem gap so an icon sits beside its label, and dims when disabled. Every addition is named in the file header and the README, and tested against the original with the addition written inline (VPButton with `style="opacity:0.5;cursor:not-allowed"`). Every omission is named too (`vp-card` leaves out the feature icon).
 
@@ -101,6 +101,7 @@ For a component from an app recipe:
 | `vp-choice` | totality's `CHOICE` (a recipe) | `:has(:checked)`, `:has(:focus-visible)` |
 | `vp-label`, `vp-field-error` | totality's `FIELD_LABEL`, `MSG_ERROR` (recipes) | — |
 | `vp-toast` | own-drive's `#msg` (a recipe) | — |
+| `vp-progress` | own-drive's `BAR`, `BAR_FILL` (recipes) | `vp-progress-bar` |
 
 ### Tier 1: next
 
@@ -250,7 +251,7 @@ No original; one of the two apps draws it. Build one when the second app needs i
 | `vp-choice` (built 2026-10-10) | totality `CHOICE` (`ui.rs`) | a `<label>` card around a radio or checkbox: a divider border on `bg`, 0.5rem radius, 1rem padding, `gap: 0.75rem`, 0.875rem/1.5; hover a `brand-1` border; `:has(:checked)` a `brand-1` border on `brand-soft`; `:has(:focus-visible)` a 2px `brand-1` outline offset 2px; the control `accent-color: var(--vp-c-brand-1)` | one site (`views.rs:865`) |
 | `vp-label`, `vp-field-error` (built 2026-10-10) | totality `FIELD_LABEL`, `MSG_ERROR` (`ui.rs`) | the field's label (block, 0.875rem/1.5, 500, `text-1`, `margin-bottom: 0.375rem`) and the error line under the control (0.875rem/1.5, `danger-1`, `margin-top: 0.5rem`) | five utilities each; own-drive's labels not measured (guessed: utilities). Borderline by the test below, Decision 6 |
 | `vp-toast` (built 2026-10-10) | own-drive `#msg` (`web.rs:750`) | the surface of a status message: `bg-elv`, a divider border, a 0.5rem radius (built so; 0.75rem was drafted here, the uploads panel's), `--vp-shadow-3`, padding; the placement (fixed, bottom center) and the live region are the app's | totality shows results inline (`RESULT`), not as a toast |
-| `vp-progress` | own-drive `BAR`, `BAR_FILL` (`web.rs:463`) | a 0.3rem track on `default-soft` with 0.15rem radii, a `brand-1` fill | two spans; a native `<progress>` needs vendor pseudo-elements. One site (the quota bar; the load bar is another thing) |
+| `vp-progress` (built 2026-10-10) | own-drive `BAR`, `BAR_FILL` (`web.rs:463`) | a 0.3rem track on `default-soft` with 0.15rem radii, a `brand-1` fill | two spans; a native `<progress>` needs vendor pseudo-elements. One site (the quota bar; the load bar is another thing) |
 
 ### Not components
 
@@ -305,7 +306,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 6. `vp-code` (done 2026-10-10).
 7. `vp-spinner` (done 2026-10-10).
 8. `vp-dialog` (done 2026-10-10).
-9. Tier 2 and Tier 3 as demand appears, in the shapes above; a row here is revised when it is built.
+9. Tier 2 and Tier 3: built 2026-10-10, one commit each, at the owner's request to build every component, in the shapes above (each row says where the build departed from it).
 
 ## Open decisions
 
@@ -317,5 +318,5 @@ Numbered, each with a recommendation; the owner decides.
 4. **`vp-dialog`'s width**: decided 2026-10-10 as recommended, with the owner's go-ahead to build every component: the recipe's `26rem` and `92vw`, which a width utility replaces.
 5. **Badge contrast on soft surfaces**: totality measured 4.42:1 for success text on VitePress's translucent tint over `bg-soft`. A `vp-badge-outline` (opaque `bg`, a soft border, totality's shape) as vpkit's addition, or leave it to the app. Recommended: leave it until a second app hits it; VitePress's badge sits on the page background, where its tint is right.
 6. **`vp-label` and `vp-field-error`**: five utilities each, one consumer. Recommended not yet; built 2026-10-10 at the owner's request to build every component, in `field.css`.
-7. **A floating surface**: `vp-dropdown`, `vp-dialog` and `vp-toast` share `bg-elv` inside a divider border with a 0.75rem radius and a shadow (VitePress's outline dropdown and own-drive's uploads panel too). A shared primitive would be premature with none of the three built; revisit when two are.
+7. **A floating surface**: `vp-dropdown`, `vp-dialog` and `vp-toast` share `bg-elv` inside a divider border with a 0.75rem radius and a shadow (VitePress's outline dropdown and own-drive's uploads panel too). Revisited 2026-10-10 with the three built: they share the elevated ground and the divider border and nothing else (radius 0.75rem, 0.75rem and 0.5rem; shadow 3, 4 and 3; padding of their own), so a shared class would hold two declarations. Each keeps its own.
 8. **The select's text inset** (found 2026-10-10). Chromium sets a select's text 4px further in than an input's. `select.vp-input { padding-inline-start: 0.5rem }` aligns the two in Chromium (measured), but the tests run Chromium only: Firefox and Safari are not measured here, and a compensation tuned to Chromium could misalign them instead. Recommended: leave it to the page (`ps-2`, as the README says) until a consumer stacks a select under an input.
