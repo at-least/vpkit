@@ -19,34 +19,35 @@
   --vp-c-divider: #dfdad9;
   --vp-c-gutter: #dfdad9;
 
-  --vp-c-brand-1: #6f5a88;
-  --vp-c-brand-2: #907aa9;
+  --vp-c-brand-1: #6c5784;
+  --vp-c-brand-2: #3f324d;
   --vp-c-brand-3: #6b5685;
   --vp-c-brand-soft: #f1e8e6;
+  --vp-button-brand-hover-bg: #907aa9;
 
   --vp-c-default-1: #cecacd;
   --vp-c-default-2: #dfdad9;
   --vp-c-default-3: #e9e2df;
   --vp-c-default-soft: #dfdad9;
 
-  --vp-c-tip-1: #6f5a88;
-  --vp-c-tip-2: #5e4c74;
+  --vp-c-tip-1: #6c5784;
+  --vp-c-tip-2: #463956;
   --vp-c-tip-soft: #f1e8e6;
-  --vp-c-note-1: #6f5a88;
+  --vp-c-note-1: #6c5784;
   --vp-c-note-soft: #f1e8e6;
   --vp-c-success-1: #3f6f7a;
   --vp-c-success-soft: #eaeae5;
   --vp-c-important-1: #96586d;
-  --vp-c-important-2: #804b5d;
+  --vp-c-important-2: #5a3541;
   --vp-c-important-soft: #fae8e1;
   --vp-c-warning-1: #8d6328;
-  --vp-c-warning-2: #785422;
+  --vp-c-warning-2: #553b18;
   --vp-c-warning-soft: #fbead8;
   --vp-c-danger-1: #9c4f66;
-  --vp-c-danger-2: #854357;
+  --vp-c-danger-2: #5f303e;
   --vp-c-danger-soft: #f6e4e0;
   --vp-c-caution-1: #9c4f66;
-  --vp-c-caution-2: #854357;
+  --vp-c-caution-2: #5f303e;
   --vp-c-caution-soft: #f6e4e0;
 
   --vp-c-sponsor: #9c4f66;
@@ -75,9 +76,10 @@
   --vp-c-gutter: #191724;
 
   --vp-c-brand-1: #c4a7e7;
-  --vp-c-brand-2: #9b7fd4;
+  --vp-c-brand-2: #d9c7f0;
   --vp-c-brand-3: #8d74c8;
   --vp-c-brand-soft: #2b2539;
+  --vp-button-brand-hover-bg: #9b7fd4;
 
   --vp-c-default-1: #524f67;
   --vp-c-default-2: #403d52;
@@ -85,23 +87,23 @@
   --vp-c-default-soft: #403d52;
 
   --vp-c-tip-1: #c4a7e7;
-  --vp-c-tip-2: #cdb4eb;
+  --vp-c-tip-2: #c4a7e7;
   --vp-c-tip-soft: #2b2539;
   --vp-c-note-1: #c4a7e7;
   --vp-c-note-soft: #2b2539;
   --vp-c-success-1: #9ccfd8;
   --vp-c-success-soft: #252937;
   --vp-c-important-1: #ebbcba;
-  --vp-c-important-2: #eec6c4;
+  --vp-c-important-2: #ebbcba;
   --vp-c-important-soft: #2f2834;
   --vp-c-warning-1: #f6c177;
-  --vp-c-warning-2: #f7ca8b;
+  --vp-c-warning-2: #f6c177;
   --vp-c-warning-soft: #30282c;
   --vp-c-danger-1: #eb6f92;
-  --vp-c-danger-2: #ee85a2;
+  --vp-c-danger-2: #f093ad;
   --vp-c-danger-soft: #311f30;
   --vp-c-caution-1: #eb6f92;
-  --vp-c-caution-2: #ee85a2;
+  --vp-c-caution-2: #f093ad;
   --vp-c-caution-soft: #311f30;
 
   --vp-c-sponsor: #ebbcba;

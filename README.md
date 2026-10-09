@@ -67,7 +67,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ### Color themes
 
-`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). The `-2` of tip, important, warning, danger and caution, the hover color of a link in that alert or custom block, is the role's `-1` stepped 15% toward black in light and toward white in dark, the step the generator gives `brand-2` (so `tip-2` no longer follows `brand-2` as in VitePress's `vars.css`: a theme's `brand-2` is fit for white text on it, not for text on the tip tint); a theme with a second accent step of its own can set it by hand. Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
@@ -76,10 +76,12 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 A theme only sets variables, so the components and your utilities follow it.
 
-- 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
-- 176 are mapped automatically from the Helix editor's palettes (`helix/`), with accents adjusted where the published colors fall short of WCAG AA.
+In a theme every `-2` (`brand-2`, `tip-2` and the other roles') is a hovered link's color, which is all VitePress's stylesheets use it for. VitePress's `vars.css` describes `-2` as the button's hover color, but in dark mode no one color can be both a white-labelled button's background and a hovered link that reads on the page, so a theme gives the brand button its hover color through `--vp-button-brand-hover-bg`, a variable VitePress has for it. Where a container's tint would leave a hovered link no room, the generator thins the tint, never below 0.06.
 
-`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` vpkit's stylesheets reference: the base, the components, the layout, the markdown and the icons, less VitePress's own undefined `--vp-c-shadow-3` in VPSidebar.vue) in both modes, and to contrast minimums: body text 7:1, secondary text 4.5:1 on the page and on the soft surfaces, muted text 3:1, links 4.5:1, white button labels 3:1, each badge and alert color 4.5:1 on its own tint, and the alert link hover colors (the `-2`) 4.5:1 on the same tint.
+- 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
+- 176 are mapped automatically from the Helix editor's palettes (`helix/`), with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
+
+`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` vpkit's stylesheets reference: the base, the components, the layout, the markdown and the icons, less VitePress's own undefined `--vp-c-shadow-3` in VPSidebar.vue) in both modes, and to contrast minimums: body text 7:1 on the page and on the elevated surface of menus and dialogs, secondary text 4.5:1 on the page, the soft surfaces and the elevated one, muted text 3:1, links 4.5:1 on the page and the elevated surface, white button labels 3:1 on the brand button at rest and hovered, each badge and alert color 4.5:1 on its own tint, and each `-2` 4.5:1 as a hovered link, dimmed to 0.75 where a container dims it, on the container's tint and on code inside it. A shortfall the generator can't fit is listed in the test with its cause, and the run fails once it stops occurring; one is listed, the dark half of `wolf-alabaster-light-mono`.
 
 A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
 

@@ -5,11 +5,14 @@ Reads helix/*.toml [palette] tables, maps each scheme onto the
 design-token contract (hand-written slot maps below), derives monotonic
 text/border ramps and the neutral ramp, auto-fits accents for WCAG AA
 (the same ratios test/themes.mjs enforces), and emits
-themes/<name>.css. The -2 of tip, important, warning, danger and caution
-(the hover color of a link in that custom block or alert) is the role's
--1 stepped 15% toward black in light and toward white in dark, the step
-brand-2 gets below, so it clears the -1's contrast on the tint by
-construction.
+themes/<name>.css. A -2 (brand, tip, important, warning, danger, caution)
+is a hovered link's color, as every vpkit and VitePress stylesheet uses
+it: the -1 stepped toward black in light and toward white in dark until
+it reads at AA where it is drawn, dimmed to 0.75 in a container as
+custom-block.css and alert.css dim a hovered link. vars.css describes -2
+as the button's hover ground; the brand button's is emitted as its own
+--vp-button-brand-hover-bg instead, since in dark mode no one color can
+be both (measured over all 200 themes).
 
 The emitted files are the source of truth once committed — rerun after
 editing the slot maps, then pass `npm test` (rustpress regenerates its
@@ -66,8 +69,12 @@ def fit(c, against, target, mode):
     return c
 
 def composite(hex_color, alpha, bg):
+    # halves round up, as test/themes.mjs's Math.round does: Python's round()
+    # takes them to even, and one channel's difference moves a contrast by
+    # 0.05 (a dimmed hover over a twice-tinted ground)
     (fr, fg_, fb), (br, bg2, bb) = rgb(hex_color), rgb(bg)
-    return hexs((round(fr * alpha + br * (1 - alpha)), round(fg_ * alpha + bg2 * (1 - alpha)), round(fb * alpha + bb * (1 - alpha))))
+    up = lambda v: int(v + 0.5)
+    return hexs((up(fr * alpha + br * (1 - alpha)), up(fg_ * alpha + bg2 * (1 - alpha)), up(fb * alpha + bb * (1 - alpha))))
 
 def fit_on_tint(c, bg, alpha, target, mode):
     """fit c so it passes on its own alpha tint over bg."""
@@ -77,6 +84,22 @@ def fit_on_tint(c, bg, alpha, target, mode):
             return c
         c = mix(c, black if mode == "light" else white, 0.04)
     return c
+
+def fit_all(c, mode, text=(), dimmed=(), target=4.5):
+    """step c toward black (light) or white (dark) until it reaches the
+    target as text on every `text` ground and, dimmed to 0.75 (the opacity
+    the containers give a hovered link), on every `dimmed` ground."""
+    target += EPS
+    end = black if mode == "light" else white
+    # interpolated from c, not stepped: a rounded 4% step stalls short of
+    # black and white (at 12 and 243 per channel)
+    for k in range(101):
+        x = mix(c, end, k / 100)
+        if all(contrast(x, g) >= target for g in text) and all(
+            contrast(composite(x, 0.75, g), g) >= target for g in dimmed
+        ):
+            return x
+    return end
 
 black, white = "#000000", "#ffffff"
 
@@ -283,11 +306,23 @@ def build_mode(mode, m, adjusted):
         m[slot] = c
     bg, bg_alt, bg_elv = m["bg"], m["bg_alt"], m["bg_elv"]
     bg_soft = bg_alt
-    fitk("text1", bg, 7.0, "text")
+    # the elevated surface leaves room for body text: a dark half whose
+    # menus and dialogs are mid-tone (voxed's olive, a misread light
+    # palette's red) moves them toward the page until white reaches 7:1
+    if mode == "dark" and contrast(white, bg_elv) < 7.0 + EPS:
+        before = bg_elv
+        bg_elv = next((x for x in (mix(before, bg, k / 20) for k in range(21))
+                       if contrast(white, x) >= 7.0 + EPS), bg)
+        adjusted.add("surfaces")
+    # body text on the page and on the elevated surface (menus, dialogs)
+    text1 = fit_all(m["text1"], mode, text=[bg, bg_elv], target=7.0)
+    if text1 != orig["text1"]:
+        adjusted.add("text")
+    m["text1"] = text1
     # derive the rest of the text ramp from the fitted text-1 so the
     # hierarchy is monotonic by construction (source secondaries can
     # converge or invert once contrast-fitted)
-    worst2 = min([bg, bg_alt, bg_soft], key=lambda s: contrast(mix(m["text1"], bg, 0.22), s))
+    worst2 = min([bg, bg_alt, bg_soft, bg_elv], key=lambda s: contrast(mix(m["text1"], bg, 0.22), s))
     m["text2"] = fit(mix(m["text1"], bg, 0.22), worst2, 4.5, mode)
     m["text3"] = fit(mix(m["text2"], bg, 0.45), bg, 3.0, mode)
     # border: keep the scheme's own if it separates from the bg, else
@@ -305,16 +340,45 @@ def build_mode(mode, m, adjusted):
         m[slot] = fit_on_tint(m[slot], bg, a, 4.5, mode)
         if m[slot] != before:
             adjusted.add("accents")
-    # brand-2 hover / brand-3 button bg: derive from brand-1, keep white
-    # text on both >= 3.0
-    brand2 = m.get("brand2") or mix(m["brand1"], white if mode == "dark" else black, 0.15)
-    brand3 = m.get("brand3") or mix(m["brand1"], black, 0.22)
-    for which, c in (("brand2", brand2), ("brand3", brand3)):
-        m[which] = fit(c, white, 3.0, "light")  # always darken toward black
-    # the hover step of the semantic roles: the same 15% step as brand-2's,
-    # in the direction that raises contrast on the tint in this mode
-    step = lambda c: mix(c, white if mode == "dark" else black, 0.15)
+    # the gray wash (default-soft) over a ground: a hovered menu item, the
+    # info, note and details containers, inline code
     neutral = mix(m["text1"], bg, 0.55)
+    # a tint leaves room for a hovered link: at the extreme (black in light,
+    # white in dark) the link, dimmed to 0.75, must reach AA on the tint and
+    # on the tint of code inside it, or the tint is thinned by 0.01 until it
+    # does (a mid-tone dark half, where twice-tinted grounds turn mid-gray).
+    # Not below 0.06, where a container would lose its color; a tint that
+    # can't make room by then stays as it was (test/themes.mjs lists those)
+    def room(color, a):
+        end = black if mode == "light" else white
+        fits = lambda x: all(contrast(composite(end, 0.75, g), g) >= 4.5 + EPS
+                             for g in (composite(color, x, bg), composite(color, x, composite(color, x, bg))))
+        return next((x for x in (round(a - k / 100, 2) for k in range(round(a * 100) - 5)) if fits(x)), a)
+    ds_alpha = room(neutral, 0.22 if mode == "light" else 0.18)
+    gray_on = lambda ground: composite(neutral, ds_alpha, ground)
+    # brand-1 also as a menu's current item, on the elevated surface and
+    # under its hover wash
+    before = m["brand1"]
+    m["brand1"] = fit_all(m["brand1"], mode, text=[bg_elv, gray_on(bg_elv)])
+    if m["brand1"] != before:
+        adjusted.add("accents")
+    # the brand button's grounds, white text on both >= 3.0: brand-3 at
+    # rest, and the hover ground (VitePress's brand-2 job) as its own token
+    button_hover = m.get("brand2") or mix(m["brand1"], white if mode == "dark" else black, 0.15)
+    brand3 = m.get("brand3") or mix(m["brand1"], black, 0.22)
+    m["button_hover"] = fit(button_hover, white, 3.0, "light")  # always darken toward black
+    m["brand3"] = fit(brand3, white, 3.0, "light")
+    # brand-2, a hovered link: on the page, the elevated surface and inline
+    # code as text, and dimmed in the gray containers and on their code
+    gray = gray_on(bg)
+    m["brand2"] = fit_all(m["brand1"], mode, text=[bg, bg_elv, gray], dimmed=[gray, gray_on(gray)])
+    # a role's -2, the hovered link in its container: dimmed, on the
+    # container's tint and on the tint of code inside it
+    def hover(base, a):
+        tint = composite(base, a, bg)
+        return fit_all(base, mode, dimmed=[tint, composite(base, a, tint)])
+    tip_a = room(m["brand1"], alpha)
+    role_a = {r: room(m[r], s_alpha) for r in ("important", "warning", "danger")}
     if mode == "light":
         default = [mix(neutral, bg, 0.25), mix(neutral, bg, 0.45), mix(neutral, bg, 0.65)]
     else:
@@ -324,18 +388,21 @@ def build_mode(mode, m, adjusted):
         bg=bg, bg_alt=bg_alt, bg_elv=bg_elv, bg_soft=bg_soft,
         text1=m["text1"], text2=m["text2"], text3=m["text3"],
         border=m["border"], divider=m["border"], gutter=m["border"],
-        brand1=m["brand1"], brand2=m["brand2"], brand3=m["brand3"],
+        brand1=m["brand1"], brand2=m["brand2"], brand3=m["brand3"], button_hover=m["button_hover"],
         brand_soft=rgba(m["brand1"], alpha),
         default1=default[0], default2=default[1], default3=default[2],
-        default_soft=rgba(neutral, 0.22 if mode == "light" else 0.18),
-        tip1=m["brand1"], tip2=step(m["brand1"]), tip_soft=rgba(m["brand1"], alpha),
+        default_soft=rgba(neutral, ds_alpha),
+        tip1=m["brand1"], tip2=hover(m["brand1"], tip_a), tip_soft=rgba(m["brand1"], tip_a),
         note1=m["brand1"], note_soft=rgba(m["brand1"], alpha),
         success1=m["success"], success_soft=rgba(m["success"], s_alpha),
-        important1=m["important"], important2=step(m["important"]),
-        important_soft=rgba(m["important"], s_alpha),
-        warning1=m["warning"], warning2=step(m["warning"]), warning_soft=rgba(m["warning"], s_alpha),
-        danger1=m["danger"], danger2=step(m["danger"]), danger_soft=rgba(m["danger"], s_alpha),
-        caution1=m["danger"], caution2=step(m["danger"]), caution_soft=rgba(m["danger"], s_alpha),
+        important1=m["important"], important2=hover(m["important"], role_a["important"]),
+        important_soft=rgba(m["important"], role_a["important"]),
+        warning1=m["warning"], warning2=hover(m["warning"], role_a["warning"]),
+        warning_soft=rgba(m["warning"], role_a["warning"]),
+        danger1=m["danger"], danger2=hover(m["danger"], role_a["danger"]),
+        danger_soft=rgba(m["danger"], role_a["danger"]),
+        caution1=m["danger"], caution2=hover(m["danger"], role_a["danger"]),
+        caution_soft=rgba(m["danger"], role_a["danger"]),
         sponsor=m["sponsor"],
     )
 
@@ -361,6 +428,7 @@ TOKENS = [
     ("danger1", "--vp-c-danger-1"), ("danger2", "--vp-c-danger-2"), ("danger_soft", "--vp-c-danger-soft"),
     ("caution1", "--vp-c-caution-1"), ("caution2", "--vp-c-caution-2"), ("caution_soft", "--vp-c-caution-soft"),
     ("sponsor", "--vp-c-sponsor"),
+    ("button_hover", "--vp-button-brand-hover-bg"),
 ]
 
 def emit_css(name, desc, note, light, dark):
@@ -462,8 +530,10 @@ def auto_slots(stem):
         return None
 
     def ui_hint(entry, field):
-        """Resolve `ui.<entry> = { <field> = "palette-key or #hex" }`."""
-        node = data.get("ui", {}).get(entry)
+        """Resolve `ui.<entry> = { <field> = "palette-key or #hex" }`. Helix
+        writes the key quoted, `"ui.background"`, a top-level key with a
+        dot in it, not a `ui` table; both are read."""
+        node = data.get(f"ui.{entry}", data.get("ui", {}).get(entry))
         if isinstance(node, dict):
             v = node.get(field)
             if isinstance(v, str):
