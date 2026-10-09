@@ -67,7 +67,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ### Color themes
 
-`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 200 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). The `-2` of tip, important, warning, danger and caution, the hover color of a link in that alert or custom block, is the role's `-1` stepped 15% toward black in light and toward white in dark, the step the generator gives `brand-2`; a theme with a second accent step of its own can set it by hand. Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
@@ -79,7 +79,7 @@ A theme only sets variables, so the components and your utilities follow it.
 - 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
 - 176 are mapped automatically from the Helix editor's palettes (`helix/`), with accents adjusted where the published colors fall short of WCAG AA.
 
-`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` the base references) in both modes, and to contrast minimums: body text 7:1, secondary text 4.5:1 on the page and on the soft surfaces, muted text 3:1, links 4.5:1, white button labels 3:1, each badge and alert color 4.5:1 on its own tint.
+`test/themes.mjs` holds every theme to the whole contract (every `--vp-c-*` vpkit's stylesheets reference: the base, the components, the layout, the markdown and the icons, less VitePress's own undefined `--vp-c-shadow-3` in VPSidebar.vue) in both modes, and to contrast minimums: body text 7:1, secondary text 4.5:1 on the page and on the soft surfaces, muted text 3:1, links 4.5:1, white button labels 3:1, each badge and alert color 4.5:1 on its own tint, and the alert link hover colors (the `-2`) 4.5:1 on the same tint.
 
 A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
 

@@ -5,7 +5,11 @@ Reads helix/*.toml [palette] tables, maps each scheme onto the
 design-token contract (hand-written slot maps below), derives monotonic
 text/border ramps and the neutral ramp, auto-fits accents for WCAG AA
 (the same ratios test/themes.mjs enforces), and emits
-themes/<name>.css.
+themes/<name>.css. The -2 of tip, important, warning, danger and caution
+(the hover color of a link in that custom block or alert) is the role's
+-1 stepped 15% toward black in light and toward white in dark, the step
+brand-2 gets below, so it clears the -1's contrast on the tint by
+construction.
 
 The emitted files are the source of truth once committed — rerun after
 editing the slot maps, then pass `npm test` (rustpress regenerates its
@@ -307,6 +311,9 @@ def build_mode(mode, m, adjusted):
     brand3 = m.get("brand3") or mix(m["brand1"], black, 0.22)
     for which, c in (("brand2", brand2), ("brand3", brand3)):
         m[which] = fit(c, white, 3.0, "light")  # always darken toward black
+    # the hover step of the semantic roles: the same 15% step as brand-2's,
+    # in the direction that raises contrast on the tint in this mode
+    step = lambda c: mix(c, white if mode == "dark" else black, 0.15)
     neutral = mix(m["text1"], bg, 0.55)
     if mode == "light":
         default = [mix(neutral, bg, 0.25), mix(neutral, bg, 0.45), mix(neutral, bg, 0.65)]
@@ -321,13 +328,14 @@ def build_mode(mode, m, adjusted):
         brand_soft=rgba(m["brand1"], alpha),
         default1=default[0], default2=default[1], default3=default[2],
         default_soft=rgba(neutral, 0.22 if mode == "light" else 0.18),
-        tip1=m["brand1"], tip_soft=rgba(m["brand1"], alpha),
+        tip1=m["brand1"], tip2=step(m["brand1"]), tip_soft=rgba(m["brand1"], alpha),
         note1=m["brand1"], note_soft=rgba(m["brand1"], alpha),
         success1=m["success"], success_soft=rgba(m["success"], s_alpha),
-        important1=m["important"], important_soft=rgba(m["important"], s_alpha),
-        warning1=m["warning"], warning_soft=rgba(m["warning"], s_alpha),
-        danger1=m["danger"], danger_soft=rgba(m["danger"], s_alpha),
-        caution1=m["danger"], caution_soft=rgba(m["danger"], s_alpha),
+        important1=m["important"], important2=step(m["important"]),
+        important_soft=rgba(m["important"], s_alpha),
+        warning1=m["warning"], warning2=step(m["warning"]), warning_soft=rgba(m["warning"], s_alpha),
+        danger1=m["danger"], danger2=step(m["danger"]), danger_soft=rgba(m["danger"], s_alpha),
+        caution1=m["danger"], caution2=step(m["danger"]), caution_soft=rgba(m["danger"], s_alpha),
         sponsor=m["sponsor"],
     )
 
@@ -344,13 +352,14 @@ TOKENS = [
     ("brand_soft", "--vp-c-brand-soft"),
     ("default1", "--vp-c-default-1"), ("default2", "--vp-c-default-2"), ("default3", "--vp-c-default-3"),
     ("default_soft", "--vp-c-default-soft"),
-    ("tip1", "--vp-c-tip-1"), ("tip_soft", "--vp-c-tip-soft"),
+    ("tip1", "--vp-c-tip-1"), ("tip2", "--vp-c-tip-2"), ("tip_soft", "--vp-c-tip-soft"),
     ("note1", "--vp-c-note-1"), ("note_soft", "--vp-c-note-soft"),
     ("success1", "--vp-c-success-1"), ("success_soft", "--vp-c-success-soft"),
-    ("important1", "--vp-c-important-1"), ("important_soft", "--vp-c-important-soft"),
-    ("warning1", "--vp-c-warning-1"), ("warning_soft", "--vp-c-warning-soft"),
-    ("danger1", "--vp-c-danger-1"), ("danger_soft", "--vp-c-danger-soft"),
-    ("caution1", "--vp-c-caution-1"), ("caution_soft", "--vp-c-caution-soft"),
+    ("important1", "--vp-c-important-1"), ("important2", "--vp-c-important-2"),
+    ("important_soft", "--vp-c-important-soft"),
+    ("warning1", "--vp-c-warning-1"), ("warning2", "--vp-c-warning-2"), ("warning_soft", "--vp-c-warning-soft"),
+    ("danger1", "--vp-c-danger-1"), ("danger2", "--vp-c-danger-2"), ("danger_soft", "--vp-c-danger-soft"),
+    ("caution1", "--vp-c-caution-1"), ("caution2", "--vp-c-caution-2"), ("caution_soft", "--vp-c-caution-soft"),
     ("sponsor", "--vp-c-sponsor"),
 ]
 

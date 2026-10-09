@@ -20,18 +20,23 @@
   --vp-c-default-3: #d5d4cb;
   --vp-c-default-soft: rgba(161, 157, 133, 0.22);
   --vp-c-tip-1: #2c698e;
+  --vp-c-tip-2: #255979;
   --vp-c-tip-soft: rgba(44, 105, 142, 0.1);
   --vp-c-note-1: #2c698e;
   --vp-c-note-soft: rgba(44, 105, 142, 0.1);
   --vp-c-success-1: #216c4e;
   --vp-c-success-soft: rgba(33, 108, 78, 0.12);
   --vp-c-important-1: #6c51a1;
+  --vp-c-important-2: #5c4589;
   --vp-c-important-soft: rgba(108, 81, 161, 0.12);
   --vp-c-warning-1: #68604d;
+  --vp-c-warning-2: #585241;
   --vp-c-warning-soft: rgba(104, 96, 77, 0.12);
   --vp-c-danger-1: #9a4545;
+  --vp-c-danger-2: #833b3b;
   --vp-c-danger-soft: rgba(154, 69, 69, 0.12);
   --vp-c-caution-1: #9a4545;
+  --vp-c-caution-2: #833b3b;
   --vp-c-caution-soft: rgba(154, 69, 69, 0.12);
   --vp-c-sponsor: #e9488a;
 
@@ -63,18 +68,23 @@
   --vp-c-default-3: #4c4215;
   --vp-c-default-soft: rgba(126, 108, 15, 0.18);
   --vp-c-tip-1: #47ace8;
+  --vp-c-tip-2: #63b8eb;
   --vp-c-tip-soft: rgba(71, 172, 232, 0.14);
   --vp-c-note-1: #47ace8;
   --vp-c-note-soft: rgba(71, 172, 232, 0.14);
   --vp-c-success-1: #48e9a7;
   --vp-c-success-soft: rgba(72, 233, 167, 0.15);
   --vp-c-important-1: #9b80d0;
+  --vp-c-important-2: #aa93d7;
   --vp-c-important-soft: rgba(155, 128, 208, 0.15);
   --vp-c-warning-1: #c7b693;
+  --vp-c-warning-2: #cfc1a3;
   --vp-c-warning-soft: rgba(199, 182, 147, 0.15);
   --vp-c-danger-1: #cf7777;
+  --vp-c-danger-2: #d68b8b;
   --vp-c-danger-soft: rgba(207, 119, 119, 0.15);
   --vp-c-caution-1: #cf7777;
+  --vp-c-caution-2: #d68b8b;
   --vp-c-caution-soft: rgba(207, 119, 119, 0.15);
   --vp-c-sponsor: #e9488a;
 }

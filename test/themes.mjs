@@ -2,13 +2,15 @@
 //
 //   node test/themes.mjs
 //
-// The required tokens are derived from the base itself: every --vp-c-*
-// that index.css (with the parts it imports) references, minus the color
-// ramps and the absolutes. Each theme must define all of them in :root and
-// in .dark, plus --vp-shadow-1…5 in :root, and meet the WCAG contrast
-// minimums of the role each token plays (body text, links, buttons, badge
-// text) in both modes. Ported from rustpress's tests/theme_contract.rs,
-// check for check. Exits 1, listing every failure.
+// The required tokens are derived from the stylesheets themselves: every
+// --vp-c-* that any of vpkit's root stylesheets references (index.css with
+// its parts, the components, the layout, the markdown, the icons), minus
+// the color ramps and the absolutes. Each theme must define all of them in
+// :root and in .dark, plus --vp-shadow-1…5 in :root, and meet the WCAG
+// contrast minimums of the role each token plays (body text, links,
+// buttons, badge text, alert link hovers) in both modes. Ported from
+// rustpress's tests/theme_contract.rs, check for check. Exits 1, listing
+// every failure.
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -21,16 +23,22 @@ const ABSOLUTES = ['white', 'black'];
 
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 
-// index.css with each `@import "./part.css";` line replaced by the part
+// every stylesheet vpkit ships, the root *.css files: index.css's parts,
+// the components (button.css, …), layout.css, content.css, icons.css.
+// index.css itself only imports; fonts.css references no token
 function baseCss() {
-  return read('index.css')
-    .split('\n')
-    .map((line) => {
-      const part = line.match(/^@import "\.\/(.+)";$/);
-      return part ? read(part[1]) : line;
-    })
+  return readdirSync(ROOT)
+    .filter((f) => f.endsWith('.css'))
+    .sort()
+    .map(read)
     .join('\n');
 }
+
+// VitePress's own slip, carried verbatim by the port: VPSidebar.vue sets
+// `box-shadow: var(--vp-c-shadow-3)` on the phone's open sidebar, and
+// nothing defines that name (the shadows are --vp-shadow-*), so it never
+// paints upstream either. Not a token a theme can define.
+const UPSTREAM_SLIPS = ['shadow-3'];
 
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?(\*\/|$)/g, '');
 
@@ -91,7 +99,9 @@ function requiredTokens(css) {
       refs.push(name);
     }
   }
-  const tokens = [...new Set(refs.filter((t) => !isRamp(t) && !ABSOLUTES.includes(t)))].sort();
+  const tokens = [
+    ...new Set(refs.filter((t) => !isRamp(t) && !ABSOLUTES.includes(t) && !UPSTREAM_SLIPS.includes(t))),
+  ].sort();
   if (tokens.length < 30) fail(`contract implausibly small: ${tokens.join(', ')}`);
   return tokens;
 }
@@ -242,9 +252,12 @@ for (const name of names) {
       minimum('brand-2', WHITE, 3.0);
 
       // badge / container foregrounds, against their own soft background
-      // (composited over the page bg when rgba)
+      // (composited over the page bg when rgba); the -2 of a role is the
+      // hover color of a link in that container (custom-block.css,
+      // alert.css), on the same tint
       for (const kind of ['tip', 'note', 'success', 'important', 'warning', 'danger', 'caution']) {
         minimum(`${kind}-1`, color(values, `${kind}-soft`, bg), 4.5);
+        if (required.includes(`${kind}-2`)) minimum(`${kind}-2`, color(values, `${kind}-soft`, bg), 4.5);
       }
     } catch (error) {
       fail(`${label}: ${error.message}`);
