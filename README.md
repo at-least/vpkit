@@ -104,6 +104,8 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
 
+The library's design is [DESIGN.md](DESIGN.md): the rules every component follows, how one is proven against its original, which components come next and in what order, what stays a utility, and how the apps move onto them.
+
 Their hover styles are written with `@variant hover`, so they behave like Tailwind's `hover:`: they apply only on a device that can hover (`@media (hover: hover)`, or however your project defines the `hover` variant). VitePress's apply on touch screens too, where a tapped button or card keeps its hover look until the next tap.
 
 ### Button
