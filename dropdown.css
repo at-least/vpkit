@@ -24,8 +24,10 @@
  * The markup is flat where VitePress's is two lists (ul.items of li), so
  * VPMenuLink's rule for a link right after a group, which draws the rule
  * on the li, has no element to go on: items after a group go in a group
- * of their own, with or without a title. vpkit's one addition: an item is
- * `width: 100%`, so a button fills its row as a link does. Not ported:
+ * of their own, with or without a title. vpkit's additions: an item is
+ * `width: 100%`, so a button fills its row as a link does, and sets
+ * `text-decoration: none`, so an alert's rule for links doesn't underline
+ * one placed inside it. Not ported:
  * nested groups (VPMenuGroup's .sub-groups), the nav screen's variants.
  * Where the panel sits, and opening it, are the page's. */
 
@@ -52,6 +54,7 @@
     font-weight: 500;
     color: var(--vp-c-text-1);
     text-align: left;
+    text-decoration: none;
     white-space: nowrap;
     transition: background-color 0.25s, color 0.25s;
   }

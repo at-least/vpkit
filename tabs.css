@@ -14,7 +14,8 @@
  * when a 2px brand bar marks it (`::after`). Where VitePress has radio
  * inputs and labels, the tabs are buttons that say which one is selected;
  * showing its panel, and moving the selection with the arrow keys, are the
- * page's. Not ported: the bar's bleed to the screen's edges under 640px
+ * page's. A tab may be a link; `text-decoration: none` keeps an alert's rule
+ * for links from underlining one inside it. Not ported: the bar's bleed to the screen's edges under 640px
  * (-1.5rem each side, square corners), which is the markdown column's. */
 
 @layer components {
@@ -38,6 +39,7 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--vp-code-tab-text-color);
+    text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
     transition: color 0.25s;

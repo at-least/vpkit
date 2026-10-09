@@ -182,7 +182,7 @@ VitePress's custom blocks (`::: tip` and the others).
 </details>
 ```
 
-Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too (a `vp-btn` link is not restyled as a link), except that the alert's link hover dimming applies to it.
+Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too: a `vp-btn`, `vp-card`, `vp-dropdown-item` or `vp-tabs-tab` link is not restyled as a link. Only the alert's link hover dimming applies to it.
 
 Not included: the rules for tables and blockquotes inside a block.
 

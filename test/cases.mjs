@@ -885,3 +885,25 @@ for (const value of ['', 'undefined']) {
     checks: [{ target: 'item', props: ['color'] }],
   });
 }
+
+// link components inside an alert keep their own look at rest: the alert's
+// rule for links underlines and recolors any <a> that doesn't set those
+// itself (only its hover dimming still reaches them, as it reaches vp-btn).
+// Block wrappers: a card's heading inside a <p> would be parsed out of it
+const LOOK = ['color', 'text-decoration-line', 'font-weight'];
+for (const [name, markup, checks] of [
+  ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [{ target: 'x', props: LOOK }]],
+  ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [{ target: 'x', props: LOOK }]],
+  ['card', card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')), [
+    { target: 'card', props: ['color', 'text-decoration-line'] },
+    { target: 'title', props: ['color', 'font-weight', 'text-decoration-line'] },
+    { target: 'details', props: ['color', 'font-weight'] },
+  ]],
+]) {
+  cases.push({
+    name: `${name} inside an alert`,
+    reference: `<div>${markup}</div>`,
+    vpkit: `<div class="vp-alert vp-alert-tip">${markup}</div>`,
+    checks,
+  });
+}
