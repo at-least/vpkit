@@ -1,4 +1,4 @@
-import { TOTALITY_INPUT } from './recipes.mjs';
+import { OWN_DRIVE_BTN_ROW, OWN_DRIVE_MODAL, OWN_DRIVE_MODAL_H3, TOTALITY_INPUT } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
 // VitePress's classes and with vpkit's; elements to measure carry data-t.
@@ -505,4 +505,34 @@ cases.push({
   upstream: `<div class="search-actions"><span data-t="spin" class="search-loading active"></span></div>`,
   vpkit: `<div style="display:flex"><span data-t="spin" class="vp-spinner"></span></div>`,
   checks: [{ target: 'spin', props: SPIN }],
+});
+
+// dialog: own-drive's modal recipe on a <dialog>, both opened with
+// showModal() by a script in the markup. vpkit's additions are written
+// inline on the reference: `margin: auto`, which Tailwind's preflight
+// takes from every element (the browser centers a modal dialog with it),
+// and the ::backdrop color, the scrim the recipe draws as an element
+const dialogBody = (title, actions) =>
+  `<h2 data-t="title" class="${title}">Rename</h2><p>A new name for <code>notes.txt</code>.</p>` +
+  `<div data-t="actions" class="${actions}"><button class="vp-btn" type="button">Cancel</button>` +
+  `<button class="vp-btn vp-btn-brand" type="button">Rename</button></div>`;
+const OPEN = `<script>document.querySelector('[data-t="dlg"]').showModal()</script>`;
+cases.push({
+  name: 'dialog',
+  reference:
+    `<dialog data-t="dlg" class="${OWN_DRIVE_MODAL}" style="margin:auto">${dialogBody(OWN_DRIVE_MODAL_H3, OWN_DRIVE_BTN_ROW)}</dialog>` +
+    `<style>[data-t="dlg"]::backdrop{background-color:var(--vp-backdrop-bg-color)}</style>${OPEN}`,
+  vpkit: `<dialog data-t="dlg" class="vp-dialog">${dialogBody('vp-dialog-title', 'vp-dialog-actions')}</dialog>${OPEN}`,
+  checks: [
+    {
+      target: 'dlg',
+      props: [
+        'position', ...SIDES.map((s) => `margin-${s}`), ...BORDER, ...RADIUS, ...PADDING, ...COLORS,
+        'width', 'max-width', 'box-shadow', 'height', 'offset-top', 'offset-left',
+      ],
+    },
+    { target: 'dlg', pseudo: '::backdrop', props: ['background-color', 'position'] },
+    { target: 'title', props: ['margin-top', 'margin-bottom', 'font-size', 'font-weight', 'line-height'] },
+    { target: 'actions', props: ['display', 'justify-content', 'column-gap', 'margin-top'] },
+  ],
 });

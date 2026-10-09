@@ -34,7 +34,7 @@ Every component follows these. They are read off the six files that exist, not i
 
 7. **Hover is `@variant hover`,** each in a rule of its own (nested in a rule with declarations, it would stay CSS nesting in an unminified build). Like Tailwind's `hover:` it applies only on a device that can hover; VitePress's hovers also stick to a tapped element on a touch screen. Each component has a touch-screen case: with `:hover` forced it must look as it does at rest.
 
-8. **Size and placement are the page's.** No width, no margin, no position: `vp-input w-full`, `vp-btn w-full`, a dialog placed by `showModal()`. The exceptions are VitePress's own and the README names them: `vp-table`'s `margin: 1.25rem 0`, `vp-badge`'s `margin-left: 0.125rem`, `vp-card`'s `height: 100%` (VPFeature's, for a grid of equal boxes); `my-0`, `ml-0`, `h-auto` remove them. One exception to come is argued for below (`vp-dialog`'s width).
+8. **Size and placement are the page's.** No width, no margin, no position: `vp-input w-full`, `vp-btn w-full`, a dialog placed by `showModal()`. The exceptions are VitePress's own and the README names them: `vp-table`'s `margin: 1.25rem 0`, `vp-badge`'s `margin-left: 0.125rem`, `vp-card`'s `height: 100%` (VPFeature's, for a grid of equal boxes); `my-0`, `ml-0`, `h-auto` remove them. `vp-dialog` has a width (Decision 4) and `margin: auto`, which gives the browser back its centering of a modal dialog rather than placing it.
 
 9. **Tokens: only the theme's, only the contract's.** A component reads the `--vp-*` variables of `tokens.css` and no literal color; vpkit adds no theme token (each of the 200 color themes would have to define it). It reads only the tokens every color theme must define, the contract `test/themes.mjs` derives, and derives anything else from them: `vp-badge-success` is `--vp-c-success-1` on `--vp-c-success-soft`, the two success tokens the contract has. See [The token contract](#the-token-contract) for how the test enforces it and the gap it closed.
 
@@ -92,6 +92,7 @@ For a component from an app recipe:
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | — |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | — |
+| `vp-dialog` | own-drive's `MODAL` (a recipe) | `vp-dialog-title`, `vp-dialog-actions`; `::backdrop` |
 
 ### Tier 1: next
 
@@ -99,7 +100,6 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-dialog` | own-drive's `MODAL` (a recipe) | own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"` |
 
 #### `vp-toggle` (built 2026-10-09)
 
@@ -194,7 +194,9 @@ VPLocalSearchBox's loading ring, the one spinner VitePress draws.
 - Tokens: `divider`, `brand-1`, in the contract.
 - Cases (built): against `.search-loading.active` in a flex row, as the search bar holds it (size, borders, radius, visibility, flex, animation duration, timing and iteration count), light and dark; the original's styles are loaded for that case alone, since the search box's stylesheet names generic classes (`.title`). The keyframes' names differ, so `animation-name` is not compared. The height is compared as `block-size`: the bounding box of a turning ring is wider than 18px at most angles, which first showed as a false difference in dark mode. The harness now finishes only transitions before it measures: `finish()` throws on an infinite animation. Before spinner.css existed the case differed in 36 of 52 values.
 
-#### `vp-dialog`
+#### `vp-dialog` (built 2026-10-10)
+
+Demand: own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"`.
 
 own-drive's modal (`web.rs:457`, the recipe) on the `<dialog>` element, which brings the top layer, the focus trap, Escape and `::backdrop`.
 
@@ -209,13 +211,13 @@ own-drive's modal (`web.rs:457`, the recipe) on the `<dialog>` element, which br
 </dialog>
 ```
 
-- `vp-dialog` ← `MODAL`: `border: 1px solid var(--vp-c-divider); border-radius: 0.75rem; padding: 1.15rem 1.25rem; width: 26rem; max-width: 92vw; color: var(--vp-c-text-1); background-color: var(--vp-c-bg-elv); box-shadow: var(--vp-shadow-4)`; `::backdrop { background-color: var(--vp-backdrop-bg-color) }` ← `MODAL_BACK`'s scrim. The width is the recipe's and a utility overrides it (`w-[32rem]`): a dialog with no width collapses to its content, so this is the one component with a width (rule 8's exception, Decision 4).
+- `vp-dialog` ← `MODAL`: `margin: auto; border: 1px solid var(--vp-c-divider); border-radius: 0.75rem; padding: 1.15rem 1.25rem; width: 26rem; max-width: 92vw; color: var(--vp-c-text-1); background-color: var(--vp-c-bg-elv); box-shadow: var(--vp-shadow-4)`; `::backdrop { background-color: var(--vp-backdrop-bg-color) }` ← `MODAL_BACK`'s scrim. The width is the recipe's and a utility overrides it (`w-[32rem]`): a dialog with no width collapses to its content, so this is the one component with a width (rule 8's exception, Decision 4).
 - `vp-dialog-title` ← `MODAL_H3`: `margin: 0 0 0.6rem; font-size: 1.05rem; font-weight: 600`.
 - `vp-dialog-actions` ← `BTN_ROW`: `display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem`.
 - Tokens: `divider`, `text-1`, `bg-elv`, `--vp-shadow-4`, `--vp-backdrop-bg-color`, in the contract.
-- Placement: `showModal()` centers the dialog (the browser's `margin: auto` in the top layer); the component sets no position. `MODAL_P`'s paragraph rules stay utilities.
+- Placement: `showModal()` centers the dialog with the browser's `margin: auto` in the top layer, and Tailwind's preflight sets every element's margin to 0, the dialog's included (measured: without dialog.css the open dialog sits at the page's top left corner), so `vp-dialog` sets `margin: auto` back. That restores the browser's placement; the component sets no position. `MODAL_P`'s paragraph rules stay utilities.
 - Not ported: own-drive's `#modalBack` scrim element and its z-index (`--od-z-modal`); the top layer needs neither. own-drive's modals are `<div role="dialog">` behind a scrim today; moving them to `<dialog>` is a change in its `app.js`, in the migration map.
-- Cases: the box against `MODAL` on a `<div>` (a recipe case), `vp-dialog-title` and `vp-dialog-actions` against theirs; `::backdrop` against `--vp-backdrop-bg-color`. UNVERIFIED (not probed): whether `getComputedStyle(dialog, '::backdrop')` resolves on a dialog that is not open; the plan is to open it with `showModal()` in the case's markup, which the test page executes, and compare the real backdrop.
+- Cases (built): `MODAL` on a `<dialog>` with vpkit's two additions written inline (`margin: auto`, and the backdrop color in a `<style>`) against `vp-dialog`, both opened by `showModal()` in the case's markup: the box, its centered position, the shadow, the title, the actions, and `::backdrop`, which `getComputedStyle` resolves on an open modal dialog (measured). Before dialog.css existed the case differed in 73 of 88 values.
 
 ### Tier 2: VitePress has it, no app asks yet
 
@@ -294,7 +296,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 5. `vp-link` (done 2026-10-10).
 6. `vp-code` (done 2026-10-10).
 7. `vp-spinner` (done 2026-10-10).
-8. `vp-dialog`.
+8. `vp-dialog` (done 2026-10-10).
 9. Tier 2 and Tier 3 as demand appears, in the shapes above; a row here is revised when it is built.
 
 ## Open decisions
@@ -304,7 +306,7 @@ Numbered, each with a recommendation; the owner decides.
 1. **The contract gap** (above): decided and done. The contract covers every shipped file; the themes define the five `-2` by the `brand-2` step. The alternative, hovering on `-1` as a `known` difference, was not taken.
 2. **Names** for the app versions of layout blocks: `vp-toggle` (VPSwitch) and `vp-dropdown` (VPMenu). Alternatives considered, `vp-switch-btn` and `vp-menu-box`, read as parts of the layout's blocks. Recommended as named.
 3. **`vp-icon-btn`'s source**: VPSocialLink's bare box as the original with own-drive's hover ground as a tested addition, or own-drive's `BTN_ICON` as the recipe and no original. Recommended: the original plus the addition, as `vp-btn` was done.
-4. **`vp-dialog`'s width**: the recipe's `26rem` and `92vw` in the component, overridden by utilities, or none, every app adding its own. Recommended: the recipe's; a dialog with no width is unusable as shipped, unlike an input.
+4. **`vp-dialog`'s width**: decided 2026-10-10 as recommended, with the owner's go-ahead to build every component: the recipe's `26rem` and `92vw`, which a width utility replaces.
 5. **Badge contrast on soft surfaces**: totality measured 4.42:1 for success text on VitePress's translucent tint over `bg-soft`. A `vp-badge-outline` (opaque `bg`, a soft border, totality's shape) as vpkit's addition, or leave it to the app. Recommended: leave it until a second app hits it; VitePress's badge sits on the page background, where its tint is right.
 6. **`vp-label` and `vp-field-error`**: five utilities each, one consumer. Recommended: not yet.
 7. **A floating surface**: `vp-dropdown`, `vp-dialog` and `vp-toast` share `bg-elv` inside a divider border with a 0.75rem radius and a shadow (VitePress's outline dropdown and own-drive's uploads panel too). A shared primitive would be premature with none of the three built; revisit when two are.

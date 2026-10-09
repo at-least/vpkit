@@ -104,6 +104,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/link.css";
 @import "vpkit/code.css";
 @import "vpkit/spinner.css";
+@import "vpkit/dialog.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -276,6 +277,26 @@ VitePress's loading ring, the one in the local search box.
 - An 18px ring of the divider color with a brand quarter, a turn every 0.8s; `size-4` or any size utility resizes it.
 - It turns whenever it is rendered: show and hide it with `hidden` or your request library's indicator.
 - It stops under `prefers-reduced-motion`, as VitePress's does.
+
+### Dialog
+
+VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, which brings the top layer, the focus trap, Escape and the backdrop.
+
+```html
+<dialog class="vp-dialog" aria-labelledby="rename-title">
+  <h2 class="vp-dialog-title" id="rename-title">Rename</h2>
+  <p>A new name for notes.txt.</p>
+  <div class="vp-dialog-actions">
+    <button class="vp-btn" type="button">Cancel</button>
+    <button class="vp-btn vp-btn-brand" type="submit">Rename</button>
+  </div>
+</dialog>
+```
+
+- The elevated surface in a divider border, a 0.75rem radius, `shadow-4`; the backdrop is `--vp-backdrop-bg-color`.
+- `vp-dialog-title`: the 1.05rem semibold title. `vp-dialog-actions`: the buttons, at the end of a row 0.5rem apart.
+- Open it with `showModal()`. The browser centers a modal dialog with `margin: auto`, which Tailwind's preflight removes from every element, so the dialog sets it back.
+- 26rem wide, at most 92vw: unlike the other components it has a width, since a dialog without one shrinks to its content. A width utility replaces it.
 
 ## Layout
 

@@ -1,0 +1,53 @@
+/* vpkit — dialog. VitePress has no dialog; this is own-drive's modal, on
+ * the <dialog> element, which brings the top layer, the focus trap,
+ * Escape and ::backdrop. An optional import: `@import "vpkit/dialog.css";`
+ *
+ *   <dialog class="vp-dialog" aria-labelledby="rename-title">
+ *     <h2 class="vp-dialog-title" id="rename-title">Rename</h2>
+ *     <p>…</p>
+ *     <div class="vp-dialog-actions">
+ *       <button class="vp-btn" type="button">Cancel</button>
+ *       <button class="vp-btn vp-btn-brand" type="submit">Rename</button>
+ *     </div>
+ *   </dialog>
+ *
+ * The elevated surface in a divider border, 0.75rem radius, --vp-shadow-4,
+ * 26rem wide and at most 92vw; the backdrop is --vp-backdrop-bg-color.
+ * `vp-dialog-title` is the 1.05rem semibold title, `vp-dialog-actions`
+ * the row of buttons at the end. Open it with showModal(): the browser
+ * centers a modal dialog with `margin: auto`, which Tailwind's preflight
+ * takes from every element, so the dialog sets it back. The width is the
+ * recipe's, where every other component leaves it to the page, because a
+ * dialog without one shrinks to its content; `w-[32rem]` or any width
+ * utility replaces it. */
+
+@layer components {
+  .vp-dialog {
+    margin: auto;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: 1.15rem 1.25rem;
+    width: 26rem;
+    max-width: 92vw;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-4);
+  }
+
+  .vp-dialog::backdrop {
+    background-color: var(--vp-backdrop-bg-color);
+  }
+
+  .vp-dialog-title {
+    margin: 0 0 0.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .vp-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
