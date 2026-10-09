@@ -479,7 +479,7 @@ npm install
 npm test
 ```
 
-`test/themes.mjs` checks every color theme against the contract and the contrast minimums above (ported from rustpress's tests, check for check).
+`test/themes.mjs` checks every color theme against the contract and the contrast minimums above (ported from rustpress's tests, check for check). `test/gen-themes.py` checks that the generator reads a Helix palette that `inherits` another as Helix does; it needs Python 3.11+, as the generator does.
 
 Each component is rendered next to the VitePress original in headless Chromium and their computed styles compared, in light and dark mode and with `:hover`/`:active` forced. On an emulated touch screen, each component with `:hover` forced must look as it does at rest. vpkit is compiled minified, as it ships; lengths match within 1/32 px because the minifier shortens numbers like `2.7142857` to `2.71429`. The originals in `test/upstream/` are verbatim copies from the tag in `test/upstream/SOURCE`. A component without a VitePress original is compared with the app recipe it was taken from (`test/recipes.mjs`). Intentional differences are listed, with their reasons, in `known` in `test/cases.mjs`; an entry that stops matching fails the run. While building a component, `CASES='^dialog' node test/compare.mjs` runs only the cases whose names match.
 
