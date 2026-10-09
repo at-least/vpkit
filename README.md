@@ -102,6 +102,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/input.css";
 @import "vpkit/toggle.css";
 @import "vpkit/link.css";
+@import "vpkit/code.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -249,6 +250,18 @@ VitePress's markdown link (`.vp-doc a`) as a class, for a link outside the markd
 - On a `<button>` it looks the same; the hit area is the page's (`min-h-10 px-2`).
 - A `<code>` inside takes VitePress's colors for code in a link, over `vp-code`'s own.
 - Its two colors are the variables `--vp-link-text` and `--vp-link-hover-text`, so a site retunes them in one rule.
+
+### Code
+
+VitePress's inline code (`.vp-doc :not(pre) > code`) as a class, for code outside the markdown.
+
+```html
+<code class="vp-code">ORD-2026-0142</code>
+```
+
+- 0.875em code in the brand color on the soft gray, a 0.25rem radius; the face is the page's code face.
+- In a `vp-link` it takes the link's colors, as code in a markdown link does.
+- Not for code inside an alert: a plain `<code>` there takes the alert's tint, which `vp-code` would override. Inside `.vp-doc`, `content.css` styles every `code` already.
 
 ## Layout
 

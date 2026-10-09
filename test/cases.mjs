@@ -468,3 +468,22 @@ touch('link', `<a data-t="a" class="vp-link" href="#">Orders <code data-t="code"
   { target: 'a', ...AT_REST, props: ['color'] },
   { target: 'code', on: 'a', ...AT_REST, props: ['color'] },
 ]);
+
+// code: VitePress's inline code (.vp-doc :not(pre) > code) against
+// vp-code, alone and inside a vp-link, where it takes the link's colors
+const CODE_LOOK = ['font-family', 'font-size', 'color', 'background-color', ...RADIUS, ...PADDING, ...TRANSITION];
+cases.push({
+  name: 'code',
+  upstream: `<div class="vp-doc"><p>Order <code data-t="code">ORD-2026-0142</code></p></div>`,
+  vpkit: `<p>Order <code data-t="code" class="vp-code">ORD-2026-0142</code></p>`,
+  checks: [{ target: 'code', props: CODE_LOOK }],
+});
+cases.push({
+  name: 'code in a link',
+  upstream: `<div class="vp-doc"><p><a data-t="a" href="#">See <code data-t="code">vp-code</code></a></p></div>`,
+  vpkit: `<p><a data-t="a" class="vp-link" href="#">See <code data-t="code" class="vp-code">vp-code</code></a></p>`,
+  checks: [
+    { target: 'code', props: CODE_LOOK },
+    { target: 'code', on: 'a', state: ['hover'], props: ['color'] },
+  ],
+});

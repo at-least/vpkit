@@ -90,6 +90,7 @@ For a component from an app recipe:
 | `vp-input` | totality's `input_base!` | `aria-invalid`; on `<input>`, `<select>` and `<textarea>` |
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors |
+| `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | — |
 
 ### Tier 1: next
 
@@ -97,7 +98,6 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | totality `ui.rs`: `CODE`, the `[&_code]` of `PROSE` |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"` |
 
@@ -163,7 +163,9 @@ VitePress's link, `.vp-doc a`, as a class: for a link outside the markdown, and 
 - On a `<button>`: measured, the `<button>` case renders every compared property as `.vp-doc a` does, so Tailwind's preflight leaves nothing else to reset. The 40px hit area totality gives its text buttons stays utilities (`min-h-10 px-2`).
 - Cases (built): an `<a>` and a `<button>` against `.vp-doc a` (color, weight, decoration, offset, font size, transition; hover; a `<code>` inside, at rest and while the link is hovered); touch. Before link.css existed they differed in 36 of 48 values.
 
-#### `vp-code`
+#### `vp-code` (built 2026-10-10)
+
+Demand: totality `ui.rs`, `CODE`, the `[&_code]` of `PROSE`.
 
 VitePress's inline code as a class, for code outside the markdown: an order id, a serial, a key.
 
@@ -171,10 +173,10 @@ VitePress's inline code as a class, for code outside the markdown: an order id, 
 <code class="vp-code">ORD-2026-0142</code>
 ```
 
-- `vp-code` ← `.vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code` and `.vp-doc :not(pre) > code`: `font-size: var(--vp-code-font-size); color: var(--vp-code-color); border-radius: 0.25rem; padding: 0.1875rem 0.375rem; background-color: var(--vp-code-bg); transition: color 0.25s, background-color 0.5s`. The font family is the page's `code` rule (Tailwind's preflight takes the theme's mono family, which `theme.css` sets to `--vp-font-family-mono`); the case compares it.
+- `vp-code` ← `.vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code` and `.vp-doc :not(pre) > code`: `font-size: var(--vp-code-font-size); color: var(--vp-code-color); border-radius: 0.25rem; padding: 0.1875rem 0.375rem; background-color: var(--vp-code-bg); transition: color 0.25s, background-color 0.5s`. The font family is the page's `code` rule (Tailwind's preflight takes the theme's mono family, which `theme.css` sets to `--vp-font-family-mono`); the case compares it, and it matched before code.css existed.
 - Tokens: `--vp-code-color` (`brand-1`), `--vp-code-bg` (`default-soft`), in the contract.
 - Where not to use it: inside a `vp-alert`, a plain `<code>` takes the alert's tint (`:where(.vp-alert) code`) and `vp-code` would beat it (rule 6 is what lets a component inside an alert keep its look); inside a `vp-link`, a plain `<code>` takes the link's color; inside `.vp-doc`, `content.css` styles every `code`.
-- Cases: against `.vp-doc p > code` (font size and family, color, radius, padding, background, transition), light and dark.
+- Cases (built): against `.vp-doc p > code` (font size and family, color, radius, padding, background, transition), and inside a `vp-link` against code in a markdown link, at rest and while the link is hovered; light and dark. Before code.css existed they differed in 50 of 58 values.
 
 #### `vp-spinner`
 
@@ -288,7 +290,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 3. `vp-toggle`, with `vp-toggle-appearance` (done 2026-10-09).
 4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the cases, the README's input section (done 2026-10-10).
 5. `vp-link` (done 2026-10-10).
-6. `vp-code`.
+6. `vp-code` (done 2026-10-10).
 7. `vp-spinner`.
 8. `vp-dialog`.
 9. Tier 2 and Tier 3 as demand appears, in the shapes above; a row here is revised when it is built.
