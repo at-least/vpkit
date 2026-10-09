@@ -106,6 +106,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/spinner.css";
 @import "vpkit/dialog.css";
 @import "vpkit/dropdown.css";
+@import "vpkit/icon-btn.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -318,6 +319,19 @@ VitePress's `VPMenu`, the panel of a navbar flyout, with `VPMenuLink` items and 
 - `vp-dropdown-item`: a row, a link or a button; brand on a soft gray when hovered, brand while it is the current one (`aria-current`, or `aria-checked="true"`).
 - `vp-dropdown-group`, with an optional `vp-dropdown-title`: every group but the first has a rule above it. The markup is flat where VitePress's is nested lists, so items that follow a group go in a group of their own.
 - Placing the panel and opening it are the page's.
+
+### Icon button
+
+VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
+
+```html
+<button class="vp-icon-btn" type="button" aria-label="Delete"><span class="vpi-delete"></span></button>
+<a class="vp-icon-btn" href="/trash" aria-label="Trash"><svg viewBox="0 0 24 24">…</svg></a>
+```
+
+- A 2.25rem square centering a 1.25rem icon, `text-2`, `text-1` on hover. The icon is a `vpi-*` icon of `icons.css` or an inline SVG, which takes the text color unless it sets its own `fill`.
+- vpkit's addition: a 0.5rem radius and the soft gray ground on hover, so it reads as a control.
+- The button shows only the icon: give it an `aria-label`.
 
 ## Layout
 

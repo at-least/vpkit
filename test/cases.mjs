@@ -622,3 +622,49 @@ cases.push({
 touch('dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'item')}</div>`, [
   { target: 'item', ...AT_REST, props: ['color', 'background-color'] },
 ]);
+
+// icon button: VPSocialLink against vp-icon-btn. vpkit's addition, the
+// hover ground (a 0.5rem radius, the soft gray, its transition), is written
+// into the upstream page as a stylesheet, as the button's additions are
+// written inline. With a vpi-* icon, and with an inline SVG: VitePress
+// wraps it in a span, vp-icon-btn takes it as the direct child
+const ICON_BTN_ADDITION =
+  '<style>.VPSocialLink{border-radius:0.5rem;transition:color .5s,background-color .25s}' +
+  '.VPSocialLink:hover{background-color:var(--vp-c-default-soft);transition:color .25s,background-color .25s}</style>';
+const ICON_BTN_BOX = ['display', 'justify-content', 'align-items', 'width', 'height', ...RADIUS, ...PADDING, 'color', 'background-color', ...TRANSITION];
+const ICON_BOX = ['display', 'width', 'height', 'offset-top', 'offset-left'];
+const SVG = '<svg data-t="svg" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>';
+cases.push({
+  name: 'icon button',
+  upstreamFiles: ['components/VPSocialLink.vue'],
+  upstream: `${ICON_BTN_ADDITION}<a data-t="btn" class="VPSocialLink no-icon" href="#" aria-label="Like"><span data-t="icon" class="vpi-heart"></span></a>`,
+  vpkit: `<a data-t="btn" class="vp-icon-btn" href="#" aria-label="Like"><span data-t="icon" class="vpi-heart"></span></a>`,
+  checks: [
+    { target: 'btn', props: ICON_BTN_BOX },
+    { target: 'btn', state: ['hover'], props: ['color', 'background-color', ...TRANSITION] },
+    { target: 'icon', props: ICON_BOX },
+  ],
+});
+cases.push({
+  name: 'icon button with an svg',
+  upstreamFiles: ['components/VPSocialLink.vue'],
+  upstream: `${ICON_BTN_ADDITION}<a data-t="btn" class="VPSocialLink no-icon" href="#" aria-label="Close"><span data-t="icon">${SVG}</span></a>`,
+  vpkit: `<button data-t="btn" class="vp-icon-btn" type="button" aria-label="Close">${SVG.replace('data-t="svg"', 'data-t="icon"')}</button>`,
+  checks: [
+    { target: 'btn', props: ICON_BTN_BOX },
+    { target: 'icon', props: ICON_BOX },
+    { target: 'icon', refTarget: 'svg', props: ['fill'] },
+  ],
+});
+// vpkit's one difference: an SVG that sets its own fill keeps it (a stroke
+// icon's fill="none"), where VitePress's `svg { fill: currentColor }` would
+// fill it solid
+cases.push({
+  name: 'icon button with a stroke svg',
+  reference: `<svg data-t="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z"/></svg>`,
+  vpkit: `<button class="vp-icon-btn" type="button" aria-label="Close"><svg data-t="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z"/></svg></button>`,
+  checks: [{ target: 'icon', props: ['fill'] }],
+});
+touch('icon button', `<a data-t="btn" class="vp-icon-btn" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`, [
+  { target: 'btn', ...AT_REST, props: ['color', 'background-color'] },
+]);

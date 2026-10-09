@@ -1,0 +1,52 @@
+/* vpkit — icon button, ported from VitePress's VPSocialLink (the navbar's
+ * social icons), with a hover ground added. An optional import:
+ * `@import "vpkit/icon-btn.css";`
+ *
+ *   <button class="vp-icon-btn" type="button" aria-label="Close"><span class="vpi-delete"></span></button>
+ *   <a class="vp-icon-btn" href="/trash" aria-label="Trash"><svg viewBox="0 0 24 24">…</svg></a>
+ *
+ * A 2.25rem square that centers a 1.25rem icon: a vpi-* icon of
+ * icons.css, or an inline SVG, which takes the text color unless it sets
+ * its own fill. text-2, text-1 on hover. The label is the page's
+ * (aria-label): the button shows only the icon.
+ *
+ * vpkit's addition, from own-drive's icon buttons: a 0.5rem radius and the
+ * soft gray ground on hover, since an icon that only darkens reads as
+ * decoration rather than a control. One difference: VPSocialLink fills
+ * every SVG with currentColor, which turns a stroke icon (fill="none")
+ * solid; here an SVG that sets fill keeps it. The icon's rule is
+ * `.vp-icon-btn > :is(span, svg)`, one class and one element, so it wins
+ * over icons.css's 1em size whichever file is imported first. The hover is
+ * `@variant hover`, like Tailwind's `hover:`. */
+
+@layer components {
+  .vp-icon-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    color: var(--vp-c-text-2);
+    transition: color 0.5s, background-color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-icon-btn {
+    @variant hover {
+      color: var(--vp-c-text-1);
+      background-color: var(--vp-c-default-soft);
+      transition: color 0.25s, background-color 0.25s;
+    }
+  }
+
+  .vp-icon-btn > :is(span, svg) {
+    display: flex;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  :where(.vp-icon-btn) svg:not([fill]) {
+    fill: currentColor;
+  }
+}
