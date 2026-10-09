@@ -266,12 +266,14 @@ function vpkitCss() {
 // VitePress's global stylesheets, as its theme loads them; of fonts.css
 // only the :root rule that puts Inter first (the rest fetches webfonts).
 // The markdown's (vp-doc.css …) come too: VitePress loads them on every page,
-// and vp-doc.css draws the external link arrow VPLink's class asks for.
+// and vp-doc.css draws the external link arrow VPLink's class asks for. In
+// the order without-fonts.ts imports them, which decides ties: vp-doc.css's
+// `.vp-doc a` comes after custom-block.css's `.custom-block a`.
 function upstreamGlobals() {
   const fontsRoot = read('test/upstream/fonts.css').match(/\n:root \{[^}]*\}/g).at(-1);
   return [read('test/upstream/vars.css'), fontsRoot, read('test/upstream/base.css'),
-    read('test/upstream/utils.css'), read('test/upstream/icons.css'), read('test/upstream/vp-doc.css'),
-    read('test/upstream/custom-block.css'), read('test/upstream/vp-code-group.css')].join('\n');
+    read('test/upstream/icons.css'), read('test/upstream/utils.css'), read('test/upstream/custom-block.css'),
+    read('test/upstream/vp-code-group.css'), read('test/upstream/vp-doc.css')].join('\n');
 }
 
 // What a case renders, upstream and vpkit, from the same tree. In the

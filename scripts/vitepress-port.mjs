@@ -275,8 +275,11 @@ export const FILES = {
   },
   'content.css': {
     header: `/* vpkit — markdown content, everything inside \`<div class="vp-doc">\`:
- * VitePress's styles/components/vp-doc.css, custom-block.css and
- * vp-code-group.css (v2.0.0-alpha.20) verbatim. An optional import:
+ * VitePress's styles/components/custom-block.css, vp-code-group.css and
+ * vp-doc.css (v2.0.0-alpha.20) verbatim, in the order its theme imports
+ * them (without-fonts.ts), which decides the ties between them: a link in
+ * a container is weight 500 by vp-doc.css, a code block in one takes the
+ * code block's color. An optional import:
  * \`@import "vpkit/content.css";\`
  *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
@@ -288,9 +291,9 @@ export const FILES = {
  * two themes, vp-code.css, in VitePress). Written by
  * scripts/vitepress-port.mjs. */`,
     globals: [
-      ['vp-doc.css', 'headings, text, lists, tables, code blocks'],
       ['custom-block.css', 'containers and GitHub alerts'],
       ['vp-code-group.css', 'code groups'],
+      ['vp-doc.css', 'headings, text, lists, tables, code blocks'],
     ],
     components: [],
   },

@@ -40,25 +40,11 @@ export const known = [
       'vp-btn is inline-flex (centered, 0.5rem gap) so an icon and its label sit side by side, as the apps need; VPButton is inline-block. The "button with an icon" case checks the flex layout against VPButton with that layout inline',
   },
   {
-    case: /^alert /,
-    target: 'code',
-    prop: 'font-size',
-    reason:
-      "--vp-custom-block-code-font-size is 0.875em, the size VitePress renders: inside .vp-doc, `.vp-doc :not(pre) > code` (0,1,2) beats `.custom-block code` (0,1,1), so upstream's declared 0.8125rem never shows in its docs",
-  },
-  {
     case: /^alert info nested in tip$/,
     target: 'code',
     prop: 'background-color',
     reason:
       "VitePress's `.custom-block.tip code` also matches code inside a nested info block (it comes later in custom-block.css); a nested vp-alert keeps its own code background",
-  },
-  {
-    case: /^alert details$/,
-    target: 'code',
-    prop: 'color',
-    reason:
-      "VitePress's details rules give code a background and no color: in its docs the markdown's code color applies (`.vp-doc :not(pre, h1, …) > code`, brand-1), which vp-alert-details sets as every alert type sets its code's; on a page without .vp-doc the original's code takes the text color",
   },
   {
     case: /^button inside an alert$/,
@@ -311,7 +297,10 @@ const LINK = [
   ...TRANSITION,
   'opacity',
 ];
-const CODE = ['font-size', 'color', 'background-color'];
+const CODE = ['font-size', 'color', 'background-color', ...RADIUS, ...PADDING, ...TRANSITION];
+// VitePress renders a container inside .vp-doc, whose rules for links and
+// code meet custom-block.css's: the alert is compared with that rendering
+const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const alertBody = (title) =>
   `${title}<p>Body with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p>` +
   `<p data-t="p2">Then <a data-t="a2" href="#"><code data-t="acode">linked code</code></a>.</p>`;
@@ -319,7 +308,7 @@ for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'ca
   const modifier = type === 'info' ? '' : ` vp-alert-${type}`;
   cases.push({
     name: `alert ${type}`,
-    upstream: `<div data-t="box" class="custom-block ${type}">${alertBody('<p data-t="title" class="custom-block-title">TIP</p>')}</div>`,
+    upstream: inDoc(`<div data-t="box" class="custom-block ${type}">${alertBody('<p data-t="title" class="custom-block-title">TIP</p>')}</div>`),
     vpkit: `<div data-t="box" class="vp-alert${modifier}">${alertBody('<p data-t="title" class="vp-alert-title">TIP</p>')}</div>`,
     checks: [
       { target: 'box', props: ALERT_BOX },
@@ -336,7 +325,7 @@ for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'ca
 // without a title the block keeps its 0.5rem top padding (the :has() rule)
 cases.push({
   name: 'alert info, no title',
-  upstream: `<div data-t="box" class="custom-block info">${alertBody('')}</div>`,
+  upstream: inDoc(`<div data-t="box" class="custom-block info">${alertBody('')}</div>`),
   vpkit: `<div data-t="box" class="vp-alert">${alertBody('')}</div>`,
   checks: [{ target: 'box', props: PADDING }],
 });
@@ -347,7 +336,7 @@ const nested = (outer, inner) =>
   `<p>Inner with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p></div></div>`;
 cases.push({
   name: 'alert info nested in tip',
-  upstream: nested('custom-block tip', 'custom-block info'),
+  upstream: inDoc(nested('custom-block tip', 'custom-block info')),
   vpkit: nested('vp-alert vp-alert-tip', 'vp-alert'),
   checks: [
     { target: 'inner', props: COLORS },
@@ -689,11 +678,8 @@ touch('icon button', `<a data-t="btn" class="vp-icon-btn" href="#" aria-label="L
 ]);
 
 // alert details: VitePress's details block (.custom-block.details on a
-// <details>) against vp-alert-details, open and closed. The open block's
-// height is left to its parts: its code is 0.875em where upstream declares
-// 0.8125rem (the known difference of every alert), and the smaller mono
-// line box makes that line 0.5625px shorter; the closed block, the summary
-// alone, compares its height
+// <details>, inside .vp-doc as its docs render it) against vp-alert-details,
+// open and closed
 const detailsBody =
   `<summary data-t="title">Details</summary>` +
   `<p data-t="p1">Body with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p>` +
@@ -701,10 +687,10 @@ const detailsBody =
 const SUMMARY = ['display', ...SIDES.map((s) => `margin-${s}`), 'font-weight', 'cursor', 'user-select'];
 cases.push({
   name: 'alert details',
-  upstream: `<details data-t="box" class="custom-block details" open>${detailsBody}</details>`,
+  upstream: inDoc(`<details data-t="box" class="custom-block details" open>${detailsBody}</details>`),
   vpkit: `<details data-t="box" class="vp-alert vp-alert-details" open>${detailsBody}</details>`,
   checks: [
-    { target: 'box', props: ALERT_BOX },
+    { target: 'box', props: [...ALERT_BOX, 'height'] },
     { target: 'title', props: SUMMARY },
     { target: 'p1', props: ['margin-top', 'margin-bottom'] },
     { target: 'p2', props: ['margin-top', 'margin-bottom'] },
@@ -716,7 +702,7 @@ cases.push({
 });
 cases.push({
   name: 'alert details, closed',
-  upstream: `<details data-t="box" class="custom-block details">${detailsBody}</details>`,
+  upstream: inDoc(`<details data-t="box" class="custom-block details">${detailsBody}</details>`),
   vpkit: `<details data-t="box" class="vp-alert vp-alert-details">${detailsBody}</details>`,
   checks: [{ target: 'box', props: [...PADDING, 'height'] }],
 });

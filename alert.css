@@ -59,12 +59,15 @@
     margin: 0.5rem 0;
   }
 
+  /* as VitePress renders a container's link: in its docs .vp-doc's rule
+     for links comes after custom-block.css's at the same specificity, so
+     the weight (500) and the color transition are vp-doc.css's */
   :where(.vp-alert) a {
     color: var(--vp-alert-link);
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: underline;
     text-underline-offset: 0.125rem;
-    transition: opacity 0.25s;
+    transition: color 0.25s, opacity 0.25s;
   }
 
   /* a rule of its own, as in button.css */
@@ -79,10 +82,15 @@
     }
   }
 
+  /* the chip VitePress draws around inline code in its docs (vp-doc.css),
+     with the container's colors */
   :where(.vp-alert) code {
+    border-radius: 0.25rem;
+    padding: 0.1875rem 0.375rem;
     font-size: var(--vp-custom-block-code-font-size);
     color: var(--vp-alert-link);
     background-color: var(--vp-alert-code-bg);
+    transition: color 0.25s, background-color 0.5s;
   }
 
   .vp-alert-note.vp-alert {
