@@ -107,6 +107,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/dialog.css";
 @import "vpkit/dropdown.css";
 @import "vpkit/icon-btn.css";
+@import "vpkit/tabs.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -340,6 +341,21 @@ VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
 - A 2.25rem square centering a 1.25rem icon, `text-2`, `text-1` on hover. The icon is a `vpi-*` icon of `icons.css` or an inline SVG, which takes the text color unless it sets its own `fill`.
 - vpkit's addition: a 0.5rem radius and the soft gray ground on hover, so it reads as a control.
 - The button shows only the icon: give it an `aria-label`.
+
+### Tabs
+
+VitePress's code group tab bar.
+
+```html
+<div class="vp-tabs" role="tablist">
+  <button class="vp-tabs-tab" type="button" role="tab" aria-selected="true">npm</button>
+  <button class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button>
+</div>
+```
+
+- `vp-tabs`: the bar, on the code block's ground with a divider along its bottom and rounded top corners; it scrolls sideways when the tabs don't fit.
+- `vp-tabs-tab`: a 48px tab, `text-1` on hover and while `aria-selected="true"`, when a 2px brand bar marks it.
+- Showing the selected tab's panel, and moving the selection with the arrow keys, are the page's.
 
 ## Layout
 

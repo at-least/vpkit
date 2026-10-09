@@ -708,3 +708,35 @@ cases.push({
   vpkit: `<details data-t="box" class="vp-alert vp-alert-details">${detailsBody}</details>`,
   checks: [{ target: 'box', props: [...PADDING, 'height'] }],
 });
+
+// tabs: a code group's tab bar (vp-code-group.css: .tabs, its radio inputs
+// and labels) against vp-tabs, buttons with role="tab" where the selected
+// one is aria-selected. The cases run at 1280px, where the original's bar
+// has its rounded top corners and no bleed, as vp-tabs always does
+const TAB_FILES = ['vp-code-group.css'];
+const TAB_BAR = ['position', 'display', ...PADDING, 'margin-left', 'margin-right', ...RADIUS, 'background-color', 'overflow-x', 'overflow-y', 'box-shadow', 'height', 'width'];
+const TAB = ['position', 'display', 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', ...PADDING, 'line-height', 'font-size', 'font-weight', 'color', 'white-space', 'cursor', ...TRANSITION, 'height', 'width', 'offset-left'];
+const TAB_BAR_AFTER = ['position', 'right', 'bottom', 'left', 'z-index', 'height', ...RADIUS, 'background-color', 'content', ...TRANSITION];
+cases.push({
+  name: 'tabs',
+  upstreamFiles: TAB_FILES,
+  upstream:
+    `<div class="vp-code-group"><div data-t="tabs" class="tabs">` +
+    `<input type="radio" name="group-1" id="tab-1" checked><label data-t="sel" for="tab-1">npm</label>` +
+    `<input type="radio" name="group-1" id="tab-2"><label data-t="tab" for="tab-2">pnpm</label></div></div>`,
+  vpkit:
+    `<div data-t="tabs" class="vp-tabs" role="tablist">` +
+    `<button data-t="sel" class="vp-tabs-tab" type="button" role="tab" aria-selected="true">npm</button>` +
+    `<button data-t="tab" class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button></div>`,
+  checks: [
+    { target: 'tabs', props: TAB_BAR },
+    { target: 'tab', props: TAB },
+    { target: 'tab', state: ['hover'], props: ['color'] },
+    { target: 'tab', pseudo: '::after', props: TAB_BAR_AFTER },
+    { target: 'sel', props: TAB },
+    { target: 'sel', pseudo: '::after', props: TAB_BAR_AFTER },
+  ],
+});
+touch('tab', `<div class="vp-tabs" role="tablist"><button data-t="tab" class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button></div>`, [
+  { target: 'tab', ...AT_REST, props: ['color'] },
+]);

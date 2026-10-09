@@ -1,0 +1,73 @@
+/* vpkit — tabs, ported from VitePress's code group tab bar
+ * (vp-code-group.css: `.tabs` and its labels). An optional import:
+ * `@import "vpkit/tabs.css";`
+ *
+ *   <div class="vp-tabs" role="tablist">
+ *     <button class="vp-tabs-tab" type="button" role="tab" aria-selected="true">npm</button>
+ *     <button class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button>
+ *   </div>
+ *
+ * `vp-tabs` is the bar: the code block's ground with a 1px divider along
+ * its bottom, rounded top corners, scrolling sideways when the tabs don't
+ * fit. `vp-tabs-tab` is a tab, a 48px row of 14px text in the tab color,
+ * text-1 on hover (`@variant hover`) and while `aria-selected="true"`,
+ * when a 2px brand bar marks it (`::after`). Where VitePress has radio
+ * inputs and labels, the tabs are buttons that say which one is selected;
+ * showing its panel, and moving the selection with the arrow keys, are the
+ * page's. Not ported: the bar's bleed to the screen's edges under 640px
+ * (-1.5rem each side, square corners), which is the markdown column's. */
+
+@layer components {
+  .vp-tabs {
+    position: relative;
+    display: flex;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0 0.75rem;
+    background-color: var(--vp-code-tab-bg);
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-shadow: inset 0 -1px var(--vp-code-tab-divider);
+  }
+
+  .vp-tabs-tab {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    padding: 0 0.75rem;
+    line-height: 3.4285714;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-code-tab-text-color);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.25s;
+  }
+
+  .vp-tabs-tab::after {
+    position: absolute;
+    right: 0.5rem;
+    bottom: -1px;
+    left: 0.5rem;
+    z-index: 1;
+    height: 2px;
+    border-radius: 2px;
+    content: '';
+    background-color: transparent;
+    transition: background-color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-tabs-tab {
+    @variant hover {
+      color: var(--vp-code-tab-hover-text-color);
+    }
+  }
+
+  .vp-tabs-tab[aria-selected="true"] {
+    color: var(--vp-code-tab-active-text-color);
+  }
+
+  .vp-tabs-tab[aria-selected="true"]::after {
+    background-color: var(--vp-code-tab-active-bar-color);
+  }
+}
