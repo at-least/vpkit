@@ -48,7 +48,7 @@ Every component follows these. They are read off the six files that exist, not i
 
 ## The token contract
 
-`test/themes.mjs` holds every color theme to the tokens the base references: every `var(--vp-c-*)` in `index.css` and the four files it imports, minus the color ramps and the absolutes. That is 34 tokens today (measured by running its derivation over the base):
+`test/themes.mjs` holds every color theme to the tokens the base references: every `var(--vp-c-*)` in `index.css` and the four files it imports, minus the color ramps and the absolutes. That is 34 tokens today (measured with a re-implementation of its derivation, since `requiredTokens` is not exported):
 
 ```
 bg bg-alt bg-elv bg-soft border divider gutter
@@ -58,14 +58,14 @@ tip-1 tip-soft note-1 note-soft important-1 important-soft warning-1 warning-sof
 danger-1 danger-soft caution-1 caution-soft success-1 success-soft
 ```
 
-plus `--vp-shadow-1` to `-5`. The component files are not part of that base, so nothing holds the themes to what they reference, and the gap is real: `alert.css` reads `--vp-c-tip-2`, `-important-2`, `-warning-2`, `-danger-2` and `-caution-2` for its link hover colors, and no theme defines any `-2` token (`grep -l -- '--vp-c-warning-2:' themes/*.css | wc -l` is 0 of 200). On a theme, a tip alert's link hovers to `--vp-c-tip-2`, which `tokens.css` derives from the themed `brand-2` (fine), but a warning alert's hovers to VitePress's stock yellow `#946300` whatever the theme's warning color is. The other five files read contract tokens only (measured: a scan of `var(--vp-c-*)` over the six files finds those five `-2` tokens and nothing else outside the 34).
+plus `--vp-shadow-1` to `-5`. The component files are not part of that base, so nothing holds the themes to what they reference, and the gap is real: `alert.css` reads `--vp-c-tip-2`, `-important-2`, `-warning-2`, `-danger-2` and `-caution-2` for its link hover colors, and no theme defines a role's `-2` (measured: `grep -l -- '--vp-c-<role>-2:' themes/*.css` finds 0 of 200 files for each of `tip`, `note`, `important`, `warning`, `danger`, `caution` and `success`, and 200 of 200 for `brand-2` and `default-2`). On a theme, a tip alert's link hovers to `--vp-c-tip-2`, which `tokens.css` derives from the themed `brand-2` (fine), but a warning alert's hovers to VitePress's stock yellow `#946300` whatever the theme's warning color is. The same scan over every other shipped file (`var(--vp-c-*)` references against the 34): the other five component files and `icons.css` read contract tokens only; `content.css` reads the same five `-2` tokens, for the custom blocks' link hovers, so the gap reaches the markdown on a theme too (vpkit-zola); `layout.css` reads `--vp-c-shadow-3`, which nothing defines anywhere, VitePress's own slip in VPSidebar.vue (`box-shadow: var(--vp-c-shadow-3)`, the phone's open sidebar) carried verbatim by the port, so that shadow never paints upstream either.
 
 **Decision 1, for the owner.** Extend the contract to every shipped file: `themes.mjs`'s `baseCss()` takes the component files too (and `layout.css` and `content.css`, which also read tokens), so from then on a component can read only what the themes define, and the test says so. Then the alert's `-2` hovers go one of two ways:
 
 - the generator (`scripts/gen-themes.py`) and the 24 curated themes grow `--vp-c-<role>-2` for the five roles (and `success-2`, for a future need), each a step of its `-1`; or
 - the alert hovers its links on `-1` and keeps only VitePress's 0.75 opacity dim, a `known` difference with its reason.
 
-Recommended: extend the contract either way, since it is the enforcement for every component below; take the second path for the alert unless a `-2` of a role is needed elsewhere, because the first changes 24 hand-tuned files and 176 generated ones for one hover color. This decides a component below too: `vp-btn-danger` can only be the grounded form (danger text on the danger tint), since a solid one would need `danger-2` and `-3`, which own-drive derives per theme with `color-mix()` because the contract has neither.
+Recommended: extend the contract either way, since it is the enforcement for every component below; take the second path for the alert (and for `content.css`, where the port keeps VitePress's rules and the difference would be a `known` entry of the layout test) unless a `-2` of a role is needed elsewhere, because the first means a new slot in the generator, which rewrites 196 files, and the four hand-tuned themes edited by hand (`scripts/gen-themes.py` says which), for one hover color. This decides a component below too: `vp-btn-danger` can only be the grounded form (danger text on the danger tint), since a solid one would need `danger-2` and `-3`, which own-drive derives per theme with `color-mix()` because the contract has neither.
 
 ## How a component is proven
 
@@ -101,7 +101,7 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 | component | source | demand (measured) |
 | --- | --- | --- |
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | totality `views.rs:196` (the 40×22 track rebuilt from utilities), own-drive `web.rs:714` (`#themeToggle`) |
-| `vp-input` on `<select>` and `<textarea>` | the input itself | own-drive `web.rs:704`, `web.rs:2358` (two selects carrying its input class) |
+| `vp-input` on `<select>` and `<textarea>` | the input itself | own-drive `web.rs:704`, `web.rs:2358`: two selects styled as its text inputs are (the pattern; own-drive's input recipe is its own look, not `vp-input`) |
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | totality `ui.rs`: `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` and `PROSE_LEDE` |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | totality `ui.rs`: `CODE`, the `[&_code]` of `PROSE` |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
@@ -273,7 +273,7 @@ What each app's recipe becomes, and what stands in the way. The apps decide; thi
 | --- | --- | --- |
 | `BTN`, `BTN_PRIMARY` | `vp-btn`, `vp-btn-brand` | done; `VP_BTN_EXTRA` (a 0.3rem gap, the pointer since `base.css` is not imported, the plain cursor when disabled) is own-drive's choice and stays |
 | `#themeToggle` | `vp-toggle vp-toggle-appearance` | its sun and moon are its own icon set (`ic-sun`, `ic-moon`); they go inside `vp-toggle-icon` as VitePress's do |
-| `#themeSelect`, `#shareExpires` | `vp-input` as is | — |
+| `#themeSelect`, `#shareExpires` | stay, with `INPUT` | own-drive's inputs are its own look (no fixed height, the background swaps to `bg` on focus); its selects carry that recipe and stay with it. If own-drive ever moves to `vp-input`, the selects move as they are |
 | `MODAL`, `MODAL_BACK`, `MODAL_H3`, `BTN_ROW` | `vp-dialog`, its `::backdrop`, `vp-dialog-title`, `vp-dialog-actions` | the modals are `<div role="dialog">` behind a scrim `<div>`; `<dialog>` and `showModal()` in `app.js` replace the scrim, the z-index and the focus handling. `MODAL_P` and `MODAL_ERR` stay utilities |
 | `BTN_DANGER` | Tier 3 `vp-btn-danger` | the demoted variant stays |
 | `BTN_ICON`, `BTN_CHIP` | Tier 2 `vp-icon-btn` (`size-[1.9rem]` for the chip) | the hover ground, Decision 3 |
@@ -284,7 +284,7 @@ What each app's recipe becomes, and what stands in the way. The apps decide; thi
 
 One commit per step, each with its cases green (`npm test`) and its README section, as the history has it.
 
-1. **The contract.** `test/themes.mjs` reads the component files (and `layout.css`, `content.css`) into the base it derives the required tokens from; the alert's five `-2` hovers go the way Decision 1 says. Before any component, because every one below is held to it.
+1. **The contract.** `test/themes.mjs` reads the component files (and `layout.css`, `content.css`, `icons.css`) into the base it derives the required tokens from, with `--vp-c-shadow-3` excluded by name as VitePress's own undefined variable; the five `-2` hovers of the alert and of `content.css` go the way Decision 1 says. Before any component, because every one below is held to it.
 2. **`compare.mjs` learns `:deep()`.** Originals run through `unwrapDeep`. No visible change; the existing cases stay green.
 3. `vp-toggle`, with `vp-toggle-appearance`.
 4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the two cases, the README's input section.
@@ -298,7 +298,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 
 Numbered, each with a recommendation; the owner decides.
 
-1. **The contract gap** (above): extend `themes.mjs` to every shipped file, and for the alert's `-2` hovers either define `-2` per role in 200 themes or hover on `-1` with the dim as a `known` difference. Recommended: extend; hover on `-1`.
+1. **The contract gap** (above): extend `themes.mjs` to every shipped file, and for the `-2` hovers of the alert and the markdown's custom blocks either define `-2` per role in 200 themes or hover on `-1` with the dim as a `known` difference. Recommended: extend; hover on `-1`.
 2. **Names** for the app versions of layout blocks: `vp-toggle` (VPSwitch) and `vp-dropdown` (VPMenu). Alternatives considered, `vp-switch-btn` and `vp-menu-box`, read as parts of the layout's blocks. Recommended as named.
 3. **`vp-icon-btn`'s source**: VPSocialLink's bare box as the original with own-drive's hover ground as a tested addition, or own-drive's `BTN_ICON` as the recipe and no original. Recommended: the original plus the addition, as `vp-btn` was done.
 4. **`vp-dialog`'s width**: the recipe's `26rem` and `92vw` in the component, overridden by utilities, or none, every app adding its own. Recommended: the recipe's; a dialog with no width is unusable as shipped, unlike an input.
