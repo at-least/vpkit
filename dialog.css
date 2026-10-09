@@ -34,8 +34,11 @@
     box-shadow: var(--vp-shadow-4);
   }
 
+  /* ::backdrop inherits from its dialog only since Chrome 122 and Safari
+     17.4; before them --vp-backdrop-bg-color doesn't reach it, and the
+     fallback, tokens.css's value, still dims the page */
   .vp-dialog::backdrop {
-    background-color: var(--vp-backdrop-bg-color);
+    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
   }
 
   .vp-dialog-title {

@@ -932,3 +932,14 @@ cases.push({
     { target: 'group', props: [...SIDES.map((s) => `margin-${s}`), ...PADDING, 'offset-left'] },
   ],
 });
+
+// the backdrop still dims the page where --vp-backdrop-bg-color doesn't
+// reach ::backdrop (before Chrome 122 and Safari 17.4 it inherits from
+// nothing): here the variable is unset, and the fallback paints
+// tokens.css's value
+cases.push({
+  name: 'dialog backdrop without the variable',
+  reference: `<dialog data-t="dlg" class="vp-dialog"></dialog><style>[data-t="dlg"]::backdrop{background-color:rgba(0, 0, 0, 0.6)}</style>${OPEN}`,
+  vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-dialog"></dialog>${OPEN}`,
+  checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
+});
