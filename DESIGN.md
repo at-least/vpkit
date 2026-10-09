@@ -100,6 +100,7 @@ For a component from an app recipe:
 | `vp-mark` | VPLocalSearchBox: `mark` | — |
 | `vp-choice` | totality's `CHOICE` (a recipe) | `:has(:checked)`, `:has(:focus-visible)` |
 | `vp-label`, `vp-field-error` | totality's `FIELD_LABEL`, `MSG_ERROR` (recipes) | — |
+| `vp-toast` | own-drive's `#msg` (a recipe) | — |
 
 ### Tier 1: next
 
@@ -248,7 +249,7 @@ No original; one of the two apps draws it. Build one when the second app needs i
 | `vp-btn-danger` (built 2026-10-10) | own-drive `BTN_DANGER` (`web.rs:376`; `DANGER_C` at `:366`) | a `vp-btn` modifier in the variable pattern: transparent border, `danger-1` text on `danger-soft`, the same on hover and active (the ground is the point) | the grounded form only: a solid white-on-danger needs `danger-3`, outside the contract (Decision 1). own-drive's demoted variant (neutral until hovered, `:380`) is its own |
 | `vp-choice` (built 2026-10-10) | totality `CHOICE` (`ui.rs`) | a `<label>` card around a radio or checkbox: a divider border on `bg`, 0.5rem radius, 1rem padding, `gap: 0.75rem`, 0.875rem/1.5; hover a `brand-1` border; `:has(:checked)` a `brand-1` border on `brand-soft`; `:has(:focus-visible)` a 2px `brand-1` outline offset 2px; the control `accent-color: var(--vp-c-brand-1)` | one site (`views.rs:865`) |
 | `vp-label`, `vp-field-error` (built 2026-10-10) | totality `FIELD_LABEL`, `MSG_ERROR` (`ui.rs`) | the field's label (block, 0.875rem/1.5, 500, `text-1`, `margin-bottom: 0.375rem`) and the error line under the control (0.875rem/1.5, `danger-1`, `margin-top: 0.5rem`) | five utilities each; own-drive's labels not measured (guessed: utilities). Borderline by the test below, Decision 6 |
-| `vp-toast` | own-drive `#msg` (`web.rs:750`) | the surface of a status message: `bg-elv`, a divider border, 0.75rem radius, `--vp-shadow-3`, padding; the placement (fixed, bottom center) and the live region are the app's | totality shows results inline (`RESULT`), not as a toast |
+| `vp-toast` (built 2026-10-10) | own-drive `#msg` (`web.rs:750`) | the surface of a status message: `bg-elv`, a divider border, a 0.5rem radius (built so; 0.75rem was drafted here, the uploads panel's), `--vp-shadow-3`, padding; the placement (fixed, bottom center) and the live region are the app's | totality shows results inline (`RESULT`), not as a toast |
 | `vp-progress` | own-drive `BAR`, `BAR_FILL` (`web.rs:463`) | a 0.3rem track on `default-soft` with 0.15rem radii, a `brand-1` fill | two spans; a native `<progress>` needs vendor pseudo-elements. One site (the quota bar; the load bar is another thing) |
 
 ### Not components

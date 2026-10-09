@@ -112,6 +112,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/mark.css";
 @import "vpkit/choice.css";
 @import "vpkit/field.css";
+@import "vpkit/toast.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -412,6 +413,17 @@ A form field's label and its error line, to go with `vp-input`. VitePress has no
 - `vp-label`: 14px `text-1` at weight 500, 0.375rem above its control.
 - `vp-field-error`: 14px danger text, 0.5rem under the control.
 - The two margins are the field's own spacing; `mb-0` and `mt-0` remove them. Tie the error to its control with `aria-describedby`, and mark the control `aria-invalid`, which turns `vp-input`'s border danger.
+
+### Toast
+
+The surface of a short status message. VitePress has none; this is own-drive's.
+
+```html
+<div class="vp-toast fixed bottom-4 left-1/2 -translate-x-1/2" role="status">Saved notes.txt</div>
+```
+
+- The elevated surface in a divider border, a 0.5rem radius, `shadow-3`.
+- Where it sits, how long it stays, and showing and hiding it are the page's. Announce it from a live region the page keeps rendered; one that is `display: none` while empty may not be read out when the message arrives.
 
 ## Layout
 

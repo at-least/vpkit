@@ -3,6 +3,7 @@ import {
   OWN_DRIVE_BTN_ROW,
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
+  OWN_DRIVE_MSG,
   TOTALITY_CHOICE,
   TOTALITY_FIELD_LABEL,
   TOTALITY_INPUT,
@@ -831,4 +832,14 @@ cases.push({
     { target: 'label', props: FIELD_TEXT },
     { target: 'error', props: FIELD_TEXT },
   ],
+});
+
+// toast: own-drive's status message against vp-toast, the surface only:
+// the recipe's placement (fixed at the bottom center, its width cap) and
+// its hiding while empty are the page's
+cases.push({
+  name: 'toast',
+  reference: `<div data-t="toast" class="${OWN_DRIVE_MSG}" role="status">Saved notes.txt</div>`,
+  vpkit: `<div data-t="toast" class="vp-toast" role="status">Saved notes.txt</div>`,
+  checks: [{ target: 'toast', props: [...BORDER, ...RADIUS, ...PADDING, ...COLORS, 'box-shadow'] }],
 });

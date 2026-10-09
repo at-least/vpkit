@@ -37,3 +37,8 @@ export const TOTALITY_CHOICE =
 // as of 2026-10-10
 export const TOTALITY_FIELD_LABEL = 'mb-1.5 block text-[0.875rem] leading-6 font-medium text-text-1';
 export const TOTALITY_MSG_ERROR = 'mt-2 text-[0.875rem] leading-6 text-danger-1';
+
+// own-drive src/web.rs at 8a2c523, verbatim as of 2026-10-10: the status
+// message `#msg` (its class list; placed fixed at the bottom center)
+export const OWN_DRIVE_MSG =
+  'fixed left-1/2 -translate-x-1/2 bottom-4 z-[var(--od-z-msg)] bg-[color:var(--vp-c-bg-elv)] text-text-1 border border-divider rounded-[.5rem] px-[.9rem] py-[.5rem] shadow-3 max-w-[90vw] empty:hidden';

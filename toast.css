@@ -1,0 +1,22 @@
+/* vpkit — toast: the surface of a short status message. VitePress has
+ * none; this is own-drive's. An optional import: `@import "vpkit/toast.css";`
+ *
+ *   <div class="vp-toast fixed bottom-4 left-1/2 -translate-x-1/2" role="status">Saved notes.txt</div>
+ *
+ * The elevated surface in a divider border, a 0.5rem radius, 0.5rem by
+ * 0.9rem of padding, text-1, --vp-shadow-3. Where it sits (own-drive fixes
+ * it at the bottom center, at most 90vw wide), how long it stays, and
+ * showing and hiding it are the page's. Announce it from a live region the
+ * page keeps rendered (role="status"); one that is display:none while
+ * empty may not be read out when the message arrives. */
+
+@layer components {
+  .vp-toast {
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-3);
+  }
+}
