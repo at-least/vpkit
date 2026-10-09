@@ -88,6 +88,7 @@ For a component from an app recipe:
 | `vp-table` | the markdown table | — |
 | `vp-card` | VPFeature | `vp-card-title`, `vp-card-details` |
 | `vp-input` | totality's `input_base!` | `aria-invalid` |
+| `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
 
 ### Tier 1: next
 
@@ -95,14 +96,13 @@ Each has a VitePress original and an app that draws it by hand today, or no orig
 
 | component | source | demand (measured) |
 | --- | --- | --- |
-| `vp-toggle` | VPSwitch, VPSwitchAppearance | totality `views.rs:196` (the 40×22 track rebuilt from utilities), own-drive `web.rs:714` (`#themeToggle`) |
 | `vp-input` on `<select>` and `<textarea>` | the input itself | own-drive `web.rs:704`, `web.rs:2358`: two selects styled as its text inputs are (the pattern; own-drive's input recipe is its own look, not `vp-input`) |
 | `vp-link` | `vp-doc.css`: `.vp-doc a` | totality `ui.rs`: `LINK`, `LINK_BUTTON`, the `[&_a]` of `PROSE` and `PROSE_LEDE` |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | totality `ui.rs`: `CODE`, the `[&_code]` of `PROSE` |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | totality `ui.rs`: `SPINNER` |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | own-drive `web.rs:1895`, `:1985`, `:2043`, `:2344` (four modals), plus two overlays with `role="dialog"` |
 
-#### `vp-toggle`
+#### `vp-toggle` (built 2026-10-09)
 
 VPSwitch, the track with a sliding knob, with VPSwitchAppearance's sun and moon as a modifier.
 
@@ -281,7 +281,7 @@ One commit per step, each with its cases green (`npm test`) and its README secti
 
 1. **The contract** (done 2026-10-09). `test/themes.mjs` reads every root stylesheet into the base it derives the required tokens from, with `--vp-c-shadow-3` excluded by name as VitePress's own undefined variable; the themes define the five `-2` (Decision 1). Before any component, because every one below is held to it.
 2. **`compare.mjs` learns `:deep()`** (done 2026-10-09). Originals run through `unwrapDeep`. No visible change; the existing cases stay green.
-3. `vp-toggle`, with `vp-toggle-appearance`.
+3. `vp-toggle`, with `vp-toggle-appearance` (done 2026-10-09).
 4. `vp-input` on `<select>` and `<textarea>`: the textarea rule, the two cases, the README's input section.
 5. `vp-link`.
 6. `vp-code`.

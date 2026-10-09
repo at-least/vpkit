@@ -10,3 +10,6 @@
 @import "../table.css";
 @import "../card.css";
 @import "../input.css";
+/* the icons: the toggle's appearance variant shows vpi-sun and vpi-moon */
+@import "../icons.css";
+@import "../toggle.css";

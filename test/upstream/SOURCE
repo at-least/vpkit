@@ -10,6 +10,8 @@ above:
     $U/styles/icons.css $U/styles/utils.css $U/styles/fonts.css \
     $U/styles/components/vp-code-group.css test/upstream/
   cp $U/Layout.vue $U/NotFound.vue test/upstream/components/
+  # (test/compare.mjs reads VPSwitch.vue and VPSwitchAppearance.vue from
+  # components/ too, as the toggle's originals)
   for c in VPContent VPDoc VPPage VPSkipLink VPBackdrop VPSidebar \
     VPSidebarGroup VPSidebarItem VPLocalNav VPLocalNavOutlineDropdown \
     VPDocAside VPDocAsideOutline VPDocOutlineItem VPDocAsideSponsors \

@@ -100,6 +100,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/table.css";
 @import "vpkit/card.css";
 @import "vpkit/input.css";
+@import "vpkit/toggle.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -205,6 +206,30 @@ VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-col
 - Focus draws a 2px brand ring as a box-shadow, since `base.css` removes focus outlines.
 - `aria-invalid="true"` turns the border danger and `"false"` success, even on hover and focus.
 - The width is yours: add `w-full` or any width utility.
+
+### Toggle
+
+VitePress's `VPSwitch`, with `VPSwitchAppearance` as a modifier.
+
+```html
+<button class="vp-toggle" type="button" role="switch" aria-checked="false" aria-label="Notifications">
+  <span class="vp-toggle-check"></span>
+</button>
+```
+
+- `vp-toggle`: the 2.5rem × 1.375rem track on the input tokens, a brand border on hover. `vp-toggle-check`: the knob, which slides to the right while the button's `aria-checked` is `"true"`. That state is vpkit's addition (VPSwitch has none of its own; only the appearance switch moves its knob, by `.dark`): keep `aria-checked` in step with the setting, and the component reads nothing else.
+- `vp-toggle-icon`: the round clip for an icon in the knob, any `vpi-*` icon of `icons.css` (0.75rem, `text-2`, `text-1` in dark), placed as VPSwitch places it. The icon's class list must start with the `vpi-` class, as VPSwitch's `[class^='vpi-']` rule has it.
+- `vp-toggle-appearance`: the appearance switch. The knob follows `.dark` on `<html>` as VitePress's does, so it is right before any script runs; of the two icons the sun (`vpi-sun`) shows in light, the moon (`vpi-moon`) in dark:
+
+```html
+<button class="vp-toggle vp-toggle-appearance" type="button" role="switch" aria-checked="false" aria-label="Appearance">
+  <span class="vp-toggle-check"><span class="vp-toggle-icon">
+    <span class="vpi-sun" aria-hidden="true"></span><span class="vpi-moon" aria-hidden="true"></span>
+  </span></span>
+</button>
+```
+
+The script that toggles `.dark` and `aria-checked` is the page's (vpkit-zola's `vpkit-zola.js` has VitePress's). `icons.css` is its own import.
 
 ## Layout
 

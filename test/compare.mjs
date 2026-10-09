@@ -27,15 +27,19 @@ import { cases, known } from './cases.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // vars before the components that read them; base.css is layered, so its
-// position doesn't matter
+// position doesn't matter. VPSwitch and VPSwitchAppearance are read from
+// the layout's copies in components/
 const UPSTREAM = [
   'vars.css',
   'base.css',
+  'icons.css',
   'VPButton.vue',
   'VPBadge.vue',
   'custom-block.css',
   'vp-doc.css',
   'VPFeature.vue',
+  'components/VPSwitch.vue',
+  'components/VPSwitchAppearance.vue',
 ];
 
 function vpkitCss() {

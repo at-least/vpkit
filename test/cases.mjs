@@ -344,3 +344,65 @@ touch('alert link', `<div class="vp-alert vp-alert-tip">${alertBody('')}</div>`,
   { target: 'a', ...AT_REST, props: ['color', 'opacity'] },
   { target: 'acode', on: 'a2', ...AT_REST, props: ['color'] },
 ]);
+
+// toggle: VPSwitch, the knob and the icon in it, against the original at
+// rest and hovered; VPSwitchAppearance's knob and its two icons, which
+// follow .dark on both sides; and vp-toggle's own state, aria-checked,
+// against the transform written inline
+const TOGGLE_BOX = ['display', 'position', 'width', 'height', ...BORDER, ...RADIUS, ...PADDING, 'flex-shrink'];
+const KNOB = ['position', 'offset-top', 'offset-left', 'width', 'height', ...RADIUS, 'background-color', 'box-shadow', 'transform', ...TRANSITION];
+const ICON_CLIP = ['position', 'display', 'width', 'height', ...RADIUS, 'overflow-x', 'overflow-y'];
+const GLYPH = ['display', 'position', 'offset-top', 'offset-left', 'width', 'height', 'color', 'background-color', 'opacity', ...TRANSITION];
+const SWITCH = ' type="button" role="switch" aria-checked="false"';
+const toggle = (cls, check, icon, glyphs) =>
+  `<button data-t="toggle" class="${cls}"${SWITCH}><span data-t="check" class="${check}">` +
+  (icon ? `<span data-t="icon" class="${icon}">${glyphs}</span>` : '') +
+  `</span></button>`;
+cases.push({
+  name: 'toggle',
+  upstream: toggle('VPSwitch', 'check', null, ''),
+  vpkit: toggle('vp-toggle', 'vp-toggle-check', null, ''),
+  checks: [
+    { target: 'toggle', props: [...TOGGLE_BOX, ...COLORS, ...TRANSITION] },
+    { target: 'toggle', state: ['hover'], props: [...COLORS, ...TRANSITION] },
+    { target: 'check', props: KNOB },
+  ],
+});
+cases.push({
+  name: 'toggle with an icon',
+  upstream: toggle('VPSwitch', 'check', 'icon', '<span data-t="glyph" class="vpi-sun"></span>'),
+  vpkit: toggle('vp-toggle', 'vp-toggle-check', 'vp-toggle-icon', '<span data-t="glyph" class="vpi-sun"></span>'),
+  checks: [
+    { target: 'check', props: KNOB },
+    { target: 'icon', props: ICON_CLIP },
+    { target: 'glyph', props: GLYPH },
+  ],
+});
+cases.push({
+  name: 'toggle appearance',
+  upstream: toggle(
+    'VPSwitch VPSwitchAppearance', 'check', 'icon',
+    '<span data-t="sun" class="vpi-sun sun"></span><span data-t="moon" class="vpi-moon moon"></span>',
+  ),
+  vpkit: toggle(
+    'vp-toggle vp-toggle-appearance', 'vp-toggle-check', 'vp-toggle-icon',
+    '<span data-t="sun" class="vpi-sun"></span><span data-t="moon" class="vpi-moon"></span>',
+  ),
+  checks: [
+    { target: 'toggle', props: [...TOGGLE_BOX, ...COLORS, ...TRANSITION] },
+    { target: 'check', props: KNOB },
+    { target: 'sun', props: GLYPH },
+    { target: 'moon', props: GLYPH },
+  ],
+});
+// the knob's position while on is vpkit's addition, tested as the button's
+// are: against VPSwitch's knob with the transform inline
+cases.push({
+  name: 'toggle checked',
+  upstream: `<button data-t="toggle" class="VPSwitch"${SWITCH}><span data-t="check" class="check" style="transform:translateX(1.125rem)"></span></button>`,
+  vpkit: `<button data-t="toggle" class="vp-toggle" type="button" role="switch" aria-checked="true"><span data-t="check" class="vp-toggle-check"></span></button>`,
+  checks: [{ target: 'check', props: KNOB }],
+});
+touch('toggle', toggle('vp-toggle', 'vp-toggle-check', null, ''), [
+  { target: 'toggle', ...AT_REST, props: COLORS },
+]);
