@@ -10,7 +10,13 @@
 // a page's first frame until the session picks one; a pick must recolor the
 // page and its example frame in both modes, and the next pages the session
 // opens from their first frame; and the stock card must take the page back
-// to tokens.css's colors, on the next pages too.
+// to tokens.css's colors, on the next pages too. Also held (DESIGN.md
+// records the failures): the theme counts the prose states against the
+// index; a pick's card pressed again on the next visit, an encoded name's
+// too; two picks back to back never through the stock colors; the stock
+// card pressed while a pick loads leaves no theme linked; a pick with no
+// stylesheet is forgotten for the site's theme; with JavaScript off the
+// static link alone; and no page error.
 //
 //   node test/docs.mjs
 //
@@ -184,26 +190,31 @@ try {
         if (/\/vpkit\/themes\/[^/]+\.css$/.test(new URL(route.request().url()).pathname)) await new Promise((r) => setTimeout(r, 300));
         return serve(route);
       });
+      // in every window, the page's and its frames': its --vp-c-brand-2, the
+      // page's with its frames', and its own at its first frame
       await context.addInitScript(() => {
-        requestAnimationFrame(() => {
-          window.firstFrameBrand2 = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
-        });
+        window.brand2 = (root = document.documentElement) => getComputedStyle(root).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+        window.brand2All = () => [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) => brand2(e));
+        requestAnimationFrame(() => { window.firstFrameBrand2 = brand2(); });
       });
       const page = await context.newPage();
       page.on('pageerror', (e) => failures.push(`the gallery's pages: ${e.message}`));
       const KEY = 'vpkit-docs-theme';
       const theme = (name) => index.find((t) => t.name === name);
-      const brand2 = () =>
-        [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
-          getComputedStyle(e).getPropertyValue('--vp-c-brand-2').trim().toLowerCase(),
-        );
       // the page and its frames on a theme's brand-2, within 5s
       const expect = async (what, value, where = '/themes/') => {
         try {
-          await page.waitForFunction(([f, value]) => new Function(`return (${f})()`)().every((b) => b === value), [brand2.toString(), value], { timeout: 5000 });
+          await page.waitForFunction((value) => brand2All().every((b) => b === value), value, { timeout: 5000 });
         } catch (e) {
           if (e.name !== 'TimeoutError') throw e;
-          failures.push(`${where}, ${what}: --vp-c-brand-2 ${(await page.evaluate(brand2)).join(', ')} in the page and its frames, not ${value}`);
+          failures.push(`${where}, ${what}: --vp-c-brand-2 ${(await page.evaluate(() => brand2All())).join(', ')} in the page and its frames, not ${value}`);
+        }
+      };
+      // the page and its frames on a theme's brand-2 at their first frame
+      const expectFirst = async (what, value, where = '/themes/') => {
+        const first = await page.evaluate(() => [window, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow)].map((w) => w.firstFrameBrand2));
+        for (const [i, got] of first.entries()) {
+          if (got !== value) failures.push(`${where}, ${what}${i ? `, frame ${i}` : ''}: --vp-c-brand-2 ${got} at the first frame, not ${value}`);
         }
       };
       const expectPressed = async (what, name) => {
@@ -218,12 +229,7 @@ try {
       const stockBrand2 = index[0].light['brand-2'];
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
-      const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
-      if (firstBrand2 !== vitepress) failures.push(`/themes/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
-      const framesFirst = await page.evaluate(() => [...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow.firstFrameBrand2));
-      for (const [i, value] of framesFirst.entries()) {
-        if (value !== vitepress) failures.push(`/themes/ with no pick, frame ${i + 1}: --vp-c-brand-2 ${value} at its first frame, not the vitepress theme's ${vitepress}`);
-      }
+      await expectFirst('no pick', vitepress);
       const cards = await page.locator('.theme-gallery__card').count();
       if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
       await expect('no pick', vitepress);
@@ -239,8 +245,7 @@ try {
       // a page the session opens next, with frames, from its first frame
       await page.goto(`${BASE}/components/button/`);
       await settle(page);
-      const first = await page.evaluate(() => window.firstFrameBrand2);
-      if (first !== nord.light['brand-2']) failures.push(`/components/button/ after nord was picked: --vp-c-brand-2 ${first} at the first frame, not ${nord.light['brand-2']}`);
+      await expectFirst('nord picked', nord.light['brand-2'], '/components/button/');
       await expect('nord picked, on /components/button/', nord.light['brand-2'], '/components/button/');
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
@@ -250,8 +255,6 @@ try {
       const plus = index.find((t) => t.name.includes('+'));
       await page.click(`.theme-gallery__card[data-theme="${plus.name}"]`);
       await expect(`${plus.name} picked`, plus.light['brand-2']);
-      await page.goto(`${BASE}/components/button/`);
-      await settle(page);
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
       await expectPressed(`opened again after ${plus.name} was picked`, plus.name);
@@ -266,7 +269,7 @@ try {
           const seen = new Set();
           const start = performance.now();
           while (performance.now() - start < 3000) {
-            const now = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+            const now = brand2();
             seen.add(now);
             if (now === until) break;
             await new Promise((r) => setTimeout(r, 10));
