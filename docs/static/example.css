@@ -2086,6 +2086,38 @@ button:focus-visible {
       background-color: Highlight;
     }
   }
+  .vp-skip {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 1px;
+    height: 1px;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--vp-c-brand-1);
+    box-shadow: var(--vp-shadow-3);
+    background-color: var(--vp-c-bg);
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+  }
+  .vp-skip:focus {
+    width: auto;
+    height: auto;
+    clip: auto;
+    clip-path: none;
+  }
+  @media (min-width: 80rem) {
+    .vp-skip {
+      top: 0.875rem;
+      left: 1rem;
+    }
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

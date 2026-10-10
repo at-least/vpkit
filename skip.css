@@ -1,0 +1,52 @@
+/* vpkit — skip link, ported from VitePress's VPSkipLink: the "Skip to
+ * content" link at the top of every page, shown only while it has the
+ * keyboard's focus. An optional import: `@import "vpkit/skip.css";`
+ *
+ *   <a class="vp-skip" href="#main">Skip to content</a>
+ *
+ * Visually hidden (VitePress's visually-hidden: a 1px box, clipped) until
+ * it is focused, then a pill at the top left corner, 0.5rem in (0.875rem
+ * down and 1rem in from 1280px): brand text, bold, 0.75rem, on the page's
+ * color with --vp-shadow-3 and a 0.5rem radius, above everything
+ * (z-index 999). VitePress spells it as two classes, VPSkipLink and
+ * visually-hidden; this is the one. It is positioned, where every other
+ * component leaves placement to the page, because VitePress's is and a
+ * skip link's place is the page's corner. Put it first in <body>, before
+ * the navbar, with the id of <main> as its target. */
+
+@layer components {
+  .vp-skip {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 1px;
+    height: 1px;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--vp-c-brand-1);
+    box-shadow: var(--vp-shadow-3);
+    background-color: var(--vp-c-bg);
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+  }
+
+  .vp-skip:focus {
+    width: auto;
+    height: auto;
+    clip: auto;
+    clip-path: none;
+  }
+
+  @media (min-width: 80rem) {
+    .vp-skip {
+      top: 0.875rem;
+      left: 1rem;
+    }
+  }
+}

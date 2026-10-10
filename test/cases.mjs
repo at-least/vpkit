@@ -975,6 +975,24 @@ for (const type of ['note', 'tip', 'important', 'caution', 'warning']) {
   });
 }
 
+// skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
+// it so that the component's position wins as its scoped rules do) against
+// vp-skip, hidden at rest and shown while focused
+const SKIP_BOX = [
+  'position', 'top', 'left', 'width', 'height', ...PADDING, 'z-index', ...RADIUS, 'font-size', 'font-weight',
+  'white-space', 'text-decoration-line', 'color', 'box-shadow', 'background-color', 'clip', 'clip-path', 'overflow-x', 'overflow-y',
+];
+cases.push({
+  name: 'skip link',
+  upstreamFiles: ['utils.css', 'components/VPSkipLink.vue'],
+  upstream: `<a data-t="skip" class="VPSkipLink visually-hidden" href="#main">Skip to content</a><main id="main"></main>`,
+  vpkit: `<a data-t="skip" class="vp-skip" href="#main">Skip to content</a><main id="main"></main>`,
+  checks: [
+    { target: 'skip', props: SKIP_BOX },
+    { target: 'skip', state: ['focus'], props: SKIP_BOX },
+  ],
+});
+
 // inside a vp-doc (content.css), whose rules for links, paragraphs and
 // headings outrank a component's own (VitePress's components win there by
 // Vue's scoping, which the port drops): each component keeps its look. A
