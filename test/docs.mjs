@@ -57,8 +57,8 @@ if (JSON.stringify(index.map((t) => t.name)) !== JSON.stringify(['', ...stems]))
   const total = index.length - 1;
   const curated = index.filter((t) => t.source === 'curated').length;
   const helix = index.filter((t) => t.source === 'helix').length;
-  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : e.name.endsWith('.md') ? [join(dir, e.name)] : []));
-  for (const file of [join(ROOT, 'README.md'), ...walk(join(DOCS, 'content'))]) {
+  const content = join(DOCS, 'content');
+  for (const file of [join(ROOT, 'README.md'), ...readdirSync(content, { recursive: true }).filter((f) => f.endsWith('.md')).map((f) => join(content, f))]) {
     const text = readFileSync(file, 'utf8');
     for (const [pattern, want, what] of [
       [/\b(\d+) (?:ready-made )?color themes\b/g, total, 'color themes'],
@@ -190,6 +190,7 @@ try {
       });
     });
     const page = await context.newPage();
+    page.on('pageerror', (e) => failures.push(`the gallery's pages: ${e.message}`));
     // the site is on the vitepress theme (docs/static/theme-pick.js) until a
     // pick: its brand-2 (the hovered link's color, which the theme fits)
     // from the first frame, and its card pressed
