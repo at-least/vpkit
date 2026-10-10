@@ -4,7 +4,8 @@
  * colors, light and dark side by side. Picking one links the theme's
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
- * stock card takes the link away. */
+ * pick is kept for the browser session, and static/theme-pick.js links it
+ * in every page the session opens; the stock card takes it back. */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
 
@@ -87,12 +88,17 @@ function half(colors, mode) {
   return el;
 }
 
+// the session's pick, which static/theme-pick.js has linked
+const KEY = 'vpkit-docs-theme';
+let link = document.head.querySelector('link[data-theme]');
+const current = link?.dataset.theme ?? '';
+
 function card(theme) {
   const el = document.createElement('button');
   el.type = 'button';
   el.className = 'theme-gallery__card';
   el.dataset.theme = theme.name;
-  el.setAttribute('aria-pressed', String(theme.name === ''));
+  el.setAttribute('aria-pressed', String(theme.name === current));
   const preview = document.createElement('span');
   preview.className = 'theme-gallery__preview';
   preview.append(half(theme.light, 'light'), half(theme.dark, 'dark'));
@@ -107,11 +113,11 @@ function card(theme) {
   return el;
 }
 
-let link = null;
 function pick(name) {
   const old = link;
   link = null;
   if (name) {
+    sessionStorage.setItem(KEY, name);
     link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = `${host.dataset.stylesheets}${name}.css`;
@@ -120,6 +126,7 @@ function pick(name) {
     if (old) link.addEventListener('load', () => old.remove(), { once: true });
     document.head.append(link);
   } else {
+    sessionStorage.removeItem(KEY);
     old?.remove();
   }
   for (const c of cards) c.setAttribute('aria-pressed', String(c.dataset.theme === name));

@@ -7,14 +7,16 @@
 // appearance, and keep it when the navbar's switch changes it. The theme
 // gallery's index (docs/static/themes.json) must hold the stock colors and
 // then every theme of themes/, and a pick must recolor the page and its
-// example frame in both modes, until the stock card takes it back.
+// example frame in both modes, and the next pages the session opens from
+// their first frame, until the stock card takes it back.
 //
 //   node test/docs.mjs
 //
 // Needs zola, and vpkit-zola, the theme the site is built with, as a
 // sibling checkout: docs/themes/vpkit-zola links to ../vpkit-zola. The
-// site is served from its build through a Playwright route. Exits 1,
-// listing what fails.
+// site is built under a path, as GitHub Pages serves it (/vpkit/), and
+// served from its build through a Playwright route, which answers nothing
+// outside that path. Exits 1, listing what fails.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
@@ -26,6 +28,7 @@ import { chromium } from 'playwright-chromium';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS = join(ROOT, 'docs');
 const ORIGIN = 'http://docs.test';
+const BASE = `${ORIGIN}/vpkit`;
 const TYPES = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.html': 'text/html', '.svg': 'image/svg+xml', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain' };
 const WIDTHS = [1280, 375];
 const failures = [];
@@ -51,14 +54,22 @@ const dir = mkdtempSync(join(tmpdir(), 'vpkit-docs-'));
 const site = join(dir, 'site');
 let frames = 0;
 try {
-  execFileSync('zola', ['--root', DOCS, 'build', '--base-url', ORIGIN, '--output-dir', site], { stdio: 'pipe' });
+  execFileSync('zola', ['--root', DOCS, 'build', '--base-url', BASE, '--output-dir', site], { stdio: 'pipe' });
   const css = readFileSync(join(site, 'example.css'), 'utf8');
   const withExamples = readdirSync(site, { recursive: true })
     .filter((f) => f.endsWith('index.html') && readFileSync(join(site, f), 'utf8').includes('<iframe class="vp-example"'))
     .map((f) => `/${f.slice(0, -'index.html'.length)}`)
     .sort();
+  // after the frames' fonts, two frames for their ResizeObservers
+  const settle = (page) =>
+    page.evaluate(async () => {
+      for (const f of document.querySelectorAll('iframe.vp-example')) await f.contentDocument.fonts.ready;
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    });
   const serve = (route) => {
-    let file = join(site, decodeURIComponent(new URL(route.request().url()).pathname));
+    const path = decodeURIComponent(new URL(route.request().url()).pathname);
+    if (!path.startsWith('/vpkit/')) return route.fulfill({ status: 404, body: '' });
+    let file = join(site, path.slice('/vpkit'.length));
     if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
     if (!existsSync(file)) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ contentType: TYPES[extname(file)] ?? 'application/octet-stream', body: readFileSync(file) });
@@ -73,15 +84,9 @@ try {
       page.on('pageerror', (e) => errors.push(e.message));
       for (const path of withExamples) {
         errors.length = 0;
-        await page.goto(`${ORIGIN}${path}`);
+        await page.goto(`${BASE}${path}`);
         const where = `${path} at ${width}px`;
-        // after the frames' fonts, two frames for their ResizeObservers
-        const settle = () =>
-          page.evaluate(async () => {
-            for (const f of document.querySelectorAll('iframe.vp-example')) await f.contentDocument.fonts.ready;
-            await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-          });
-        await settle();
+        await settle(page);
         const report = () =>
           page.evaluate((css) => {
             const dark = document.documentElement.classList.contains('dark');
@@ -95,7 +100,7 @@ try {
               const minHeight = parseFloat(getComputedStyle(f).minHeight) || 0;
               return {
                 title: f.title,
-                stylesheet: sheets.length === 1 && new URL(sheets[0].href).pathname === '/example.css' && sheets[0].cssRules.length > 0,
+                stylesheet: sheets.length === 1 && new URL(sheets[0].href).pathname === '/vpkit/example.css' && sheets[0].cssRules.length > 0,
                 unstyled,
                 fits: f.clientHeight === Math.max(content, minHeight) && root.scrollHeight <= root.clientHeight,
                 height: `${f.clientHeight}px for ${content}px of content${minHeight ? `, at least ${minHeight}px` : ''}`,
@@ -117,7 +122,7 @@ try {
           // the navbar's switch, both ways
           for (let i = 0; i < 2; i++) {
             await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
-            await settle();
+            await settle(page);
             for (const f of await report()) {
               if (!f.dark) failures.push(`${where}, "${f.title}": not in the page's appearance after the switch`);
               if (!f.fits) failures.push(`${where}, "${f.title}": after the switch, ${f.height}`);
@@ -130,11 +135,22 @@ try {
     }
 
     // the theme gallery: a card for each theme of the index, and a pick in
-    // the page and its frame, light and dark, until the stock card
+    // the page and its frame, light and dark, then in the next pages the
+    // session opens, until the stock card. A theme's stylesheet answers
+    // 300ms late, so a page that painted before it arrived would show it:
+    // each page records its --vp-c-bg at its first frame.
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-    await context.route(`${ORIGIN}/**`, serve);
+    await context.route(`${ORIGIN}/**`, async (route) => {
+      if (/\/vpkit\/themes\/[^/]+\.css$/.test(new URL(route.request().url()).pathname)) await new Promise((r) => setTimeout(r, 300));
+      return serve(route);
+    });
+    await context.addInitScript(() => {
+      requestAnimationFrame(() => {
+        window.firstFrameBackground = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-bg').trim().toLowerCase();
+      });
+    });
     const page = await context.newPage();
-    await page.goto(`${ORIGIN}/themes/`);
+    await page.goto(`${BASE}/themes/`);
     await page.waitForSelector('.theme-gallery__card');
     const cards = await page.locator('.theme-gallery__card').count();
     if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
@@ -142,11 +158,11 @@ try {
       [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
         getComputedStyle(e).getPropertyValue('--vp-c-bg').trim().toLowerCase(),
       );
-    const expect = async (what, bg) => {
+    const expect = async (what, bg, where = '/themes/') => {
       try {
         await page.waitForFunction(([f, bg]) => new Function(`return (${f})()`)().every((b) => b === bg), [backgrounds.toString(), bg], { timeout: 5000 });
       } catch {
-        failures.push(`/themes/, ${what}: --vp-c-bg ${(await page.evaluate(backgrounds)).join(', ')} in the page and its frame, not ${bg}`);
+        failures.push(`${where}, ${what}: --vp-c-bg ${(await page.evaluate(backgrounds)).join(', ')} in the page and its frames, not ${bg}`);
       }
     };
     const nord = index.find((t) => t.name === 'nord');
@@ -157,8 +173,22 @@ try {
     await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
     await expect('nord picked, dark', nord.dark.bg);
     await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
+    await expect('nord picked, light again', nord.light.bg);
+    // a page the session opens next, with frames, from its first frame
+    await page.goto(`${BASE}/components/button/`);
+    await settle(page);
+    const first = await page.evaluate(() => window.firstFrameBackground);
+    if (first !== nord.light.bg) failures.push(`/components/button/ after nord was picked: --vp-c-bg ${first} at the first frame, not ${nord.light.bg}`);
+    await expect('nord picked, on /components/button/', nord.light.bg, '/components/button/');
+    await page.goto(`${BASE}/themes/`);
+    await page.waitForSelector('.theme-gallery__card');
+    const kept = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
+    if (kept.join() !== 'nord') failures.push(`/themes/ opened again after nord was picked: the pressed cards are [${kept}]`);
     await page.click('.theme-gallery__card[data-theme=""]');
     await expect('the stock card picked', index[0].light.bg);
+    await page.goto(`${BASE}/components/button/`);
+    await settle(page);
+    await expect('the stock card picked, on /components/button/', index[0].light.bg, '/components/button/');
     await context.close();
   } finally {
     await browser.close();
