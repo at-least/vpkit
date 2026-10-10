@@ -22,7 +22,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 @import "vpkit/button.css";
 ```
 
-`@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in. `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: serve this package's `fonts/` directory next to your built CSS. `base.css` paints the page as VitePress does; put `class="dark"` on `<html>` for dark mode.
+`@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in. `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: serve this package's `fonts/` directory next to your built CSS. `base.css` paints the page as VitePress does; put `class="dark"` on `<html>` for dark mode. A color theme is one more import after vpkit (`@import "vpkit/themes/nord.css"`); `vpkit/themes/vitepress.css` is VitePress's own palette with its contrast shortfalls fitted, which the apps built on vpkit and the documentation site import.
 
 ## Documentation
 
@@ -45,7 +45,7 @@ npm test
 
 The generated files, and what writes them:
 
-- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `python3 scripts/gen-themes.py` (Python 3.11+), from its slot maps and `helix/`; `themes/vitepress.css`, VitePress's own palette with its contrast shortfalls fitted: `python3 scripts/fit-vitepress.py`, from `tokens.css`.
+- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `python3 scripts/gen-themes.py` (Python 3.11+), from its slot maps and `helix/`; `themes/vitepress.css`, VitePress's own palette with its contrast shortfalls fitted: `python3 scripts/fit-vitepress.py`, from `tokens.css`; `npm test` fails while it is not that script's output.
 - `layout.css` and `content.css`: `node scripts/vitepress-port.mjs --write`, from VitePress's component styles after a re-sync; the tests fail if a file is not its output.
 - `docs/static/example.css` and `docs/static/themes.json`: `node scripts/build-docs.mjs`, after changing an example or a theme; `npm test` fails while they are stale.
 

@@ -44,4 +44,4 @@ In a theme `brand-2` and each role's `-2` (`tip-2`, `important-2`, `warning-2`, 
 
 ## Generating themes
 
-The generated themes come from `scripts/gen-themes.py` (Python 3.11+): edit its slot maps, run `python3 scripts/gen-themes.py`, then `node scripts/build-docs.mjs` for this site's [gallery](@/themes.md), then `npm test`. The four hand-tuned ones are edited directly, and the gallery rebuilt the same way.
+The generated themes come from `scripts/gen-themes.py` (Python 3.11+): edit its slot maps, run `python3 scripts/gen-themes.py`, then `node scripts/build-docs.mjs` for this site's [gallery](@/themes.md), then `npm test`. The four hand-tuned ones are edited directly, and the gallery rebuilt the same way. `vitepress` comes from `python3 scripts/fit-vitepress.py`, which fits `tokens.css`'s palette by the generator's own steps (the color math the two scripts share, `scripts/color.py`); `npm test` fails while `themes/vitepress.css` is not its output.

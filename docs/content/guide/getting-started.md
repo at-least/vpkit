@@ -77,4 +77,11 @@ A color theme is one more import, after vpkit:
 @import "vpkit/themes/nord.css";
 ```
 
+Without one, the page is VitePress's stock palette, `tokens.css`'s, which falls short of the contrast minimums the themes are held to in a few places: a hovered link dimmed in a container, the brand button's white label, a control's border. `vitepress` is that palette with those shortfalls fitted, VitePress's look at AA; the apps built on vpkit and this site import it:
+
+```css
+@import "vpkit";
+@import "vpkit/themes/vitepress.css";
+```
+
 [Theming](@/guide/theming.md#color-themes) has the 223 of them.
