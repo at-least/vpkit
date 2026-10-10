@@ -6,12 +6,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "python3 test/gen-themes.py && python3 scripts/fit-vitepress.py --check && node test/themes.mjs && node test/tokens.mjs && node test/compare.mjs && node test/forced-colors.mjs && node test/layout.mjs && node scripts/build-docs.mjs --check && node test/docs.mjs"
+    "test": "node test/gen-themes.mjs && node scripts/fit-vitepress.mjs --check && node test/themes.mjs && node test/tokens.mjs && node test/compare.mjs && node test/forced-colors.mjs && node test/layout.mjs && node scripts/build-docs.mjs --check && node test/docs.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "@vue/compiler-sfc": "3.5.41",
     "playwright-chromium": "^1.62.1",
+    "smol-toml": "^1.9.1",
     "tailwindcss": "^4.3.3"
   }
 }

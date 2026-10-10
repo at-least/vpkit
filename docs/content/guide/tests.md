@@ -12,7 +12,7 @@ npm test
 
 ## Color themes
 
-`test/themes.mjs` checks every color theme against the contract and the contrast minimums of [Theming](@/guide/theming.md#what-the-tests-hold-a-theme-to) (ported from rustpress's tests, check for check). `test/gen-themes.py` checks that the generator reads a Helix palette that `inherits` another as Helix does; it needs Python 3.11+, as the generator does. `python3 scripts/fit-vitepress.py --check` holds `themes/vitepress.css` to that script's output from `tokens.css`.
+`test/themes.mjs` checks every color theme against the contract and the contrast minimums of [Theming](@/guide/theming.md#what-the-tests-hold-a-theme-to) (ported from rustpress's tests, check for check). `test/gen-themes.mjs` checks that the generator reads a Helix palette that `inherits` another as Helix does. `node scripts/fit-vitepress.mjs --check` holds `themes/vitepress.css` to that script's output from `tokens.css`. The contrast math the generators fit with is the test's own, `scripts/color.mjs`.
 
 ## The theme
 

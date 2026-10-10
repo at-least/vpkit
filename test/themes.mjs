@@ -15,6 +15,8 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// the luminance and contrast the generators fit with: one implementation
+import { contrast, luminance, parseHex } from '../scripts/color.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const RAMPS = ['gray', 'indigo', 'purple', 'green', 'yellow', 'orange', 'red'];
@@ -126,11 +128,6 @@ function modeValues(css, selector) {
   return values;
 }
 
-const parseHex = (hex) => {
-  const n = parseInt(hex, 16);
-  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
-};
-
 // a token as a solid color: a 6-digit hex, or rgba() composited over the
 // backdrop (when one is given)
 function color(values, token, backdrop) {
@@ -147,19 +144,6 @@ function color(values, token, backdrop) {
   const [r, g, b, a] = parts;
   const mix = (fg, bg) => Math.round(fg * a + bg * (1 - a));
   return [mix(r, backdrop[0]), mix(g, backdrop[1]), mix(b, backdrop[2])];
-}
-
-function luminance([r, g, b]) {
-  const channel = (c) => {
-    c /= 255;
-    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-function contrast(a, b) {
-  const [la, lb] = [luminance(a), luminance(b)];
-  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
 const base = baseCss();

@@ -8,8 +8,8 @@
  * (light brand-3 4.48 to 4.5), hovered (dark: a deeper ground than stock's
  * lighter brand-2 at 4.15) and pressed (dark: a deeper ground than stock's
  * brand-1 at 1.6); a control's border at 3:1 on the page (stock 2.2 light,
- * 1.6 dark). Fitted by gen-themes.py's steps toward black (light) or white
- * (dark); `python3 scripts/fit-vitepress.py` reproduces it from tokens.css
+ * 1.6 dark). Fitted by gen-themes.mjs's steps toward black (light) or white
+ * (dark); `node scripts/fit-vitepress.mjs` reproduces it from tokens.css
  * and npm test checks that it does. Import after vpkit, as the apps do. */
 :root {
   --vp-c-neutral-inverse: #ffffff;

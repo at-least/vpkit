@@ -27,7 +27,7 @@ A theme only sets variables, so the components and your utilities follow it.
 
 ### Where they come from
 
-- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted (a hovered link's `-2` as text and dimmed in a container, the brand button's white label at rest, hovered and pressed, a control's border at 3:1), written by `scripts/fit-vitepress.py` from `tokens.css`. The apps built on vpkit import it, and this site is on it: VitePress's look, AA.
+- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted (a hovered link's `-2` as text and dimmed in a container, the brand button's white label at rest, hovered and pressed, a control's border at 3:1), written by `scripts/fit-vitepress.mjs` from `tokens.css`. The apps built on vpkit import it, and this site is on it: VitePress's look, AA.
 - 198 are mapped automatically from the Helix editor's palettes (`helix/`), each read as Helix reads it, its `inherits` followed, with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
 
 ### Switching at runtime
@@ -44,4 +44,4 @@ In a theme `brand-2` and each role's `-2` (`tip-2`, `important-2`, `warning-2`, 
 
 ## Generating themes
 
-The generated themes come from `scripts/gen-themes.py` (Python 3.11+): edit its slot maps, run `python3 scripts/gen-themes.py`, then `node scripts/build-docs.mjs` for this site's [gallery](@/themes.md), then `npm test`. The four hand-tuned ones are edited directly, and the gallery rebuilt the same way. `vitepress` comes from `python3 scripts/fit-vitepress.py`, which fits `tokens.css`'s palette by the generator's own steps (the color math the two scripts share, `scripts/color.py`); `npm test` fails while `themes/vitepress.css` is not its output.
+The generated themes come from `scripts/gen-themes.mjs`: edit its slot maps, run `node scripts/gen-themes.mjs`, then `node scripts/build-docs.mjs` for this site's [gallery](@/themes.md), then `npm test`. The four hand-tuned ones are edited directly, and the gallery rebuilt the same way. `vitepress` comes from `node scripts/fit-vitepress.mjs`, which fits `tokens.css`'s palette by the generator's own steps; the color math the two scripts and `test/themes.mjs` share is `scripts/color.mjs`, so the fits and the checks are one implementation. `npm test` fails while `themes/vitepress.css` is not its output.
