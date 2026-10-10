@@ -993,6 +993,80 @@ cases.push({
   ],
 });
 
+// nav link: VPNavMenuLink in the bar (VPNavBarMenuLink) and in the screen
+// (VPNavScreenMenuLink) against vp-nav-link and its screen modifier, at
+// rest, hovered, and current (`.active` there, aria-current="page" here)
+const NAV_LINK = [
+  'display', 'align-items', 'min-height', ...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color',
+  'line-height', 'font-size', 'font-weight', 'color', 'text-decoration-line', ...TRANSITION, 'height',
+];
+const navLink = (cls, extra = '') => `<a data-t="a" class="${cls}" href="#"${extra}><span>Guide</span></a>`;
+for (const [name, upstreamCls, vpkitCls] of [
+  ['bar', 'VPLink link VPNavMenuLink VPNavBarMenuLink', 'vp-nav-link'],
+  ['screen', 'VPLink link VPNavMenuLink VPNavScreenMenuLink', 'vp-nav-link vp-nav-link-screen'],
+]) {
+  cases.push({
+    name: `nav link ${name}`,
+    upstreamFiles: ['components/VPNavMenuLink.vue'],
+    upstream: navLink(upstreamCls),
+    vpkit: navLink(vpkitCls),
+    checks: [
+      { target: 'a', props: NAV_LINK },
+      { target: 'a', state: ['hover'], props: ['color'] },
+    ],
+  });
+  cases.push({
+    name: `nav link ${name}, current`,
+    upstreamFiles: ['components/VPNavMenuLink.vue'],
+    upstream: navLink(`${upstreamCls} active`, ' aria-current="page"'),
+    vpkit: navLink(vpkitCls, ' aria-current="page"'),
+    checks: [{ target: 'a', props: ['color'] }],
+  });
+}
+// a form's submit drawn as a link of the menu
+cases.push({
+  name: 'nav link <button>',
+  reference: navLink('vp-nav-link'),
+  vpkit: `<button data-t="a" class="vp-nav-link" type="submit"><span>Sign out</span></button>`,
+  checks: [{ target: 'a', props: NAV_LINK.filter((p) => p !== 'height') }],
+});
+touch('nav link', navLink('vp-nav-link'), [{ target: 'a', ...AT_REST, props: ['color'] }]);
+
+// top bar: VPNavBar's wrapper (its padding), container (the row) and
+// VPNavBarTitle's title against vp-topbar, vp-topbar-row and
+// vp-topbar-title; the row's centering is vpkit's addition, written
+// inline on the container. The bar's ground and rule are compared with
+// the declarations written inline, since VPNavBar paints them on a
+// ::before and a child element
+const TOPBAR_ROW = ['display', 'justify-content', 'align-items', ...SIDES.map((s) => `margin-${s}`), 'max-width', 'height', 'width'];
+const TOPBAR_TITLE = ['display', 'align-items', 'height', 'font-size', 'font-weight', 'color', 'text-decoration-line', ...TRANSITION];
+const topbarUpstream =
+  `<div data-t="bar" class="VPNavBar"><div data-t="wrap" class="wrapper"><div data-t="row" class="container" style="align-items:center">` +
+  `<div class="title"><div class="VPNavBarTitle"><a data-t="title" class="title" href="#"><span data-t="name">Site</span></a></div></div>` +
+  `<div class="content"><div class="content-body"></div></div></div></div><div class="divider"><div data-t="line" class="divider-line"></div></div></div>`;
+const topbarVpkit =
+  `<header data-t="bar" class="vp-topbar"><div data-t="row" class="vp-topbar-row">` +
+  `<a data-t="title" class="vp-topbar-title" href="#"><span data-t="name">Site</span></a></div></header>`;
+cases.push({
+  name: 'top bar',
+  upstreamFiles: ['components/VPNavBar.vue', 'components/VPNavBarTitle.vue'],
+  upstream: topbarUpstream,
+  vpkit: topbarVpkit,
+  checks: [
+    { target: 'bar', props: ['white-space'] },
+    { target: 'bar', refTarget: 'wrap', props: PADDING },
+    { target: 'row', props: TOPBAR_ROW },
+    { target: 'title', props: TOPBAR_TITLE },
+    { target: 'name', props: ['overflow-x', 'overflow-y', 'text-overflow'] },
+  ],
+});
+cases.push({
+  name: 'top bar ground and rule',
+  reference: `<header data-t="bar" style="background-color:var(--vp-nav-bg-color);border-bottom:1px solid var(--vp-nav-divider-color);transition:background-color 0.25s"></header>`,
+  vpkit: `<header data-t="bar" class="vp-topbar"></header>`,
+  checks: [{ target: 'bar', props: ['background-color', 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', ...TRANSITION] }],
+});
+
 // inside a vp-doc (content.css), whose rules for links, paragraphs and
 // headings outrank a component's own (VitePress's components win there by
 // Vue's scoping, which the port drops): each component keeps its look. A

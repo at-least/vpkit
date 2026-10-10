@@ -1,0 +1,62 @@
+/* vpkit — nav link, ported from VitePress's VPNavMenuLink: a link of the
+ * navbar's menu, and the same link in the nav screen (the menu a phone
+ * opens). An optional import: `@import "vpkit/nav-link.css";`
+ *
+ *   <nav aria-label="Main">
+ *     <a class="vp-nav-link" href="/guide" aria-current="page">Guide</a>
+ *     <a class="vp-nav-link" href="/reference">Reference</a>
+ *     <button class="vp-nav-link" type="submit">Sign out</button>
+ *   </nav>
+ *
+ *   <a class="vp-nav-link vp-nav-link-screen" href="/guide">Guide</a>
+ *
+ * `vp-nav-link` is the bar's link (VPNavBarMenuLink): a flex row as tall
+ * as the navbar (min-height --vp-nav-height), 0.75rem of padding each
+ * side, 0.875rem text at weight 500 in text-1, brand on hover and while
+ * it is the current page's (`aria-current="page"`, where VitePress has
+ * `.active`). On a <button> it is the same row: a form's submit drawn as
+ * a link of the menu.
+ *
+ * Modifier, used together with `vp-nav-link`:
+ *   vp-nav-link-screen   the screen's link (VPNavScreenMenuLink): a block
+ *                        with a divider under it, 0.75rem above its text
+ *                        and 0.6875rem below, on a 24px line
+ *
+ * The hover is `@variant hover`, like Tailwind's `hover:`; VitePress's
+ * also sticks to a tapped link on a touch screen. The menu's layout, the
+ * bar and the screen themselves, are the page's: vp-topbar is the bar. */
+
+@layer components {
+  .vp-nav-link {
+    display: flex;
+    align-items: center;
+    min-height: var(--vp-nav-height);
+    padding: 0 0.75rem;
+    line-height: 1.5;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    transition: color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-nav-link {
+    @variant hover {
+      color: var(--vp-c-brand-1);
+    }
+  }
+
+  .vp-nav-link[aria-current="page"] {
+    color: var(--vp-c-brand-1);
+  }
+
+  .vp-nav-link-screen.vp-nav-link {
+    display: block;
+    align-items: normal;
+    min-height: auto;
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 0 0.6875rem;
+    line-height: 1.7142857;
+    transition: border-color 0.25s, color 0.25s;
+  }
+}

@@ -1,0 +1,76 @@
+/* vpkit — top bar, ported from VitePress's VPNavBar (the bar: its ground,
+ * its padding, its bottom rule, the centered row inside it) and
+ * VPNavBarTitle (the site's name in it). An optional import:
+ * `@import "vpkit/topbar.css";`
+ *
+ *   <header class="vp-topbar sticky top-0 z-(--vp-z-index-nav)">
+ *     <div class="vp-topbar-row">
+ *       <a class="vp-topbar-title" href="/"><span>Site</span></a>
+ *       <nav aria-label="Main">
+ *         <a class="vp-nav-link" href="/guide">Guide</a>
+ *       </nav>
+ *     </div>
+ *   </header>
+ *
+ * `vp-topbar` is the bar: --vp-nav-bg-color (with --vp-nav-backdrop-filter,
+ * for a frosted bar), a 1px --vp-nav-divider-color rule along its bottom,
+ * 1.5rem of padding at the left and 0.5rem at the right (2rem each from
+ * 768px), nothing wrapping. `vp-topbar-row` is the row in it: a flex row
+ * as tall as the navbar (--vp-nav-height), its ends apart, centered at
+ * --vp-layout-max-width less 4rem; a bar may hold more than one.
+ * `vp-topbar-title` is the site's name: a flex row the navbar's height,
+ * 1rem at weight 600 in text-1; a <span> in it truncates with an ellipsis
+ * when the bar runs out of room.
+ *
+ * Where the bar sits is the page's (sticky or fixed at the top, with
+ * --vp-z-index-nav), as is what fills the row: vp-nav-link for its links,
+ * vp-icon-btn and vp-toggle for its controls. Differences from VitePress:
+ * the ground is the bar's own, where VPNavBar paints it on a ::before (its
+ * sidebar column paints its own); the rule is a border, where VPNavBar
+ * draws it with an element; the row centers its items (vpkit's addition,
+ * since a control in an app's bar is shorter than the row, where
+ * VitePress's are all the bar's height); and the title has no width,
+ * where VPNavBarTitle's fills the column VPNavBar reserves for it. Not
+ * ported: the home page's transparent state, the sidebar column's offset,
+ * the local nav's. */
+
+@layer components {
+  .vp-topbar {
+    padding: 0 0.5rem 0 1.5rem;
+    border-bottom: 1px solid var(--vp-nav-divider-color);
+    white-space: nowrap;
+    background-color: var(--vp-nav-bg-color);
+    backdrop-filter: var(--vp-nav-backdrop-filter);
+    transition: background-color 0.25s;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-topbar {
+      padding: 0 2rem;
+    }
+  }
+
+  .vp-topbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: calc(var(--vp-layout-max-width) - 4rem);
+    height: var(--vp-nav-height);
+  }
+
+  .vp-topbar-title {
+    display: flex;
+    align-items: center;
+    height: var(--vp-nav-height);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+    transition: opacity 0.25s;
+  }
+
+  :where(.vp-topbar-title) > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
