@@ -347,7 +347,7 @@ What each app's recipe becomes, and what stands in the way. The apps decide; thi
 
 | recipe | becomes | in the way |
 | --- | --- | --- |
-| `BTN`, `BTN_PRIMARY` | `vp-btn`, `vp-btn-brand` | done; `VP_BTN_EXTRA` (a 0.3rem gap, the pointer since `base.css` is not imported, the plain cursor when disabled) is own-drive's choice and stays |
+| `BTN`, `BTN_PRIMARY` | `vp-btn`, `vp-btn-brand` | done; `VP_BTN_EXTRA` (a 0.3rem gap, the pointer, the plain cursor when disabled) was own-drive's choice until 2026-10-10, when own-drive took `base.css` and `vp-btn` as it is (the apps onto vpkit's page) |
 | `#themeToggle` | `vp-toggle vp-toggle-appearance` | its sun and moon are its own SVGs (`ic-sun`, `ic-moon`), placed and cross-faded by utilities in `theme_toggle_icons()`. `toggle.css` places, colors and cross-fades only `vpi-*` icons, so inside `vp-toggle-icon` they would get none of it: own-drive imports `icons.css` and uses `vpi-sun` and `vpi-moon`, or keeps its SVGs and their utilities |
 | `#themeSelect`, `#shareExpires` | stay, with `INPUT` | own-drive's inputs are its own look (no fixed height, the background swaps to `bg` on focus); its selects carry that recipe and stay with it. If own-drive ever moves to `vp-input`, the selects move as they are |
 | `MODAL`, `MODAL_BACK`, `MODAL_H3`, `BTN_ROW` | `vp-dialog`, its `::backdrop`, `vp-dialog-title`, `vp-dialog-actions` | the modals are `<div role="dialog">` behind a scrim `<div>`; `<dialog>` and `showModal()` in `app.js` replace the scrim, the z-index and the focus handling. `MODAL_P` and `MODAL_ERR` stay utilities |
@@ -398,6 +398,7 @@ One commit per step, each with its cases green (`npm test`) and its page of the 
 12. **The apps' second round** (2026-10-10): the rules for a component inside a `vp-doc` (decision 10), `vp-badge-outline`, `vp-skip`, `vp-nav-link`, `vp-topbar`, one commit each, each with its cases and its page; then the two sites of totality onto them.
 13. **crashcart** (2026-10-10, the owner: open decisions 11 to 14 as recommended, then crashcart onto vpkit): `vp-hamburger`, `vp-card-outline`, `vp-btn-ghost`, `vp-empty`, one commit each with its cases and its page; the store onto `vp-hamburger`; then crashcart onto the components, verified on a live server (every route at 1280 and 375, light and dark, its layout audit on each).
 14. **The upstream comparison** (2026-10-10, the owner: a clone of vuejs/vitepress is the standard): every file vpkit ports or copies diffed against the clone at the tag; three deviations fixed, `test/tokens.mjs` added so the theme is held to its sources as the components are (below).
+15. **The apps onto vpkit's page** (2026-10-10, the owner: 各app不要偏離，統一僅可能改用vpkit的標準): `base.css` carries VitePress's `body` and placeholder rules, each app drops its own copy and its own focus ring, one commit per repository (below); crashcart waits for a push, since its vpkit is a GitHub pin.
 
 ## The review of 2026-10-10
 
@@ -438,9 +439,23 @@ Kept, as decisions already made, and listed here so they are not mistaken for sl
 
 - The graded containers' palette is literal and on `:root:has(.vp-graded-containers)` (0,2,0), where upstream has `var(--vp-c-orange-*)` and `var(--vp-c-yellow-*)` on `:root:where(:has(…))` (0,1,0): the opt-in beats a color theme's warning and caution (`tokens.css` says why). `var()` references would have made the wrong literal impossible, but would follow a theme that redefines orange or yellow; the owner's call.
 - `--vp-font-family-base` names Inter in `tokens.css` (upstream names it only in `fonts.css`, so a build without the fonts does not): a page that skips `fonts.css` still asks for a locally installed Inter.
-- `base.css` is VitePress's overrides without its `body` rule (`text-rendering: optimizeLegibility`, the font smoothing, `text-autospace: normal`, `text-spacing-trim: normal`, the page colors) and without `input::placeholder { color: var(--vp-c-text-3) }`. The page colors are the page's by design (the README); the rest each app reproduces by hand and unevenly (measured: the store sets all four as utilities, the admin `antialiased` only, own-drive and crashcart none), and `vp-input`'s placeholder is `text-2` from totality's recipe. Whether `base.css` should carry the body's typography and the placeholder color is open.
+- `base.css` was VitePress's overrides without its `body` rule (`text-rendering: optimizeLegibility`, the font smoothing, `text-autospace: normal`, `text-spacing-trim: normal`, the page colors) and without `input::placeholder { color: var(--vp-c-text-3) }`; each app reproduced them by hand and unevenly (measured: the store set all four as utilities, the admin `antialiased` only, own-drive and crashcart none, vpkit-zola a verbatim copy), and `vp-input`'s placeholder was `text-2` from totality's recipe. Closed the same day by the owner's second instruction, below: `base.css` carries both, and the apps dropped their own.
 
 Upstream's main had 11 commits in `src/client/theme-default` past the tag that day, no newer tag. `SOURCE` re-syncs at a tag; at the next one, #5421 (VPButton's height decoupled from its line height) reaches `button.css` and #5437 (native RTL, a new `--vp-direction-multiplier`) the layout port and `tokens.css`.
+
+### The apps onto vpkit's page (2026-10-10)
+
+The owner's second instruction the same day: the apps are not to deviate; as far as possible they use vpkit's standard. Measured first: four sites hand-wrote VitePress's `body` rule in four ways (above), two drew a brand focus ring of their own (own-drive 2px `brand-1` offset 2, crashcart 2px `--color-ring` offset 1) where VitePress keeps the browser's ring on a focused button and none on a field, which shows its brand border, and totality alone gave a focused field a transparent outline for forced colors. What changed:
+
+| where | what changed | commit |
+| --- | --- | --- |
+| vpkit | `base.css` carries VitePress's `body` rule and `input::placeholder, textarea::placeholder { color: var(--vp-c-text-3) }`, in `@layer base` so a utility on the element still wins (`bg-bg-alt` on `<body>`), where upstream's `@layer __vitepress_base` has them; a focused field's `outline: none` became `2px solid transparent`, totality's rule, as vpkit's one listed addition there (Chromium's forced colors already paint a focused field's border in the focus color, measured, so `test/forced-colors.mjs` cannot tell the two apart and the compare case holds the values instead); `vp-input`'s placeholder is `text-3`, base.css's, and the recipe reference says so; `compare.mjs` no longer writes the page colors inline on `<body>`, so a `page` case measures the body and the placeholders against upstream's base.css | d1d4299 |
+| vpkit-zola | its verbatim copy of the two rules deleted | 372b642 |
+| totality | the store's and the admin's body utilities gone (the store keeps its flex column), the input outline rule gone from `totality.css`, both stylesheets rebuilt (the rem breakpoints landed with them) | 1a498921 |
+| own-drive | imports `base.css`; its focus ring, placeholder color, `color-scheme` and partial reduced-motion rule gone; `vp-btn` as it is (the 0.3rem gap, the pointer and the plain disabled cursor gone); the inputs' dead `focus:outline-none` gone; its DESIGN.md says what is vpkit's now | d58d5b8 |
+| crashcart | the same edit prepared (its `@layer base` body block, `a { color: inherit }` and its focus ring go; `::selection` and its divider-colored borders stay): waits for vpkit to be pushed, since its vpkit is a GitHub commit pin, which the breakpoints also wait on | pending |
+
+Visible consequences, for the owner to veto: placeholders lighten from `text-2` to `text-3` in totality and own-drive; own-drive's buttons and links show the browser's focus ring instead of a 2px brand one; own-drive's icon-and-label gap widens from 0.3rem to vp-btn's 0.5rem. Not unified, as theme-level choices the owner has not made for vpkit: totality's AA re-pointing of the brand button and the dark `brand-2`, crashcart's border and light `brand-3` re-pointing, the two apps' `::selection` colors.
 
 ## Open decisions
 
