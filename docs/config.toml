@@ -25,6 +25,7 @@ logo = "/logo.svg"
 nav = [
   { text = "Guide", link = "@/guide/what-is-vpkit.md", active_match = "^/guide/" },
   { text = "Components", link = "@/components/_index.md", active_match = "^/components/" },
+  { text = "Themes", link = "@/themes.md", active_match = "^/themes/" },
   { text = "Links", items = [
     { text = "vpkit-zola", link = "https://github.com/at-least/vpkit-zola" },
     { text = "Changelog", link = "https://github.com/at-least/vpkit/commits/main" },

@@ -34,8 +34,8 @@ link_text = "The components"
 icon = "🌈"
 title = "222 color themes"
 details = "Each a whole design for light and dark, held by the tests to every variable the stylesheets use and to WCAG contrast minimums."
-link = "@/guide/theming.md#color-themes"
-link_text = "Color themes"
+link = "@/themes.md"
+link_text = "Try them"
 
 [[extra.features]]
 icon = "📐"

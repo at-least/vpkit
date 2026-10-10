@@ -4,7 +4,10 @@
 // example stylesheet, which must style every class the example's markup
 // uses; it must be as tall as its content, so it never scrolls, and no
 // wider than the page at a phone's width; and it must take the page's
-// appearance, and keep it when the navbar's switch changes it.
+// appearance, and keep it when the navbar's switch changes it. The theme
+// gallery's index (docs/static/themes.json) must hold the stock colors and
+// then every theme of themes/, and a pick must recolor the page and its
+// example frame in both modes, until the stock card takes it back.
 //
 //   node test/docs.mjs
 //
@@ -39,6 +42,11 @@ for (const name of components) {
 }
 for (const name of pages.filter((p) => !components.includes(p))) failures.push(`docs/content/components/${name}.md: test/entry.css compiles no ${name}.css`);
 
+const index = JSON.parse(readFileSync(join(DOCS, 'static/themes.json'), 'utf8'));
+// in the order of the files' names, as the index has them
+const stems = readdirSync(join(ROOT, 'themes')).filter((f) => f.endsWith('.css')).sort().map((f) => f.slice(0, -'.css'.length));
+if (JSON.stringify(index.map((t) => t.name)) !== JSON.stringify(['', ...stems])) failures.push('docs/static/themes.json: not the stock colors and then every theme of themes/');
+
 const dir = mkdtempSync(join(tmpdir(), 'vpkit-docs-'));
 const site = join(dir, 'site');
 let frames = 0;
@@ -49,16 +57,17 @@ try {
     .filter((f) => f.endsWith('index.html') && readFileSync(join(site, f), 'utf8').includes('<iframe class="vp-example"'))
     .map((f) => `/${f.slice(0, -'index.html'.length)}`)
     .sort();
+  const serve = (route) => {
+    let file = join(site, decodeURIComponent(new URL(route.request().url()).pathname));
+    if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
+    if (!existsSync(file)) return route.fulfill({ status: 404, body: '' });
+    return route.fulfill({ contentType: TYPES[extname(file)] ?? 'application/octet-stream', body: readFileSync(file) });
+  };
   const browser = await chromium.launch();
   try {
     for (const width of WIDTHS) {
       const context = await browser.newContext({ viewport: { width, height: 800 } });
-      await context.route(`${ORIGIN}/**`, (route) => {
-        let file = join(site, decodeURIComponent(new URL(route.request().url()).pathname));
-        if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
-        if (!existsSync(file)) return route.fulfill({ status: 404, body: '' });
-        return route.fulfill({ contentType: TYPES[extname(file)] ?? 'application/octet-stream', body: readFileSync(file) });
-      });
+      await context.route(`${ORIGIN}/**`, serve);
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
@@ -119,6 +128,38 @@ try {
       }
       await context.close();
     }
+
+    // the theme gallery: a card for each theme of the index, and a pick in
+    // the page and its frame, light and dark, until the stock card
+    const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await context.route(`${ORIGIN}/**`, serve);
+    const page = await context.newPage();
+    await page.goto(`${ORIGIN}/themes/`);
+    await page.waitForSelector('.theme-gallery__card');
+    const cards = await page.locator('.theme-gallery__card').count();
+    if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
+    const backgrounds = () =>
+      [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
+        getComputedStyle(e).getPropertyValue('--vp-c-bg').trim().toLowerCase(),
+      );
+    const expect = async (what, bg) => {
+      try {
+        await page.waitForFunction(([f, bg]) => new Function(`return (${f})()`)().every((b) => b === bg), [backgrounds.toString(), bg], { timeout: 5000 });
+      } catch {
+        failures.push(`/themes/, ${what}: --vp-c-bg ${(await page.evaluate(backgrounds)).join(', ')} in the page and its frame, not ${bg}`);
+      }
+    };
+    const nord = index.find((t) => t.name === 'nord');
+    await page.click('.theme-gallery__card[data-theme="nord"]');
+    await expect('nord picked', nord.light.bg);
+    const pressed = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
+    if (pressed.join() !== 'nord') failures.push(`/themes/, nord picked: the pressed cards are [${pressed}]`);
+    await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
+    await expect('nord picked, dark', nord.dark.bg);
+    await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
+    await page.click('.theme-gallery__card[data-theme=""]');
+    await expect('the stock card picked', index[0].light.bg);
+    await context.close();
   } finally {
     await browser.close();
   }

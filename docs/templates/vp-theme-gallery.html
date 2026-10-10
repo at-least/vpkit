@@ -1,0 +1,9 @@
+{#- vp_theme_gallery: the theme gallery, for content/themes.md: its host
+    and its script (static/theme-gallery.js), which reads the index
+    scripts/build-docs.mjs writes (static/themes.json) and links a picked
+    theme's stylesheet from static/themes/, a link to the repository's
+    themes/. -#}
+{% component vp_theme_gallery() -%}
+<div id="theme-gallery" data-themes="{{ get_url(path='themes.json', cachebust=true) }}" data-stylesheets="{{ get_url(path='themes/', trailing_slash=true) }}"></div>
+<script type="module" src="{{ get_url(path='theme-gallery.js', cachebust=true) }}"></script>
+{%- endcomponent vp_theme_gallery %}

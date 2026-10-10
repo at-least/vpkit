@@ -23,6 +23,8 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 A theme only sets variables, so the components and your utilities follow it.
 
+[Themes](@/themes.md) shows every one of them, and puts the one you pick on its page.
+
 ### Where they come from
 
 - 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
