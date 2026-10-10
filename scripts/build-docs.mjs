@@ -34,7 +34,8 @@ function examples() {
 }
 
 // the colors a gallery card draws
-const CARD = ['bg', 'bg-alt', 'divider', 'text-1', 'text-2', 'brand-1', 'success-1', 'warning-1', 'danger-1'];
+// (brand-2, the hovered link's color, is what the docs test reads a theme by)
+const CARD = ['bg', 'bg-alt', 'divider', 'text-1', 'text-2', 'brand-1', 'brand-2', 'success-1', 'warning-1', 'danger-1'];
 
 // a stylesheet's card colors in light and dark: its :root blocks, and its
 // .dark blocks over them, with var() resolved; the other blocks (graded

@@ -4,11 +4,11 @@
  * colors, light and dark side by side. Picking one links the theme's
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
- * pick is kept for the browser session, and static/theme-pick.js links it
- * in every page the session opens. The site itself is on `vitepress`
- * (VitePress's own colors, their contrast fitted), the pick until there is
- * one; the stock card shows VitePress's colors as tokens.css ships them,
- * with no theme linked, and the session keeps that too. */
+ * pick is kept for the browser session (a theme's name, or the stock
+ * card's empty one), and static/theme-pick.js links it in every page the
+ * session opens. The site itself is on `vitepress` (VitePress's own
+ * colors, their contrast fitted) until there is a pick; the stock card
+ * shows VitePress's colors as tokens.css ships them, with no theme linked. */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
 
@@ -117,21 +117,26 @@ function card(theme) {
   return el;
 }
 
+// every theme link but the one given (none: every one), so a pick while
+// another theme is still loading, or the stock card then, leaves nothing
+// behind
+const unlink = (keep) => {
+  for (const l of document.head.querySelectorAll('link[data-theme]')) if (l !== keep) l.remove();
+};
+
 function pick(name) {
-  const old = link;
-  link = null;
+  sessionStorage.setItem(KEY, name);
   if (name) {
-    sessionStorage.setItem(KEY, name);
     link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = `${host.dataset.stylesheets}${name}.css`;
+    link.href = `${host.dataset.stylesheets}${encodeURIComponent(name)}.css`;
     link.dataset.theme = name;
     // the old theme stays until the new one has loaded, so the page doesn't flash the stock colors
-    if (old) link.addEventListener('load', () => old.remove(), { once: true });
+    link.addEventListener('load', () => unlink(link), { once: true });
     document.head.append(link);
   } else {
-    sessionStorage.setItem(KEY, 'stock');
-    old?.remove();
+    link = null;
+    unlink(null);
   }
   for (const c of cards) c.setAttribute('aria-pressed', String(c.dataset.theme === name));
 }
