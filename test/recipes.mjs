@@ -49,6 +49,18 @@ export const OWN_DRIVE_MSG =
 export const OWN_DRIVE_BAR = 'block h-[.3rem] bg-[color:var(--vp-c-default-soft)] rounded-[.15rem] overflow-hidden';
 export const OWN_DRIVE_BAR_FILL = 'block h-full bg-brand-1 w-0';
 
+// own-drive src/web.rs at ac7a1d4, verbatim as of 2026-10-10: a file card
+// of the grid view (`card()`, web.rs:1218): transparent in a divider
+// border, the reference for vp-card-outline's border and radius (its
+// ground is the page's color where this one is transparent, and its
+// hover is its own)
+export const OWN_DRIVE_CARD =
+  'card relative bg-transparent border border-divider rounded-[.75rem] pt-[.8rem] px-[.5rem] pb-[.7rem] flex flex-col items-center gap-[.45rem] cursor-pointer text-center transition-[border-color,background-color,box-shadow] duration-[250ms] hover:bg-bg-soft hover:border-default-1 hover:shadow-1';
+
+// own-drive src/web.rs at ac7a1d4, verbatim as of 2026-10-10: the empty
+// state's line (`EMPTY`, web.rs:467), the second consumer of vp-empty
+export const OWN_DRIVE_EMPTY = 'py-[3.5rem] px-4 text-center text-text-2';
+
 // totality crates/web/src/ui.rs `BADGE`, `BADGE_SUCCESS` and `BADGE_DANGER`,
 // verbatim as of 2026-10-10: vp-badge on the page's color with the type's
 // tint as its border, the reference for vp-badge-outline

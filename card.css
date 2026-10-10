@@ -14,7 +14,19 @@
  * a tapped card on a touch screen). A link card inherits the text color
  * and has no underline, set on the card so that an alert's rule for links
  * doesn't recolor or underline one inside it. Not ported: the feature
- * icon. */
+ * icon.
+ *
+ * Modifier, used together with `vp-card`:
+ *   vp-card-outline   vpkit's addition: the card on the page's color in a
+ *                     divider border, where VPFeature's is the soft fill
+ *                     in a border of the same color. own-drive's cards and
+ *                     crashcart's `card` draw it, for a box of content
+ *                     that is not a feature tile. The ground is the page's
+ *                     color and opaque, as vp-badge-outline's is, so the
+ *                     box is the same on any surface. A link card still
+ *                     takes the brand border on hover; its padding and
+ *                     layout are vp-card's (`block p-0` for a card of rows
+ *                     that pad themselves). */
 
 @layer components {
   .vp-card {
@@ -74,5 +86,13 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--vp-c-text-2);
+  }
+
+  /* the modifier pattern of button.css: a compound selector, so that it
+     wins over the base whatever the rule order, and loses to the hover
+     rule above, which is more specific */
+  .vp-card-outline.vp-card {
+    border-color: var(--vp-c-divider);
+    background-color: var(--vp-c-bg);
   }
 }

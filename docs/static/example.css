@@ -192,6 +192,9 @@
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
+  .block {
+    display: block;
+  }
   .flex {
     display: flex;
   }
@@ -227,6 +230,9 @@
   .flex-wrap {
     flex-wrap: wrap;
   }
+  .items-baseline {
+    align-items: baseline;
+  }
   .items-center {
     align-items: center;
   }
@@ -251,6 +257,9 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
+  .overflow-hidden {
+    overflow: hidden;
+  }
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
@@ -263,6 +272,10 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .border-b {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
   }
   .border-divider {
     border-color: var(--vp-c-divider);
@@ -291,6 +304,9 @@
   .bg-success-soft {
     background-color: var(--vp-c-success-soft);
   }
+  .p-0 {
+    padding: 0px;
+  }
   .p-3 {
     padding: calc(var(--spacing) * 3);
   }
@@ -311,6 +327,9 @@
   }
   .py-1 {
     padding-block: var(--spacing);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
   }
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
@@ -1639,6 +1658,10 @@ button:focus-visible {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--vp-c-text-2);
+  }
+  .vp-card-outline.vp-card {
+    border-color: var(--vp-c-divider);
+    background-color: var(--vp-c-bg);
   }
   .vp-input {
     display: block;

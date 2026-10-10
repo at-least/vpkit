@@ -3,6 +3,7 @@ import {
   OWN_DRIVE_BAR_FILL,
   OWN_DRIVE_BTN_DANGER,
   OWN_DRIVE_BTN_ROW,
+  OWN_DRIVE_CARD,
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
   OWN_DRIVE_MSG,
@@ -974,6 +975,35 @@ for (const type of ['note', 'tip', 'important', 'caution', 'warning']) {
     checks: [{ target: 'badge', props: [...BADGE_BOX, ...COLORS] }],
   });
 }
+
+// card outline: crashcart's `card` (src/web/styles/app.css at 78e4d5b, its
+// declarations written inline) and own-drive's card recipe against vp-card
+// vp-card-outline. own-drive's ground is transparent where the modifier's
+// is the page's color, so only its border and radius are compared; a link
+// card hovered takes the brand border, as vp-card does
+const CRASHCART_CARD = 'background:var(--vp-c-bg);color:var(--vp-c-text-1);border:1px solid var(--vp-c-divider);border-radius:0.75rem;overflow:hidden';
+const OUTLINE_CARD = [...BORDER, ...RADIUS, ...SIDES.map((s) => `border-${s}-color`)];
+cases.push({
+  name: 'card outline',
+  reference: `<div data-t="card" style="${CRASHCART_CARD}">${CARD_TEXT('', '')}</div>`,
+  vpkit: card('div', 'vp-card vp-card-outline', CARD_TEXT('', '')),
+  checks: [{ target: 'card', props: [...OUTLINE_CARD, 'color', 'background-color'] }],
+});
+cases.push({
+  name: 'card outline, own-drive',
+  reference: `<div data-t="card" class="${OWN_DRIVE_CARD}">${CARD_TEXT('', '')}</div>`,
+  vpkit: card('div', 'vp-card vp-card-outline', CARD_TEXT('', '')),
+  checks: [{ target: 'card', props: OUTLINE_CARD }],
+});
+cases.push({
+  name: 'card outline <a>',
+  reference: card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')),
+  vpkit: card('a', 'vp-card vp-card-outline', CARD_TEXT('vp-card-title', 'vp-card-details')),
+  checks: [
+    { target: 'card', props: [...RADIUS, ...PADDING, 'color', 'text-decoration-line', ...TRANSITION] },
+    { target: 'card', state: ['hover'], props: SIDES.map((s) => `border-${s}-color`) },
+  ],
+});
 
 // skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
 // it so that the component's position wins as its scoped rules do) against
