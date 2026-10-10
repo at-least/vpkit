@@ -1,0 +1,55 @@
+# The documentation (docs/), built with zola and published to GitHub Pages
+# on each push to main. The site is drawn by vpkit-zola, which
+# docs/themes/vpkit-zola links to as a checkout beside this one
+# (../vpkit-zola), so vpkit-zola is checked out beside it here too, at its
+# main, unpinned, as a local checkout would be. Its stylesheet ships
+# prebuilt and the examples' is committed (docs/static/), so the build is
+# zola alone.
+name: docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: vpkit
+      - uses: actions/checkout@v7
+        with:
+          repository: at-least/vpkit-zola
+          path: vpkit-zola
+      - name: Install zola
+        run: |
+          curl -sSfL https://github.com/getzola/zola/releases/download/v0.23.6/zola-v0.23.6-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - id: pages
+        uses: actions/configure-pages@v6
+      - name: Build
+        run: zola --root vpkit/docs build --base-url "${{ steps.pages.outputs.base_url }}" --output-dir "$RUNNER_TEMP/site"
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

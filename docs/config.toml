@@ -1,7 +1,8 @@
 # vpkit's documentation, a site built with vpkit-zola, the Zola theme on
-# vpkit's layout (README.md). zola serve here; base_url is zola serve's
-# until the site is published somewhere.
-base_url = "http://127.0.0.1:1111"
+# vpkit's layout (README.md). zola serve here; base_url is where GitHub
+# Pages publishes it (.github/workflows/docs.yml builds it with the one
+# Pages reports).
+base_url = "https://at-least.github.io/vpkit"
 title = "vpkit"
 description = "VitePress's look as a Tailwind CSS v4 theme: its variables, utilities, components and color themes."
 theme = "vpkit-zola"
