@@ -23,6 +23,7 @@ src = open(GEN).read()
 a = src.index("report = []\nfor spec in SPECS:")
 b = src.index("# --- auto-mapping pass")
 c = src.index("regenerated = set()")
+sys.path.insert(0, os.path.dirname(GEN))  # the generator imports color.py from beside itself
 ns = {"__file__": f"{ROOT}/scripts/gen-themes.py"}
 exec(compile(src[:a] + src[b:c], GEN, "exec"), ns)
 

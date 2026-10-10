@@ -2,43 +2,16 @@
 # contrast shortfalls fitted to the contract test/themes.mjs holds every
 # theme to, and to what the owner asked for on 2026-10-11 (the apps gave
 # up their own AA fixes, so vpkit carries them for all of them). The
-# property list is themes/github.css's; the fits are gen-themes.py's,
-# copied because that script generates on import.
+# property list is themes/github.css's; the fits are gen-themes.py's, from
+# the color math the two scripts share (scripts/color.py).
 #
 #   python3 scripts/fit-vitepress.py            # writes themes/vitepress.css
 #   python3 scripts/fit-vitepress.py --check    # exits 1 if it would differ
 import os, re, sys
+from color import EPS, black, composite, contrast, fit_all, hexs, mix, white
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 check = "--check" in sys.argv
 
-def rgb(c):
-    n = int(c.lstrip("#"), 16); return ((n >> 16) & 255, (n >> 8) & 255, n & 255)
-def hexs(c):
-    r, g, b = c; return f"#{r:02x}{g:02x}{b:02x}"
-def lum(c):
-    def ch(v):
-        v = v / 255; return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
-    r, g, b = rgb(c) if isinstance(c, str) else c
-    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
-def contrast(a, b):
-    la, lb = lum(a), lum(b); hi, lo = max(la, lb), min(la, lb); return (hi + 0.05) / (lo + 0.05)
-def mix(a, b, t):
-    (ar, ag, ab), (br, bg_, bb) = rgb(a), rgb(b)
-    return hexs((round(ar + (br - ar) * t), round(ag + (bg_ - ag) * t), round(ab + (bb - ab) * t)))
-def composite(hex_color, alpha, bg):
-    (fr, fg_, fb), (br, bg2, bb) = rgb(hex_color), rgb(bg)
-    up = lambda v: int(v + 0.5)
-    return hexs((up(fr * alpha + br * (1 - alpha)), up(fg_ * alpha + bg2 * (1 - alpha)), up(fb * alpha + bb * (1 - alpha))))
-EPS = 0.03
-black, white = "#000000", "#ffffff"
-def fit_all(c, mode, text=(), dimmed=(), target=4.5):
-    target += EPS
-    end = black if mode == "light" else white
-    for k in range(101):
-        x = mix(c, end, k / 100)
-        if all(contrast(x, g) >= target for g in text) and all(contrast(composite(x, 0.75, g), g) >= target for g in dimmed):
-            return x
-    return end
 def over(value, bg):
     """an rgba() token composited over bg, or a hex as is"""
     m = re.match(r"rgba\((\d+), (\d+), (\d+), ([\d.]+)\)", value)
@@ -63,10 +36,14 @@ def resolve(value, mode, depth=0):
     nxt = stock[mode].get(m[1], stock[":root"].get(m[1]))
     assert nxt is not None and depth < 8, f"unresolved {value} in {mode}"
     return resolve(nxt, mode, depth + 1)
+# the property list: themes/github.css's, and the brand button's pressed
+# ground right after its hovered one (github.css leaves it to tokens.css)
 template = open(f"{ROOT}/themes/github.css").read()
 blocks = {}
-for sel, mode in ((":root", "light"), (".dark", "dark")):
-    blocks[sel] = {k: resolve(stock[sel].get(k, stock[":root"].get(k)), sel) for k in declarations(template, sel)}
+for sel in (":root", ".dark"):
+    keys = list(declarations(template, sel))
+    keys.insert(keys.index("--vp-button-brand-hover-bg") + 1, "--vp-button-brand-active-bg")
+    blocks[sel] = {k: resolve(stock[sel].get(k, stock[":root"].get(k)), sel) for k in keys}
 changes = []
 for sel, mode in ((":root", "light"), (".dark", "dark")):
     v = blocks[sel]
@@ -92,8 +69,7 @@ for sel, mode in ((":root", "light"), (".dark", "dark")):
     change("--vp-button-brand-hover-bg", hover, "the brand button's white label hovered")
     active = v["--vp-c-brand-1"] if mode == "light" else mix(rest, black, 0.25)
     if contrast(active, white) < 4.5 + EPS: active = fit_all(active, "light", text=[white])
-    v["--vp-button-brand-active-bg"] = active
-    if mode == "dark": changes.append((sel, "--vp-button-brand-active-bg", "#a8b1ff (brand-1)", active, "the brand button's white label pressed"))
+    change("--vp-button-brand-active-bg", active, "the brand button's white label pressed")
     # a control's boundary: 3:1 against the page (WCAG 1.4.11)
     change("--vp-c-border", fit_all(v["--vp-c-border"], mode, text=[bg], target=3.0), "a control's boundary at 3:1 on the page")
 
@@ -120,13 +96,10 @@ for sel in (":root", ".dark"):
         if prev and group != prev: out += "\n"
         prev = group
         out += f"  {k}: {val};\n"
-        if k == "--vp-button-brand-hover-bg":
-            out += f"  --vp-button-brand-active-bg: {blocks[sel]['--vp-button-brand-active-bg']};\n"
     out += "}\n" + ("\n" if sel == ":root" else "")
 path = f"{ROOT}/themes/vitepress.css"
 if check:
-    current = open(path).read() if os.path.exists(path) else ""
-    if current != out:
+    if open(path).read() != out:
         print("themes/vitepress.css is not scripts/fit-vitepress.py's output: run it", file=sys.stderr); sys.exit(1)
     print("themes/vitepress.css is fit-vitepress.py's output")
 else:
