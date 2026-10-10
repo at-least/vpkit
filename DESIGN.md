@@ -397,6 +397,7 @@ One commit per step, each with its cases green (`npm test`) and its page of the 
 11. **Helix's `inherits`** (open decision 9, 2026-10-10): the generator follows it; 222 themes, no shortfall listed.
 12. **The apps' second round** (2026-10-10): the rules for a component inside a `vp-doc` (decision 10), `vp-badge-outline`, `vp-skip`, `vp-nav-link`, `vp-topbar`, one commit each, each with its cases and its page; then the two sites of totality onto them.
 13. **crashcart** (2026-10-10, the owner: open decisions 11 to 14 as recommended, then crashcart onto vpkit): `vp-hamburger`, `vp-card-outline`, `vp-btn-ghost`, `vp-empty`, one commit each with its cases and its page; the store onto `vp-hamburger`; then crashcart onto the components, verified on a live server (every route at 1280 and 375, light and dark, its layout audit on each).
+14. **The upstream comparison** (2026-10-10, the owner: a clone of vuejs/vitepress is the standard): every file vpkit ports or copies diffed against the clone at the tag; three deviations fixed, `test/tokens.mjs` added so the theme is held to its sources as the components are (below).
 
 ## The review of 2026-10-10
 
@@ -421,6 +422,25 @@ A review of the components built that day found fifteen faults; each was reprodu
 | a `CASES` run failed on known entries it couldn't hit | under `CASES`, only the entries a selected case hits are required | 838ffd3 |
 
 own-drive's solid danger button, which the first row moved off a theme's `danger-2`, keeps its rest, hover and press grounds in order in all 48 of its theme modes (measured); white text on its hover ground was under 3:1 in 5 dark modes, the same 5 as before the change (everforest, material, sonokai, catppuccin, nord). own-drive ac7a1d4 fits the hover's share of danger-1 per theme, never past the rest's, so white text reaches 3:1 on the rest and the hover in all 48 modes, which its `tests/color_themes.rs` holds; the press, danger-1 itself, is VPButton's step and unchanged.
+
+## The upstream comparison of 2026-10-10
+
+The owner's instruction: clone vuejs/vitepress and hold vpkit to it as the standard. The clone is `../vitepress`, clean at v2.0.0-alpha.20, the latest tag on GitHub that day (no beta or rc); the 62 copies in `test/upstream/` are byte-identical to it (`cmp`, every file), and `npm test` was green before the comparison began. What the tests do not read was then diffed by hand against the clone: `tokens.css` against `vars.css` and `fonts.css` (every custom property by scope), `icons.css` (22 rules, equal), `fonts.css` (32 `@font-face` blocks and 16 files, equal), `base.css`, and `theme.css`'s breakpoints against upstream's media queries.
+
+| finding | what changed | commit |
+| --- | --- | --- |
+| the graded containers' dark `--vp-c-caution-3` was `#b45309`, orange-3's value; upstream's dark yellow-3 is `#a46a0a` (a hand-copied literal) | the literal corrected; the test holds each graded literal to upstream's orange or yellow of its mode | f8e7451 |
+| the breakpoints were px (`640px` … `1440px`), and `theme.css` and the documentation said VitePress's media queries are px; at the tag they are rem (vuejs/vitepress#5323, 2026-08-10), as the ported `layout.css` and the components already were, so a `lg:` utility parted from the layout at any browser font size but the default (probed in Chromium at a 24px default: at 1200px wide, `60rem` no longer matched while `960px` did) | `40rem`, `48rem`, `60rem`, `80rem`, `90rem`, and `tokens.css`'s one media query; the comment and the page corrected | 3448414 |
+| `--vp-custom-block-code-font-size` was `0.875em`, not `vars.css`'s `0.8125rem`: it carried the size VitePress paints (in its docs `.vp-doc :not(pre, …) > code` at (0,1,2) beats `.custom-block code` at (0,1,1), so the block's token never paints there), a documented deviation | the token verbatim; the alert's code reads `--vp-code-font-size`, the token that paints, with the trace in `alert.css`; the alert cases unchanged and green | 5f8bafb |
+| nothing held `tokens.css` to `vars.css` (the theme test holds the color themes to `tokens.css`), nor the breakpoints to upstream | `test/tokens.mjs`, in `npm test` after the theme test, with a `known` list as `compare.mjs` has | 5a14dab |
+
+Kept, as decisions already made, and listed here so they are not mistaken for slips:
+
+- The graded containers' palette is literal and on `:root:has(.vp-graded-containers)` (0,2,0), where upstream has `var(--vp-c-orange-*)` and `var(--vp-c-yellow-*)` on `:root:where(:has(…))` (0,1,0): the opt-in beats a color theme's warning and caution (`tokens.css` says why). `var()` references would have made the wrong literal impossible, but would follow a theme that redefines orange or yellow; the owner's call.
+- `--vp-font-family-base` names Inter in `tokens.css` (upstream names it only in `fonts.css`, so a build without the fonts does not): a page that skips `fonts.css` still asks for a locally installed Inter.
+- `base.css` is VitePress's overrides without its `body` rule (`text-rendering: optimizeLegibility`, the font smoothing, `text-autospace: normal`, `text-spacing-trim: normal`, the page colors) and without `input::placeholder { color: var(--vp-c-text-3) }`. The page colors are the page's by design (the README); the rest each app reproduces by hand and unevenly (measured: the store sets all four as utilities, the admin `antialiased` only, own-drive and crashcart none), and `vp-input`'s placeholder is `text-2` from totality's recipe. Whether `base.css` should carry the body's typography and the placeholder color is open.
+
+Upstream's main had 11 commits in `src/client/theme-default` past the tag that day, no newer tag. `SOURCE` re-syncs at a tag; at the next one, #5421 (VPButton's height decoupled from its line height) reaches `button.css` and #5437 (native RTL, a new `--vp-direction-multiplier`) the layout port and `tokens.css`.
 
 ## Open decisions
 
