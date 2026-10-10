@@ -59,6 +59,13 @@ export const known = [
     reason:
       "the alert's link hover dimming (opacity 0.75) also reaches a vp-btn link inside it; the button sets no opacity of its own",
   },
+  {
+    case: /^page$/,
+    target: 'body',
+    prop: 'font-family',
+    reason:
+      "vpkit's tokens.css names Inter first, as VitePress's fonts.css does (test/tokens.mjs holds it to that); the upstream side here loads vars.css without fonts.css, whose Google Fonts @import would fetch over the network",
+  },
 ];
 
 // button: VPButton's three themes × two sizes, as a link and as a button
@@ -1272,3 +1279,37 @@ for (const [name, markup, checks] of [
     checks,
   });
 }
+
+// the page: VitePress's base.css paints the body (its colors, legibility,
+// font smoothing, no autospace or spacing trim) and the placeholder of
+// every input; vpkit's base.css carries the same rules, and vp-input
+// restates the placeholder's color. A focused field's outline is vpkit's
+// addition (a transparent ring, for forced colors), tested against
+// VitePress's `outline: none` with the addition written inline
+const PAGE = ['color', 'background-color', 'text-rendering', '-webkit-font-smoothing', '-moz-osx-font-smoothing', 'text-autospace', 'text-spacing-trim', 'font-family', 'font-size', 'line-height'];
+cases.push({
+  name: 'page',
+  upstream: `<p>Text</p><input data-t="in" placeholder="Search"><textarea data-t="ta" placeholder="A note"></textarea>`,
+  vpkit: `<p>Text</p><input data-t="in" placeholder="Search"><textarea data-t="ta" placeholder="A note"></textarea>`,
+  checks: [
+    { target: 'body', props: PAGE },
+    { target: 'in', pseudo: '::placeholder', props: ['color'] },
+    { target: 'ta', pseudo: '::placeholder', props: ['color'] },
+  ],
+});
+cases.push({
+  name: 'page, a vp-input placeholder',
+  upstream: `<input data-t="in" placeholder="Search">`,
+  vpkit: `<input data-t="in" class="vp-input" placeholder="Search">`,
+  checks: [{ target: 'in', pseudo: '::placeholder', props: ['color'] }],
+});
+const FOCUS_OUTLINE = ['outline-style', 'outline-width', 'outline-color', 'outline-offset'];
+cases.push({
+  name: 'page, a focused field',
+  upstream: `<input data-t="in" style="outline:2px solid transparent;outline-offset:2px"><select data-t="sel" style="outline:2px solid transparent;outline-offset:2px"><option>7 days</option></select>`,
+  vpkit: `<input data-t="in"><select data-t="sel"><option>7 days</option></select>`,
+  checks: [
+    { target: 'in', state: ['focus'], props: FOCUS_OUTLINE },
+    { target: 'sel', state: ['focus'], props: FOCUS_OUTLINE },
+  ],
+});

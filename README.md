@@ -22,7 +22,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 @import "vpkit/button.css";
 ```
 
-`@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in. `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: serve this package's `fonts/` directory next to your built CSS. Put `bg-bg text-text-1` on `<body>`, and `class="dark"` on `<html>` for dark mode.
+`@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in. `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: serve this package's `fonts/` directory next to your built CSS. `base.css` paints the page as VitePress does; put `class="dark"` on `<html>` for dark mode.
 
 ## Documentation
 

@@ -1128,6 +1128,20 @@
     user-select: none;
   }
 }
+@layer base {
+  body {
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-autospace: normal;
+    text-spacing-trim: normal;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--vp-c-text-3);
+  }
+}
 [lang]:where(:lang(zh), :lang(ja), :lang(ko)) h1, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  h2, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  h3, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  h4, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  h5, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  h6, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  li, [lang]:where(:lang(zh), :lang(ja), :lang(ko))  p {
   line-break: strict;
 }
@@ -1149,8 +1163,12 @@ h1, h2, h3, h4, h5, h6, li, p {
 pre, code, kbd, samp {
   text-autospace: no-autospace;
 }
-button:focus, input:focus, textarea:focus, select:focus {
+button:focus {
   outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 button:focus-visible {
   outline: 1px dotted;
@@ -1698,7 +1716,7 @@ button:focus-visible {
     }
   }
   .vp-input::placeholder {
-    color: var(--vp-c-text-2);
+    color: var(--vp-c-text-3);
   }
   .vp-input:focus {
     border-color: var(--vp-c-brand-1);

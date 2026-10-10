@@ -26,11 +26,11 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 ## The page
 
-vpkit colors its components, not the page: put `bg-bg text-text-1` on `<body>`. For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light.
+`base.css` paints the page as VitePress does: the text and background colors on `<body>`, its legibility and font smoothing, and the placeholder color of every input, in Tailwind's base layer, so a utility on the element still wins (`bg-bg-alt` on `<body>`). For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light.
 
 ```html
 <html class="dark">
-  <body class="bg-bg text-text-1">
+  <body>
 ```
 
 ## Taking only some parts
@@ -42,9 +42,9 @@ vpkit colors its components, not the page: put `bg-bg text-text-1` on `<body>`. 
 | `vpkit/theme.css` | the `dark:` variant, the breakpoints, the semantic utilities |
 | `vpkit/tokens.css` | the `--vp-*` variables (plain CSS, no Tailwind directive) |
 | `vpkit/doc.css` | code-block and external-link rules for rendered markdown |
-| `vpkit/base.css` | VitePress's global element rules |
+| `vpkit/base.css` | the page's colors and typography, the placeholder color, VitePress's global element rules |
 
-`base.css` is unlayered and resets focus outlines (`button:focus { outline: none }`), so a project that draws its own focus rings should leave it out:
+`base.css`'s element rules are unlayered and reset focus outlines (`button:focus { outline: none }`), so a project that draws its own focus rings should leave it out, and paint its page itself:
 
 ```css
 @import "tailwindcss" source(none);

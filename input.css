@@ -9,8 +9,10 @@
  *
  * 44px tall with 16px text (iOS zooms into anything smaller), the input
  * border on the input background, a brand border on hover and focus, and
- * a 2px brand ring on focus drawn as a box-shadow: base.css removes the
- * focus outline. aria-invalid="true" turns the border danger and "false"
+ * a 2px brand ring on focus drawn as a box-shadow: base.css makes the
+ * focus outline transparent, a ring only in forced colors. Its
+ * placeholder is VitePress's text-3, base.css's rule for every input.
+ * aria-invalid="true" turns the border danger and "false"
  * success, over hover and focus. Width is the page's: add w-full. The
  * hover border is `@variant hover`, so like Tailwind's `hover:` it
  * applies only on a device that can hover.
@@ -54,8 +56,10 @@
     }
   }
 
+  /* VitePress's placeholder color, base.css's rule for every input,
+     restated so the component stands alone */
   .vp-input::placeholder {
-    color: var(--vp-c-text-2);
+    color: var(--vp-c-text-3);
   }
 
   .vp-input:focus {

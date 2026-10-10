@@ -2,10 +2,13 @@
 // VitePress original. test/entry.css has Tailwind scan this file, so the
 // utilities in these strings are in the test stylesheet.
 
-// totality crates/store/src/ui.rs `input_base!`, verbatim as of 2026-10-08
+// totality crates/store/src/ui.rs `input_base!`, verbatim as of 2026-10-08,
+// except the placeholder: text-2 there, text-3 here since 2026-10-10, when
+// vp-input took VitePress's placeholder color (base.css's rule for every
+// input) and the apps were held to vpkit's look
 export const TOTALITY_INPUT =
   'block h-11 rounded-lg border border-(--vp-input-border-color) bg-(--vp-input-bg-color) px-3' +
-  ' text-base text-text-1 placeholder:text-text-2 transition-[border-color,box-shadow] duration-[250ms]' +
+  ' text-base text-text-1 placeholder:text-text-3 transition-[border-color,box-shadow] duration-[250ms]' +
   ' hover:border-brand-1 focus:border-brand-1 focus:shadow-[0_0_0_2px_var(--vp-c-brand-1)]' +
   ' aria-[invalid=true]:border-danger-1 aria-[invalid=false]:border-success-1';
 

@@ -1,11 +1,44 @@
-/* vpkit — VitePress's global element rules, the few that cannot be
- * utilities: the color scheme of the appearance, CJK line breaking, bold
- * at 600, the pointer cursor on buttons, overflow-wrap, no autospace in
- * code, the focus-outline resets, reduced motion and the Alpine [x-cloak]
- * rule. Unlayered, so they beat
- * every utility: a project that draws its own focus rings should not take
- * this file, since `button:focus { outline: none }` would remove them.
+/* vpkit — VitePress's global element rules: what its base.css adds after
+ * Tailwind's preflight (which Tailwind supplies). The page's colors and
+ * typography on body and the placeholder color sit in @layer base, after
+ * the preflight, so a utility on the element still wins. The rest is
+ * unlayered, so it beats every utility: the color scheme of the
+ * appearance, CJK line breaking, bold at 600, the pointer cursor on
+ * buttons, overflow-wrap, no autospace in code, the focus-outline resets,
+ * reduced motion and the Alpine [x-cloak] rule. A project that draws its
+ * own focus rings should not take this file, since `button:focus {
+ * outline: none }` would remove them.
+ *
+ * One addition to VitePress's rules (DESIGN.md, rule 12): a focused input,
+ * textarea or select carries a transparent 2px outline where VitePress
+ * has none. Nothing paints; in forced colors (Windows' contrast themes),
+ * which strip the box-shadow ring vp-input draws, it takes the system's
+ * focus color. Chromium's forced colors already paint a focused field's
+ * border in that color (measured 2026-10-10, so test/forced-colors.mjs
+ * cannot tell the two apart); the ring is for an engine that does not.
+ * test/cases.mjs holds its values against VitePress's field with the
+ * outline written inline.
  * Part of index.css; `@import "vpkit/base.css"` takes it alone. */
+
+/* The page, as VitePress's base.css paints it, and the placeholder color.
+   Layered: `bg-bg-alt` on <body>, or `placeholder:text-text-2` on an
+   input, still wins. */
+@layer base {
+  body {
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-autospace: normal;
+    text-spacing-trim: normal;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--vp-c-text-3);
+  }
+}
 
 [lang]:where(:lang(zh), :lang(ja), :lang(ko)) {
   h1,
@@ -64,11 +97,18 @@ samp {
   text-autospace: no-autospace;
 }
 
-button:focus,
+button:focus {
+  outline: none;
+}
+
+/* VitePress's `outline: none` on a focused field, as the transparent
+   outline the header names: the same nothing on screen, a ring in forced
+   colors */
 input:focus,
 textarea:focus,
 select:focus {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 button:focus-visible {

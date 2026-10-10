@@ -94,11 +94,6 @@ function same(a, b, prop, tolerance = 1 / 32) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
-// The page colors, on both sides: upstream's base.css sets them on body,
-// a vpkit page through `bg-bg text-text-1` on <body> (as rustpress,
-// totality and own-drive do), which these declarations stand in for.
-const BODY = 'color:var(--vp-c-text-1);background-color:var(--vp-c-bg)';
-
 async function open(browser, css, body, dark, touch, width) {
   const page = await browser.newPage();
   if (width) await page.setViewportSize({ width, height: 720 });
@@ -107,7 +102,9 @@ async function open(browser, css, body, dark, touch, width) {
   // ignores it; touch emulation is what makes (hover: none) match
   if (touch) await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
   await page.setContent(
-    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body style="${BODY}">${body}</body></html>`,
+    // the page's colors come from each side's base.css; data-t="body" lets
+    // a case measure the page itself
+    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body data-t="body">${body}</body></html>`,
   );
   const hover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
   if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);

@@ -11,9 +11,9 @@ What `@import "vpkit"` gives a Tailwind project.
 
 Put `class="dark"` on `<html>`. The `dark:` variant, every `--vp-*` variable and the color scheme (scrollbars, form controls) follow it.
 
-## Page colors
+## The page
 
-Page colors are yours to set: put `bg-bg text-text-1` on `<body>`. vpkit colors its components, not the page.
+`base.css` paints the page as VitePress does: `--vp-c-text-1` on `--vp-c-bg` on `<body>`, with VitePress's legibility and font smoothing, and `--vp-c-text-3` placeholders. The rules are in Tailwind's base layer, so a utility on the element, `bg-bg-alt` on `<body>`, still wins. [Getting Started](@/guide/getting-started.md#the-page).
 
 ## Breakpoints
 
@@ -73,7 +73,7 @@ The variables from VitePress's `vars.css`: colors, typography, z-indexes, and th
 
 ## Global rules
 
-Rules that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines, reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
+Rules that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines (a focused field keeps a transparent 2px outline where VitePress has none: nothing on screen, the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws), reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
 
 ## Markdown rules
 
