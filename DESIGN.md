@@ -72,7 +72,7 @@ plus `--vp-shadow-1` to `-5`. The component files were not part of that base, so
 - `brand-2`'s old value, fitted for white at 3:1, is emitted as `--vp-button-brand-hover-bg`;
 - in a dark half whose elevated surface is mid-tone (voxed's olive), `bg-elv` moves toward the page until white reaches 7:1 on it;
 - a tint that leaves a hovered link no room, where even black or white dimmed to 0.75 falls short on the tint or on code's tint inside it, is thinned by 0.01 until it has room, never below 0.06; a tint that can't make room by then keeps its alpha, and the test lists the shortfall;
-- `composite()` rounds halves up, as the test's `Math.round` does (Python's `round()` takes them to even, which moved one dimmed contrast by 0.05);
+- `composite()` is the test's own paint (`scripts/color.mjs`, halves rounded up by `Math.round`); when the generator was Python, its half-to-even rounding moved one dimmed contrast by 0.05, which is why the paint is one function now;
 - a palette's declared background is read under Helix's quoted key (`"ui.background"`) too; 11 palettes had been read as the wrong mode;
 - a palette that `inherits` another is read as Helix merges them (its `merge_themes`): the child's top-level keys replace the parent's whole, and the two palettes merge entry by entry, the child's winning. 22 palettes that had been skipped now map, and 30 that had been mapped from their own few colors changed;
 - in a dark palette, a page too light to leave a hovered link room even at the 0.06 floor (white dimmed to 0.75, on 0.06 of white and on code's tint inside that) moves toward black until it does. It changes one theme: seoul256-dark-soft's page, `#4e4e4e`, becomes `#484848`, still lighter than seoul256-dark's `#3a3a3a`.
