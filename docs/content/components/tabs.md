@@ -22,3 +22,5 @@ VitePress's code group tab bar.
 - `vp-tabs`: the bar, on the code block's ground with a divider along its bottom and rounded top corners; it scrolls sideways when the tabs don't fit.
 - `vp-tabs-tab`: a 48px tab, `text-1` on hover and while `aria-selected="true"`, when a 2px brand bar marks it.
 - Showing the selected tab's panel, and moving the selection with the arrow keys, are the page's.
+
+Inside a `vp-doc` (the markdown's styles, `content.css`) a tab that is a link keeps its look: the markdown's rule for links is outranked by the tab's own.

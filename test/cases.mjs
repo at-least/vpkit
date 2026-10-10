@@ -946,3 +946,84 @@ for (const [theme, cls] of [['brand', 'vp-btn vp-btn-brand'], ['alt', 'vp-btn'],
     checks: [{ target: 'spin', props: SIDES.map((s) => `border-${s}-color`) }],
   });
 }
+
+// inside a vp-doc (content.css), whose rules for links, paragraphs and
+// headings outrank a component's own (VitePress's components win there by
+// Vue's scoping, which the port drops): each component keeps its look. A
+// button, a card and an icon button against their originals outside a
+// doc; an alert against VitePress's custom block inside one, as its docs
+// render it; the rest against themselves outside a doc
+for (const [theme, themeClass] of Object.entries(THEMES)) {
+  const vpkit = ['vp-btn', themeClass].filter(Boolean).join(' ');
+  cases.push({
+    name: `button ${theme} in a doc`,
+    upstream: `<a data-t="btn" class="VPButton medium ${theme}" href="#">Get Started</a>`,
+    vpkit: inDoc(`<a data-t="btn" class="${vpkit}" href="#">Get Started</a>`),
+    checks: [
+      // the display is the button's own addition (`known`), covered above
+      { target: 'btn', props: [...BUTTON_BOX.filter((p) => p !== 'display'), ...COLORS, ...TRANSITION] },
+      { target: 'btn', state: ['hover'], props: [...COLORS, ...TRANSITION] },
+    ],
+  });
+}
+cases.push({
+  name: 'card in a doc',
+  upstream: card('a', 'VPFeature link', `<article data-t="box" class="box">${CARD_TEXT('title', 'details')}</article>`),
+  vpkit: inDoc(card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details'))),
+  checks: [
+    { target: 'card', props: [...COLORS, 'font-weight', 'text-decoration-line'] },
+    { target: 'card', state: ['hover'], props: COLORS },
+    { target: 'title', props: ['margin-top', 'margin-bottom', 'border-top-width', 'padding-top', 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'color'] },
+    { target: 'details', props: ['margin-top', 'margin-bottom', 'line-height', 'font-size', 'font-weight', 'color'] },
+  ],
+});
+cases.push({
+  name: 'alert tip in a doc',
+  upstream: inDoc(`<div data-t="box" class="custom-block tip">${alertBody('<p data-t="title" class="custom-block-title">TIP</p>')}</div>`),
+  vpkit: inDoc(`<div data-t="box" class="vp-alert vp-alert-tip">${alertBody('<p data-t="title" class="vp-alert-title">TIP</p>')}</div>`),
+  checks: [
+    { target: 'box', props: [...ALERT_BOX, ...SIDES.map((s) => `margin-${s}`)] },
+    { target: 'title', props: ['margin-top', 'margin-bottom', 'font-weight', 'line-height'] },
+    { target: 'p2', props: ['margin-top', 'margin-bottom', 'line-height'] },
+    { target: 'a', props: LINK },
+    { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
+    { target: 'code', props: CODE },
+    { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+  ],
+});
+cases.push({
+  name: 'icon button in a doc',
+  upstreamFiles: ['components/VPSocialLink.vue'],
+  upstream: `${ICON_BTN_ADDITION}<a data-t="btn" class="VPSocialLink no-icon" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`,
+  vpkit: inDoc(`<a data-t="btn" class="vp-icon-btn" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`),
+  checks: [
+    { target: 'btn', props: ['color', 'text-decoration-line', ...TRANSITION] },
+    { target: 'btn', state: ['hover'], props: ['color', 'background-color'] },
+  ],
+});
+for (const [name, markup, checks] of [
+  ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [
+    { target: 'x', props: [...LOOK, ...TRANSITION] },
+    { target: 'x', state: ['hover'], props: ['color', 'background-color'] },
+  ]],
+  ['dropdown title', `<div class="vp-dropdown">${ddGroup('g', 'Sort by', ddItem('Name'))}</div>`, [
+    { target: 'g-title', props: ['margin-top', 'margin-bottom', 'line-height'] },
+  ]],
+  ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [
+    { target: 'x', props: [...LOOK, ...TRANSITION] },
+    { target: 'x', state: ['hover'], props: ['color'] },
+  ]],
+  ['field error', `<p data-t="x" class="vp-field-error">This code has expired.</p>`, [
+    { target: 'x', props: ['margin-top', 'margin-bottom', 'line-height', 'font-size', 'color'] },
+  ]],
+  ['dialog title', `<h2 data-t="x" class="vp-dialog-title">Rename</h2>`, [
+    { target: 'x', props: ['margin-top', 'margin-bottom', 'border-top-width', 'padding-top', 'letter-spacing', 'line-height', 'font-size', 'font-weight'] },
+  ]],
+]) {
+  cases.push({
+    name: `${name} in a doc`,
+    reference: `<div>${markup}</div>`,
+    vpkit: inDoc(markup),
+    checks,
+  });
+}

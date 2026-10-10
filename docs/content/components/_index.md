@@ -32,6 +32,8 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
 
+Inside a `vp-doc` (the markdown's styles, `content.css`) each component keeps its look: the markdown's rules for links, paragraphs and headings, which would outrank a component's own, are restated by the component for that place, as VitePress's components win there by Vue's scoping.
+
 Their hover styles are written with `@variant hover`, so they behave like Tailwind's `hover:`: they apply only on a device that can hover (`@media (hover: hover)`, or however your project defines the `hover` variant). VitePress's apply on touch screens too, where a tapped button or card keeps its hover look until the next tap.
 
 The examples on these pages are live. Each is a page of its own, with Tailwind and vpkit as an app imports them and none of this site's markdown styles, and it follows this site's appearance switch.

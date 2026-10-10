@@ -82,6 +82,44 @@
     }
   }
 
+  /* inside a vp-doc (content.css), whose rules for a paragraph, a link
+     and code outrank the alert's (which add no specificity, the :where()
+     above): the alert's own, as VitePress's vp-doc.css restates its
+     custom block's, at the specificity of two classes. The block takes the
+     markdown's margin there, as the custom block does */
+  .vp-doc .vp-alert {
+    margin: 1rem 0;
+  }
+
+  .vp-doc .vp-alert p {
+    margin: 0.5rem 0;
+    line-height: 1.7142857;
+  }
+
+  .vp-doc .vp-alert p:first-child {
+    margin: 0;
+  }
+
+  .vp-doc .vp-alert a {
+    color: var(--vp-alert-link);
+    font-weight: 500;
+  }
+
+  .vp-doc .vp-alert a {
+    @variant hover {
+      color: var(--vp-alert-link-hover);
+
+      & > code {
+        color: var(--vp-alert-link-hover);
+      }
+    }
+  }
+
+  .vp-doc .vp-alert code {
+    color: var(--vp-alert-link);
+    background-color: var(--vp-alert-code-bg);
+  }
+
   /* the chip VitePress draws around inline code in its docs (vp-doc.css),
      with the container's colors */
   :where(.vp-alert) code {

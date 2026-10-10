@@ -1249,6 +1249,12 @@ button:focus-visible {
     background-color: var(--vp-btn-bg);
     transition: color 0.25s, border-color 0.25s, background-color 0.25s;
   }
+  .vp-doc .vp-btn {
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--vp-btn-text);
+    transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  }
   @media (hover: hover) {
     .vp-btn:hover {
       border-color: var(--vp-btn-hover-border);
@@ -1425,6 +1431,32 @@ button:focus-visible {
       color: var(--vp-alert-link-hover);
     }
   }
+  .vp-doc .vp-alert {
+    margin: 1rem 0;
+  }
+  .vp-doc .vp-alert p {
+    margin: 0.5rem 0;
+    line-height: 1.7142857;
+  }
+  .vp-doc .vp-alert p:first-child {
+    margin: 0;
+  }
+  .vp-doc .vp-alert a {
+    color: var(--vp-alert-link);
+    font-weight: 500;
+  }
+  @media (hover: hover) {
+    .vp-doc .vp-alert a:hover {
+      color: var(--vp-alert-link-hover);
+    }
+    .vp-doc .vp-alert a:hover > code {
+      color: var(--vp-alert-link-hover);
+    }
+  }
+  .vp-doc .vp-alert code {
+    color: var(--vp-alert-link);
+    background-color: var(--vp-alert-code-bg);
+  }
   :where(.vp-alert) code {
     border-radius: 0.25rem;
     padding: 0.1875rem 0.375rem;
@@ -1542,6 +1574,23 @@ button:focus-visible {
     a.vp-card:hover {
       border-color: var(--vp-c-brand-1);
     }
+  }
+  .vp-doc .vp-card {
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+  }
+  .vp-doc .vp-card-title {
+    margin: 0;
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: 1.5;
+    font-size: 1rem;
+  }
+  .vp-doc .vp-card-details {
+    margin: 0;
+    line-height: 1.7142857;
   }
   .vp-card-title {
     line-height: 1.5;
@@ -1739,6 +1788,14 @@ button:focus-visible {
     font-size: 1.05rem;
     font-weight: 600;
   }
+  .vp-doc .vp-dialog-title {
+    margin: 0 0 0.6rem;
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: inherit;
+    font-size: 1.05rem;
+  }
   .vp-dialog-actions {
     display: flex;
     justify-content: flex-end;
@@ -1770,6 +1827,16 @@ button:focus-visible {
     text-decoration: none;
     white-space: nowrap;
     transition: background-color 0.25s, color 0.25s;
+  }
+  .vp-doc .vp-dropdown-item {
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    text-decoration: none;
+    transition: background-color 0.25s, color 0.25s;
+  }
+  .vp-doc .vp-dropdown-title {
+    margin: 0;
+    line-height: 2.2857143;
   }
   @media (hover: hover) {
     .vp-dropdown-item:hover {
@@ -1812,6 +1879,10 @@ button:focus-visible {
     border-radius: 0.5rem;
     color: var(--vp-c-text-2);
     transition: color 0.5s, background-color 0.25s;
+  }
+  .vp-doc .vp-icon-btn {
+    color: var(--vp-c-text-2);
+    text-decoration: none;
   }
   @media (hover: hover) {
     .vp-icon-btn:hover {
@@ -1863,6 +1934,12 @@ button:focus-visible {
     content: '';
     background-color: transparent;
     transition: background-color 0.25s;
+  }
+  .vp-doc .vp-tabs-tab {
+    font-weight: 500;
+    color: var(--vp-code-tab-text-color);
+    text-decoration: none;
+    transition: color 0.25s;
   }
   @media (hover: hover) {
     .vp-tabs-tab:hover {
@@ -1938,6 +2015,10 @@ button:focus-visible {
     font-size: 0.875rem;
     line-height: 1.5rem;
     color: var(--vp-c-danger-1);
+  }
+  .vp-doc .vp-field-error {
+    margin: 0.5rem 0 0;
+    line-height: 1.5rem;
   }
   .vp-toast {
     border: 1px solid var(--vp-c-divider);

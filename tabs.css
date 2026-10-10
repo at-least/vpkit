@@ -58,6 +58,15 @@
     transition: background-color 0.25s;
   }
 
+  /* inside a vp-doc (content.css), whose rule for a link would restyle a
+     tab that is a link: the tab's own, before the state rules */
+  .vp-doc .vp-tabs-tab {
+    font-weight: 500;
+    color: var(--vp-code-tab-text-color);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+
   /* a rule of its own, as in button.css */
   .vp-tabs-tab {
     @variant hover {

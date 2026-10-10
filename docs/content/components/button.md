@@ -30,6 +30,8 @@ VitePress's `VPButton`.
 
 Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
 
+Inside a `vp-doc` (the markdown's styles, `content.css`), a button link keeps its look: the markdown's rule for links, which would underline it and color it as a link, is outranked by the button's own.
+
 ## Icons and the disabled state
 
 Two additions VitePress's button doesn't have: it is `inline-flex`, so an icon and its label sit centered side by side 0.5rem apart, and a `disabled` button is dimmed to half opacity with a not-allowed cursor.

@@ -66,6 +66,17 @@
     transition: color 0.25s, border-color 0.25s, background-color 0.25s;
   }
 
+  /* inside a vp-doc (content.css), whose rule for a link would underline
+     a button link, color it as a link and lighten its weight: the button's
+     own look at the specificity of two classes, before the state rules
+     below, which it must not outrank */
+  .vp-doc .vp-btn {
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--vp-btn-text);
+    transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  }
+
   /* a rule of its own: nested in one that has declarations, the variant
      would stay CSS nesting in an unminified build */
   .vp-btn {

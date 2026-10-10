@@ -31,6 +31,13 @@
     transition: color 0.5s, background-color 0.25s;
   }
 
+  /* inside a vp-doc (content.css), whose rule for a link would color an
+     icon link as a link: the button's own, before the hover rule */
+  .vp-doc .vp-icon-btn {
+    color: var(--vp-c-text-2);
+    text-decoration: none;
+  }
+
   /* a rule of its own, as in button.css */
   .vp-icon-btn {
     @variant hover {

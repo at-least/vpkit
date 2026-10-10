@@ -66,6 +66,20 @@
     transition: background-color 0.25s, color 0.25s;
   }
 
+  /* inside a vp-doc (content.css), whose rules for a link and a paragraph
+     outrank an item's and a title's: their own, before the state rules */
+  .vp-doc .vp-dropdown-item {
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    text-decoration: none;
+    transition: background-color 0.25s, color 0.25s;
+  }
+
+  .vp-doc .vp-dropdown-title {
+    margin: 0;
+    line-height: 2.2857143;
+  }
+
   /* a rule of its own, as in button.css */
   .vp-dropdown-item {
     @variant hover {

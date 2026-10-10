@@ -39,3 +39,5 @@ VitePress's `VPFeature`, the home page's feature boxes.
 {% </vp_example> %}
 
 Not included: the feature icon.
+
+Inside a `vp-doc` (the markdown's styles, `content.css`) a link card keeps its look, and its title and details their boxes: the markdown's rules for links, headings and paragraphs are outranked by the card's own.

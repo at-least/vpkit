@@ -36,6 +36,31 @@
     }
   }
 
+  /* inside a vp-doc (content.css), whose rules for a link and for a
+     heading or a paragraph outrank the card's own: a link card keeps the
+     text's color and weight and no underline, its title a title's box
+     (no heading margins, rule or padding) and its details a line of
+     1.7142857 with no margins, at the specificity of two classes */
+  .vp-doc .vp-card {
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .vp-doc .vp-card-title {
+    margin: 0;
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: 1.5;
+    font-size: 1rem;
+  }
+
+  .vp-doc .vp-card-details {
+    margin: 0;
+    line-height: 1.7142857;
+  }
+
   .vp-card-title {
     line-height: 1.5;
     font-size: 1rem;

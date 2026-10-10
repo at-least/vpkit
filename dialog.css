@@ -47,6 +47,17 @@
     font-weight: 600;
   }
 
+  /* inside a vp-doc (content.css), whose rules for a heading outrank the
+     title's: the title's own box, no heading margins, rule or padding */
+  .vp-doc .vp-dialog-title {
+    margin: 0 0 0.6rem;
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: inherit;
+    font-size: 1.05rem;
+  }
+
   .vp-dialog-actions {
     display: flex;
     justify-content: flex-end;

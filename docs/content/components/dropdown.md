@@ -43,3 +43,5 @@ Change the panel's padding with `--vp-dropdown-padding`, as in `[--vp-dropdown-p
   </div>
 </div>
 {% </vp_example> %}
+
+Inside a `vp-doc` (the markdown's styles, `content.css`) an item that is a link and a group's title keep their look: the markdown's rules for links and paragraphs are outranked by their own.

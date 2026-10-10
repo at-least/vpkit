@@ -20,3 +20,5 @@ A form field's label and its error line, to go with [`vp-input`](@/components/in
 - `vp-label`: 14px `text-1` at weight 500, 0.375rem above its control.
 - `vp-field-error`: 14px danger text, 0.5rem under the control.
 - The two margins are the field's own spacing; `mb-0` and `mt-0` remove them. Tie the error to its control with `aria-describedby`, and mark the control `aria-invalid`, which turns `vp-input`'s border danger.
+
+Inside a `vp-doc` (the markdown's styles, `content.css`) the error line keeps its margin and line height: the markdown's rule for paragraphs is outranked by its own.

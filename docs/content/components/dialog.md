@@ -31,3 +31,5 @@ VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, w
 - 26rem wide, at most 92vw: unlike the other components it has a width, since a dialog without one shrinks to its content. A width utility replaces it.
 
 The buttons are in a `<form method="dialog">`, which closes the dialog when one is pressed, with no script; Escape closes it too.
+
+Inside a `vp-doc` (the markdown's styles, `content.css`) the title keeps its box: the markdown's rules for headings are outranked by its own.
