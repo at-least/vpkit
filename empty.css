@@ -1,0 +1,52 @@
+/* vpkit — empty state: the box a list shows when it has nothing to list.
+ * VitePress has none; this is crashcart's `empty-frame`, on VitePress's
+ * tokens, and own-drive's `EMPTY` line fits inside it. An optional
+ * import: `@import "vpkit/empty.css";`
+ *
+ *   <div class="vp-empty">
+ *     <p class="vp-empty-title">No issues</p>
+ *     <p class="vp-empty-desc">Nothing matched these filters in the last 7 days.</p>
+ *   </div>
+ *
+ * `vp-empty` is the box: the soft gray ground with a 0.75rem radius, 3rem
+ * of padding above and below and 1.5rem at the sides, its lines centered
+ * and 0.375rem apart, in text-2. `vp-empty-title` is the bold line in
+ * text-1; `vp-empty-desc` the 0.875rem line under it, at most 52 characters
+ * wide so a long explanation wraps. A title alone, or a line of text
+ * without either class, is fine. Inside a vp-doc (content.css), whose rule
+ * for paragraphs would space the lines as the markdown's, each keeps its
+ * place. */
+
+@layer components {
+  .vp-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border-radius: 0.75rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-default-soft);
+  }
+
+  .vp-empty-title {
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-empty-desc {
+    max-width: 52ch;
+    font-size: 0.875rem;
+  }
+
+  /* inside a vp-doc, whose rule for a paragraph (margins, a 28px line)
+     outranks the lines' own: no margins, the page's line height, at the
+     specificity of two classes */
+  .vp-doc .vp-empty-title,
+  .vp-doc .vp-empty-desc {
+    margin: 0;
+    line-height: 1.5;
+  }
+}

@@ -5,6 +5,7 @@ import {
   OWN_DRIVE_BTN_DANGER,
   OWN_DRIVE_BTN_ROW,
   OWN_DRIVE_CARD,
+  OWN_DRIVE_EMPTY,
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
   OWN_DRIVE_MSG,
@@ -1029,6 +1030,45 @@ cases.push({
   checks: [
     { target: 'card', props: [...RADIUS, ...PADDING, 'color', 'text-decoration-line', ...TRANSITION] },
     { target: 'card', state: ['hover'], props: SIDES.map((s) => `border-${s}-color`) },
+  ],
+});
+
+// empty state: crashcart's empty-frame (src/web/styles/app.css at 78e4d5b,
+// its declarations written inline) against vp-empty, and own-drive's EMPTY
+// line, which has no box, for the text; then the lines inside a vp-doc
+// against themselves outside one
+const CRASHCART_EMPTY = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.375rem;padding:3rem 1.5rem;text-align:center;color:var(--vp-c-text-2);background:var(--vp-c-default-soft);border-radius:0.75rem';
+const CRASHCART_EMPTY_TITLE = 'font-weight:600;color:var(--vp-c-text-1)';
+const CRASHCART_EMPTY_DESC = 'font-size:0.875rem;max-width:52ch';
+const EMPTY_BOX = ['display', 'flex-direction', 'align-items', 'justify-content', 'row-gap', ...PADDING, ...RADIUS, 'text-align', ...COLORS];
+const EMPTY_LINE = ['margin-top', 'margin-bottom', 'line-height', 'font-size', 'font-weight', 'color', 'max-width'];
+const emptyMarkup = (box, title, desc, attr = 'class') =>
+  `<div data-t="box" ${attr}="${box}"><p data-t="title" ${attr}="${title}">No issues</p>` +
+  `<p data-t="desc" ${attr}="${desc}">Nothing matched these filters in the last 7 days. Clear a filter, or widen the window.</p></div>`;
+const vpkitEmpty = emptyMarkup('vp-empty', 'vp-empty-title', 'vp-empty-desc');
+cases.push({
+  name: 'empty state',
+  reference: emptyMarkup(CRASHCART_EMPTY, CRASHCART_EMPTY_TITLE, CRASHCART_EMPTY_DESC, 'style'),
+  vpkit: vpkitEmpty,
+  checks: [
+    { target: 'box', props: EMPTY_BOX },
+    { target: 'title', props: EMPTY_LINE },
+    { target: 'desc', props: EMPTY_LINE },
+  ],
+});
+cases.push({
+  name: 'empty state, own-drive\'s line',
+  reference: `<div data-t="box" class="${OWN_DRIVE_EMPTY}">This folder is empty.</div>`,
+  vpkit: `<div data-t="box" class="vp-empty">This folder is empty.</div>`,
+  checks: [{ target: 'box', props: ['text-align', 'color'] }],
+});
+cases.push({
+  name: 'empty state in a doc',
+  reference: `<div>${vpkitEmpty}</div>`,
+  vpkit: inDoc(vpkitEmpty),
+  checks: [
+    { target: 'title', props: EMPTY_LINE },
+    { target: 'desc', props: EMPTY_LINE },
   ],
 });
 

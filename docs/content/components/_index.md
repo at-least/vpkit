@@ -32,6 +32,7 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 @import "vpkit/nav-link.css";
 @import "vpkit/topbar.css";
 @import "vpkit/hamburger.css";
+@import "vpkit/empty.css";
 ```
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
@@ -102,6 +103,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
 | [Top Bar](@/components/topbar.md) | `vp-topbar` | VitePress's `VPNavBar` and `VPNavBarTitle` |
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
+| [Empty State](@/components/empty.md) | `vp-empty` | crashcart's empty state |
 
 A component taken from VitePress is rendered next to its original in a browser and compared, property by property; one VitePress doesn't have is compared the same way with the app recipe it was taken from. [Tests](@/guide/tests.md)
 
