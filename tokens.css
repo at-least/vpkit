@@ -364,10 +364,7 @@
 /* Component: Custom Block */
 :root {
   --vp-custom-block-font-size: 0.875rem;
-  /* Not vars.css's 0.8125rem: that size never shows in VitePress's docs,
-     where `.vp-doc :not(pre) > code` (0,1,2) beats `.custom-block code`
-     (0,1,1). This is the size it renders (12.25px in a 14px block). */
-  --vp-custom-block-code-font-size: 0.875em;
+  --vp-custom-block-code-font-size: 0.8125rem;
 
   --vp-custom-block-info-border: transparent;
   --vp-custom-block-info-text: var(--vp-c-text-1);

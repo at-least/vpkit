@@ -121,11 +121,15 @@
   }
 
   /* the chip VitePress draws around inline code in its docs (vp-doc.css),
-     with the container's colors */
+     with the container's colors. Its size is --vp-code-font-size, not the
+     block's own --vp-custom-block-code-font-size: in VitePress's docs
+     `.vp-doc :not(pre, h1, …) > code` (0,1,2) beats `.custom-block code`
+     (0,1,1), so the block's token never paints; what paints is 0.875em,
+     12.25px in a 14px block */
   :where(.vp-alert) code {
     border-radius: 0.25rem;
     padding: 0.1875rem 0.375rem;
-    font-size: var(--vp-custom-block-code-font-size);
+    font-size: var(--vp-code-font-size);
     color: var(--vp-alert-link);
     background-color: var(--vp-alert-code-bg);
     transition: color 0.25s, background-color 0.5s;
