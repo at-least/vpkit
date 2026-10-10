@@ -100,7 +100,13 @@ try {
               const minHeight = parseFloat(getComputedStyle(f).minHeight) || 0;
               return {
                 title: f.title,
-                stylesheet: sheets.length === 1 && new URL(sheets[0].href).pathname === '/vpkit/example.css' && sheets[0].cssRules.length > 0,
+                // example.css, then the session's theme as the page links it (the vitepress theme until a pick; none after the stock card)
+                stylesheet:
+                  sheets.length >= 1 &&
+                  new URL(sheets[0].href).pathname === '/vpkit/example.css' &&
+                  sheets[0].cssRules.length > 0 &&
+                  sheets.slice(1).every((s) => /^\/vpkit\/themes\/[^/]+\.css$/.test(new URL(s.href).pathname)) &&
+                  sheets.slice(1).map((s) => new URL(s.href).pathname) .join() === [...document.head.querySelectorAll('link[data-theme]')].map((l) => new URL(l.href).pathname).join(),
                 unstyled,
                 fits: f.clientHeight === Math.max(content, minHeight) && root.scrollHeight <= root.clientHeight,
                 height: `${f.clientHeight}px for ${content}px of content${minHeight ? `, at least ${minHeight}px` : ''}`,
@@ -112,7 +118,7 @@ try {
         for (const f of await report()) {
           frames++;
           const frame = `${where}, "${f.title}"`;
-          if (!f.stylesheet) failures.push(`${frame}: the frame has not loaded example.css alone`);
+          if (!f.stylesheet) failures.push(`${frame}: the frame has not loaded example.css and then the page's theme`);
           for (const c of f.unstyled) failures.push(`${frame}: example.css has no rule for .${c}`);
           if (!f.fits) failures.push(`${frame}: ${f.height}`);
           if (width < 640 && f.overflow) failures.push(`${frame}: ${f.overflow}`);
@@ -146,25 +152,49 @@ try {
     });
     await context.addInitScript(() => {
       requestAnimationFrame(() => {
-        window.firstFrameBackground = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-bg').trim().toLowerCase();
+        const style = getComputedStyle(document.documentElement);
+        window.firstFrameBackground = style.getPropertyValue('--vp-c-bg').trim().toLowerCase();
+        window.firstFrameBrand2 = style.getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
       });
     });
     const page = await context.newPage();
+    // the site is on the vitepress theme (docs/static/theme-pick.js) until a
+    // pick: its brand-2 (the hovered link's color, which the theme fits)
+    // from the first frame, and its card pressed
+    const declared = (css, selector, name) => {
+      const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      for (const m of css.matchAll(new RegExp(`(?:^|\\n)${esc(selector)}\\s*\\{([^}]*)\\}`, 'g'))) {
+        const d = new RegExp(`${esc(name)}:\\s*([^;]+);`).exec(m[1]);
+        if (d) return d[1].trim().toLowerCase();
+      }
+      throw new Error(`${name} is not declared under ${selector}`);
+    };
+    const vitepress = declared(readFileSync(join(ROOT, 'themes/vitepress.css'), 'utf8'), ':root', '--vp-c-brand-2');
+    const tokens = readFileSync(join(ROOT, 'tokens.css'), 'utf8');
+    const stockBrand2 = declared(tokens, ':root', declared(tokens, ':root', '--vp-c-brand-2').replace(/^var\((.*)\)$/, '$1'));
+    await page.goto(`${BASE}/components/button/`);
+    await settle(page);
+    const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
+    if (firstBrand2 !== vitepress) failures.push(`/components/button/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
     await page.goto(`${BASE}/themes/`);
     await page.waitForSelector('.theme-gallery__card');
     const cards = await page.locator('.theme-gallery__card').count();
     if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
-    const backgrounds = () =>
+    const values = (prop) =>
       [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
-        getComputedStyle(e).getPropertyValue('--vp-c-bg').trim().toLowerCase(),
+        getComputedStyle(e).getPropertyValue(prop).trim().toLowerCase(),
       );
-    const expect = async (what, bg, where = '/themes/') => {
+    const expectToken = async (what, prop, value, where = '/themes/') => {
       try {
-        await page.waitForFunction(([f, bg]) => new Function(`return (${f})()`)().every((b) => b === bg), [backgrounds.toString(), bg], { timeout: 5000 });
+        await page.waitForFunction(([f, prop, value]) => new Function('prop', `return (${f})(prop)`)(prop).every((b) => b === value), [values.toString(), prop, value], { timeout: 5000 });
       } catch {
-        failures.push(`${where}, ${what}: --vp-c-bg ${(await page.evaluate(backgrounds)).join(', ')} in the page and its frames, not ${bg}`);
+        failures.push(`${where}, ${what}: ${prop} ${(await page.evaluate(values, prop)).join(', ')} in the page and its frames, not ${value}`);
       }
     };
+    const expect = (what, bg, where) => expectToken(what, '--vp-c-bg', bg, where);
+    await expectToken('no pick', '--vp-c-brand-2', vitepress);
+    const initial = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
+    if (initial.join() !== 'vitepress') failures.push(`/themes/ with no pick: the pressed cards are [${initial}], not vitepress`);
     const nord = index.find((t) => t.name === 'nord');
     await page.click('.theme-gallery__card[data-theme="nord"]');
     await expect('nord picked', nord.light.bg);
@@ -186,9 +216,11 @@ try {
     if (kept.join() !== 'nord') failures.push(`/themes/ opened again after nord was picked: the pressed cards are [${kept}]`);
     await page.click('.theme-gallery__card[data-theme=""]');
     await expect('the stock card picked', index[0].light.bg);
+    await expectToken('the stock card picked', '--vp-c-brand-2', stockBrand2);
     await page.goto(`${BASE}/components/button/`);
     await settle(page);
     await expect('the stock card picked, on /components/button/', index[0].light.bg, '/components/button/');
+    await expectToken('the stock card picked, on /components/button/', '--vp-c-brand-2', stockBrand2, '/components/button/');
     await context.close();
   } finally {
     await browser.close();

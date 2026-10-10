@@ -27,7 +27,7 @@ A theme only sets variables, so the components and your utilities follow it.
 
 ### Where they come from
 
-- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted (a hovered link's `-2` as text and dimmed in a container, the brand button's white label at rest, hovered and pressed, a control's border at 3:1), written by `scripts/fit-vitepress.py` from `tokens.css`. The apps built on vpkit import it: VitePress's look, AA.
+- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted (a hovered link's `-2` as text and dimmed in a container, the brand button's white label at rest, hovered and pressed, a control's border at 3:1), written by `scripts/fit-vitepress.py` from `tokens.css`. The apps built on vpkit import it, and this site is on it: VitePress's look, AA.
 - 198 are mapped automatically from the Helix editor's palettes (`helix/`), each read as Helix reads it, its `inherits` followed, with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
 
 ### Switching at runtime
