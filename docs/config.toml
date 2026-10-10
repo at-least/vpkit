@@ -23,11 +23,14 @@ dark_theme = "github-dark"
 
 [extra]
 logo = "/logo.svg"
-# the favicon, and the session's color theme (static/theme-pick.js: the
-# vitepress theme until the gallery stores a pick), which must be in the
-# head to be there at the first paint
+# the favicon; the site's color theme, vitepress, a stylesheet like any
+# (there with JavaScript off, fetched beside the page's own); and the
+# script that swaps it for the theme the gallery stored for this session
+# (static/theme-pick.js), which must be in the head to be there at the
+# first paint
 head = [
   { tag = "link", attrs = { rel = "icon", type = "image/svg+xml", href = "/logo.svg" } },
+  { tag = "link", attrs = { rel = "stylesheet", href = "/themes/vitepress.css", data-theme = "vitepress" } },
   { tag = "script", attrs = { src = "/theme-pick.js" } },
 ]
 nav = [

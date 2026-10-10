@@ -5,8 +5,9 @@
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
  * pick is kept for the browser session (a theme's name, or the stock
- * card's empty one, which links no theme), and static/theme-pick.js links
- * it in every page the session opens, and `vitepress` until there is one. */
+ * card's empty one, which links no theme), and static/theme-pick.js puts
+ * it in every page the session opens in place of the site's own theme,
+ * `vitepress`, a static link in the head (config.toml). */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
 
@@ -73,7 +74,9 @@ style.textContent = `
   color: var(--vp-c-text-2);
 }
 `;
-document.head.append(style);
+// on the host, not in the head: example.js re-clones the page's theme link
+// into the example frame at every head mutation
+host.append(style);
 
 // one mode of a theme: a navbar, a heading, a line of text, a link, and the
 // success, warning and danger colors
@@ -123,15 +126,20 @@ const unlink = (keep) => {
 };
 
 function pick(name) {
-  sessionStorage.setItem(KEY, name);
+  // a browser that denies storage still gets the pick for this page
+  try {
+    sessionStorage.setItem(KEY, name);
+  } catch {}
   if (name) {
-    link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = `${host.dataset.stylesheets}${encodeURIComponent(name)}.css`;
-    link.dataset.theme = name;
-    // the old theme stays until the new one has loaded, so the page doesn't flash the stock colors
-    link.addEventListener('load', () => unlink(link), { once: true });
-    document.head.append(link);
+    const el = (link = document.createElement('link'));
+    el.rel = 'stylesheet';
+    el.href = `${host.dataset.stylesheets}${encodeURIComponent(name)}.css`;
+    el.dataset.theme = name;
+    // the old theme stays until the new one has loaded, so the page doesn't
+    // flash the stock colors; a load after a later pick leaves that pick's
+    // link, and the cleanup, to it
+    el.addEventListener('load', () => { if (link === el) unlink(el); }, { once: true });
+    document.head.append(el);
   } else {
     link = null;
     unlink(null);

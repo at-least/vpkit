@@ -51,6 +51,29 @@ const index = JSON.parse(readFileSync(join(DOCS, 'static/themes.json'), 'utf8'))
 // in the order of the files' names, as the index has them
 const stems = readdirSync(join(ROOT, 'themes')).filter((f) => f.endsWith('.css')).sort().map((f) => f.slice(0, -'.css'.length));
 if (JSON.stringify(index.map((t) => t.name)) !== JSON.stringify(['', ...stems])) failures.push('docs/static/themes.json: not the stock colors and then every theme of themes/');
+// every theme count the pages and the README state is the index's: the
+// total, the curated and the Helix-mapped
+{
+  const total = index.length - 1;
+  const curated = index.filter((t) => t.source === 'curated').length;
+  const helix = index.filter((t) => t.source === 'helix').length;
+  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : e.name.endsWith('.md') ? [join(dir, e.name)] : []));
+  for (const file of [join(ROOT, 'README.md'), ...walk(join(DOCS, 'content'))]) {
+    const text = readFileSync(file, 'utf8');
+    for (const [pattern, want, what] of [
+      [/\b(\d+) (?:ready-made )?color themes\b/g, total, 'color themes'],
+      [/\b(\d+) of them\b/g, total, 'of them'],
+      [/\b(\d+) are curated\b/g, curated, 'curated'],
+      [/\bThe (\d+) curated themes\b/g, curated, 'curated'],
+      [/\b(\d+) are mapped automatically\b/g, helix, 'Helix-mapped'],
+      [/\bthe other (\d+) are mapped\b/g, helix, 'Helix-mapped'],
+    ]) {
+      for (const m of text.matchAll(pattern)) {
+        if (Number(m[1]) !== want) failures.push(`${file.slice(ROOT.length + 1)}: says ${m[0]}, the index has ${want} ${what}`);
+      }
+    }
+  }
+}
 
 const dir = mkdtempSync(join(tmpdir(), 'vpkit-docs-'));
 const site = join(dir, 'site');
@@ -172,12 +195,16 @@ try {
     // from the first frame, and its card pressed
     const vitepress = index.find((t) => t.name === 'vitepress').light['brand-2'];
     const stockBrand2 = index[0].light['brand-2'];
-    await page.goto(`${BASE}/components/button/`);
-    await settle(page);
-    const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
-    if (firstBrand2 !== vitepress) failures.push(`/components/button/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
     await page.goto(`${BASE}/themes/`);
     await page.waitForSelector('.theme-gallery__card');
+    const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
+    if (firstBrand2 !== vitepress) failures.push(`/themes/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
+    // and in the example frames, which write the page's theme links into
+    // their own heads as they are parsed
+    const framesFirst = await page.evaluate(() => [...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow.firstFrameBrand2));
+    for (const [i, value] of framesFirst.entries()) {
+      if (value !== vitepress) failures.push(`/themes/ with no pick, frame ${i + 1}: --vp-c-brand-2 ${value} at its first frame, not the vitepress theme's ${vitepress}`);
+    }
     const cards = await page.locator('.theme-gallery__card').count();
     if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
     const values = (prop) =>
@@ -230,6 +257,30 @@ try {
       const again = await pressed();
       if (again !== plus) failures.push(`/themes/ opened again after ${plus} was picked: the pressed cards are [${again}]`);
     }
+    // two picks back to back: the page goes from the theme it had to the
+    // second pick's, never through the stock colors (the first pick's load
+    // must not unlink the second's)
+    const github = index.find((t) => t.name === 'github');
+    // the sampler runs in the page from before the clicks, every 10ms,
+    // until github's color arrives
+    await page.evaluate((until) => {
+      window.sampled = (async () => {
+        const seen = new Set();
+        const start = performance.now();
+        while (performance.now() - start < 3000) {
+          const now = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+          seen.add(now);
+          if (now === until) break;
+          await new Promise((r) => setTimeout(r, 10));
+        }
+        return [...seen];
+      })();
+    }, github.light['brand-2']);
+    await page.click('.theme-gallery__card[data-theme="nord"]');
+    await page.click('.theme-gallery__card[data-theme="github"]');
+    const seen = await page.evaluate(() => window.sampled);
+    if (seen.includes(stockBrand2)) failures.push(`/themes/, nord then github picked back to back: the page passed through the stock colors (${seen.join(' > ')})`);
+    await expectToken('github picked after nord', '--vp-c-brand-2', github.light['brand-2']);
     // the stock card pressed while a pick's stylesheet is still on its way
     // (300ms here) leaves no theme linked
     await page.click('.theme-gallery__card[data-theme="nord"]');
@@ -250,6 +301,14 @@ try {
     await expectToken('a pick with no stylesheet', '--vp-c-brand-2', vitepress, '/components/button/');
     const stored = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
     if (stored !== null) failures.push(`/components/button/ after a pick with no stylesheet: the session still stores ${JSON.stringify(stored)}`);
+    // with JavaScript off, the site's theme is the static link
+    const noScript = await browser.newContext({ javaScriptEnabled: false });
+    await noScript.route(`${ORIGIN}/**`, serve);
+    const plain = await noScript.newPage();
+    await plain.goto(`${BASE}/components/button/`);
+    const plainBrand2 = await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase());
+    if (plainBrand2 !== vitepress) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-2 ${plainBrand2}, not the site's theme's ${vitepress}`);
+    await noScript.close();
     await context.close();
   } finally {
     await browser.close();
