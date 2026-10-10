@@ -77,4 +77,4 @@ A color theme is one more import, after vpkit:
 @import "vpkit/themes/nord.css";
 ```
 
-[Theming](@/guide/theming.md#color-themes) has the 222 of them.
+[Theming](@/guide/theming.md#color-themes) has the 223 of them.

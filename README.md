@@ -1,6 +1,6 @@
 # vpkit
 
-The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 222 color themes. Extracted from [rustpress](https://github.com/at-least/rustpress).
+The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes. Extracted from [rustpress](https://github.com/at-least/rustpress).
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
@@ -45,7 +45,7 @@ npm test
 
 The generated files, and what writes them:
 
-- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `python3 scripts/gen-themes.py` (Python 3.11+), from its slot maps and `helix/`.
+- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `python3 scripts/gen-themes.py` (Python 3.11+), from its slot maps and `helix/`; `themes/vitepress.css`, VitePress's own palette with its contrast shortfalls fitted: `python3 scripts/fit-vitepress.py`, from `tokens.css`.
 - `layout.css` and `content.css`: `node scripts/vitepress-port.mjs --write`, from VitePress's component styles after a re-sync; the tests fail if a file is not its output.
 - `docs/static/example.css` and `docs/static/themes.json`: `node scripts/build-docs.mjs`, after changing an example or a theme; `npm test` fails while they are stale.
 

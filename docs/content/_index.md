@@ -8,7 +8,7 @@ layout = "home"
 [extra.hero]
 name = "vpkit"
 text = "VitePress's look for Tailwind CSS"
-tagline = "The default theme's variables, components and layout as a Tailwind v4 theme, with 222 color themes. Plain CSS for your Tailwind build."
+tagline = "The default theme's variables, components and layout as a Tailwind v4 theme, with 223 color themes. Plain CSS for your Tailwind build."
 image = { src = "/logo.svg", alt = "vpkit" }
 actions = [
   { theme = "brand", text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
@@ -32,7 +32,7 @@ link_text = "The components"
 
 [[extra.features]]
 icon = "🌈"
-title = "222 color themes"
+title = "223 color themes"
 details = "Each a whole design for light and dark, held by the tests to every variable the stylesheets use and to WCAG contrast minimums."
 link = "@/themes.md"
 link_text = "Try them"

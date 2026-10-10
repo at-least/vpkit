@@ -5,7 +5,7 @@ description = "VitePress's default-theme look as a Tailwind CSS v4 theme: variab
 
 # What is vpkit?
 
-vpkit is the look of [VitePress](https://vitepress.dev)'s default theme as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 222 color themes. It was extracted from [rustpress](https://github.com/at-least/rustpress).
+vpkit is the look of [VitePress](https://vitepress.dev)'s default theme as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes. It was extracted from [rustpress](https://github.com/at-least/rustpress).
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
@@ -15,7 +15,7 @@ You are reading a site built on it: [vpkit-zola](https://github.com/at-least/vpk
 
 - **The theme**: the `--vp-*` variables of VitePress's `vars.css`, the `dark:` variant, VitePress's breakpoints, and the utilities that resolve to the variables, such as `text-text-1`, `bg-bg-alt` and `border-divider`. [Utilities and Variables](@/guide/utilities.md)
 - **Components**: VitePress's look as classes an application page can use, twenty of them, one optional import each. [Components](@/components/_index.md)
-- **Color themes**: 222 of them, each a whole design for light and dark. [Theming](@/guide/theming.md)
+- **Color themes**: 223 of them, each a whole design for light and dark. [Theming](@/guide/theming.md)
 - **The docs layout**: VitePress's page layout and markdown styles as classes, for a docs theme. [Docs Layout](@/guide/layout.md)
 
 ## What a component is

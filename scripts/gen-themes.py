@@ -522,7 +522,7 @@ import colorsys
 import os
 import re
 
-CURATED = {s["name"] for s in SPECS} | {"github", "catppuccin", "nord", "rose-pine"}
+CURATED = {s["name"] for s in SPECS} | {"github", "catppuccin", "nord", "rose-pine", "vitepress"}
 
 BG_RE = re.compile(r"^(bg|background|base|canvas)", re.I)
 SURFACE_SKIP = re.compile(r"red|green|blue|yellow|magenta|cyan|visual|selection|menu|focus|inlay|popup|highlight|status|diff|dim|alt|current|hl|line|added|changed|removed|gutter|contrast|search|fg", re.I)

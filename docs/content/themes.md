@@ -1,6 +1,6 @@
 +++
 title = "Themes"
-description = "vpkit's 222 color themes, each a whole design for light and dark: pick one, and this page takes it."
+description = "vpkit's 223 color themes, each a whole design for light and dark: pick one, and this page takes it."
 
 [extra]
 sidebar = false
@@ -9,7 +9,7 @@ aside = false
 
 # Themes
 
-vpkit's 222 color themes, each a whole design for light and dark. Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session; the stock card takes it back.
+vpkit's 223 color themes, each a whole design for light and dark. Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session; the stock card takes it back.
 
 ```css
 @import "vpkit";

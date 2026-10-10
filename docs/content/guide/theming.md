@@ -1,6 +1,6 @@
 +++
 title = "Theming"
-description = "Override the --vp-* variables, or take one of 222 color themes, each a whole design for light and dark held to contrast minimums."
+description = "Override the --vp-* variables, or take one of 223 color themes, each a whole design for light and dark held to contrast minimums."
 +++
 
 # Theming
@@ -14,7 +14,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ## Color themes
 
-`themes/` holds 222 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 223 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
@@ -27,7 +27,7 @@ A theme only sets variables, so the components and your utilities follow it.
 
 ### Where they come from
 
-- 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes.
+- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted (a hovered link's `-2` as text and dimmed in a container, the brand button's white label at rest, hovered and pressed, a control's border at 3:1), written by `scripts/fit-vitepress.py` from `tokens.css`. The apps built on vpkit import it: VitePress's look, AA.
 - 198 are mapped automatically from the Helix editor's palettes (`helix/`), each read as Helix reads it, its `inherits` followed, with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
 
 ### Switching at runtime
