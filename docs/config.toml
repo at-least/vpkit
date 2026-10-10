@@ -27,11 +27,13 @@ logo = "/logo.svg"
 # (there with JavaScript off, fetched beside the page's own); and the
 # script that swaps it for the theme the gallery stored for this session
 # (static/theme-pick.js), which must be in the head to be there at the
-# first paint
+# first paint. Pages caches it for ten minutes (no cachebust here, unlike
+# the scripts the templates link): bump ?v= with any change to what it
+# stores or reads, or a cached old script meets the new pages
 head = [
   { tag = "link", attrs = { rel = "icon", type = "image/svg+xml", href = "/logo.svg" } },
   { tag = "link", attrs = { rel = "stylesheet", href = "/themes/vitepress.css", data-theme = "vitepress" } },
-  { tag = "script", attrs = { src = "/theme-pick.js" } },
+  { tag = "script", attrs = { src = "/theme-pick.js?v=2" } },
 ]
 nav = [
   { text = "Guide", link = "@/guide/what-is-vpkit.md", active_match = "^/guide/" },

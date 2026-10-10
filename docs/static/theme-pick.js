@@ -19,6 +19,14 @@
   try {
     pick = sessionStorage.getItem(KEY);
   } catch {}
+  // the stock card's pick as the site stored it before 2026-10-11, in a
+  // session that spans that deploy
+  if (pick === 'stock') {
+    pick = '';
+    try {
+      sessionStorage.setItem(KEY, pick);
+    } catch {}
+  }
   if (pick !== null) {
     document.head.querySelector('link[data-theme]')?.remove();
     if (pick) {

@@ -301,6 +301,14 @@ try {
     await expectToken('a pick with no stylesheet', '--vp-c-brand-2', vitepress, '/components/button/');
     const stored = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
     if (stored !== null) failures.push(`/components/button/ after a pick with no stylesheet: the session still stores ${JSON.stringify(stored)}`);
+    // the stock card as the site stored it before 2026-10-11 ('stock') still
+    // means no theme, and is stored anew
+    await page.evaluate(() => sessionStorage.setItem('vpkit-docs-theme', 'stock'));
+    await page.goto(`${BASE}/components/button/`);
+    await settle(page);
+    await expectToken("the stock card as stored before 2026-10-11", '--vp-c-brand-2', stockBrand2, '/components/button/');
+    const migrated = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
+    if (migrated !== '') failures.push(`/components/button/ with 'stock' stored: the session now stores ${JSON.stringify(migrated)}, not ''`);
     // with JavaScript off, the site's theme is the static link
     const noScript = await browser.newContext({ javaScriptEnabled: false });
     await noScript.route(`${ORIGIN}/**`, serve);
