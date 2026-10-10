@@ -7,11 +7,22 @@
  * page waits for it as for its own stylesheet and first paints in the
  * theme; a link the DOM adds would let the page paint first in the stock
  * colors. data-theme carries the name as the gallery compares it; only the
- * URL is encoded (`penumbra+` is a theme). */
+ * URL is encoded (`penumbra+` is a theme). A pick whose stylesheet no
+ * longer exists (a theme renamed since the session began) is forgotten,
+ * and the page takes the default late rather than staying in no theme. */
 {
-  const theme = sessionStorage.getItem('vpkit-docs-theme') ?? 'vitepress';
+  const KEY = 'vpkit-docs-theme';
+  const DEFAULT = 'vitepress';
+  const href = (theme) => new URL(`themes/${encodeURIComponent(theme)}.css`, document.currentScript.src).href;
+  const theme = sessionStorage.getItem(KEY) ?? DEFAULT;
   if (theme) {
-    const href = new URL(`themes/${encodeURIComponent(theme)}.css`, document.currentScript.src).href;
-    document.write(`<link rel="stylesheet" href="${href}" data-theme="${theme}">`);
+    // the written link is parsed after this script ends, so its error
+    // handler goes in as an attribute: the pick is forgotten and the same
+    // element re-fetches the default
+    const onerror =
+      theme === DEFAULT
+        ? ''
+        : ` onerror="sessionStorage.removeItem('${KEY}');this.dataset.theme='${DEFAULT}';this.href='${href(DEFAULT)}'"`;
+    document.write(`<link rel="stylesheet" href="${href(theme)}" data-theme="${theme}"${onerror}>`);
   }
 }

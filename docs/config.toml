@@ -23,8 +23,9 @@ dark_theme = "github-dark"
 
 [extra]
 logo = "/logo.svg"
-# the favicon, and the theme the gallery picked (static/theme-pick.js),
-# which must be in the head to be there at the first paint
+# the favicon, and the session's color theme (static/theme-pick.js: the
+# vitepress theme until the gallery stores a pick), which must be in the
+# head to be there at the first paint
 head = [
   { tag = "link", attrs = { rel = "icon", type = "image/svg+xml", href = "/logo.svg" } },
   { tag = "script", attrs = { src = "/theme-pick.js" } },

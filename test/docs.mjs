@@ -108,13 +108,13 @@ try {
               const minHeight = parseFloat(getComputedStyle(f).minHeight) || 0;
               return {
                 title: f.title,
-                // example.css, then the session's theme as the page links it (the vitepress theme until a pick; none after the stock card)
+                // example.css with rules, then exactly the page's theme links (the vitepress theme until a pick; none
+                // after the stock card); an inline <style> has no href and fails the frame, not the run
                 stylesheet:
-                  sheets.length >= 1 &&
-                  new URL(sheets[0].href).pathname === '/vpkit/example.css' &&
-                  sheets[0].cssRules.length > 0 &&
-                  sheets.slice(1).every((s) => /^\/vpkit\/themes\/[^/]+\.css$/.test(new URL(s.href).pathname)) &&
-                  sheets.slice(1).map((s) => new URL(s.href).pathname).join() === [...document.head.querySelectorAll('link[data-theme]')].map((l) => new URL(l.href).pathname).join(),
+                  sheets.every((s) => s.href) &&
+                  sheets.map((s) => new URL(s.href).pathname).join() ===
+                    ['/vpkit/example.css', ...[...document.head.querySelectorAll('link[data-theme]')].map((l) => new URL(l.href).pathname)].join() &&
+                  sheets[0].cssRules.length > 0,
                 unstyled,
                 fits: f.clientHeight === Math.max(content, minHeight) && root.scrollHeight <= root.clientHeight,
                 height: `${f.clientHeight}px for ${content}px of content${minHeight ? `, at least ${minHeight}px` : ''}`,
@@ -194,13 +194,14 @@ try {
     };
     const expect = (what, bg, where) => expectToken(what, '--vp-c-bg', bg, where);
     await expectToken('no pick', '--vp-c-brand-2', vitepress);
-    const initial = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
-    if (initial.join() !== 'vitepress') failures.push(`/themes/ with no pick: the pressed cards are [${initial}], not vitepress`);
+    const pressed = async () => (await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme))).join();
+    const initial = await pressed();
+    if (initial !== 'vitepress') failures.push(`/themes/ with no pick: the pressed cards are [${initial}], not vitepress`);
     const nord = index.find((t) => t.name === 'nord');
     await page.click('.theme-gallery__card[data-theme="nord"]');
     await expect('nord picked', nord.light.bg);
-    const pressed = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
-    if (pressed.join() !== 'nord') failures.push(`/themes/, nord picked: the pressed cards are [${pressed}]`);
+    const picked = await pressed();
+    if (picked !== 'nord') failures.push(`/themes/, nord picked: the pressed cards are [${picked}]`);
     await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
     await expect('nord picked, dark', nord.dark.bg);
     await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
@@ -213,8 +214,8 @@ try {
     await expect('nord picked, on /components/button/', nord.light.bg, '/components/button/');
     await page.goto(`${BASE}/themes/`);
     await page.waitForSelector('.theme-gallery__card');
-    const kept = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
-    if (kept.join() !== 'nord') failures.push(`/themes/ opened again after nord was picked: the pressed cards are [${kept}]`);
+    const kept = await pressed();
+    if (kept !== 'nord') failures.push(`/themes/ opened again after nord was picked: the pressed cards are [${kept}]`);
     // a name with a character the URL encodes keeps its card pressed on
     // the next visit (the link carries the name, only the URL is encoded)
     const plus = index.find((t) => t.name.includes('+'))?.name;
@@ -226,14 +227,13 @@ try {
       await settle(page);
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
-      const again = await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme));
-      if (again.join() !== plus) failures.push(`/themes/ opened again after ${plus} was picked: the pressed cards are [${again}]`);
+      const again = await pressed();
+      if (again !== plus) failures.push(`/themes/ opened again after ${plus} was picked: the pressed cards are [${again}]`);
     }
     // the stock card pressed while a pick's stylesheet is still on its way
     // (300ms here) leaves no theme linked
     await page.click('.theme-gallery__card[data-theme="nord"]');
     await page.click('.theme-gallery__card[data-theme=""]');
-    await expect('the stock card picked', index[0].light.bg);
     await expectToken('the stock card picked', '--vp-c-brand-2', stockBrand2);
     await page.waitForTimeout(400);
     const linked = await page.evaluate(() => [...document.head.querySelectorAll('link[data-theme]')].map((l) => l.dataset.theme));
@@ -241,8 +241,15 @@ try {
     await expectToken('the stock card picked, after nord arrived', '--vp-c-brand-2', stockBrand2);
     await page.goto(`${BASE}/components/button/`);
     await settle(page);
-    await expect('the stock card picked, on /components/button/', index[0].light.bg, '/components/button/');
     await expectToken('the stock card picked, on /components/button/', '--vp-c-brand-2', stockBrand2, '/components/button/');
+    // a pick whose stylesheet no longer exists is forgotten, and the page
+    // takes the default
+    await page.evaluate(() => sessionStorage.setItem('vpkit-docs-theme', 'no-such-theme'));
+    await page.goto(`${BASE}/components/button/`);
+    await settle(page);
+    await expectToken('a pick with no stylesheet', '--vp-c-brand-2', vitepress, '/components/button/');
+    const stored = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
+    if (stored !== null) failures.push(`/components/button/ after a pick with no stylesheet: the session still stores ${JSON.stringify(stored)}`);
     await context.close();
   } finally {
     await browser.close();

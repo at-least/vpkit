@@ -5,10 +5,8 @@
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
  * pick is kept for the browser session (a theme's name, or the stock
- * card's empty one), and static/theme-pick.js links it in every page the
- * session opens. The site itself is on `vitepress` (VitePress's own
- * colors, their contrast fitted) until there is a pick; the stock card
- * shows VitePress's colors as tokens.css ships them, with no theme linked. */
+ * card's empty one, which links no theme), and static/theme-pick.js links
+ * it in every page the session opens, and `vitepress` until there is one. */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
 
