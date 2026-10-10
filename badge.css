@@ -9,10 +9,17 @@
  *   vp-badge-caution, vp-badge-warning, vp-badge-danger   the other types
  *   vp-badge-success                                      vpkit's addition
  *   vp-badge-small                                        the small size
+ *   vp-badge-outline                                      vpkit's addition
  *
  * VPBadge has no success type; vp-badge-success builds one the way
  * VitePress builds the others (--vp-c-success-1 text on
- * --vp-c-success-soft, transparent border).
+ * --vp-c-success-soft, transparent border). vp-badge-outline, with any
+ * type, is the badge on the page's color with the type's tint as its
+ * border, for a badge on a soft surface (a card, a banded table row):
+ * there the translucent tint over the surface leaves the text short of
+ * 4.5:1 (success on bg-soft, 4.42:1 in light, measured by totality
+ * 2026-09-24, whose recipe this is), where the page's color under it
+ * keeps the contrast the theme contract holds the text to.
  *
  * Variables and modifiers work as in button.css. VPBadge's own rules for a
  * badge in a .vp-doc heading (h1 to h6, content.css's or doc.css's) and in
@@ -92,6 +99,42 @@
     --vp-badge-line-height: 1.8;
     --vp-badge-font-size: 0.625rem;
     --vp-badge-shift: -0.5rem;
+  }
+
+  /* the outline: the page's color under the type's tint, which moves to
+     the border; one rule per type, since a custom property can't read
+     its own earlier value */
+  .vp-badge-outline.vp-badge {
+    --vp-badge-border: var(--vp-badge-info-bg);
+    --vp-badge-bg: var(--vp-c-bg);
+  }
+
+  .vp-badge-outline.vp-badge-note.vp-badge {
+    --vp-badge-border: var(--vp-badge-note-bg);
+  }
+
+  .vp-badge-outline.vp-badge-tip.vp-badge {
+    --vp-badge-border: var(--vp-badge-tip-bg);
+  }
+
+  .vp-badge-outline.vp-badge-important.vp-badge {
+    --vp-badge-border: var(--vp-badge-important-bg);
+  }
+
+  .vp-badge-outline.vp-badge-caution.vp-badge {
+    --vp-badge-border: var(--vp-badge-caution-bg);
+  }
+
+  .vp-badge-outline.vp-badge-warning.vp-badge {
+    --vp-badge-border: var(--vp-badge-warning-bg);
+  }
+
+  .vp-badge-outline.vp-badge-danger.vp-badge {
+    --vp-badge-border: var(--vp-badge-danger-bg);
+  }
+
+  .vp-badge-outline.vp-badge-success.vp-badge {
+    --vp-badge-border: var(--vp-c-success-soft);
   }
 
   /* VPBadge.vue: in the doc footer and in a doc's headings */

@@ -6,6 +6,9 @@ import {
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
   OWN_DRIVE_MSG,
+  TOTALITY_BADGE_OUTLINE,
+  TOTALITY_BADGE_OUTLINE_DANGER,
+  TOTALITY_BADGE_OUTLINE_SUCCESS,
   TOTALITY_CHOICE,
   TOTALITY_FIELD_LABEL,
   TOTALITY_INPUT,
@@ -944,6 +947,31 @@ for (const [theme, cls] of [['brand', 'vp-btn vp-btn-brand'], ['alt', 'vp-btn'],
     reference: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner" style="${SPIN_IN_BUTTON}"></span>Paying</button>`,
     vpkit: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner"></span>Paying</button>`,
     checks: [{ target: 'spin', props: SIDES.map((s) => `border-${s}-color`) }],
+  });
+}
+
+// badge outline: totality's recipe (vp-badge on the page's color with the
+// type's tint as its border, utilities over the component) against
+// vp-badge-outline, for the types the recipe has
+for (const [name, recipe, type] of [
+  ['info', TOTALITY_BADGE_OUTLINE, ''],
+  ['success', TOTALITY_BADGE_OUTLINE_SUCCESS, ' vp-badge-success'],
+  ['danger', TOTALITY_BADGE_OUTLINE_DANGER, ' vp-badge-danger'],
+]) {
+  cases.push({
+    name: `badge outline ${name}`,
+    reference: `<span data-t="badge" class="${recipe}">paid</span>`,
+    vpkit: `<span data-t="badge" class="vp-badge${type} vp-badge-outline">paid</span>`,
+    checks: [{ target: 'badge', props: [...BADGE_BOX, ...COLORS] }],
+  });
+}
+// the other types take their own tint as the border, as the recipe would
+for (const type of ['note', 'tip', 'important', 'caution', 'warning']) {
+  cases.push({
+    name: `badge outline ${type}`,
+    reference: `<span data-t="badge" class="vp-badge vp-badge-${type}" style="background-color:var(--vp-c-bg);border-color:var(--vp-badge-${type}-bg)">beta</span>`,
+    vpkit: `<span data-t="badge" class="vp-badge vp-badge-${type} vp-badge-outline">beta</span>`,
+    checks: [{ target: 'badge', props: [...BADGE_BOX, ...COLORS] }],
   });
 }
 

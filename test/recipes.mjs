@@ -48,3 +48,10 @@ export const OWN_DRIVE_MSG =
 // 7rem wide and the fill's width inline
 export const OWN_DRIVE_BAR = 'block h-[.3rem] bg-[color:var(--vp-c-default-soft)] rounded-[.15rem] overflow-hidden';
 export const OWN_DRIVE_BAR_FILL = 'block h-full bg-brand-1 w-0';
+
+// totality crates/web/src/ui.rs `BADGE`, `BADGE_SUCCESS` and `BADGE_DANGER`,
+// verbatim as of 2026-10-10: vp-badge on the page's color with the type's
+// tint as its border, the reference for vp-badge-outline
+export const TOTALITY_BADGE_OUTLINE = 'vp-badge bg-bg border-default-soft';
+export const TOTALITY_BADGE_OUTLINE_SUCCESS = 'vp-badge vp-badge-success bg-bg border-success-soft';
+export const TOTALITY_BADGE_OUTLINE_DANGER = 'vp-badge vp-badge-danger bg-bg border-danger-soft';

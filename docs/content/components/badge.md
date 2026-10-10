@@ -19,6 +19,7 @@ VitePress's `VPBadge`.
 - `vp-badge-note`, `vp-badge-tip`, `vp-badge-important`, `vp-badge-caution`, `vp-badge-warning`, `vp-badge-danger`: the other types.
 - `vp-badge-success`: vpkit's addition (VitePress has no success badge), built the way VitePress builds the others: success text on the soft success tint.
 - `vp-badge-small`: the small size.
+- `vp-badge-outline`: vpkit's addition, with any type: the badge on the page's color with the type's tint as its border, for a badge on a soft surface.
 
 {% <vp_example title="The badge's types" layout="row"> %}
 <span class="vp-badge">info</span>
@@ -35,6 +36,21 @@ VitePress's `VPBadge`.
 <span class="vp-badge vp-badge-small">info</span>
 <span class="vp-badge vp-badge-tip vp-badge-small">tip</span>
 <span class="vp-badge vp-badge-danger vp-badge-small">danger</span>
+{% </vp_example> %}
+
+## Outline
+
+On a soft surface, a card or a banded table row, the translucent tint leaves the badge's text short of 4.5:1 (success on `bg-soft`: 4.42:1 in light, measured by totality). `vp-badge-outline` puts the page's color under the text and moves the tint to the border.
+
+{% <vp_example title="Badges on a soft surface, tinted and outlined"> %}
+<div class="rounded-xl bg-bg-soft p-4">
+  <span class="vp-badge vp-badge-success">paid</span>
+  <span class="vp-badge vp-badge-danger">canceled</span>
+  <span class="vp-badge">pending</span>
+  <span class="vp-badge vp-badge-success vp-badge-outline ml-4">paid</span>
+  <span class="vp-badge vp-badge-danger vp-badge-outline">canceled</span>
+  <span class="vp-badge vp-badge-outline">pending</span>
+</div>
 {% </vp_example> %}
 
 ## In the markdown
