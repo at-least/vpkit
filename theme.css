@@ -1,5 +1,5 @@
 /* vpkit — the Tailwind CSS v4 wiring: the `dark:` variant on a `.dark`
- * class, VitePress's px breakpoints (they replace Tailwind's), and the
+ * class, VitePress's breakpoints (they replace Tailwind's), and the
  * semantic utilities (`text-text-1`, `bg-bg-alt`, `border-divider`, …)
  * that resolve to the --vp-* variables in tokens.css. Part of index.css;
  * `@import "vpkit/theme.css"` takes it alone. */
@@ -8,16 +8,18 @@
    before first paint, or the page flashes light). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* VitePress responsive breakpoints (mobile-first). Upstream's media
-   queries are in px; the tokens must be px too, or a non-default
-   browser font size shifts every breakpoint against upstream. */
+/* VitePress's breakpoints (mobile-first), in rem as its media queries
+   are (vuejs/vitepress#5323, before the pinned tag): layout.css and the
+   components switch at these rems, so a utility must too, or a browser
+   font size other than the default shifts `lg:` against them.
+   test/tokens.mjs holds them to upstream's media queries. */
 @theme {
   --breakpoint-*: initial;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 960px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1440px;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 60rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 90rem;
 }
 
 /* Semantic tokens mapped onto the --vp-* custom properties below. Because

@@ -271,7 +271,7 @@
   --vp-z-index-sidebar: 60;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 60rem) {
   :root {
     --vp-z-index-sidebar: 25;
   }

@@ -17,17 +17,17 @@ Page colors are yours to set: put `bg-bg text-text-1` on `<body>`. vpkit colors 
 
 ## Breakpoints
 
-VitePress's, in px, replacing Tailwind's defaults:
+VitePress's, replacing Tailwind's defaults:
 
-| Variant | From |
-| --- | --- |
-| `sm` | 640px |
-| `md` | 768px |
-| `lg` | 960px |
-| `xl` | 1280px |
-| `2xl` | 1440px |
+| Variant | From | At the default font size |
+| --- | --- | --- |
+| `sm` | 40rem | 640px |
+| `md` | 48rem | 768px |
+| `lg` | 60rem | 960px |
+| `xl` | 80rem | 1280px |
+| `2xl` | 90rem | 1440px |
 
-They are in px because VitePress's media queries are: in rem, a browser font size other than the default would shift every breakpoint against VitePress's.
+They are in rem because VitePress's media queries are ([vuejs/vitepress#5323](https://github.com/vuejs/vitepress/pull/5323)): at a browser font size other than the default, the layout and the components move with the font size, and a utility in rem moves with them.
 
 ## Semantic colors
 
