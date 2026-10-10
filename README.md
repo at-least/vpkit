@@ -41,7 +41,7 @@ npm install
 npm test
 ```
 
-`npm test` holds every color theme to its contract and contrast minimums, renders each component and the layout next to VitePress's originals in headless Chromium and compares their computed styles, and builds the documentation and checks its examples and its theme gallery: [Tests](docs/content/guide/tests.md) has what each test checks. The documentation's test needs [zola](https://www.getzola.org) and vpkit-zola as a sibling checkout (`../vpkit-zola`).
+`npm test` holds every color theme to its contract and contrast minimums, holds `tokens.css` and the breakpoints to VitePress's `vars.css`, `fonts.css` and media queries, renders each component and the layout next to VitePress's originals in headless Chromium and compares their computed styles, and builds the documentation and checks its examples and its theme gallery: [Tests](docs/content/guide/tests.md) has what each test checks. The documentation's test needs [zola](https://www.getzola.org) and vpkit-zola as a sibling checkout (`../vpkit-zola`).
 
 The generated files, and what writes them:
 

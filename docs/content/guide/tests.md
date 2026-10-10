@@ -1,6 +1,6 @@
 +++
 title = "Tests"
-description = "How vpkit is checked: the color themes against their contract and contrast minimums, each component and the layout against VitePress's own rendering."
+description = "How vpkit is checked: the color themes against their contract and contrast minimums, the theme variables and breakpoints against VitePress's sources, each component and the layout against VitePress's own rendering."
 +++
 
 # Tests
@@ -13,6 +13,10 @@ npm test
 ## Color themes
 
 `test/themes.mjs` checks every color theme against the contract and the contrast minimums of [Theming](@/guide/theming.md#what-the-tests-hold-a-theme-to) (ported from rustpress's tests, check for check). `test/gen-themes.py` checks that the generator reads a Helix palette that `inherits` another as Helix does; it needs Python 3.11+, as the generator does.
+
+## The theme
+
+`test/tokens.mjs` holds `tokens.css` to VitePress's `vars.css` and `fonts.css` (the copies in `test/upstream/`): every custom property, in the same scope (selector and enclosing `@media`) with the same value, and holds `theme.css`'s five breakpoints to the lengths of upstream's `min-width` media queries, unit included. The one intended difference, the graded containers' literal palette on `:root:has()`, is listed in `known` with its reason, and its literals are held to upstream's orange and yellow of the same mode; an entry that stops matching fails the run.
 
 ## Components
 
