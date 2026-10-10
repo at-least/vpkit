@@ -19,13 +19,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GEN = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/scripts/gen-themes.py"
 H = f"{ROOT}/helix"
 
-src = open(GEN).read()
-a = src.index("report = []\nfor spec in SPECS:")
-b = src.index("# --- auto-mapping pass")
-c = src.index("regenerated = set()")
 sys.path.insert(0, os.path.dirname(GEN))  # the generator imports color.py from beside itself
-ns = {"__file__": f"{ROOT}/scripts/gen-themes.py"}
-exec(compile(src[:a] + src[b:c], GEN, "exec"), ns)
+# as a module, not __main__: its loops, which write themes/, stay off
+ns = {"__file__": f"{ROOT}/scripts/gen-themes.py", "__name__": "gen_themes"}
+exec(compile(open(GEN).read(), GEN, "exec"), ns)
 
 def raw(stem):
     return tomllib.load(open(f"{H}/{stem}.toml", "rb"))

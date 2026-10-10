@@ -26,10 +26,9 @@ scripts/fit-vitepress.py writes from tokens.css.
 import tomllib
 
 import os
+from color import rgb, lum, contrast, mix, EPS, fit, composite, fit_on_tint, fit_all, black, white
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HELVIX = f"{ROOT}/helix"
-
-from color import rgb, hexs, lum, contrast, mix, EPS, fit, composite, fit_on_tint, fit_all, black, white
 
 def _norm_hex(v):
     v = v.lower()
@@ -400,49 +399,49 @@ def emit_css(name, desc, note, light, dark):
 }}
 """
 
-report = []
-for spec in SPECS:
-    adjusted = set()
-    dark_spec = spec["dark"]
-    pd = pal(dark_spec["f"])
-    pd2 = pal(dark_spec["p2"]) if "p2" in dark_spec else {}
-    dm = resolve(dark_spec["m"], pd, pd2)
-    if "dark_alt" in spec:  # per-theme literal fixes
-        dm.update(spec["dark_alt"])
-    dark = build_mode("dark", dm, adjusted)
+def curated():
+    report = []
+    for spec in SPECS:
+        adjusted = set()
+        dark_spec = spec["dark"]
+        pd = pal(dark_spec["f"])
+        pd2 = pal(dark_spec["p2"]) if "p2" in dark_spec else {}
+        dm = resolve(dark_spec["m"], pd, pd2)
+        if "dark_alt" in spec:  # per-theme literal fixes
+            dm.update(spec["dark_alt"])
+        dark = build_mode("dark", dm, adjusted)
 
-    if spec.get("light") == "derived":
-        note = f"Dark half from the {spec['name']} palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short."
-        spec_dark_bg = dm["bg"]
-        light_map = dict(
-            bg=mix(spec_dark_bg, white, 0.94), bg_alt=mix(spec_dark_bg, white, 0.90),
-            bg_elv=mix(spec_dark_bg, white, 0.955),
-            text1=mix(dm["text1"], black, 0.75), text2=mix(dm["text1"], black, 0.55),
-            text3=mix(dm["text1"], black, 0.35), border=mix(spec_dark_bg, white, 0.84),
-            brand1=dm["brand1"], brand2=mix(dm["brand1"], black, 0.15), brand3=mix(dm["brand1"], black, 0.28),
-            success=dm["success"], warning=dm["warning"], danger=dm["danger"],
-            important=dm["important"], sponsor=dm["sponsor"])
-    else:
-        ls = spec["light"]
-        pl = pal(ls["f"])
-        pl2 = pal(ls["p2"]) if "p2" in ls else {}
-        light_map = resolve(ls["m"], pl, pl2)
-        note = f"Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."
-    light = build_mode("light", light_map, adjusted)
+        if spec.get("light") == "derived":
+            note = f"Dark half from the {spec['name']} palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short."
+            spec_dark_bg = dm["bg"]
+            light_map = dict(
+                bg=mix(spec_dark_bg, white, 0.94), bg_alt=mix(spec_dark_bg, white, 0.90),
+                bg_elv=mix(spec_dark_bg, white, 0.955),
+                text1=mix(dm["text1"], black, 0.75), text2=mix(dm["text1"], black, 0.55),
+                text3=mix(dm["text1"], black, 0.35), border=mix(spec_dark_bg, white, 0.84),
+                brand1=dm["brand1"], brand2=mix(dm["brand1"], black, 0.15), brand3=mix(dm["brand1"], black, 0.28),
+                success=dm["success"], warning=dm["warning"], danger=dm["danger"],
+                important=dm["important"], sponsor=dm["sponsor"])
+        else:
+            ls = spec["light"]
+            pl = pal(ls["f"])
+            pl2 = pal(ls["p2"]) if "p2" in ls else {}
+            light_map = resolve(ls["m"], pl, pl2)
+            note = f"Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."
+        light = build_mode("light", light_map, adjusted)
 
-    css = emit_css(spec["name"], spec["desc"], note, light, dark)
-    path = f"{ROOT}/themes/{spec['name']}.css"
-    open(path, "w").write(css)
-    report.append((spec["name"], sorted(adjusted)))
+        css = emit_css(spec["name"], spec["desc"], note, light, dark)
+        path = f"{ROOT}/themes/{spec['name']}.css"
+        open(path, "w").write(css)
+        report.append((spec["name"], sorted(adjusted)))
 
-for name, adj in report:
-    print(f"{name:18} adjusted: {', '.join(adj) if adj else 'none'}")
+    for name, adj in report:
+        print(f"{name:18} adjusted: {', '.join(adj) if adj else 'none'}")
 
 # --- auto-mapping pass ----------------------------------------------------
 # Every remaining vendored Helix TOML with a [palette] becomes a theme:
 # slots are inferred from key names and hue classification, the other
 # mode is derived from the palette's own hues. Curated names above win.
-
 
 import colorsys
 import os
@@ -620,76 +619,81 @@ def auto_slots(stem):
 
     return ("dark" if not light_palette else "light"), slots
 
-regenerated = set()
+def auto():
+    regenerated = set()
 
-# stems are unique, but two stems can normalize to one name
-# (foo_bar + foo-bar) — that would silently clobber; refuse both
-norm = {}
-for f in sorted(os.listdir(HELVIX)):
-    if f.endswith(".toml"):
-        norm.setdefault(f[:-5].replace("_", "-"), []).append(f[:-5])
-colliding = {n for n, srcs in norm.items() if len(srcs) > 1}
+    # stems are unique, but two stems can normalize to one name
+    # (foo_bar + foo-bar) — that would silently clobber; refuse both
+    norm = {}
+    for f in sorted(os.listdir(HELVIX)):
+        if f.endswith(".toml"):
+            norm.setdefault(f[:-5].replace("_", "-"), []).append(f[:-5])
+    colliding = {n for n, srcs in norm.items() if len(srcs) > 1}
 
-skipped, mapped = [], 0
-for f in sorted(os.listdir(HELVIX)):
-    if not f.endswith(".toml"):
-        continue
-    stem = f[:-5]
-    name = stem.replace("_", "-")
-    if name in CURATED:
-        continue
-    if name in colliding:
-        skipped.append(f"{stem} (name collision)")
-        continue
-    got = auto_slots(stem)
-    if not got:
-        skipped.append(stem)
-        continue
-    mode, slots = got
-    adjusted = set()
-    if mode == "dark":
-        dark_map = dict(slots)
-        dark = build_mode("dark", dark_map, adjusted)
-        light_map = dict(
-            bg=mix(slots["bg"], white, 0.94), bg_alt=mix(slots["bg"], white, 0.90),
-            bg_elv=mix(slots["bg"], white, 0.955),
-            text1=mix(slots["text1"], black, 0.75), text2=mix(slots["text1"], black, 0.55),
-            text3=mix(slots["text1"], black, 0.35), border=mix(slots["bg"], white, 0.84),
-            brand1=slots["brand1"], brand2=mix(slots["brand1"], black, 0.15),
-            brand3=mix(slots["brand1"], black, 0.28),
-            success=slots["success"], warning=slots["warning"], danger=slots["danger"],
-            important=slots["important"], sponsor=slots["sponsor"])
-        light = build_mode("light", light_map, adjusted)
-        note = f"The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA."
-    else:
-        light_map = dict(slots)
-        light = build_mode("light", light_map, adjusted)
-        dark_map = dict(
-            bg=mix(slots["bg"], black, 0.90), bg_alt=mix(slots["bg"], black, 0.86),
-            bg_elv=mix(slots["bg"], black, 0.82),
-            text1=mix(slots["text1"], white, 0.78), text2=mix(slots["text1"], white, 0.58),
-            text3=mix(slots["text1"], white, 0.38), border=mix(slots["bg"], black, 0.72),
-            brand1=slots["brand1"], brand2=mix(slots["brand1"], white, 0.15),
-            brand3=mix(slots["brand1"], white, 0.08),
-            success=slots["success"], warning=slots["warning"], danger=slots["danger"],
-            important=slots["important"], sponsor=slots["sponsor"])
-        dark = build_mode("dark", dark_map, adjusted)
-        note = f"The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA."
-    desc = f"auto-mapped from the vendored Helix palette <{stem}>"
-    open(f"{ROOT}/themes/{name}.css", "w").write(
-        emit_css(name, desc, note, light, dark))
-    regenerated.add(name)
-    mapped += 1
+    skipped, mapped = [], 0
+    for f in sorted(os.listdir(HELVIX)):
+        if not f.endswith(".toml"):
+            continue
+        stem = f[:-5]
+        name = stem.replace("_", "-")
+        if name in CURATED:
+            continue
+        if name in colliding:
+            skipped.append(f"{stem} (name collision)")
+            continue
+        got = auto_slots(stem)
+        if not got:
+            skipped.append(stem)
+            continue
+        mode, slots = got
+        adjusted = set()
+        if mode == "dark":
+            dark_map = dict(slots)
+            dark = build_mode("dark", dark_map, adjusted)
+            light_map = dict(
+                bg=mix(slots["bg"], white, 0.94), bg_alt=mix(slots["bg"], white, 0.90),
+                bg_elv=mix(slots["bg"], white, 0.955),
+                text1=mix(slots["text1"], black, 0.75), text2=mix(slots["text1"], black, 0.55),
+                text3=mix(slots["text1"], black, 0.35), border=mix(slots["bg"], white, 0.84),
+                brand1=slots["brand1"], brand2=mix(slots["brand1"], black, 0.15),
+                brand3=mix(slots["brand1"], black, 0.28),
+                success=slots["success"], warning=slots["warning"], danger=slots["danger"],
+                important=slots["important"], sponsor=slots["sponsor"])
+            light = build_mode("light", light_map, adjusted)
+            note = f"The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA."
+        else:
+            light_map = dict(slots)
+            light = build_mode("light", light_map, adjusted)
+            dark_map = dict(
+                bg=mix(slots["bg"], black, 0.90), bg_alt=mix(slots["bg"], black, 0.86),
+                bg_elv=mix(slots["bg"], black, 0.82),
+                text1=mix(slots["text1"], white, 0.78), text2=mix(slots["text1"], white, 0.58),
+                text3=mix(slots["text1"], white, 0.38), border=mix(slots["bg"], black, 0.72),
+                brand1=slots["brand1"], brand2=mix(slots["brand1"], white, 0.15),
+                brand3=mix(slots["brand1"], white, 0.08),
+                success=slots["success"], warning=slots["warning"], danger=slots["danger"],
+                important=slots["important"], sponsor=slots["sponsor"])
+            dark = build_mode("dark", dark_map, adjusted)
+            note = f"The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA."
+        desc = f"auto-mapped from the vendored Helix palette <{stem}>"
+        open(f"{ROOT}/themes/{name}.css", "w").write(
+            emit_css(name, desc, note, light, dark))
+        regenerated.add(name)
+        mapped += 1
 
-# drop auto-generated files whose source no longer maps (stale runs)
-marker = "auto-mapped from the vendored Helix palette"
-for f in os.listdir(f"{ROOT}/themes"):
-    if not f.endswith(".css") or f[:-4] in regenerated:
-        continue
-    path = f"{ROOT}/themes/{f}"
-    head = open(path).read(200)
-    if marker in head:
-        os.remove(path)
-print(f"auto-mapped: {mapped} themes; skipped (no usable palette): {len(skipped)}")
-if skipped:
-    print("  skipped:", ", ".join(sorted(skipped)))
+    # drop auto-generated files whose source no longer maps (stale runs)
+    marker = "auto-mapped from the vendored Helix palette"
+    for f in os.listdir(f"{ROOT}/themes"):
+        if not f.endswith(".css") or f[:-4] in regenerated:
+            continue
+        path = f"{ROOT}/themes/{f}"
+        head = open(path).read(200)
+        if marker in head:
+            os.remove(path)
+    print(f"auto-mapped: {mapped} themes; skipped (no usable palette): {len(skipped)}")
+    if skipped:
+        print("  skipped:", ", ".join(sorted(skipped)))
+
+if __name__ == "__main__":
+    curated()
+    auto()

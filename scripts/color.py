@@ -1,5 +1,4 @@
 """The color math vpkit's generators share (mirrors test/themes.mjs)."""
-# --- color math (mirrors test/themes.mjs) -------------------------------
 def rgb(c):
     n = int(c.lstrip("#"), 16)
     return ((n >> 16) & 255, (n >> 8) & 255, n & 255)
@@ -25,7 +24,8 @@ def mix(a, b, t):
     (ar, ag, ab), (br, bg_, bb) = rgb(a), rgb(b)
     return hexs((round(ar + (br - ar) * t), round(ag + (bg_ - ag) * t), round(ab + (bb - ab) * t)))
 
-EPS = 0.03  # float-safety margin so python's fit clears rust's check
+EPS = 0.03  # float-safety margin so python's fit clears test/themes.mjs's check
+black, white = "#000000", "#ffffff"
 
 def fit(c, against, target, mode):
     """darken (light mode) / lighten (dark mode) until target contrast;
@@ -73,6 +73,4 @@ def fit_all(c, mode, text=(), dimmed=(), target=4.5):
         ):
             return x
     return end
-
-black, white = "#000000", "#ffffff"
 

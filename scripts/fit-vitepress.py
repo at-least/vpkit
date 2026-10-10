@@ -39,14 +39,11 @@ def resolve(value, mode, depth=0):
 # the property list: themes/github.css's, and the brand button's pressed
 # ground right after its hovered one (github.css leaves it to tokens.css)
 template = open(f"{ROOT}/themes/github.css").read()
-blocks = {}
-for sel in (":root", ".dark"):
+blocks, changes = {}, []
+for sel, mode in ((":root", "light"), (".dark", "dark")):
     keys = list(declarations(template, sel))
     keys.insert(keys.index("--vp-button-brand-hover-bg") + 1, "--vp-button-brand-active-bg")
-    blocks[sel] = {k: resolve(stock[sel].get(k, stock[":root"].get(k)), sel) for k in keys}
-changes = []
-for sel, mode in ((":root", "light"), (".dark", "dark")):
-    v = blocks[sel]
+    v = blocks[sel] = {k: resolve(stock[sel].get(k, stock[":root"].get(k)), sel) for k in keys}
     bg, elv = v["--vp-c-bg"], v["--vp-c-bg-elv"]
     gray = over(v["--vp-c-default-soft"], bg)
     gray2 = over(v["--vp-c-default-soft"], gray)
