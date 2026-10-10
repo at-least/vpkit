@@ -31,21 +31,17 @@ import { readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from 'smol-toml';
-import { EPS, black, composite, contrast, fit, fitAll, fitOnTint, luminance as lum, mix, rgb, white } from './color.mjs';
+import { EPS, black, composite, contrast, fit, fitAll, fitOnTint, luminance as lum, mix, normHex, rgb, stepTo, white } from './color.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-export const HELIX = join(ROOT, 'helix');
+const HELIX = join(ROOT, 'helix');
 
-const normHex = (v) => {
-  v = v.toLowerCase();
-  if (v.length === 4) v = `#${[...v.slice(1)].map((ch) => ch + ch).join('')}`; // #abc → #aabbcc
-  return v;
-};
+const isHex = (v) => typeof v === 'string' && v.startsWith('#') && [4, 7].includes(v.length);
 
 // A palette entry must be #rgb/#rrggbb: anything else would flow into
 // parseInt(..., 16) and silently produce garbage across the ramp.
 const checkedHex = (v, stem, k) => {
-  if (typeof v !== 'string' || !v.startsWith('#') || ![4, 7].includes(v.length)) {
+  if (!isHex(v)) {
     throw new Error(`${stem}.toml: palette[${JSON.stringify(k)}] = ${JSON.stringify(v)} is not a #rgb/#rrggbb hex color`);
   }
   return normHex(v);
@@ -70,172 +66,165 @@ export function load(stem) {
   return data;
 }
 
-function pal(file) {
-  const data = load(file);
-  const p = data.palette;
-  if (p && Object.keys(p).length) return Object.fromEntries(Object.entries(p).map(([k, v]) => [k, checkedHex(v, file, k)]));
-  const out = {};
-  const walk = (d, prefix = '') => {
-    for (const [k, v] of Object.entries(d)) {
-      if (typeof v === 'string' && v.startsWith('#') && [4, 7].includes(v.length)) out[`${prefix}${k}`] = normHex(v);
-      else if (isTable(v)) walk(v, `${prefix}${k}.`);
-    }
-  };
-  walk(data);
-  return out;
-}
+// a loaded theme's [palette], each entry checked and normalized (none: empty)
+const paletteOf = (data, stem) => Object.fromEntries(Object.entries(data.palette ?? {}).map(([k, v]) => [k, checkedHex(v, stem, k)]));
+const pal = (stem) => paletteOf(load(stem), stem);
 
 // --- theme spec -----------------------------------------------------------
-// slot keys: bg bg_alt bg_elv text1 text2 text3 border brand1 brand2 brand3
-//            success warning danger important sponsor
+// slot keys: bg bg_alt bg_elv text1 border brand1 brand2 brand3 success
+//            warning danger important sponsor (text2 and text3 derive
+//            from text1 in buildMode)
 // light: 'derived' → build a light half from the dark palette (for schemes
 // that publish no light mode; stated in the header).
 const SPECS = [
   { name: 'tokyonight', desc: 'calm blue-violet, day and storm',
     light: { f: 'tokyonight_day', m: { bg: 'bg', bg_alt: 'bg-selection', bg_elv: 'bg-menu',
-      text1: 'fg', text2: 'fg-dark', text3: 'fg-linenr', border: 'border',
+      text1: 'fg', border: 'border',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'magenta' } },
     dark: { f: 'tokyonight_storm', p2: 'tokyonight', m: { bg: 'bg', bg_alt: 'bg-menu', bg_elv: 'bg-selection',
-      text1: '#c0caf5', text2: '#9d9dbb', text3: '#565f89', border: 'border',
+      text1: '#c0caf5', border: 'border',
       brand1: 'p2:blue', success: 'p2:green', warning: 'p2:yellow', danger: 'p2:red', important: 'p2:purple', sponsor: 'p2:magenta' } } },
   { name: 'gruvbox', desc: 'retro groove, warm cream and charcoal',
     light: { f: 'gruvbox_light', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
-      text1: 'fg0', text2: 'fg1', text3: 'fg4', border: 'bg3',
+      text1: 'fg0', border: 'bg3',
       brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1', sponsor: 'purple1' } },
     dark: { f: 'gruvbox', m: { bg: 'bg0', bg_alt: 'bg0_s', bg_elv: 'bg1',
-      text1: 'fg1', text2: 'fg0', text3: 'fg4', border: 'bg2',
+      text1: 'fg1', border: 'bg2',
       brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1', sponsor: 'purple1' } } },
   { name: 'gruvbox-material', desc: 'the material take on gruvbox, softer and calmer',
     light: { f: 'gruvbox_material_light_medium', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
-      text1: 'fg1', text2: 'fg0', text3: 'grey0', border: 'bg3',
+      text1: 'fg1', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } },
     dark: { f: 'gruvbox_material_dark_medium', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
-      text1: 'fg1', text2: 'fg0', text3: 'grey1', border: 'bg3',
+      text1: 'fg1', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } } },
   { name: 'onedark', desc: "Atom's One: grey-blue surfaces, saturated accents",
     light: { f: 'onelight', m: { bg: 'white', bg_alt: 'grey-100', bg_elv: 'white',
-      text1: 'black', text2: 'grey', text3: 'grey-500', border: 'grey-300',
+      text1: 'black', border: 'grey-300',
       brand1: 'blue', success: 'green', warning: 'gold', danger: 'red', important: 'purple', sponsor: 'pink' } },
     dark: { f: 'onedark', m: { bg: 'black', bg_alt: 'light-black', bg_elv: 'gray',
-      text1: 'white', text2: 'light-gray', text3: 'linenr', border: 'gray',
+      text1: 'white', border: 'gray',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } } },
   { name: 'everforest', desc: 'green, calm and low-noise by design',
     light: { f: 'everforest_light', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
-      text1: 'fg', text2: 'statusline2', text3: 'grey0', border: 'bg3',
+      text1: 'fg', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } },
     dark: { f: 'everforest_dark', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
-      text1: 'fg', text2: 'statusline2', text3: 'grey0', border: 'bg3',
+      text1: 'fg', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'orange' } } },
   { name: 'ayu', desc: 'subtle, elegant, one bright accent set',
     light: { f: 'ayu_light', m: { bg: 'background', bg_alt: 'black', bg_elv: 'white',
-      text1: 'foreground', text2: '#54595f', text3: 'gray', border: 'dark_gray',
+      text1: 'foreground', border: 'dark_gray',
       brand1: 'blue', success: 'green', warning: 'orange', danger: 'red', important: 'magenta', sponsor: 'red' } },
     dark: { f: 'ayu_dark', m: { bg: 'background', bg_alt: 'black', bg_elv: 'dark_gray',
-      text1: 'foreground', text2: 'gray', text3: '#454f58', border: 'dark_gray',
+      text1: 'foreground', border: 'dark_gray',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta' } },
     dark_alt: { bg_alt: '#0b0f14' } },
   { name: 'solarized', desc: 'the classic: selective contrast, warm and marine',
     light: { f: 'solarized_light', m: { bg: 'base03', bg_alt: 'base02', bg_elv: 'base03',
-      text1: 'base01', text2: 'base0', text3: 'base00', border: 'base015',
+      text1: 'base01', border: 'base015',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet', sponsor: 'magenta' } },
     dark: { f: 'solarized_dark', m: { bg: 'base03', bg_alt: 'base025', bg_elv: 'base015',
-      text1: 'base2', text2: 'base1', text3: 'base00', border: 'base01',
+      text1: 'base2', border: 'base01',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet', sponsor: 'magenta' } } },
   { name: 'kanagawa', desc: 'wave and lotus: ink, sumi and ukiyo-e color',
     light: { f: 'kanagawa-lotus', m: { bg: 'lotusWhite0', bg_alt: 'lotusWhite1', bg_elv: 'lotusWhite0',
-      text1: 'lotusInk0', text2: 'lotusPunctuation', text3: 'lotusInk1', border: 'lotusBlue1',
+      text1: 'lotusInk0', border: 'lotusBlue1',
       brand1: 'lotusBlue2', success: 'lotusSuperGreen', warning: 'lotusYellow2', danger: 'lotusAutumnRed',
       important: 'lotusSuperViolet', sponsor: 'lotusSuperPink' } },
     dark: { f: 'kanagawa', m: { bg: 'sumiInk3', bg_alt: 'sumiInk4', bg_elv: 'sumiInk5',
-      text1: 'fujiWhite', text2: 'oldWhite', text3: 'fujiGray', border: 'sumiInk6',
+      text1: 'fujiWhite', border: 'sumiInk6',
       brand1: 'crystalBlue', success: 'springGreen', warning: 'carpYellow', danger: 'waveRed',
       important: 'oniViolet', sponsor: 'sakuraPink' } } },
   { name: 'papercolor', desc: 'plain paper, high legibility, 16-color spirit',
     light: { f: 'papercolor-light', m: { bg: 'background', bg_alt: '#e0e0e0', bg_elv: 'background',
-      text1: 'foreground', text2: 'regular5', text3: 'linenumber_fg', border: 'matchparen_bg',
+      text1: 'foreground', border: 'matchparen_bg',
       brand1: 'regular4', success: 'regular2', warning: 'cursorlinenr_fg', danger: 'regular1',
       important: 'bright3', sponsor: 'bright2' } },
     dark: { f: 'papercolor-dark', m: { bg: 'background', bg_alt: 'cursorline_secondary_bg', bg_elv: 'popupmenu_bg',
-      text1: 'foreground', text2: 'bright0', text3: 'linenumber_fg', border: 'matchparen_bg',
+      text1: 'foreground', border: 'matchparen_bg',
       brand1: 'regular4', success: 'regular2', warning: 'bright4', danger: 'regular1',
       important: 'bright3', sponsor: 'bright5' } } },
   { name: 'seoul256', desc: 'low-contrast seoul nights, paper days derived',
     light: 'derived',
     dark: { f: 'seoul256-dark', m: { bg: 'black1', bg_alt: 'gray1', bg_elv: 'gray3',
-      text1: 'white', text2: 'gray13', text3: 'gray6', border: 'gray4',
+      text1: 'white', border: 'gray4',
       brand1: 'blue1', success: 'green3', warning: 'yellow5', danger: 'salmon1',
       important: 'magenta1', sponsor: 'mauve' } } },
   { name: 'modus', desc: "Emacs' accessible flagship: maximum legibility",
     light: { f: 'modus_operandi', m: { bg: 'bg-main', bg_alt: 'bg-dim', bg_elv: 'bg-main',
-      text1: 'fg-main', text2: 'fg-dim', text3: '#6f6f6f', border: 'bg-active',
+      text1: 'fg-main', border: 'bg-active',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta-warmer' } },
     dark: { f: 'modus_vivendi', m: { bg: 'bg-main', bg_alt: 'bg-dim', bg_elv: 'bg-inactive',
-      text1: 'fg-main', text2: 'fg-dim', text3: '#a8a8a8', border: 'bg-inactive',
+      text1: 'fg-main', border: 'bg-inactive',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta-warmer' } } },
   { name: 'flexoki', desc: "ink on paper: Step's warm absolute palette",
     light: { f: 'flexoki_light', m: { bg: 'bg', bg_alt: 'bg-2', bg_elv: '#ffffff',
-      text1: 'tx', text2: 'tx-2', text3: 'tx-3', border: 'ui-3',
+      text1: 'tx', border: 'ui-3',
       brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu', sponsor: 'ma' } },
     dark: { f: 'flexoki_dark', m: { bg: 'bg', bg_alt: 'bg-2', bg_elv: 'ui-2',
-      text1: 'tx', text2: 'tx-2', text3: 'tx-3', border: 'ui-3',
+      text1: 'tx', border: 'ui-3',
       brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu', sponsor: 'ma' } } },
   { name: 'iceberg', desc: 'cool navy-blue calm, light and dark',
     light: { f: 'iceberg-light', m: { bg: 'background_bg', bg_alt: 'sel_bg', bg_elv: 'background_bg',
-      text1: 'background_fg', text2: 'statusline_fg', text3: 'comment_fg', border: 'matchparen_bg',
+      text1: 'background_fg', border: 'matchparen_bg',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'light-red' } },
     dark: { f: 'iceberg-dark', m: { bg: 'background_bg', bg_alt: 'linenr_bg', bg_elv: 'cursorlinenr_bg',
-      text1: 'background_fg', text2: 'pale', text3: 'comment_fg', border: 'matchparen_bg',
+      text1: 'background_fg', border: 'matchparen_bg',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'light-red' } } },
   { name: 'adwaita', desc: "GNOME's own: libadwaita light and dark",
     light: { f: 'adwaita-dark', m: { bg: 'light_1', bg_alt: 'light_3', bg_elv: 'light_1',
-      text1: 'dark_5', text2: 'dark_2', text3: 'dark_1', border: 'light_4',
+      text1: 'dark_5', border: 'light_4',
       brand1: 'blue_5', success: 'green_6', warning: 'yellow_6', danger: 'red_5',
       important: 'purple_5', sponsor: 'red_5' } },
     dark: { f: 'adwaita-dark', m: { bg: 'libadwaita_dark', bg_alt: 'libadwaita_dark_alt', bg_elv: 'libadwaita_popup',
-      text1: 'light_2', text2: 'light_5', text3: 'dark_1', border: 'split_and_borders',
+      text1: 'light_2', border: 'split_and_borders',
       brand1: 'blue_2', success: 'green_3', warning: 'yellow_4', danger: 'red_3',
       important: 'purple_2', sponsor: 'red_2' } } },
   { name: 'dracula', desc: 'the famous dark purple, light derived from its palette',
     light: 'derived',
     dark: { f: 'dracula', m: { bg: 'background', bg_alt: 'black', bg_elv: 'current_line',
-      text1: 'foreground', text2: 'comment', text3: 'grey', border: 'indent',
+      text1: 'foreground', border: 'indent',
       brand1: 'purple', success: 'green', warning: 'yellow', danger: 'red',
       important: 'pink', sponsor: 'pink' } } },
   { name: 'monokai', desc: 'the classic that colored a decade of editors',
     light: 'derived',
     dark: { f: 'monokai', p2: 'monokai_pro', m: { bg: 'background', bg_alt: 'widget', bg_elv: 'selection',
-      text1: 'text', text2: '#a8aa95', text3: '#75715d', border: '#3b3c35',
+      text1: 'text', border: '#3b3c35',
       brand1: '#66d9ef', success: '#a6e22e', warning: '#e6db74', danger: '#f92672',
       important: '#ae81ff', sponsor: '#fd971f' } } },
   { name: 'material', desc: "Google's material ocean, light derived from its palette",
     light: 'derived',
     dark: { f: 'material_oceanic', m: { bg: 'bg', bg_alt: 'active', bg_elv: 'highlight',
-      text1: 'text', text2: 'gray', text3: 'disabled', border: 'disabled',
+      text1: 'text', border: 'disabled',
       brand1: 'accent', success: '#c3e88d', warning: '#ffcb6b', danger: '#f07178',
       important: '#c792ea', sponsor: '#ff5370' } } },
   { name: 'night-owl', desc: 'deep navy, bright primaries; light derived from its palette',
     light: 'derived',
     dark: { f: 'night_owl', m: { bg: 'background', bg_alt: 'background2', bg_elv: 'selection',
-      text1: 'foreground', text2: 'slate', text3: 'grey7', border: 'grey4',
+      text1: 'foreground', border: 'grey4',
       brand1: 'blue', success: 'green', warning: 'gold', danger: 'red',
       important: 'pink', sponsor: 'pink' } } },
   { name: 'sonokai', desc: "high-contrast, saturated, EdenEast's flavor",
     light: 'derived',
     dark: { f: 'sonokai', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
-      text1: 'fg', text2: 'grey', text3: 'grey_dim', border: 'bg3',
+      text1: 'fg', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red',
       important: 'purple', sponsor: 'red' } } },
   { name: 'darcula', desc: "JetBrains' default: warm greys, muted accents",
     light: 'derived',
     dark: { f: 'darcula', m: { bg: 'grey00', bg_alt: 'grey01', bg_elv: 'grey02',
-      text1: 'grey05', text2: 'grey04', text3: 'grey03', border: 'grey02',
+      text1: 'grey05', border: 'grey02',
       brand1: 'lightblue', success: 'darkgreen', warning: 'yellow', danger: 'darkred',
       important: 'purple', sponsor: 'rainbow_purple' } } },
 ];
 
-function resolve(specMap, palette, palette2) {
+// a half's slot colors: its map's refs looked up in its palette file f (a
+// literal #hex as is, p2:<key> in its second file)
+function resolve({ f, p2, m }) {
+  const [palette, palette2] = [pal(f), p2 ? pal(p2) : {}];
   const out = {};
-  for (const [slot, ref] of Object.entries(specMap)) {
+  for (const [slot, ref] of Object.entries(m)) {
     const v = ref.startsWith('#') ? ref : ref.startsWith('p2:') ? palette2[ref.slice(3)] : palette[ref];
     if (v === undefined) throw new Error(`slot ${slot}: no palette entry ${JSON.stringify(ref)}`);
     out[slot] = v;
@@ -243,41 +232,34 @@ function resolve(specMap, palette, palette2) {
   return out;
 }
 
-// the first element with the least key (ties keep the earlier one, as
-// Python's min does), or the greatest
+// the first element with the least key (ties keep the earlier one), or
+// the greatest
 const minBy = (items, key) => items.reduce((best, x) => (key(x) < key(best) ? x : best));
 const maxBy = (items, key) => items.reduce((best, x) => (key(x) > key(best) ? x : best));
 const round2 = (x) => Math.round(x * 100) / 100;
-const roundHalfEven = (x) => (Math.abs(x % 1) === 0.5 ? 2 * Math.round(x / 2) : Math.round(x));
 
-// mode: 'light'|'dark'; m: resolved slot colors (mutated by AA fits).
-function buildMode(mode, m, adjusted) {
-  const orig = { ...m };
+// mode: 'light'|'dark'; m: resolved slot colors (mutated by AA fits);
+// adjusted: the set the report names what changed by, when one is kept
+function buildMode(mode, m, adjusted = new Set()) {
+  // a slot the fits moved is counted under its tag
+  const set = (slot, next, tag) => {
+    if (next !== m[slot]) adjusted.add(tag);
+    m[slot] = next;
+  };
   let [bg, bgAlt, bgElv] = [m.bg, m.bg_alt, m.bg_elv];
-  const bgSoft = bgAlt;
   // the elevated surface leaves room for body text: a dark half whose
   // menus and dialogs are mid-tone (voxed's olive, a misread light
   // palette's red) moves them toward the page until white reaches 7:1
   if (mode === 'dark' && contrast(white, bgElv) < 7.0 + EPS) {
-    const before = bgElv;
-    bgElv = bg;
-    for (let k = 0; k <= 20; k++) {
-      const x = mix(before, bg, k / 20);
-      if (contrast(white, x) >= 7.0 + EPS) {
-        bgElv = x;
-        break;
-      }
-    }
+    bgElv = stepTo(bgElv, bg, 20, (x) => contrast(white, x) >= 7.0 + EPS);
     adjusted.add('surfaces');
   }
   // body text on the page and on the elevated surface (menus, dialogs)
-  const text1 = fitAll(m.text1, mode, { text: [bg, bgElv], target: 7.0 });
-  if (text1 !== orig.text1) adjusted.add('text');
-  m.text1 = text1;
+  set('text1', fitAll(m.text1, mode, { text: [bg, bgElv], target: 7.0 }), 'text');
   // derive the rest of the text ramp from the fitted text-1 so the
   // hierarchy is monotonic by construction (source secondaries can
   // converge or invert once contrast-fitted)
-  const worst2 = minBy([bg, bgAlt, bgSoft, bgElv], (s) => contrast(mix(m.text1, bg, 0.22), s));
+  const worst2 = minBy([bg, bgAlt, bgElv], (s) => contrast(mix(m.text1, bg, 0.22), s));
   m.text2 = fit(mix(m.text1, bg, 0.22), worst2, 4.5, mode);
   m.text3 = fit(mix(m.text2, bg, 0.45), bg, 3.0, mode);
   // border: keep the scheme's own if it separates from the bg, else
@@ -291,10 +273,7 @@ function buildMode(mode, m, adjusted) {
   const alpha = mode === 'light' ? 0.1 : 0.14;
   const sAlpha = mode === 'light' ? 0.12 : 0.15;
   for (const slot of ['brand1', 'success', 'warning', 'danger', 'important']) {
-    const a = slot === 'brand1' ? alpha : sAlpha;
-    const before = m[slot];
-    m[slot] = fitOnTint(m[slot], bg, a, 4.5, mode);
-    if (m[slot] !== before) adjusted.add('accents');
+    set(slot, fitOnTint(m[slot], bg, slot === 'brand1' ? alpha : sAlpha, 4.5, mode), 'accents');
   }
   // the gray wash (default-soft) over a ground: a hovered menu item, the
   // info, note and details containers, inline code
@@ -308,7 +287,7 @@ function buildMode(mode, m, adjusted) {
   const room = (color, a) => {
     const end = mode === 'light' ? black : white;
     const fits = (x) => [composite(color, x, bg), composite(color, x, composite(color, x, bg))].every((g) => contrast(composite(end, 0.75, g), g) >= 4.5 + EPS);
-    for (let k = 0; k < roundHalfEven(a * 100) - 5; k++) {
+    for (let k = 0; k < Math.round(a * 100) - 5; k++) {
       const x = round2(a - k / 100);
       if (fits(x)) return x;
     }
@@ -318,9 +297,7 @@ function buildMode(mode, m, adjusted) {
   const grayOn = (ground) => composite(neutral, dsAlpha, ground);
   // brand-1 also as a menu's current item, on the elevated surface and
   // under its hover wash
-  const before = m.brand1;
-  m.brand1 = fitAll(m.brand1, mode, { text: [bgElv, grayOn(bgElv)] });
-  if (m.brand1 !== before) adjusted.add('accents');
+  set('brand1', fitAll(m.brand1, mode, { text: [bgElv, grayOn(bgElv)] }), 'accents');
   // the brand button's grounds, white text on both >= 3.0: brand-3 at
   // rest, and the hover ground (VitePress's brand-2 job) as its own token
   const buttonHover = m.brand2 ?? mix(m.brand1, mode === 'dark' ? white : black, 0.15);
@@ -342,9 +319,10 @@ function buildMode(mode, m, adjusted) {
   const dflt = mode === 'light'
     ? [mix(neutral, bg, 0.25), mix(neutral, bg, 0.45), mix(neutral, bg, 0.65)]
     : [mix(neutral, bg, 0.05), mix(neutral, bg, 0.28), mix(neutral, bg, 0.48)];
+  const danger2 = hover(m.danger, roleA.danger);
   return {
-    neutral_inverse: mode === 'light' ? '#ffffff' : '#000000',
-    bg, bg_alt: bgAlt, bg_elv: bgElv, bg_soft: bgSoft,
+    neutral_inverse: mode === 'light' ? white : black,
+    bg, bg_alt: bgAlt, bg_elv: bgElv, bg_soft: bgAlt,
     text1: m.text1, text2: m.text2, text3: m.text3,
     border: m.border, divider: m.border, gutter: m.border,
     brand1: m.brand1, brand2: m.brand2, brand3: m.brand3, button_hover: m.button_hover,
@@ -358,9 +336,9 @@ function buildMode(mode, m, adjusted) {
     important_soft: rgba(m.important, roleA.important),
     warning1: m.warning, warning2: hover(m.warning, roleA.warning),
     warning_soft: rgba(m.warning, roleA.warning),
-    danger1: m.danger, danger2: hover(m.danger, roleA.danger),
+    danger1: m.danger, danger2,
     danger_soft: rgba(m.danger, roleA.danger),
-    caution1: m.danger, caution2: hover(m.danger, roleA.danger),
+    caution1: m.danger, caution2: danger2,
     caution_soft: rgba(m.danger, roleA.danger),
     sponsor: m.sponsor,
   };
@@ -414,44 +392,40 @@ ${block(dark)}
 `;
 }
 
-// the light half a dark palette derives, and the dark half a light one
-const derivedLight = (bg, text1, brand1, rest) => ({
-  bg: mix(bg, white, 0.94), bg_alt: mix(bg, white, 0.9),
-  bg_elv: mix(bg, white, 0.955),
-  text1: mix(text1, black, 0.75), text2: mix(text1, black, 0.55),
-  text3: mix(text1, black, 0.35), border: mix(bg, white, 0.84),
+// the half a palette does not publish, from the map of the one it does:
+// its page, text-1 and brand-1 moved toward the other half's extremes, its
+// roles as they are (the map's other keys, surfaces, text-2/3, border, a
+// fitted brand-2/3, are not carried)
+const derivedLight = ({ bg, text1, brand1, success, warning, danger, important, sponsor }) => ({
+  bg: mix(bg, white, 0.94), bg_alt: mix(bg, white, 0.9), bg_elv: mix(bg, white, 0.955),
+  text1: mix(text1, black, 0.75),
+  border: mix(bg, white, 0.84),
   brand1, brand2: mix(brand1, black, 0.15), brand3: mix(brand1, black, 0.28),
-  ...rest,
+  success, warning, danger, important, sponsor,
+});
+const derivedDark = ({ bg, text1, brand1, success, warning, danger, important, sponsor }) => ({
+  bg: mix(bg, black, 0.9), bg_alt: mix(bg, black, 0.86), bg_elv: mix(bg, black, 0.82),
+  text1: mix(text1, white, 0.78),
+  border: mix(bg, black, 0.72),
+  brand1, brand2: mix(brand1, white, 0.15), brand3: mix(brand1, white, 0.08),
+  success, warning, danger, important, sponsor,
 });
 
 export function curated() {
-  const report = [];
   for (const spec of SPECS) {
     const adjusted = new Set();
-    const darkSpec = spec.dark;
-    const pd = pal(darkSpec.f);
-    const pd2 = darkSpec.p2 ? pal(darkSpec.p2) : {};
-    const dm = resolve(darkSpec.m, pd, pd2);
-    if (spec.dark_alt) Object.assign(dm, spec.dark_alt); // per-theme literal fixes
+    const dm = resolve(spec.dark);
+    Object.assign(dm, spec.dark_alt); // per-theme literal fixes (ayu's)
     const dark = buildMode('dark', dm, adjusted);
-
-    let lightMap, note;
-    if (spec.light === 'derived') {
-      note = `Dark half from the ${spec.name} palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short.`;
-      lightMap = derivedLight(dm.bg, dm.text1, dm.brand1, { success: dm.success, warning: dm.warning, danger: dm.danger, important: dm.important, sponsor: dm.sponsor });
-    } else {
-      const ls = spec.light;
-      const pl = pal(ls.f);
-      const pl2 = ls.p2 ? pal(ls.p2) : {};
-      lightMap = resolve(ls.m, pl, pl2);
-      note = "Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short.";
-    }
+    // the light half: the palette's own, or derived from dm as the dark build fitted it
+    const [lightMap, note] = spec.light === 'derived'
+      ? [derivedLight(dm), `Dark half from the ${spec.name} palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short.`]
+      : [resolve(spec.light), "Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."];
     const light = buildMode('light', lightMap, adjusted);
 
     writeFileSync(join(ROOT, 'themes', `${spec.name}.css`), emitCss(spec.name, spec.desc, note, light, dark));
-    report.push([spec.name, [...adjusted].sort()]);
+    console.log(`${spec.name.padEnd(18)} adjusted: ${adjusted.size ? [...adjusted].sort().join(', ') : 'none'}`);
   }
-  for (const [name, adj] of report) console.log(`${name.padEnd(18)} adjusted: ${adj.length ? adj.join(', ') : 'none'}`);
 }
 
 // --- auto-mapping pass ----------------------------------------------------
@@ -502,7 +476,7 @@ function rgbToHls(r, g, b) {
 // where mode is the palette's own half, or null.
 export function autoSlots(stem) {
   const data = load(stem);
-  const p = Object.fromEntries(Object.entries(data.palette ?? {}).map(([k, v]) => [k, checkedHex(v, stem, k)]));
+  const p = paletteOf(data, stem);
   if (Object.keys(p).length < 6) return null;
 
   // Resolve `ui.<entry> = { <field> = "palette-key or #hex" }`. Helix
@@ -521,48 +495,40 @@ export function autoSlots(stem) {
   };
 
   const colors = Object.values(p);
-  const bgNamed = Object.entries(p).filter(([k]) => BG_RE.test(k) && !SURFACE_SKIP.test(k));
-  const fgNamed = Object.entries(p).filter(([k]) => FG_RE.test(k) && !NEUTRAL_RE.test(k) && !BG_RE.test(k));
+  const bgNamed = Object.keys(p).filter((k) => BG_RE.test(k) && !SURFACE_SKIP.test(k)).map((k) => p[k]);
+  const fgNamed = Object.keys(p).filter((k) => FG_RE.test(k) && !NEUTRAL_RE.test(k) && !BG_RE.test(k)).map((k) => p[k]);
   const uiBg = uiHint('background', 'bg');
   const uiFg = uiHint('text', 'fg');
-
-  const fgOf = (colors, bg, lightPalette) => {
-    if (uiFg !== null && contrast(uiFg, bg) > 1.5) return uiFg;
-    if (fgNamed.length) return (lightPalette ? minBy : maxBy)(fgNamed.map(([, v]) => v), lum);
-    const rest = colors.filter((c) => c !== bg);
-    return lightPalette ? minBy(rest, lum) : maxBy(rest, lum);
-  };
 
   // direction from the theme's declared background when there is one:
   // accents are bright in dark themes too, so a whole-palette vote lies
   let lightPalette;
   if (uiBg !== null) lightPalette = lum(uiBg) > 0.5;
+  else if (bgNamed.length) lightPalette = bgNamed.map(lum).sort((a, b) => a - b)[Math.floor(bgNamed.length / 2)] > 0.5;
+  else lightPalette = colors.filter((c) => lum(c) > 0.5).length > colors.length / 2;
+
+  // the text on a page: the declared one if it reads at all, else the
+  // extreme of the named texts, else of the palette
+  const fgOf = (bg) => {
+    if (uiFg !== null && contrast(uiFg, bg) > 1.5) return uiFg;
+    const pool = fgNamed.length ? fgNamed : colors.filter((c) => c !== bg);
+    return (lightPalette ? minBy : maxBy)(pool, lum);
+  };
+
+  let bg, alt = null, elv = null;
+  if (uiBg !== null) bg = uiBg;
   else if (bgNamed.length) {
-    const mid = bgNamed.map(([, v]) => lum(v)).sort((a, b) => a - b)[Math.floor(bgNamed.length / 2)];
-    lightPalette = mid > 0.5;
-  } else lightPalette = colors.filter((c) => lum(c) > 0.5).length > colors.length / 2;
-
-  let bg, alt, elv;
-  if (uiBg !== null) {
-    bg = uiBg;
-    alt = elv = null;
-  } else if (bgNamed.length) {
-    bg = (lightPalette ? maxBy : minBy)(bgNamed.map(([, v]) => v), lum);
-    const surfaces = bgNamed.map(([, v]) => v).filter((v) => v !== bg).sort((a, b) => lum(a) - lum(b));
+    bg = (lightPalette ? maxBy : minBy)(bgNamed, lum);
+    const surfaces = bgNamed.filter((v) => v !== bg).sort((a, b) => lum(a) - lum(b));
     if (surfaces.length) {
-      const towardFg = lightPalette ? [...surfaces].reverse() : surfaces;
+      const towardFg = lightPalette ? surfaces.reverse() : surfaces;
       [alt, elv] = [towardFg[0], towardFg[Math.min(1, towardFg.length - 1)]];
-    } else {
-      [alt, elv] = [mix(bg, fgOf(colors, bg, lightPalette), 0.1), null];
-    }
-  } else {
-    bg = lightPalette ? maxBy(colors, lum) : minBy(colors, lum);
-    alt = elv = null;
-  }
+    } else alt = mix(bg, fgOf(bg), 0.1);
+  } else bg = (lightPalette ? maxBy : minBy)(colors, lum);
 
-  const fg = fgOf(colors, bg, lightPalette);
-  if (alt === null) alt = mix(bg, fg, !lightPalette ? 0.1 : 0.06);
-  if (elv === null) elv = mix(bg, fg, !lightPalette ? 0.18 : 0.03);
+  const fg = fgOf(bg);
+  alt ??= mix(bg, fg, lightPalette ? 0.06 : 0.1);
+  elv ??= mix(bg, fg, lightPalette ? 0.03 : 0.18);
   // elevation convention (matches the stock look): elevated surfaces are
   // never darker than the page bg
   if (lum(elv) < lum(bg)) elv = lightPalette ? bg : mix(bg, fg, 0.16);
@@ -574,7 +540,7 @@ export function autoSlots(stem) {
     const [h, l, sat] = rgbToHls(r / 255, g / 255, b / 255);
     if (sat < 0.15 || l < 0.06 || l > 0.96) continue;
     const bk = bucketOf(h * 360);
-    const score = sat * (1 - Math.abs(l - (!lightPalette ? 0.4 : 0.55)));
+    const score = sat * (1 - Math.abs(l - (lightPalette ? 0.55 : 0.4)));
     if (!(bk in buckets) || score > buckets[bk][1]) buckets[bk] = [v, score];
   }
 
@@ -606,12 +572,6 @@ export function autoSlots(stem) {
     taken.add(c);
   }
 
-  const slots = {
-    bg, bg_alt: alt, bg_elv: elv, text1: fg, text2: fg, text3: fg,
-    border: mix(fg, bg, 0.32),
-    brand1: roles.brand1, success: roles.success, warning: roles.warning,
-    danger: roles.danger, important: roles.important, sponsor: roles.sponsor,
-  };
   // surface guard: body text must be ABLE to reach 7:1: mid-tone "dark"
   // backgrounds get nudged toward black (and vice versa), or the text fit
   // exhausts at white/black and still fails
@@ -625,32 +585,22 @@ export function autoSlots(stem) {
     // dimmed to 0.75 on the thinnest tint the room rule leaves (0.06, here
     // of white, the lightest a tint can be) and on code's tint inside it.
     // A mid-gray "soft" page (seoul256-dark-soft's #4e4e4e) moves toward
-    // black until it can; the lightest gray that can is #484848
+    // black until it can; the lightest gray that can is #484848 (black
+    // itself always can)
     const leavesRoom = (page) => {
       const tint = composite(white, 0.06, page);
       return [tint, composite(white, 0.06, tint)].every((g) => contrast(composite(white, 0.75, g), g) >= 4.5 + EPS);
     };
-    if (!leavesRoom(bg)) {
-      const start = bg;
-      let found = null;
-      for (let k = 0; k <= 100; k++) {
-        const x = mix(start, black, k / 100);
-        if (leavesRoom(x)) {
-          found = x;
-          break;
-        }
-      }
-      if (found === null) throw new Error(`${stem}: no page toward black leaves room for a hovered link`);
-      bg = found;
-    }
+    bg = stepTo(bg, black, 100, leavesRoom);
   } else if (lum(bg) < 0.3) bg = toward(bg, white, 0.3);
-  elv = mix(bg, fg, !lightPalette ? 0.18 : 0.03);
-  slots.bg = bg;
-  slots.bg_alt = mix(bg, fg, !lightPalette ? 0.1 : 0.06);
-  slots.bg_elv = lum(elv) >= lum(bg) ? elv : bg;
-  slots.border = mix(fg, bg, 0.32);
-
-  return [!lightPalette ? 'dark' : 'light', slots];
+  // the surfaces over the guarded page (the palette's own served the hue
+  // buckets above); the elevated one never darker than the page
+  elv = mix(bg, fg, lightPalette ? 0.03 : 0.18);
+  return [lightPalette ? 'light' : 'dark', {
+    bg, bg_alt: mix(bg, fg, lightPalette ? 0.06 : 0.1), bg_elv: lum(elv) >= lum(bg) ? elv : bg,
+    text1: fg, border: mix(fg, bg, 0.32),
+    ...roles,
+  }];
 }
 
 export function auto() {
@@ -659,14 +609,12 @@ export function auto() {
 
   // stems are unique, but two stems can normalize to one name (foo_bar +
   // foo-bar): that would silently clobber; refuse both
-  const norm = {};
-  for (const stem of stems) (norm[stem.replaceAll('_', '-')] ??= []).push(stem);
-  const colliding = new Set(Object.entries(norm).filter(([, srcs]) => srcs.length > 1).map(([n]) => n));
+  const names = stems.map((stem) => stem.replaceAll('_', '-'));
+  const colliding = new Set(names.filter((n, i) => names.indexOf(n) !== i));
 
   const skipped = [];
-  let mapped = 0;
-  for (const stem of stems) {
-    const name = stem.replaceAll('_', '-');
+  for (const [i, stem] of stems.entries()) {
+    const name = names[i];
     if (CURATED.has(name)) continue;
     if (colliding.has(name)) {
       skipped.push(`${stem} (name collision)`);
@@ -678,30 +626,15 @@ export function auto() {
       continue;
     }
     const [mode, slots] = got;
-    const adjusted = new Set();
-    const roles = { success: slots.success, warning: slots.warning, danger: slots.danger, important: slots.important, sponsor: slots.sponsor };
-    let light, dark, note;
-    if (mode === 'dark') {
-      dark = buildMode('dark', { ...slots }, adjusted);
-      light = buildMode('light', derivedLight(slots.bg, slots.text1, slots.brand1, roles), adjusted);
-      note = 'The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA.';
-    } else {
-      light = buildMode('light', { ...slots }, adjusted);
-      dark = buildMode('dark', {
-        bg: mix(slots.bg, black, 0.9), bg_alt: mix(slots.bg, black, 0.86),
-        bg_elv: mix(slots.bg, black, 0.82),
-        text1: mix(slots.text1, white, 0.78), text2: mix(slots.text1, white, 0.58),
-        text3: mix(slots.text1, white, 0.38), border: mix(slots.bg, black, 0.72),
-        brand1: slots.brand1, brand2: mix(slots.brand1, white, 0.15),
-        brand3: mix(slots.brand1, white, 0.08),
-        ...roles,
-      }, adjusted);
-      note = 'The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA.';
-    }
+    // the palette's own half, and the other one derived from its unfitted map
+    const other = mode === 'dark' ? 'light' : 'dark';
+    const own = buildMode(mode, { ...slots });
+    const derived = buildMode(other, (other === 'light' ? derivedLight : derivedDark)(slots));
+    const [light, dark] = mode === 'dark' ? [derived, own] : [own, derived];
+    const note = `The scheme publishes no ${other} mode, so the ${other} half is derived from the same hues. Accents auto-fitted for WCAG AA.`;
     const desc = `auto-mapped from the vendored Helix palette <${stem}>`;
     writeFileSync(join(ROOT, 'themes', `${name}.css`), emitCss(name, desc, note, light, dark));
     regenerated.add(name);
-    mapped++;
   }
 
   // drop auto-generated files whose source no longer maps (stale runs)
@@ -711,7 +644,7 @@ export function auto() {
     const path = join(ROOT, 'themes', f);
     if (readFileSync(path, 'utf8').slice(0, 200).includes(marker)) unlinkSync(path);
   }
-  console.log(`auto-mapped: ${mapped} themes; skipped (no usable palette): ${skipped.length}`);
+  console.log(`auto-mapped: ${regenerated.size} themes; skipped (no usable palette): ${skipped.length}`);
   if (skipped.length) console.log(`  skipped: ${skipped.sort().join(', ')}`);
 }
 

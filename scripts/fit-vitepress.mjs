@@ -10,7 +10,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { EPS, black, composite, contrast, fitAll, hexs, mix, white } from './color.mjs';
+import { black, composite, fitAll, hexs, mix, white } from './color.mjs';
+import { modeValues, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -22,37 +23,18 @@ function over(value, bg) {
   return composite(hexs([Number(m[1]), Number(m[2]), Number(m[3])]), Number(m[4]), bg);
 }
 
-// every top-level `selector { ... }` block's declarations, merged
-function declarations(css, selector) {
-  const out = {};
-  css = css.replace(/\/\*[\s\S]*?\*\//g, '');
-  const block = new RegExp(`(?:^|\\n)${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\{([^}]*)\\}`, 'g');
-  for (const m of css.matchAll(block)) {
-    for (const line of m[1].split(';')) {
-      const i = line.indexOf(':');
-      if (i !== -1) out[line.slice(0, i).trim()] = line.slice(i + 1).split(/\s+/).filter(Boolean).join(' ');
-    }
-  }
-  return out;
-}
 const tokens = readFileSync(join(ROOT, 'tokens.css'), 'utf8');
-const stock = { ':root': declarations(tokens, ':root'), '.dark': declarations(tokens, '.dark') };
-function resolve(value, mode, depth = 0) {
-  const m = value.match(/^var\((--[\w-]+)\)$/);
-  if (!m) return value;
-  const next = stock[mode][m[1]] ?? stock[':root'][m[1]];
-  if (next === undefined || depth >= 8) throw new Error(`unresolved ${value} in ${mode}`);
-  return resolve(next, mode, depth + 1);
-}
+const root = modeValues(tokens, ':root');
+const stock = { ':root': root, '.dark': new Map([...root, ...modeValues(tokens, '.dark')]) };
 // the property list: themes/github.css's, and the brand button's pressed
 // ground right after its hovered one (github.css leaves it to tokens.css)
 const template = readFileSync(join(ROOT, 'themes/github.css'), 'utf8');
 const blocks = {};
 const changes = [];
 for (const [sel, mode] of [[':root', 'light'], ['.dark', 'dark']]) {
-  const keys = Object.keys(declarations(template, sel));
+  const keys = [...modeValues(template, sel).keys()];
   keys.splice(keys.indexOf('--vp-button-brand-hover-bg') + 1, 0, '--vp-button-brand-active-bg');
-  const v = (blocks[sel] = Object.fromEntries(keys.map((k) => [k, resolve(stock[sel][k] ?? stock[':root'][k], sel)])));
+  const v = (blocks[sel] = Object.fromEntries(keys.map((k) => [k, resolve(stock[sel], stock[sel].get(k))])));
   const [bg, elv] = [v['--vp-c-bg'], v['--vp-c-bg-elv']];
   const gray = over(v['--vp-c-default-soft'], bg);
   const gray2 = over(v['--vp-c-default-soft'], gray);
@@ -74,12 +56,8 @@ for (const [sel, mode] of [[':root', 'light'], ['.dark', 'dark']]) {
   // the brand button's white label: 4.5 at rest (brand-3), hovered and pressed
   change('--vp-c-brand-3', fitAll(v['--vp-c-brand-3'], 'light', { text: [white] }), "the brand button's white label at rest");
   const rest = v['--vp-c-brand-3'];
-  let hover = mode === 'light' ? v['--vp-c-brand-2'] : mix(rest, black, 0.15);
-  if (contrast(hover, white) < 4.5 + EPS) hover = fitAll(hover, 'light', { text: [white] });
-  change('--vp-button-brand-hover-bg', hover, "the brand button's white label hovered");
-  let active = mode === 'light' ? v['--vp-c-brand-1'] : mix(rest, black, 0.25);
-  if (contrast(active, white) < 4.5 + EPS) active = fitAll(active, 'light', { text: [white] });
-  change('--vp-button-brand-active-bg', active, "the brand button's white label pressed");
+  change('--vp-button-brand-hover-bg', fitAll(mode === 'light' ? v['--vp-c-brand-2'] : mix(rest, black, 0.15), 'light', { text: [white] }), "the brand button's white label hovered");
+  change('--vp-button-brand-active-bg', fitAll(mode === 'light' ? v['--vp-c-brand-1'] : mix(rest, black, 0.25), 'light', { text: [white] }), "the brand button's white label pressed");
   // a control's boundary: 3:1 against the page (WCAG 1.4.11)
   change('--vp-c-border', fitAll(v['--vp-c-border'], mode, { text: [bg], target: 3.0 }), "a control's boundary at 3:1 on the page");
 }

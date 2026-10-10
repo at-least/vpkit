@@ -45,7 +45,7 @@ npm test
 
 The generated files, and what writes them:
 
-- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `node scripts/gen-themes.mjs`, from its slot maps and `helix/` (its TOML parser, `smol-toml`, comes with `npm install`); `themes/vitepress.css`, VitePress's own palette with its contrast shortfalls fitted: `node scripts/fit-vitepress.mjs`, from `tokens.css`; `npm test` fails while it is not that script's output. The color math the two share with `test/themes.mjs` is `scripts/color.mjs`.
+- the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `node scripts/gen-themes.mjs`, from its slot maps and `helix/` (its TOML parser, `smol-toml`, comes with `npm install`); `themes/vitepress.css`, VitePress's own palette with its contrast shortfalls fitted: `node scripts/fit-vitepress.mjs`, from `tokens.css`; `npm test` fails while it is not that script's output. The color math the two share with `test/themes.mjs` is `scripts/color.mjs`, and the CSS reader the fitter, `scripts/build-docs.mjs` and that test share is `scripts/css.mjs`.
 - `layout.css` and `content.css`: `node scripts/vitepress-port.mjs --write`, from VitePress's component styles after a re-sync; the tests fail if a file is not its output.
 - `docs/static/example.css` and `docs/static/themes.json`: `node scripts/build-docs.mjs`, after changing an example or a theme; `npm test` fails while they are stale.
 

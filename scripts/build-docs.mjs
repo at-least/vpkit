@@ -18,6 +18,7 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { modeValues, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'docs/content');
@@ -41,15 +42,9 @@ const CARD = ['bg', 'bg-alt', 'divider', 'text-1', 'text-2', 'brand-1', 'brand-2
 // .dark blocks over them, with var() resolved; the other blocks (graded
 // containers, a language's fonts) are no mode's
 function modes(css) {
-  const blocks = { ':root': {}, '.dark': {} };
-  for (const [, selector, body] of css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{([^}]*)\}/g)) {
-    const into = blocks[selector.trim()];
-    if (!into) continue;
-    for (const [, name, value] of body.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) into[name] = value.trim();
-  }
-  const resolve = (vars, value) => value.replace(/var\((--[\w-]+)\)/g, (_, name) => resolve(vars, vars[name]));
-  const card = (vars) => Object.fromEntries(CARD.map((c) => [c, resolve(vars, vars[`--vp-c-${c}`])]));
-  return { light: card(blocks[':root']), dark: card({ ...blocks[':root'], ...blocks['.dark'] }) };
+  const root = modeValues(css, ':root');
+  const card = (vars) => Object.fromEntries(CARD.map((c) => [c, resolve(vars, vars.get(`--vp-c-${c}`))]));
+  return { light: card(root), dark: card(new Map([...root, ...modeValues(css, '.dark')])) };
 }
 
 // stock first, then every theme in the order of its file's name; a theme's

@@ -16,7 +16,8 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 // the luminance and contrast the generators fit with: one implementation
-import { contrast, luminance, parseHex } from '../scripts/color.mjs';
+import { composite, contrast, luminance, white } from '../scripts/color.mjs';
+import { modeValues, parseBlocks, stripComments } from '../scripts/css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const RAMPS = ['gray', 'indigo', 'purple', 'green', 'yellow', 'orange', 'red'];
@@ -41,36 +42,6 @@ function baseCss() {
 // nothing defines that name (the shadows are --vp-shadow-*), so it never
 // paints upstream either. Not a token a theme can define.
 const UPSTREAM_SLIPS = ['shadow-3'];
-
-const stripComments = (css) => css.replace(/\/\*[\s\S]*?(\*\/|$)/g, '');
-
-// top-level `selector { decl; decl; }` blocks; theme files and the token
-// layer of the base are flat, which is all this needs to read
-function parseBlocks(css) {
-  css = stripComments(css);
-  const blocks = [];
-  let rest = css;
-  for (let open = rest.indexOf('{'); open !== -1; open = rest.indexOf('{')) {
-    const selector = rest.slice(0, open).trim().split(/\s+/).join(' ');
-    let depth = 1;
-    let close = open + 1;
-    for (; close < rest.length && depth > 0; close++) {
-      if (rest[close] === '{') depth++;
-      else if (rest[close] === '}') depth--;
-    }
-    const body = rest.slice(open + 1, Math.max(close - 1, open + 1));
-    const declarations = body
-      .split(';')
-      .map((decl) => {
-        const colon = decl.indexOf(':');
-        return colon === -1 ? null : [decl.slice(0, colon).trim(), decl.slice(colon + 1).trim()];
-      })
-      .filter((decl) => decl && decl[0] !== '');
-    blocks.push({ selector, declarations });
-    rest = rest.slice(close);
-  }
-  return blocks;
-}
 
 const isRamp = (token) => RAMPS.some((ramp) => token === ramp || token.startsWith(`${ramp}-`));
 
@@ -119,15 +90,6 @@ function requiredTokens(css) {
   return tokens;
 }
 
-function modeValues(css, selector) {
-  const values = new Map();
-  for (const block of parseBlocks(css)) {
-    if (block.selector !== selector) continue;
-    for (const [prop, value] of block.declarations) values.set(prop, value);
-  }
-  return values;
-}
-
 // a token as a solid color: a 6-digit hex, or rgba() composited over the
 // backdrop (when one is given)
 function color(values, token, backdrop) {
@@ -135,15 +97,14 @@ function color(values, token, backdrop) {
   if (value === undefined) throw new Error(`token --vp-c-${token} not defined`);
   if (value.startsWith('#')) {
     if (!/^#[0-9a-f]{6}$/i.test(value)) throw new Error(`--vp-c-${token} = ${value}: expected 6-digit hex`);
-    return parseHex(value.slice(1));
+    return value.toLowerCase();
   }
   const rgba = value.match(/^rgba\((.*)\)$/);
   if (!backdrop || !rgba) throw new Error(`--vp-c-${token} = ${value}: expected a hex literal${backdrop ? ' or rgba()' : ''}`);
   const parts = rgba[1].split(',').map((n) => (n.trim() === '' ? NaN : Number(n.trim())));
   if (parts.length !== 4 || parts.some(Number.isNaN)) throw new Error(`--vp-c-${token} = ${value}`);
   const [r, g, b, a] = parts;
-  const mix = (fg, bg) => Math.round(fg * a + bg * (1 - a));
-  return [mix(r, backdrop[0]), mix(g, backdrop[1]), mix(b, backdrop[2])];
+  return composite([r, g, b], a, backdrop);
 }
 
 const base = baseCss();
@@ -173,7 +134,6 @@ const names = readdirSync(join(ROOT, 'themes'))
   .sort();
 if (!names.length) fail('no themes found');
 
-const WHITE = [0xff, 0xff, 0xff];
 let checks = 0;
 for (const name of names) {
   const css = read(`themes/${name}.css`);
@@ -242,9 +202,9 @@ for (const name of names) {
 
       // container semantics stay distinguishable: distinct hues per role,
       // and the brand is not the body text color
-      const sems = ['success-1', 'warning-1', 'danger-1'].map((t) => hex(t).join());
+      const sems = ['success-1', 'warning-1', 'danger-1'].map(hex);
       holds(new Set(sems).size === sems.length, 'semantic colors collapsed');
-      holds(hex('brand-1').join() !== hex('text-1').join(), 'brand-1 equals text-1 — links would be invisible as emphasis');
+      holds(hex('brand-1') !== hex('text-1'), 'brand-1 equals text-1 — links would be invisible as emphasis');
 
       // links and inline code, on the page and on the elevated surface, and
       // a menu's current item hovered (the gray wash over the elevated one)
@@ -256,13 +216,13 @@ for (const name of names) {
       // hovered (--vp-button-brand-hover-bg, which a theme sets itself:
       // brand-2 is the hovered link's color, and in dark mode no one color
       // can be both)
-      minimum('brand-3', WHITE, 3.0);
+      minimum('brand-3', white, 3.0);
       const hoverBg = values.get('--vp-button-brand-hover-bg');
       checks++;
       if (!hoverBg) fail(`${label}: --vp-button-brand-hover-bg not defined`);
       else if (!/^#[0-9a-f]{6}$/i.test(hoverBg)) fail(`${label}: --vp-button-brand-hover-bg = ${hoverBg}: expected 6-digit hex`);
       else {
-        const ratio = contrast(WHITE, parseHex(hoverBg.slice(1)));
+        const ratio = contrast(white, hoverBg);
         if (ratio < 3 - 1e-9) fail(`${label}: --vp-button-brand-hover-bg ${hoverBg} has contrast ${ratio.toFixed(2)} < 3 with white`);
       }
 
@@ -272,7 +232,7 @@ for (const name of names) {
       // it (tokens.css's --vp-custom-block-*-bg and -code-bg)
       const dimmed = (token, ground) => {
         checks++;
-        const painted = hex(token).map((c, i) => Math.round(c * 0.75 + ground[i] * 0.25));
+        const painted = composite(hex(token), 0.75, ground);
         const ratio = contrast(painted, ground);
         if (ratio < 4.5 - 1e-9) {
           fail(`${label}: --vp-c-${token} ${hex(token)} hovered in a container paints ${ratio.toFixed(2)} < 4.5 against ${ground}`);

@@ -5,26 +5,20 @@
 // ba40e547426b): the child's top-level keys replace the parent's whole, and
 // the palettes merge entry by entry, the child's winning.
 //
-//   node test/gen-themes.mjs                   (part of npm test)
-//   node test/gen-themes.mjs <gen-themes.mjs>  another copy of it, with its own helix/
+//   node test/gen-themes.mjs    (part of npm test)
 //
 // Exits 1 when a check fails.
+import { ok as assert } from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { parse } from 'smol-toml';
+import { luminance, normHex } from '../scripts/color.mjs';
+import { autoSlots, mergeThemes } from '../scripts/gen-themes.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const GEN = process.argv[2] ? resolve(process.argv[2]) : join(ROOT, 'scripts/gen-themes.mjs');
-const gen = await import(pathToFileURL(GEN).href);
-const { luminance } = await import(pathToFileURL(join(dirname(GEN), 'color.mjs')).href);
-
-const raw = (stem) => parse(readFileSync(join(gen.HELIX, `${stem}.toml`), 'utf8'));
-const norm = (v) => {
-  v = v.toLowerCase();
-  return v.length === 4 ? `#${[...v.slice(1)].map((ch) => ch + ch).join('')}` : v;
-};
+const raw = (stem) => parse(readFileSync(join(ROOT, 'helix', `${stem}.toml`), 'utf8'));
 
 let failed = 0;
 const check = (label, got, want) => {
@@ -32,17 +26,14 @@ const check = (label, got, want) => {
   if (!ok) failed++;
   console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}: ${JSON.stringify(got)} ${ok ? '==' : '!='} ${JSON.stringify(want)}`);
 };
-const assert = (condition, what) => {
-  if (!condition) throw new Error(`the vendored palettes are not as this test assumes: ${what}`);
-};
 
 // wolf-alabaster-light-mono has no background of its own: the parent's
 // "ui.background" names palette key "bg", resolved in the merged palette
 {
   const [parent, child] = [raw('wolf-alabaster-light'), raw('wolf-alabaster-light-mono')];
   assert(!('ui.background' in child) && child.inherits === 'wolf-alabaster-light', 'wolf-alabaster-light-mono inherits wolf-alabaster-light without a background');
-  const wantBg = norm({ ...parent.palette, ...(child.palette ?? {}) }[parent['ui.background'].bg]);
-  const got = gen.autoSlots('wolf-alabaster-light-mono');
+  const wantBg = normHex({ ...parent.palette, ...(child.palette ?? {}) }[parent['ui.background'].bg]);
+  const got = autoSlots('wolf-alabaster-light-mono');
   check('wolf-alabaster-light-mono maps', got !== null, true);
   if (got) {
     check('wolf-alabaster-light-mono mode', got[0], luminance(wantBg) > 0.5 ? 'light' : 'dark');
@@ -56,9 +47,9 @@ const assert = (condition, what) => {
   const [parent, child] = [raw('gruvbox'), raw('gruvbox_dark_hard')];
   const key = parent['ui.background'].bg;
   assert(child.inherits === 'gruvbox' && isDeepStrictEqual(Object.keys(child.palette), [key]), 'gruvbox_dark_hard inherits gruvbox with the background entry alone');
-  const wantBg = norm(child.palette[key]);
-  assert(wantBg !== norm(parent.palette[key]), "gruvbox_dark_hard's background differs from gruvbox's");
-  const got = gen.autoSlots('gruvbox_dark_hard');
+  const wantBg = normHex(child.palette[key]);
+  assert(wantBg !== normHex(parent.palette[key]), "gruvbox_dark_hard's background differs from gruvbox's");
+  const got = autoSlots('gruvbox_dark_hard');
   check('gruvbox_dark_hard maps', got !== null, true);
   if (got) check('gruvbox_dark_hard page color', got[1].bg, wantBg);
 }
@@ -67,7 +58,7 @@ const assert = (condition, what) => {
 {
   const p = { 'ui.background': { bg: 'a', fg: 'b' }, 'ui.text': 'x', palette: { x: '#111111', y: '#222222' } };
   const c = { inherits: 'p', 'ui.background': { bg: 'c' }, palette: { y: '#333333' } };
-  const m = gen.mergeThemes(p, c);
+  const m = mergeThemes(p, c);
   check('a child scope replaces the parent scope whole', m['ui.background'], { bg: 'c' });
   check('a parent-only scope stays', m['ui.text'], 'x');
   check('palettes merge, the child winning', m.palette, { x: '#111111', y: '#333333' });

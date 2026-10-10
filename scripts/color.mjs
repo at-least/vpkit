@@ -12,6 +12,11 @@ export const parseHex = (hex) => {
 };
 export const rgb = (c) => (typeof c === 'string' ? parseHex(c.replace(/^#/, '')) : c);
 export const hexs = ([r, g, b]) => `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+// a palette's hex as the fits compare it: lowercase, #abc → #aabbcc
+export const normHex = (v) => {
+  v = v.toLowerCase();
+  return v.length === 4 ? `#${[...v.slice(1)].map((ch) => ch + ch).join('')}` : v;
+};
 
 export function luminance(c) {
   const [r, g, b] = rgb(c);
@@ -27,9 +32,9 @@ export function contrast(a, b) {
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
-// a half rounds to the even neighbour, as Python's round() did when the
-// committed themes were generated: Math.round would move a channel by one
-// in those cases, and with it the theme's bytes
+// halves to the even neighbour, the rounding the committed themes were
+// generated with (Math.round takes them up: a channel off by one, and
+// with it a theme's bytes)
 const roundHalfEven = (x) => (Math.abs(x % 1) === 0.5 ? 2 * Math.round(x / 2) : Math.round(x));
 
 // blend a toward b by t (sRGB per-channel)
@@ -39,14 +44,11 @@ export function mix(a, b, t) {
   return hexs([roundHalfEven(ar + (br - ar) * t), roundHalfEven(ag + (bg - ag) * t), roundHalfEven(ab + (bb - ab) * t)]);
 }
 
-// color at alpha over bg, halves rounded up as test/themes.mjs's Math.round
-// does: one channel's difference moves a contrast by 0.05 (a dimmed hover
-// over a twice-tinted ground)
+// color at alpha over bg, as a browser paints a tint and a dimmed hover
 export function composite(color, alpha, bg) {
   const [fr, fg, fb] = rgb(color);
   const [br, bg2, bb] = rgb(bg);
-  const up = (v) => Math.floor(v + 0.5);
-  return hexs([up(fr * alpha + br * (1 - alpha)), up(fg * alpha + bg2 * (1 - alpha)), up(fb * alpha + bb * (1 - alpha))]);
+  return hexs([Math.round(fr * alpha + br * (1 - alpha)), Math.round(fg * alpha + bg2 * (1 - alpha)), Math.round(fb * alpha + bb * (1 - alpha))]);
 }
 
 // the margin the fits clear the test's minimums by; the committed themes
@@ -78,17 +80,21 @@ export function fitOnTint(c, bg, alpha, target, mode) {
   return c;
 }
 
-// step c toward black (light) or white (dark) until it reaches the target
-// as text on every `text` ground and, dimmed to 0.75 (the opacity the
-// containers give a hovered link), on every `dimmed` ground. Interpolated
-// from c, not stepped: a rounded 4% step stalls short of black and white
-// (at 12 and 243 per channel)
-export function fitAll(c, mode, { text = [], dimmed = [], target = 4.5 } = {}) {
-  target += EPS;
-  const end = mode === 'light' ? black : white;
-  for (let k = 0; k <= 100; k++) {
-    const x = mix(c, end, k / 100);
-    if (text.every((g) => contrast(x, g) >= target) && dimmed.every((g) => contrast(composite(x, 0.75, g), g) >= target)) return x;
+// c moved toward end in n even steps: the first that passes ok (c itself
+// first), else end. Interpolated from c, not stepped: a rounded 4% step
+// stalls short of black and white (at 12 and 243 per channel)
+export function stepTo(c, end, n, ok) {
+  for (let k = 0; k < n; k++) {
+    const x = mix(c, end, k / n);
+    if (ok(x)) return x;
   }
   return end;
+}
+
+// step c toward black (light) or white (dark) until it reaches the target
+// as text on every `text` ground and, dimmed to 0.75 (the opacity the
+// containers give a hovered link), on every `dimmed` ground
+export function fitAll(c, mode, { text = [], dimmed = [], target = 4.5 } = {}) {
+  target += EPS;
+  return stepTo(c, mode === 'light' ? black : white, 100, (x) => text.every((g) => contrast(x, g) >= target) && dimmed.every((g) => contrast(composite(x, 0.75, g), g) >= target));
 }
