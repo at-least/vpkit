@@ -26,23 +26,15 @@ for (const link of links(parent.document)) document.write(`<link rel="stylesheet
 const theme = () => {
   if (hrefs(parent.document) === hrefs(document)) return;
   const old = links(document);
-  const fresh = links(parent.document).map((link) => {
+  const loaded = links(parent.document).map((link) => new Promise((settled) => {
     const copy = document.createElement('link');
     copy.rel = 'stylesheet';
     copy.href = link.href;
     copy.dataset.theme = link.dataset.theme;
-    return copy;
-  });
-  let pending = fresh.length;
-  const settled = () => {
-    if (--pending <= 0) for (const link of old) link.remove();
-  };
-  if (!pending) settled();
-  for (const copy of fresh) {
-    copy.addEventListener('load', settled, { once: true });
-    copy.addEventListener('error', settled, { once: true });
+    copy.onload = copy.onerror = settled;
     document.head.append(copy);
-  }
+  }));
+  Promise.all(loaded).then(() => { for (const link of old) link.remove(); });
 };
 new MutationObserver(theme).observe(parent.document.head, { childList: true, subtree: true, attributeFilter: ['href'] });
 new ResizeObserver(() => {

@@ -74,9 +74,7 @@ style.textContent = `
   color: var(--vp-c-text-2);
 }
 `;
-// on the host, not in the head: example.js re-clones the page's theme link
-// into the example frame at every head mutation
-host.append(style);
+document.head.append(style);
 
 // one mode of a theme: a navbar, a heading, a line of text, a link, and the
 // success, warning and danger colors
@@ -95,8 +93,8 @@ function half(colors, mode) {
 // the session's theme, which static/theme-pick.js has linked (none: the
 // stock card)
 const KEY = 'vpkit-docs-theme';
-let link = document.head.querySelector('link[data-theme]');
-const current = link?.dataset.theme ?? '';
+const links = () => [...document.head.querySelectorAll('link[data-theme]')];
+const current = links()[0]?.dataset.theme ?? '';
 
 function card(theme) {
   const el = document.createElement('button');
@@ -118,32 +116,25 @@ function card(theme) {
   return el;
 }
 
-// every theme link but the one given (none: every one), so a pick while
-// another theme is still loading, or the stock card then, leaves nothing
-// behind
-const unlink = (keep) => {
-  for (const l of document.head.querySelectorAll('link[data-theme]')) if (l !== keep) l.remove();
-};
-
 function pick(name) {
   // a browser that denies storage still gets the pick for this page
   try {
     sessionStorage.setItem(KEY, name);
   } catch {}
+  // the links the page has now (its theme, and any earlier pick still
+  // loading) stay until the pick has loaded, so the page never shows the
+  // stock colors in between; a later pick's link is never among them, so
+  // an earlier pick's late load cannot take it; the stock card takes them
+  // out at once
+  const old = links();
   if (name) {
-    const el = (link = document.createElement('link'));
+    const el = document.createElement('link');
     el.rel = 'stylesheet';
     el.href = `${host.dataset.stylesheets}${encodeURIComponent(name)}.css`;
     el.dataset.theme = name;
-    // the old theme stays until the new one has loaded, so the page doesn't
-    // flash the stock colors; a load after a later pick leaves that pick's
-    // link, and the cleanup, to it
-    el.addEventListener('load', () => { if (link === el) unlink(el); }, { once: true });
+    el.addEventListener('load', () => { for (const l of old) l.remove(); }, { once: true });
     document.head.append(el);
-  } else {
-    link = null;
-    unlink(null);
-  }
+  } else for (const l of old) l.remove();
   for (const c of cards) c.setAttribute('aria-pressed', String(c.dataset.theme === name));
 }
 

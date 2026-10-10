@@ -107,7 +107,7 @@ try {
   };
   const browser = await chromium.launch();
   try {
-    for (const width of WIDTHS) {
+    const runWidth = async (width) => {
       const context = await browser.newContext({ viewport: { width, height: 800 } });
       await context.route(`${ORIGIN}/**`, serve);
       const page = await context.newPage();
@@ -169,156 +169,149 @@ try {
         for (const e of errors) failures.push(`${where}: ${e}`);
       }
       await context.close();
-    }
-
+    };
     // the theme gallery: a card for each theme of the index; the vitepress
     // theme until a pick, then the pick in the page and its frame, light and
     // dark, then in the next pages the session opens, then the stock card's
-    // colors, tokens.css's. A theme's stylesheet answers
-    // 300ms late, so a page that painted before it arrived would show it:
-    // each page records its --vp-c-bg at its first frame.
-    const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-    await context.route(`${ORIGIN}/**`, async (route) => {
-      if (/\/vpkit\/themes\/[^/]+\.css$/.test(new URL(route.request().url()).pathname)) await new Promise((r) => setTimeout(r, 300));
-      return serve(route);
-    });
-    await context.addInitScript(() => {
-      requestAnimationFrame(() => {
-        const style = getComputedStyle(document.documentElement);
-        window.firstFrameBackground = style.getPropertyValue('--vp-c-bg').trim().toLowerCase();
-        window.firstFrameBrand2 = style.getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+    // colors, tokens.css's. A theme is read by its --vp-c-brand-2, the
+    // hovered link's color: the one the vitepress theme fits, so it tells
+    // that theme from the stock colors (their --vp-c-bg is the same). A
+    // theme's stylesheet answers 300ms late, so a page that painted before
+    // it arrived would show it: each page records it at its first frame.
+    const runGallery = async () => {
+      const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      await context.route(`${ORIGIN}/**`, async (route) => {
+        if (/\/vpkit\/themes\/[^/]+\.css$/.test(new URL(route.request().url()).pathname)) await new Promise((r) => setTimeout(r, 300));
+        return serve(route);
       });
-    });
-    const page = await context.newPage();
-    page.on('pageerror', (e) => failures.push(`the gallery's pages: ${e.message}`));
-    // the site is on the vitepress theme (docs/static/theme-pick.js) until a
-    // pick: its brand-2 (the hovered link's color, which the theme fits)
-    // from the first frame, and its card pressed
-    const vitepress = index.find((t) => t.name === 'vitepress').light['brand-2'];
-    const stockBrand2 = index[0].light['brand-2'];
-    await page.goto(`${BASE}/themes/`);
-    await page.waitForSelector('.theme-gallery__card');
-    const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
-    if (firstBrand2 !== vitepress) failures.push(`/themes/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
-    // and in the example frames, which write the page's theme links into
-    // their own heads as they are parsed
-    const framesFirst = await page.evaluate(() => [...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow.firstFrameBrand2));
-    for (const [i, value] of framesFirst.entries()) {
-      if (value !== vitepress) failures.push(`/themes/ with no pick, frame ${i + 1}: --vp-c-brand-2 ${value} at its first frame, not the vitepress theme's ${vitepress}`);
-    }
-    const cards = await page.locator('.theme-gallery__card').count();
-    if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
-    const values = (prop) =>
-      [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
-        getComputedStyle(e).getPropertyValue(prop).trim().toLowerCase(),
-      );
-    const expectToken = async (what, prop, value, where = '/themes/') => {
-      try {
-        await page.waitForFunction(([f, prop, value]) => new Function('prop', `return (${f})(prop)`)(prop).every((b) => b === value), [values.toString(), prop, value], { timeout: 5000 });
-      } catch (e) {
-        if (e.name !== 'TimeoutError') throw e;
-        failures.push(`${where}, ${what}: ${prop} ${(await page.evaluate(values, prop)).join(', ')} in the page and its frames, not ${value}`);
+      await context.addInitScript(() => {
+        requestAnimationFrame(() => {
+          window.firstFrameBrand2 = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+        });
+      });
+      const page = await context.newPage();
+      page.on('pageerror', (e) => failures.push(`the gallery's pages: ${e.message}`));
+      const KEY = 'vpkit-docs-theme';
+      const theme = (name) => index.find((t) => t.name === name);
+      const brand2 = () =>
+        [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) =>
+          getComputedStyle(e).getPropertyValue('--vp-c-brand-2').trim().toLowerCase(),
+        );
+      // the page and its frames on a theme's brand-2, within 5s
+      const expect = async (what, value, where = '/themes/') => {
+        try {
+          await page.waitForFunction(([f, value]) => new Function(`return (${f})()`)().every((b) => b === value), [brand2.toString(), value], { timeout: 5000 });
+        } catch (e) {
+          if (e.name !== 'TimeoutError') throw e;
+          failures.push(`${where}, ${what}: --vp-c-brand-2 ${(await page.evaluate(brand2)).join(', ')} in the page and its frames, not ${value}`);
+        }
+      };
+      const expectPressed = async (what, name) => {
+        const pressed = (await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme))).join();
+        if (pressed !== name) failures.push(`/themes/, ${what}: the pressed cards are [${pressed}], not ${name}`);
+      };
+      // the site is on the vitepress theme (docs/static/theme-pick.js) until a
+      // pick: its brand-2 from the first frame, in the page and in its example
+      // frames, which write the page's theme links into their own heads as
+      // they are parsed; and its card pressed
+      const vitepress = theme('vitepress').light['brand-2'];
+      const stockBrand2 = index[0].light['brand-2'];
+      await page.goto(`${BASE}/themes/`);
+      await page.waitForSelector('.theme-gallery__card');
+      const firstBrand2 = await page.evaluate(() => window.firstFrameBrand2);
+      if (firstBrand2 !== vitepress) failures.push(`/themes/ with no pick: --vp-c-brand-2 ${firstBrand2} at the first frame, not the vitepress theme's ${vitepress}`);
+      const framesFirst = await page.evaluate(() => [...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow.firstFrameBrand2));
+      for (const [i, value] of framesFirst.entries()) {
+        if (value !== vitepress) failures.push(`/themes/ with no pick, frame ${i + 1}: --vp-c-brand-2 ${value} at its first frame, not the vitepress theme's ${vitepress}`);
       }
-    };
-    const expect = (what, bg, where) => expectToken(what, '--vp-c-bg', bg, where);
-    await expectToken('no pick', '--vp-c-brand-2', vitepress);
-    const pressed = async () => (await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme))).join();
-    const initial = await pressed();
-    if (initial !== 'vitepress') failures.push(`/themes/ with no pick: the pressed cards are [${initial}], not vitepress`);
-    const nord = index.find((t) => t.name === 'nord');
-    await page.click('.theme-gallery__card[data-theme="nord"]');
-    await expect('nord picked', nord.light.bg);
-    const picked = await pressed();
-    if (picked !== 'nord') failures.push(`/themes/, nord picked: the pressed cards are [${picked}]`);
-    await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
-    await expect('nord picked, dark', nord.dark.bg);
-    await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
-    await expect('nord picked, light again', nord.light.bg);
-    // a page the session opens next, with frames, from its first frame
-    await page.goto(`${BASE}/components/button/`);
-    await settle(page);
-    const first = await page.evaluate(() => window.firstFrameBackground);
-    if (first !== nord.light.bg) failures.push(`/components/button/ after nord was picked: --vp-c-bg ${first} at the first frame, not ${nord.light.bg}`);
-    await expect('nord picked, on /components/button/', nord.light.bg, '/components/button/');
-    await page.goto(`${BASE}/themes/`);
-    await page.waitForSelector('.theme-gallery__card');
-    const kept = await pressed();
-    if (kept !== 'nord') failures.push(`/themes/ opened again after nord was picked: the pressed cards are [${kept}]`);
-    // a name with a character the URL encodes keeps its card pressed on
-    // the next visit (the link carries the name, only the URL is encoded)
-    const plus = index.find((t) => t.name.includes('+'))?.name;
-    if (!plus) failures.push('no theme with a + in its name to test the encoding with');
-    else {
-      await page.click(`.theme-gallery__card[data-theme="${plus}"]`);
-      await expect(`${plus} picked`, index.find((t) => t.name === plus).light.bg);
+      const cards = await page.locator('.theme-gallery__card').count();
+      if (cards !== index.length) failures.push(`/themes/: ${cards} cards for the ${index.length} entries of themes.json`);
+      await expect('no pick', vitepress);
+      await expectPressed('no pick', 'vitepress');
+      const nord = theme('nord');
+      await page.click('.theme-gallery__card[data-theme="nord"]');
+      await expect('nord picked', nord.light['brand-2']);
+      await expectPressed('nord picked', 'nord');
+      await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
+      await expect('nord picked, dark', nord.dark['brand-2']);
+      await page.click('.vp-nav-bar__appearance .vp-switch-appearance');
+      await expect('nord picked, light again', nord.light['brand-2']);
+      // a page the session opens next, with frames, from its first frame
+      await page.goto(`${BASE}/components/button/`);
+      await settle(page);
+      const first = await page.evaluate(() => window.firstFrameBrand2);
+      if (first !== nord.light['brand-2']) failures.push(`/components/button/ after nord was picked: --vp-c-brand-2 ${first} at the first frame, not ${nord.light['brand-2']}`);
+      await expect('nord picked, on /components/button/', nord.light['brand-2'], '/components/button/');
+      await page.goto(`${BASE}/themes/`);
+      await page.waitForSelector('.theme-gallery__card');
+      await expectPressed('opened again after nord was picked', 'nord');
+      // a name with a character the URL encodes keeps its card pressed on
+      // the next visit (the link carries the name, only the URL is encoded)
+      const plus = index.find((t) => t.name.includes('+'));
+      await page.click(`.theme-gallery__card[data-theme="${plus.name}"]`);
+      await expect(`${plus.name} picked`, plus.light['brand-2']);
       await page.goto(`${BASE}/components/button/`);
       await settle(page);
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
-      const again = await pressed();
-      if (again !== plus) failures.push(`/themes/ opened again after ${plus} was picked: the pressed cards are [${again}]`);
-    }
-    // two picks back to back: the page goes from the theme it had to the
-    // second pick's, never through the stock colors (the first pick's load
-    // must not unlink the second's)
-    const github = index.find((t) => t.name === 'github');
-    // the sampler runs in the page from before the clicks, every 10ms,
-    // until github's color arrives
-    await page.evaluate((until) => {
-      window.sampled = (async () => {
-        const seen = new Set();
-        const start = performance.now();
-        while (performance.now() - start < 3000) {
-          const now = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
-          seen.add(now);
-          if (now === until) break;
-          await new Promise((r) => setTimeout(r, 10));
-        }
-        return [...seen];
-      })();
-    }, github.light['brand-2']);
-    await page.click('.theme-gallery__card[data-theme="nord"]');
-    await page.click('.theme-gallery__card[data-theme="github"]');
-    const seen = await page.evaluate(() => window.sampled);
-    if (seen.includes(stockBrand2)) failures.push(`/themes/, nord then github picked back to back: the page passed through the stock colors (${seen.join(' > ')})`);
-    await expectToken('github picked after nord', '--vp-c-brand-2', github.light['brand-2']);
-    // the stock card pressed while a pick's stylesheet is still on its way
-    // (300ms here) leaves no theme linked
-    await page.click('.theme-gallery__card[data-theme="nord"]');
-    await page.click('.theme-gallery__card[data-theme=""]');
-    await expectToken('the stock card picked', '--vp-c-brand-2', stockBrand2);
-    await page.waitForTimeout(400);
-    const linked = await page.evaluate(() => [...document.head.querySelectorAll('link[data-theme]')].map((l) => l.dataset.theme));
-    if (linked.length) failures.push(`/themes/, the stock card picked while nord was loading: [${linked}] still linked`);
-    await expectToken('the stock card picked, after nord arrived', '--vp-c-brand-2', stockBrand2);
-    await page.goto(`${BASE}/components/button/`);
-    await settle(page);
-    await expectToken('the stock card picked, on /components/button/', '--vp-c-brand-2', stockBrand2, '/components/button/');
-    // a pick whose stylesheet no longer exists is forgotten, and the page
-    // takes the default
-    await page.evaluate(() => sessionStorage.setItem('vpkit-docs-theme', 'no-such-theme'));
-    await page.goto(`${BASE}/components/button/`);
-    await settle(page);
-    await expectToken('a pick with no stylesheet', '--vp-c-brand-2', vitepress, '/components/button/');
-    const stored = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
-    if (stored !== null) failures.push(`/components/button/ after a pick with no stylesheet: the session still stores ${JSON.stringify(stored)}`);
-    // the stock card as the site stored it before 2026-10-11 ('stock') still
-    // means no theme, and is stored anew
-    await page.evaluate(() => sessionStorage.setItem('vpkit-docs-theme', 'stock'));
-    await page.goto(`${BASE}/components/button/`);
-    await settle(page);
-    await expectToken("the stock card as stored before 2026-10-11", '--vp-c-brand-2', stockBrand2, '/components/button/');
-    const migrated = await page.evaluate(() => sessionStorage.getItem('vpkit-docs-theme'));
-    if (migrated !== '') failures.push(`/components/button/ with 'stock' stored: the session now stores ${JSON.stringify(migrated)}, not ''`);
-    // with JavaScript off, the site's theme is the static link
-    const noScript = await browser.newContext({ javaScriptEnabled: false });
-    await noScript.route(`${ORIGIN}/**`, serve);
-    const plain = await noScript.newPage();
-    await plain.goto(`${BASE}/components/button/`);
-    const plainBrand2 = await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase());
-    if (plainBrand2 !== vitepress) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-2 ${plainBrand2}, not the site's theme's ${vitepress}`);
-    await noScript.close();
-    await context.close();
+      await expectPressed(`opened again after ${plus.name} was picked`, plus.name);
+      // two picks back to back: the page goes from the theme it had to the
+      // second pick's, never through the stock colors (an earlier pick's
+      // load must not unlink a later one's)
+      const github = theme('github');
+      // the sampler runs in the page from before the clicks, every 10ms,
+      // until github's color arrives
+      await page.evaluate((until) => {
+        window.sampled = (async () => {
+          const seen = new Set();
+          const start = performance.now();
+          while (performance.now() - start < 3000) {
+            const now = getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase();
+            seen.add(now);
+            if (now === until) break;
+            await new Promise((r) => setTimeout(r, 10));
+          }
+          return [...seen];
+        })();
+      }, github.light['brand-2']);
+      await page.click('.theme-gallery__card[data-theme="nord"]');
+      await page.click('.theme-gallery__card[data-theme="github"]');
+      const seen = await page.evaluate(() => window.sampled);
+      if (seen.includes(stockBrand2)) failures.push(`/themes/, nord then github picked back to back: the page passed through the stock colors (${seen.join(' > ')})`);
+      await expect('github picked after nord', github.light['brand-2']);
+      // the stock card pressed while a pick's stylesheet is still on its way
+      // (300ms here) leaves no theme linked
+      await page.click('.theme-gallery__card[data-theme="nord"]');
+      await page.click('.theme-gallery__card[data-theme=""]');
+      await expect('the stock card picked', stockBrand2);
+      await page.waitForTimeout(400);
+      const linked = await page.evaluate(() => [...document.head.querySelectorAll('link[data-theme]')].map((l) => l.dataset.theme));
+      if (linked.length) failures.push(`/themes/, the stock card picked while nord was loading: [${linked}] still linked`);
+      await expect('the stock card picked, after nord arrived', stockBrand2);
+      await page.goto(`${BASE}/components/button/`);
+      await settle(page);
+      await expect('the stock card picked, on /components/button/', stockBrand2, '/components/button/');
+      // a pick whose stylesheet no longer exists is forgotten, and the page
+      // takes the default
+      await page.evaluate((key) => sessionStorage.setItem(key, 'no-such-theme'), KEY);
+      await page.goto(`${BASE}/components/button/`);
+      await settle(page);
+      await expect('a pick with no stylesheet', vitepress, '/components/button/');
+      const stored = await page.evaluate((key) => sessionStorage.getItem(key), KEY);
+      if (stored !== null) failures.push(`/components/button/ after a pick with no stylesheet: the session still stores ${JSON.stringify(stored)}`);
+      // with JavaScript off, the site's theme is the static link
+      const noScript = await browser.newContext({ javaScriptEnabled: false });
+      await noScript.route(`${ORIGIN}/**`, serve);
+      const plain = await noScript.newPage();
+      await plain.goto(`${BASE}/components/button/`);
+      const plainBrand2 = await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-2').trim().toLowerCase());
+      if (plainBrand2 !== vitepress) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-2 ${plainBrand2}, not the site's theme's ${vitepress}`);
+      await noScript.close();
+      await context.close();
+    };
+    // the widths and the gallery share nothing but the failures, so they run
+    // at once: half the time of one after another
+    await Promise.all([...WIDTHS.map(runWidth), runGallery()]);
   } finally {
     await browser.close();
   }

@@ -8,24 +8,17 @@
  * paints in the theme; a link the DOM adds would let the page paint first
  * in the site's theme. data-theme carries the name as the gallery compares
  * it; only the URL is encoded (`penumbra+` is a theme). A pick whose
- * stylesheet no longer exists (a theme renamed since the session began) is
- * forgotten, and the same link re-fetches the site's theme as the static
- * link had it: the site's theme is said once, in config.toml. No pick, or
- * a browser that denies storage: the static link stays. */
+ * stylesheet no longer exists (a theme renamed since the session began, or
+ * a value an earlier deploy stored) is forgotten, and the same link
+ * re-fetches the site's theme as the static link had it: the site's theme
+ * is said once, in config.toml. No pick, or a browser that denies storage:
+ * the static link stays. */
 {
   const KEY = 'vpkit-docs-theme';
   let pick = null;
   try {
     pick = sessionStorage.getItem(KEY);
   } catch {}
-  // the stock card's pick as the site stored it before 2026-10-11, in a
-  // session that spans that deploy
-  if (pick === 'stock') {
-    pick = '';
-    try {
-      sessionStorage.setItem(KEY, pick);
-    } catch {}
-  }
   if (pick !== null) {
     const site = document.head.querySelector('link[data-theme]');
     site.remove();
@@ -33,7 +26,7 @@
       const href = new URL(`${encodeURIComponent(pick)}.css`, site.href).href;
       // the written link is parsed after this script ends, so its error
       // handler goes in as an attribute
-      const onerror = ` onerror="try{sessionStorage.removeItem('${KEY}')}catch{};this.dataset.theme='${site.dataset.theme}';this.href='${site.href}'"`;
+      const onerror = ` onerror="sessionStorage.removeItem('${KEY}');this.dataset.theme='${site.dataset.theme}';this.href='${site.href}'"`;
       document.write(`<link rel="stylesheet" href="${href}" data-theme="${pick}"${onerror}>`);
     }
   }
