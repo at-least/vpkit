@@ -1,0 +1,33 @@
+{#- vp_example: a live example, for a page's markdown: the markup shown in
+    a frame of its own, over the same markup as code.
+
+      {% <vp_example title="The button's themes" layout="row"> %}
+      <button class="vp-btn">Cancel</button>
+      {% </vp_example> %}
+
+    The frame is a page as an app's is: Tailwind's preflight, vpkit and its
+    components (static/example.css, from scripts/build-docs.mjs), with none
+    of the markdown's styles, which would restyle a component's links,
+    paragraphs and headings. static/example.js keeps it in the page's
+    appearance and as tall as its content. title: the frame's name for
+    assistive technology; layout: how the frame lays out the elements, as
+    the page's flow does (the default), "row" (side by side, wrapping, 1rem
+    apart) or "stack" (one under another as wide as the frame, 1rem apart);
+    min_height: a height the frame keeps for what is out of its flow (a
+    modal dialog, a fixed toast) or sized by the viewport, which in the
+    frame is the frame (a dropdown's panel). A blank line would end the raw
+    HTML in the markdown, so srcdoc carries the line breaks as &#10;. -#}
+{% component vp_example(title, layout="", min_height="") -%}
+{%- if layout not in ["", "row", "stack"] -%}
+{{ throw(message="vpkit docs: a vp_example's layout is \"row\", \"stack\" or left out, not " ~ layout) }}
+{%- endif -%}
+{%- set newline = `
+` -%}
+{%- set markup = body | trim -%}
+{%- set frame = `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="` ~ get_url(path="example.css", cachebust=true) ~ `"><script src="` ~ get_url(path="example.js", cachebust=true) ~ `"></script></head><body class="bg-bg text-text-1 p-6` ~ (` flex flex-wrap items-center gap-4` if layout == "row" else (` flex flex-col gap-4` if layout == "stack" else ``)) ~ `">` ~ markup ~ `</body></html>` -%}
+<iframe class="vp-example" title="{{ title }}" srcdoc="{{ frame | escape | replace(from=newline, to=`&#10;`) }}" style="display:block;box-sizing:content-box;width:100%;{% if min_height %}min-height:{{ min_height }};{% endif %}margin:16px 0;border:1px solid var(--vp-c-divider);border-radius:8px"></iframe>
+
+```html
+{{ markup | safe }}
+```
+{%- endcomponent vp_example %}

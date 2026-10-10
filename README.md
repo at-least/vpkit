@@ -4,6 +4,8 @@ The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com)
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests.
 
+The documentation is a site in `docs/`, built with vpkit-zola, with live examples of every component: `cd docs && zola serve` ([docs/README.md](docs/README.md)).
+
 ## Use
 
 Add it as a dependency (here from a sibling checkout):
@@ -486,6 +488,8 @@ Each component is rendered next to the VitePress original in headless Chromium a
 `test/forced-colors.mjs` renders, with Chromium's emulation of Windows' contrast themes, the components that show a state only with a background or a shadow, which those themes replace: a checked and an unchecked toggle, and a progress bar at two values, must render differently.
 
 `test/layout.mjs` takes the layout components from pages VitePress rendered (`test/upstream/pages`). The skeleton's components are taken alone: their own elements, child components reduced to their roots. The navbar, the nav screen, the sidebar, the local nav, the aside, the doc footer and the home page are taken as families, each with the components inside it, so rules that cross components count too; there VitePress's side keeps Vue's scoping, each `<style>` compiled by `@vue/compiler-sfc` (the version VitePress locks) with the scope id the page shows. What VitePress renders only in the browser, the outline or the open sidebar, comes from snapshots of vitepress.dev (`test/upstream/pages/hydrated`, taken by `scripts/snapshot-vitepress.mjs`, which refuses a site running another VitePress version). Each case renders VitePress's markup with VitePress's styles and with vpkit's renamed classes, and compares every element's computed style, pseudo-elements and box at widths around each breakpoint, and in dark mode. The markdown is compared whole: the `.vp-doc` of VitePress's markdown guide, without the output of plugins vpkit does not style (code block titles, MathJax). vpkit is compiled unminified here, as a docs theme ships it, and lengths match within 1/32px, the rounding of layout.
+
+`test/docs.mjs` builds the documentation (`docs/`) with zola and checks it in headless Chromium: every component has a page, and every example's frame loads the example stylesheet, which styles each class its markup uses, follows the page's appearance and is as tall as its content. It needs zola and vpkit-zola as a sibling checkout (`../vpkit-zola`). `node scripts/build-docs.mjs --check`, before it, fails while `docs/static/example.css` is not what the examples need.
 
 ## License
 

@@ -1,0 +1,116 @@
+# vpkit's documentation, a site built with vpkit-zola, the Zola theme on
+# vpkit's layout (README.md). zola serve here; base_url is zola serve's
+# until the site is published somewhere.
+base_url = "http://127.0.0.1:1111"
+title = "vpkit"
+description = "VitePress's look as a Tailwind CSS v4 theme: its variables, utilities, components and color themes."
+theme = "vpkit-zola"
+compile_sass = false
+build_search_index = false
+
+[markdown]
+github_alerts = true
+bottom_footnotes = true
+insert_anchor_links = "right"
+external_links_target_blank = true
+external_links_no_referrer = true
+
+[markdown.highlighting]
+style = "inline"
+light_theme = "github-light"
+dark_theme = "github-dark"
+
+[extra]
+logo = "/logo.svg"
+nav = [
+  { text = "Guide", link = "@/guide/what-is-vpkit.md", active_match = "^/guide/" },
+  { text = "Components", link = "@/components/_index.md", active_match = "^/components/" },
+  { text = "Links", items = [
+    { text = "vpkit-zola", link = "https://github.com/at-least/vpkit-zola" },
+    { text = "Changelog", link = "https://github.com/at-least/vpkit/commits/main" },
+    { text = "VitePress", link = "https://vitepress.dev" },
+  ] },
+]
+social_links = [{ icon = "github", link = "https://github.com/at-least/vpkit" }]
+edit_link = { pattern = "https://github.com/at-least/vpkit/edit/main/docs/content/:path", text = "Edit this page on GitHub" }
+footer = { message = "Released under the MIT License.", copyright = "Copyright © 2026-present newlix" }
+outline = [2, 3]
+search = true
+
+[[extra.sidebar."/guide/"]]
+text = "Introduction"
+items = [
+  { text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
+  { text = "Getting Started", link = "@/guide/getting-started.md" },
+]
+
+[[extra.sidebar."/guide/"]]
+text = "Using vpkit"
+items = [
+  { text = "Utilities and Variables", link = "@/guide/utilities.md" },
+  { text = "Theming", link = "@/guide/theming.md" },
+  { text = "Docs Layout", link = "@/guide/layout.md" },
+]
+
+[[extra.sidebar."/guide/"]]
+text = "Development"
+items = [
+  { text = "Tests", link = "@/guide/tests.md" },
+]
+
+[[extra.sidebar."/guide/"]]
+items = [{ text = "Components", link = "@/components/_index.md" }]
+
+[[extra.sidebar."/components/"]]
+text = "Components"
+items = [{ text = "Overview", link = "@/components/_index.md" }]
+
+[[extra.sidebar."/components/"]]
+text = "Actions"
+items = [
+  { text = "Button", link = "@/components/button.md" },
+  { text = "Icon Button", link = "@/components/icon-btn.md" },
+  { text = "Link", link = "@/components/link.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Forms"
+items = [
+  { text = "Input", link = "@/components/input.md" },
+  { text = "Field", link = "@/components/field.md" },
+  { text = "Toggle", link = "@/components/toggle.md" },
+  { text = "Choice", link = "@/components/choice.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Text"
+items = [
+  { text = "Badge", link = "@/components/badge.md" },
+  { text = "Code", link = "@/components/code.md" },
+  { text = "Key", link = "@/components/kbd.md" },
+  { text = "Highlight", link = "@/components/mark.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Blocks"
+items = [
+  { text = "Alert", link = "@/components/alert.md" },
+  { text = "Card", link = "@/components/card.md" },
+  { text = "Table", link = "@/components/table.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Menus and Overlays"
+items = [
+  { text = "Dropdown", link = "@/components/dropdown.md" },
+  { text = "Tabs", link = "@/components/tabs.md" },
+  { text = "Dialog", link = "@/components/dialog.md" },
+  { text = "Toast", link = "@/components/toast.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Status"
+items = [
+  { text = "Spinner", link = "@/components/spinner.md" },
+  { text = "Progress", link = "@/components/progress.md" },
+]
