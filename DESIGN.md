@@ -398,7 +398,7 @@ One commit per step, each with its cases green (`npm test`) and its page of the 
 12. **The apps' second round** (2026-10-10): the rules for a component inside a `vp-doc` (decision 10), `vp-badge-outline`, `vp-skip`, `vp-nav-link`, `vp-topbar`, one commit each, each with its cases and its page; then the two sites of totality onto them.
 13. **crashcart** (2026-10-10, the owner: open decisions 11 to 14 as recommended, then crashcart onto vpkit): `vp-hamburger`, `vp-card-outline`, `vp-btn-ghost`, `vp-empty`, one commit each with its cases and its page; the store onto `vp-hamburger`; then crashcart onto the components, verified on a live server (every route at 1280 and 375, light and dark, its layout audit on each).
 14. **The upstream comparison** (2026-10-10, the owner: a clone of vuejs/vitepress is the standard): every file vpkit ports or copies diffed against the clone at the tag; three deviations fixed, `test/tokens.mjs` added so the theme is held to its sources as the components are (below).
-15. **The apps onto vpkit's page** (2026-10-10, the owner: 各app不要偏離，統一僅可能改用vpkit的標準): `base.css` carries VitePress's `body` and placeholder rules, each app drops its own copy and its own focus ring, one commit per repository (below); crashcart waits for a push, since its vpkit is a GitHub pin.
+15. **The apps onto vpkit's page** (2026-10-10, the owner: 各app不要偏離，統一僅可能改用vpkit的標準): `base.css` carries VitePress's `body` and placeholder rules, each app drops its own copy and its own focus ring, one commit per repository (below), all pushed the same day; crashcart's came last, after vpkit's push moved its pin.
 
 ## The review of 2026-10-10
 
@@ -453,7 +453,7 @@ The owner's second instruction the same day: the apps are not to deviate; as far
 | vpkit-zola | its verbatim copy of the two rules deleted | 372b642 |
 | totality | the store's and the admin's body utilities gone (the store keeps its flex column), the input outline rule gone from `totality.css`, both stylesheets rebuilt (the rem breakpoints landed with them) | 1a498921 |
 | own-drive | imports `base.css`; its focus ring, placeholder color, `color-scheme` and partial reduced-motion rule gone; `vp-btn` as it is (the 0.3rem gap, the pointer and the plain disabled cursor gone); the inputs' dead `focus:outline-none` gone; its DESIGN.md says what is vpkit's now | d58d5b8 |
-| crashcart | the same edit prepared (its `@layer base` body block, `a { color: inherit }` and its focus ring go; `::selection` and its divider-colored borders stay): waits for vpkit to be pushed, since its vpkit is a GitHub commit pin, which the breakpoints also wait on | pending |
+| crashcart | its `@layer base` body block, `a { color: inherit }` and its focus ring gone (`::selection` and its divider-colored borders stay); its vpkit pin moved to 1791880 once vpkit was pushed, which brought the rem breakpoints too; every rule that changed in its shipped stylesheet was listed and none moves layout at the default font size, so its live layout audit was not rerun | af26e08 |
 
 Visible consequences, for the owner to veto: placeholders lighten from `text-2` to `text-3` in totality and own-drive; own-drive's buttons and links show the browser's focus ring instead of a 2px brand one; own-drive's icon-and-label gap widens from 0.3rem to vp-btn's 0.5rem. Not unified, as theme-level choices the owner has not made for vpkit: totality's AA re-pointing of the brand button and the dark `brand-2`, crashcart's border and light `brand-3` re-pointing, the two apps' `::selection` colors.
 
