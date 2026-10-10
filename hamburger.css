@@ -1,0 +1,87 @@
+/* vpkit — hamburger, ported from VitePress's VPNavBarHamburger: the
+ * button at the end of the navbar that opens the nav screen on a phone,
+ * three bars that turn into a cross while it is open. An optional import:
+ * `@import "vpkit/hamburger.css";`
+ *
+ *   <button class="vp-hamburger md:hidden" type="button" aria-label="Menu"
+ *           aria-expanded="false" aria-controls="nav-screen">
+ *     <span class="vp-hamburger-box"><span></span><span></span><span></span></span>
+ *   </button>
+ *
+ * `vp-hamburger` is the button: 3rem wide and the navbar's height
+ * (--vp-nav-height), centering `vp-hamburger-box`, the 1rem by 0.875rem
+ * frame the three bars move in (VPNavBarHamburger's container; the bars
+ * are its three empty spans). A bar is 0.125rem of text-1. Hovered, the
+ * bars slide apart; open (`aria-expanded="true"`, where VitePress has
+ * `.active`) the top and bottom bars cross and the middle one slides out
+ * of the frame, and hovered open they turn text-2. The hovers are
+ * `@variant hover`, like Tailwind's `hover:`: only on a device that can
+ * hover, where VitePress's also stick to a tapped button.
+ *
+ * When the button shows is the page's (`md:hidden`: VitePress hides it
+ * from 768px, where the bar shows the menu), as are opening the screen
+ * and the screen itself: set `aria-expanded` on the button, and
+ * `aria-controls` to the screen's id. One addition: under forced colors
+ * (Windows' contrast themes) the browser erases backgrounds, and the bars
+ * are backgrounds, so there they take the text color. */
+
+@layer components {
+  .vp-hamburger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: var(--vp-nav-height);
+  }
+
+  .vp-hamburger-box {
+    position: relative;
+    width: 1rem;
+    height: 0.875rem;
+    overflow: hidden;
+  }
+
+  :where(.vp-hamburger-box) > span {
+    position: absolute;
+    left: 0;
+    width: 1rem;
+    height: 0.125rem;
+    background-color: var(--vp-c-text-1);
+    transition: top 0.25s, background-color 0.5s, transform 0.25s;
+  }
+
+  :where(.vp-hamburger-box) > span:nth-child(1) { top: 0; transform: translateX(0); }
+  :where(.vp-hamburger-box) > span:nth-child(2) { top: 0.375rem; transform: translateX(0.5rem); }
+  :where(.vp-hamburger-box) > span:nth-child(3) { top: 0.75rem; transform: translateX(0.25rem); }
+
+  /* hovered, the bars slide apart; a rule of its own, as in button.css */
+  .vp-hamburger {
+    @variant hover {
+      & :where(.vp-hamburger-box) > span:nth-child(1) { transform: translateX(0.25rem); }
+      & :where(.vp-hamburger-box) > span:nth-child(2) { transform: translateX(0); }
+      & :where(.vp-hamburger-box) > span:nth-child(3) { transform: translateX(0.5rem); }
+    }
+  }
+
+  /* open: the cross. After the hover rules, which it outranks by order at
+     the same specificity, as VitePress's .active rules do */
+  .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(1) { top: 0.375rem; transform: translateX(0) rotate(225deg); }
+  .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(2) { top: 0.375rem; transform: translateX(1rem); }
+  .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(3) { top: 0.375rem; transform: translateX(0) rotate(135deg); }
+
+  .vp-hamburger[aria-expanded="true"] {
+    @variant hover {
+      & :where(.vp-hamburger-box) > span {
+        background-color: var(--vp-c-text-2);
+        transition: top 0.25s, background-color 0.25s, transform 0.25s;
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    :where(.vp-hamburger-box) > span {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

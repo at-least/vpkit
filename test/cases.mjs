@@ -1067,6 +1067,34 @@ cases.push({
   checks: [{ target: 'bar', props: ['background-color', 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', ...TRANSITION] }],
 });
 
+// hamburger: VPNavBarHamburger (its container and three bars) against
+// vp-hamburger, at rest, hovered, open (`.active` there,
+// aria-expanded="true" here) and hovered open, on a phone's width, where
+// VitePress shows it (it is display:none from 768px; vpkit leaves that to
+// the page)
+const HAMBURGER_BAR = ['position', 'top', 'left', 'width', 'height', 'background-color', 'transform', ...TRANSITION];
+const hamburger = (cls, box, bars, extra = '') =>
+  `<button data-t="btn" class="${cls}" type="button" aria-label="Menu"${extra}><span data-t="box" class="${box}">` +
+  bars.map((b, i) => `<span data-t="bar${i + 1}"${b ? ` class="${b}"` : ''}></span>`).join('') +
+  '</span></button>';
+const vpkitHamburger = (open) => hamburger('vp-hamburger', 'vp-hamburger-box', ['', '', ''], ` aria-expanded="${open}"`);
+for (const open of [false, true]) {
+  cases.push({
+    name: `hamburger${open ? ' open' : ''}`,
+    width: 375,
+    upstreamFiles: ['components/VPNavBarHamburger.vue'],
+    upstream: hamburger(`VPNavBarHamburger${open ? ' active' : ''}`, 'container', ['top', 'middle', 'bottom']),
+    vpkit: vpkitHamburger(open),
+    checks: [
+      { target: 'btn', props: ['display', 'justify-content', 'align-items', 'width', 'height'] },
+      { target: 'box', props: ['position', 'width', 'height', 'overflow-x', 'overflow-y'] },
+      ...[1, 2, 3].map((i) => ({ target: `bar${i}`, props: HAMBURGER_BAR })),
+      ...[1, 2, 3].map((i) => ({ target: `bar${i}`, on: 'btn', state: ['hover'], props: HAMBURGER_BAR })),
+    ],
+  });
+}
+touch('hamburger', vpkitHamburger(false), [1, 2, 3].map((i) => ({ target: `bar${i}`, on: 'btn', ...AT_REST, props: ['transform'] })));
+
 // inside a vp-doc (content.css), whose rules for links, paragraphs and
 // headings outrank a component's own (VitePress's components win there by
 // Vue's scoping, which the port drops): each component keeps its look. A

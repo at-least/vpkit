@@ -11,7 +11,8 @@
 // a different forced state than vpkit (`[]`: none, at rest). A case's
 // `upstreamFiles` are originals only that case's upstream page loads, for
 // components whose stylesheets name generic classes (`.title`, `.link`)
-// that the other cases' markup also uses.
+// that the other cases' markup also uses. A case's `width` is the
+// viewport's, for a component VitePress shows only on a narrow screen.
 //
 //   npm test
 //   CASES='^toggle' node test/compare.mjs   only the cases it matches
@@ -98,8 +99,9 @@ function same(a, b, prop, tolerance = 1 / 32) {
 // totality and own-drive do), which these declarations stand in for.
 const BODY = 'color:var(--vp-c-text-1);background-color:var(--vp-c-bg)';
 
-async function open(browser, css, body, dark, touch) {
+async function open(browser, css, body, dark, touch, width) {
   const page = await browser.newPage();
+  if (width) await page.setViewportSize({ width, height: 720 });
   const cdp = await page.context().newCDPSession(page);
   // Emulation.setEmulatedMedia takes a `hover` feature but Chromium
   // ignores it; touch emulation is what makes (hover: none) match
@@ -177,8 +179,8 @@ try {
         : ['upstream', `${sides.upstream}\n${upstreamCss(c.upstreamFiles ?? [])}`, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
-        ref: await open(browser, refCss, refBody, dark, c.touch),
-        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch),
+        ref: await open(browser, refCss, refBody, dark, c.touch, c.width),
+        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch, c.width),
       };
       for (const check of c.checks) {
         // refTarget: the reference's element when it isn't the same one

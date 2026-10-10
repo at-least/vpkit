@@ -35,9 +35,12 @@ const toggle = (checked) =>
   `<button class="vp-toggle" type="button" role="switch" aria-checked="${checked}"><span class="vp-toggle-check"></span></button>`;
 const bar = (percent) =>
   `<span class="vp-progress" style="width:7rem"><span class="vp-progress-bar" style="width:${percent}%"></span></span>`;
+const hamburger = (open) =>
+  `<button class="vp-hamburger" type="button" aria-label="Menu" aria-expanded="${open}"><span class="vp-hamburger-box"><span></span><span></span><span></span></span></button>`;
 const PAIRS = [
   ['a checked and an unchecked toggle', toggle(true), toggle(false)],
   ['a progress bar at 40% and at 0%', bar(40), bar(0)],
+  ['an open and a closed hamburger', hamburger(true), hamburger(false)],
 ];
 
 const css = vpkitCss();
