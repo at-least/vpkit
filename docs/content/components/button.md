@@ -1,6 +1,6 @@
 +++
 title = "Button"
-description = "VitePress's VPButton as a class: the alt, brand, sponsor and danger themes, in two sizes."
+description = "VitePress's VPButton as a class: the alt, brand, sponsor, danger and ghost themes, in two sizes."
 +++
 
 # Button
@@ -21,6 +21,7 @@ VitePress's `VPButton`.
 - `vp-btn` alone: the medium size, alt (gray) theme.
 - `vp-btn-brand`, `vp-btn-sponsor`: the other two themes.
 - `vp-btn-danger`: vpkit's addition, own-drive's danger button: danger text on the danger tint, the same hovered and pressed, since the ground is the warning. The tint is laid over the page's color inside the button, so the label keeps its contrast on an alert, a card or a dialog too.
+- `vp-btn-ghost`: vpkit's addition, crashcart's ghost button: no border and no ground, secondary text, and on hover text on the soft gray ground, the colors of the [Icon Button](@/components/icon-btn.md), for a quiet action beside a brand or an alt one.
 - `vp-btn-big`: the big size.
 
 {% <vp_example title="The big size" layout="row"> %}
@@ -31,6 +32,12 @@ VitePress's `VPButton`.
 Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
 
 Inside a `vp-doc` (the markdown's styles, `content.css`), a button link keeps its look: the markdown's rule for links, which would underline it and color it as a link, is outranked by the button's own.
+
+{% <vp_example title="A ghost button beside a brand one" layout="row"> %}
+<button class="vp-btn vp-btn-ghost" type="button">Sign out</button>
+<a class="vp-btn vp-btn-ghost" href="#">newlix</a>
+<button class="vp-btn vp-btn-brand" type="button">Save</button>
+{% </vp_example> %}
 
 ## Icons and the disabled state
 

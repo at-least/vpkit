@@ -14,6 +14,12 @@
  *                                  so the ground is opaque: on an alert, a
  *                                  card or a dialog it is the ground the
  *                                  theme contract holds the label to
+ *   vp-btn-ghost                   vpkit's: no border and no ground, text-2,
+ *                                  and hovered or pressed text-1 on the soft
+ *                                  gray ground: vp-icon-btn's colors on the
+ *                                  button's box (crashcart's `btn-ghost`),
+ *                                  for a quiet action beside a brand or an
+ *                                  alt one
  *   vp-btn-big                     the big size
  *
  * Two additions VPButton doesn't have, because the apps need them: the
@@ -135,6 +141,18 @@
     --vp-btn-active-bg: var(--vp-c-bg);
 
     background-image: linear-gradient(var(--vp-c-danger-soft), var(--vp-c-danger-soft));
+  }
+
+  .vp-btn-ghost.vp-btn {
+    --vp-btn-border: transparent;
+    --vp-btn-text: var(--vp-c-text-2);
+    --vp-btn-bg: transparent;
+    --vp-btn-hover-border: transparent;
+    --vp-btn-hover-text: var(--vp-c-text-1);
+    --vp-btn-hover-bg: var(--vp-c-default-soft);
+    --vp-btn-active-border: transparent;
+    --vp-btn-active-text: var(--vp-c-text-1);
+    --vp-btn-active-bg: var(--vp-c-default-soft);
   }
 
   .vp-btn-big.vp-btn {

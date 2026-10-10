@@ -1,4 +1,5 @@
 import {
+  CRASHCART_BTN_GHOST,
   OWN_DRIVE_BAR,
   OWN_DRIVE_BAR_FILL,
   OWN_DRIVE_BTN_DANGER,
@@ -787,6 +788,32 @@ cases.push({
     { target: 'btn', state: ['hover', 'active'], props: [...COLORS, 'background-image'] },
   ],
 });
+
+// ghost button: crashcart's btn-ghost recipe (utilities over vp-btn)
+// against vp-btn vp-btn-ghost, at rest, hovered and pressed; its colors are
+// vp-icon-btn's, checked against an icon button beside it
+cases.push({
+  name: 'button ghost',
+  reference: `<button data-t="btn" class="${CRASHCART_BTN_GHOST}" type="button">Sign out</button>`,
+  vpkit: `<button data-t="btn" class="vp-btn vp-btn-ghost" type="button">Sign out</button>`,
+  checks: [
+    { target: 'btn', props: [...BUTTON_BOX, ...COLORS, ...TRANSITION] },
+    { target: 'btn', state: ['hover'], props: COLORS },
+    { target: 'btn', state: ['hover', 'active'], props: COLORS },
+  ],
+});
+cases.push({
+  name: 'button ghost, the icon button\'s colors',
+  reference: `<button data-t="btn" class="vp-icon-btn" type="button" aria-label="Close"><span class="vpi-delete"></span></button>`,
+  vpkit: `<button data-t="btn" class="vp-btn vp-btn-ghost" type="button">Sign out</button>`,
+  checks: [
+    { target: 'btn', props: ['color', 'background-color'] },
+    { target: 'btn', state: ['hover'], props: ['color', 'background-color'] },
+  ],
+});
+touch('button ghost', `<button data-t="btn" class="vp-btn vp-btn-ghost" type="button">Sign out</button>`, [
+  { target: 'btn', ...AT_REST, props: COLORS },
+]);
 
 // choice: totality's selectable card around a radio against vp-choice, at
 // rest, hovered, checked, and with the radio focused from the keyboard.

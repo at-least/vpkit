@@ -1335,6 +1335,17 @@ button:focus-visible {
     --vp-btn-active-bg: var(--vp-c-bg);
     background-image: linear-gradient(var(--vp-c-danger-soft), var(--vp-c-danger-soft));
   }
+  .vp-btn-ghost.vp-btn {
+    --vp-btn-border: transparent;
+    --vp-btn-text: var(--vp-c-text-2);
+    --vp-btn-bg: transparent;
+    --vp-btn-hover-border: transparent;
+    --vp-btn-hover-text: var(--vp-c-text-1);
+    --vp-btn-hover-bg: var(--vp-c-default-soft);
+    --vp-btn-active-border: transparent;
+    --vp-btn-active-text: var(--vp-c-text-1);
+    --vp-btn-active-bg: var(--vp-c-default-soft);
+  }
   .vp-btn-big.vp-btn {
     --vp-btn-radius: 1.5rem;
     --vp-btn-padding: 1.5rem;

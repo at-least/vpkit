@@ -49,6 +49,14 @@ export const OWN_DRIVE_MSG =
 export const OWN_DRIVE_BAR = 'block h-[.3rem] bg-[color:var(--vp-c-default-soft)] rounded-[.15rem] overflow-hidden';
 export const OWN_DRIVE_BAR_FILL = 'block h-full bg-brand-1 w-0';
 
+// crashcart src/web/styles/app.css at 78e4d5b, as of 2026-10-10: its
+// `.btn-ghost` (over `.btn`'s transparent border), as utilities over
+// vp-btn, the reference for vp-btn-ghost; the same colors as vp-icon-btn's
+export const CRASHCART_BTN_GHOST =
+  'vp-btn border-transparent bg-transparent text-text-2' +
+  ' hover:border-transparent hover:bg-default-soft hover:text-text-1' +
+  ' active:border-transparent active:bg-default-soft active:text-text-1';
+
 // own-drive src/web.rs at ac7a1d4, verbatim as of 2026-10-10: a file card
 // of the grid view (`card()`, web.rs:1218): transparent in a divider
 // border, the reference for vp-card-outline's border and radius (its
