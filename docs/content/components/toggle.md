@@ -24,7 +24,7 @@ VitePress's `VPSwitch`, with `VPSwitchAppearance` as a modifier.
 - `vp-toggle`: the 2.5rem × 1.375rem track on the input tokens, a brand border on hover. `vp-toggle-check`: the knob, which slides to the right while the button's `aria-checked` is `"true"`. That state is vpkit's addition (VPSwitch has none of its own; only the appearance switch moves its knob, by `.dark`): keep `aria-checked` in step with the setting, and the component reads nothing else.
 - `vp-toggle-icon`: the round clip for an icon in the knob, any `vpi-*` icon of `icons.css` (0.75rem, `text-2`, `text-1` in dark), placed as VPSwitch places it. The icon's class list must start with the `vpi-` class, as VPSwitch's `[class^='vpi-']` rule has it.
 
-The page's script keeps `aria-checked` in step; here it is an `onclick`:
+The page's script keeps `aria-checked` in step; here an `onclick`:
 
 {% <vp_example title="A switch with an icon, flipped on click" layout="row"> %}
 <button class="vp-toggle" type="button" role="switch" aria-checked="true" aria-label="Favorite"

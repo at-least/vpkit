@@ -5,7 +5,7 @@ description = "totality's input on VitePress's input variables: inputs, selects 
 
 # Input
 
-VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is totality's input, built on those variables.
+VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is totality's, built on those variables.
 
 ```css
 @import "vpkit/input.css";
