@@ -82,11 +82,10 @@
     }
   }
 
-  /* inside a vp-doc (content.css), whose rules for a paragraph, a link
-     and code outrank the alert's (which add no specificity, the :where()
-     above): the alert's own, as VitePress's vp-doc.css restates its
-     custom block's, at the specificity of two classes. The block takes the
-     markdown's margin there, as the custom block does */
+  /* inside a vp-doc (content.css): the block takes the markdown's margin
+     and its paragraphs the custom block's margins and line, as VitePress's
+     vp-doc.css restates them for its custom block. Its links and code need
+     no restatement: content.css is in @layer base, below these rules */
   .vp-doc .vp-alert {
     margin: 1rem 0;
   }
@@ -98,26 +97,6 @@
 
   .vp-doc .vp-alert p:first-child {
     margin: 0;
-  }
-
-  .vp-doc .vp-alert a {
-    color: var(--vp-alert-link);
-    font-weight: 500;
-  }
-
-  .vp-doc .vp-alert a {
-    @variant hover {
-      color: var(--vp-alert-link-hover);
-
-      & > code {
-        color: var(--vp-alert-link-hover);
-      }
-    }
-  }
-
-  .vp-doc .vp-alert code {
-    color: var(--vp-alert-link);
-    background-color: var(--vp-alert-code-bg);
   }
 
   /* the chip VitePress draws around inline code in its docs (vp-doc.css),

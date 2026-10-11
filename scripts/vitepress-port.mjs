@@ -232,7 +232,9 @@ export function portCss(component) {
 // loads them before any component), then each component's port in the
 // order VitePress's bundle has them (vitepress.dev's style.css: a child's
 // styles before its parent's), so rules of two components that tie resolve
-// as there; all in @layer components
+// as there. layout.css is in @layer components; content.css in @layer base,
+// below every component, as VitePress's components outrank its vp-doc.css
+// by Vue's scoping, which the port drops
 export const FILES = {
   'layout.css': {
     header: `/* vpkit — the page layout, ported from VitePress's components
@@ -274,6 +276,7 @@ export const FILES = {
     ],
   },
   'content.css': {
+    layer: 'base',
     header: `/* vpkit — markdown content, everything inside \`<div class="vp-doc">\`:
  * VitePress's styles/components/custom-block.css, vp-code-group.css and
  * vp-doc.css (v2.0.0-alpha.20) verbatim, in the order its theme imports
@@ -281,6 +284,11 @@ export const FILES = {
  * a container is weight 500 by vp-doc.css, a code block in one takes the
  * code block's color. An optional import:
  * \`@import "vpkit/content.css";\`
+ *
+ * In \`@layer base\`, below the components: a vp-btn, a vp-card or any
+ * other component inside a vp-doc keeps its own look and its own states
+ * (VitePress's components win there by Vue's scoping, which the port
+ * drops), and a utility still wins as it does everywhere.
  *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
  * with \`.header-anchor\` links, \`div.custom-block\` containers and GitHub
@@ -302,12 +310,12 @@ export const FILES = {
 const indent = (css) => css.split('\n').map((l) => (l ? `  ${l}` : l)).join('\n');
 
 export function fileText(name) {
-  const { header, globals, components } = FILES[name];
+  const { header, globals, components, layer = 'components' } = FILES[name];
   const sections = [
     ...globals.map(([file, what]) => `  /* ${file}: ${what} */\n${indent(readFileSync(join(ROOT, 'test/upstream', file), 'utf8').trim())}`),
     ...components.map((c) => `  /* ${c} (${LAYOUT[c].file}) */\n${indent(portCss(c))}`),
   ];
-  return `${header}\n\n@layer components {\n${sections.join('\n\n')}\n}\n`;
+  return `${header}\n\n@layer ${layer} {\n${sections.join('\n\n')}\n}\n`;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

@@ -41,9 +41,9 @@
     font-size: 0.875rem;
   }
 
-  /* inside a vp-doc, whose rule for a paragraph (margins, a 28px line)
-     outranks the lines' own: no margins, the page's line height, at the
-     specificity of two classes */
+  /* inside a vp-doc (content.css), whose rule for a paragraph gives
+     margins and a 28px line, which the lines leave to the page: no
+     margins, the page's line height */
   .vp-doc .vp-empty-title,
   .vp-doc .vp-empty-desc {
     margin: 0;

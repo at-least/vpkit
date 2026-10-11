@@ -6,6 +6,11 @@
  * code block's color. An optional import:
  * `@import "vpkit/content.css";`
  *
+ * In `@layer base`, below the components: a vp-btn, a vp-card or any
+ * other component inside a vp-doc keeps its own look and its own states
+ * (VitePress's components win there by Vue's scoping, which the port
+ * drops), and a utility still wins as it does everywhere.
+ *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
  * with `.header-anchor` links, `div.custom-block` containers and GitHub
  * alerts, `div[class*='language-']` code blocks with their copy button,
@@ -15,7 +20,7 @@
  * two themes, vp-code.css, in VitePress). Written by
  * scripts/vitepress-port.mjs. */
 
-@layer components {
+@layer base {
   /* custom-block.css: containers and GitHub alerts */
   .custom-block {
     border: 1px solid transparent;

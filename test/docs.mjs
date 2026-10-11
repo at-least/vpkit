@@ -41,10 +41,11 @@ const TYPES = { '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/wo
 const WIDTHS = [1280, 375];
 const failures = [];
 
-// the components: what the component tests compile, less the base and the icons
+// the components: what the component tests compile, less the base, the icons
+// and the markdown (content.css, there for the "in a doc" cases)
 const components = [...readFileSync(join(ROOT, 'test/entry.css'), 'utf8').matchAll(/^@import "\.\.\/([a-z-]+)\.css";/gm)]
   .map((m) => m[1])
-  .filter((name) => name !== 'index' && name !== 'icons');
+  .filter((name) => !['index', 'icons', 'content'].includes(name));
 const imported = [...readFileSync(join(DOCS, 'css/example.css'), 'utf8').matchAll(/^@import "\.\.\/\.\.\/([a-z-]+)\.css";/gm)].map((m) => m[1]);
 const pages = readdirSync(join(DOCS, 'content/components')).filter((f) => f !== '_index.md').map((f) => f.replace(/\.md$/, ''));
 for (const name of components) {

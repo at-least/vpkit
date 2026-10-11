@@ -915,24 +915,42 @@ for (const value of ['', 'undefined']) {
   });
 }
 
-// link components inside an alert keep their own look at rest: the alert's
-// rule for links underlines and recolors any <a> that doesn't set those
-// itself (only its hover dimming still reaches them, as it reaches vp-btn).
-// Block wrappers: a card's heading inside a <p> would be parsed out of it
+// link components inside an alert keep their own look, at rest and
+// hovered: the alert's rule for links underlines, recolors and weights any
+// <a> that doesn't set those itself (only its hover dimming still reaches
+// them, as it reaches vp-btn). Inside a vp-doc too, where the markdown's
+// link rules are in play. Block
+// wrappers: a card's heading inside a <p> would be parsed out of it
 const LOOK = ['color', 'text-decoration-line', 'font-weight'];
-for (const [name, markup, checks] of [
-  ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [{ target: 'x', props: LOOK }]],
-  ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [{ target: 'x', props: LOOK }]],
+const HOVER_COLOR = (target) => ({ target, state: ['hover'], props: ['color'] });
+const IN_ALERT = [
+  ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
+  ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
+  // an icon has no text for the alert's link weight to draw
+  ['icon button', `<a data-t="x" class="vp-icon-btn" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
   ['card', card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')), [
-    { target: 'card', props: ['color', 'text-decoration-line'] },
-    { target: 'title', props: ['color', 'font-weight', 'text-decoration-line'] },
+    { target: 'card', props: LOOK },
+    HOVER_COLOR('card'),
+    { target: 'title', props: LOOK },
     { target: 'details', props: ['color', 'font-weight'] },
   ]],
-]) {
+];
+for (const [name, markup, checks] of IN_ALERT) {
   cases.push({
     name: `${name} inside an alert`,
     reference: `<div>${markup}</div>`,
     vpkit: `<div class="vp-alert vp-alert-tip">${markup}</div>`,
+    checks,
+  });
+}
+for (const [name, markup, checks] of [
+  ...IN_ALERT,
+  ['button', `<a data-t="x" class="vp-btn vp-btn-brand" href="#">Go</a>`, [{ target: 'x', props: [...LOOK, 'background-color'] }, { target: 'x', state: ['hover'], props: ['color', 'background-color'] }]],
+]) {
+  cases.push({
+    name: `${name} inside an alert in a doc`,
+    reference: `<div>${markup}</div>`,
+    vpkit: inDoc(`<div class="vp-alert vp-alert-tip">${markup}</div>`),
     checks,
   });
 }
@@ -1199,9 +1217,10 @@ for (const open of [false, true]) {
 }
 touch('hamburger', vpkitHamburger(false), [1, 2, 3].map((i) => ({ target: `bar${i}`, on: 'btn', ...AT_REST, props: ['transform'] })));
 
-// inside a vp-doc (content.css), whose rules for links, paragraphs and
-// headings outrank a component's own (VitePress's components win there by
-// Vue's scoping, which the port drops): each component keeps its look. A
+// inside a vp-doc (content.css, which test/entry.css compiles last, as an
+// app imports it): each component keeps its look and its states, since
+// content.css is in @layer base, below the components (VitePress's win
+// there by Vue's scoping, which the port drops). A
 // button, a card and an icon button against their originals outside a
 // doc; an alert against VitePress's custom block inside one, as its docs
 // render it; the rest against themselves outside a doc

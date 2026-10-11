@@ -30,10 +30,9 @@
     color: var(--vp-c-danger-1);
   }
 
-  /* inside a vp-doc (content.css), whose rule for a paragraph outranks
-     the error line's margin and line height */
+  /* inside a vp-doc (content.css), whose rule for a paragraph gives the
+     line a bottom margin: none, the error's top margin kept */
   .vp-doc .vp-field-error {
     margin: 0.5rem 0 0;
-    line-height: 1.5rem;
   }
 }
