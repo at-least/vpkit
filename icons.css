@@ -8,9 +8,9 @@
  * and permission notice is in LICENSE-Lucide). Each is an inline SVG, a
  * data: URL: a page with a Content-Security-Policy allows `img-src data:`,
  * or the browser refuses the masks and every icon shows nothing. vpkit's
- * additions: an unresolved icon masks to nothing, and under forced colors,
- * which replace the background color the mask paints with by the page's,
- * an icon paints in the system's text color. */
+ * addition: under forced colors, which replace the background color the
+ * mask paints with by the page's, an icon paints in the system's text
+ * color. */
 
 @layer components {
   [class^='vpi-'],
