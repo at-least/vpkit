@@ -107,4 +107,4 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 
 A component taken from VitePress is rendered next to its original in a browser and compared, property by property; one VitePress doesn't have is compared the same way with the app recipe it was taken from. [Tests](@/guide/tests.md)
 
-The library's design is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md): the rules every component follows, how one is proven against its original, which components come next and in what order, what stays a utility, and how the apps move onto them.
+The library's design is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md): the rules every component follows, how one is proven against its original, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them.

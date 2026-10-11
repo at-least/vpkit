@@ -10,13 +10,13 @@
 // a page's first frame until the session picks one; a pick must recolor the
 // page and its example frame in both modes, and the next pages the session
 // opens from their first frame; and the stock card must take the page back
-// to tokens.css's colors, on the next pages too. Also held (DESIGN.md
-// records the failures): the theme counts the prose states against the
-// index; a pick's card pressed again on the next visit, an encoded name's
-// too; two picks back to back never through the stock colors; the stock
-// card pressed while a pick loads leaves no theme linked; a pick with no
-// stylesheet is forgotten for the site's theme; with JavaScript off the
-// static link alone; and no page error.
+// to tokens.css's colors, on the next pages too. Also held: the theme
+// counts the prose states against the index; a pick's card pressed again
+// on the next visit, an encoded name's too; two picks back to back never
+// through the stock colors; the stock card pressed while a pick loads
+// leaves no theme linked; a pick with no stylesheet is forgotten for the
+// site's theme; with JavaScript off the static link alone; and no page
+// error.
 //
 //   node test/docs.mjs
 //
