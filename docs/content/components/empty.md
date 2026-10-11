@@ -28,4 +28,4 @@ A title alone works, and so does a line of text with neither class, as own-drive
 <div class="vp-empty">This folder is empty.</div>
 {% </vp_example> %}
 
-Inside a `vp-doc` (the markdown's styles, `content.css`) the lines keep their places: the markdown's rule for paragraphs, which would space them as the markdown's, is outranked by the box's own.
+Inside a `vp-doc` (the markdown's styles, `content.css`) the lines keep their places: the markdown's rule for paragraphs would space them as the markdown's, so the lines set their margins and line for that place.

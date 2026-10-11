@@ -42,7 +42,7 @@ VitePress's custom blocks (`::: tip` and the others).
 
 ## What goes inside
 
-Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too: a `vp-btn`, `vp-card`, `vp-dropdown-item` or `vp-tabs-tab` link is not restyled as a link. Only the alert's link hover dimming applies to it.
+Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component inside an alert keeps its own look too, inside a `vp-doc` as well: a `vp-btn`, `vp-card`, `vp-dropdown-item`, `vp-tabs-tab` or `vp-icon-btn` link is not restyled as a link. Only the alert's link hover dimming applies to it.
 
 {% <vp_example title="A button and a nested alert inside an alert"> %}
 <div class="vp-alert vp-alert-danger">
@@ -66,4 +66,4 @@ A `vp-graded-containers` class anywhere on the page switches warning and caution
 </div>
 {% </vp_example> %}
 
-Inside a `vp-doc` (the markdown's styles, `content.css`) an alert takes the markdown's margin, as VitePress's custom block does, and its paragraphs, links and code keep the alert's look: the markdown's rules for them are outranked by the alert's own.
+Inside a `vp-doc` (the markdown's styles, `content.css`) an alert takes the markdown's margin and its paragraphs the custom block's margins and line, as VitePress's custom block does; its links and code keep the alert's look, since the markdown's rules are below the components (`@layer base`).

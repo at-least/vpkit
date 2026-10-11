@@ -32,4 +32,4 @@ VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, w
 
 The buttons are in a `<form method="dialog">`, which closes the dialog when one is pressed, with no script; Escape closes it too.
 
-Inside a `vp-doc` (the markdown's styles, `content.css`) the title keeps its box: the markdown's rules for headings are outranked by its own.
+Inside a `vp-doc` (the markdown's styles, `content.css`) the title keeps its box: it sets for that place what the markdown's rules for headings would add (a rule, padding, letter spacing, a heading's line).
