@@ -1,6 +1,6 @@
 # vpkit
 
-The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes. Extracted from [rustpress](https://github.com/at-least/rustpress).
+The VitePress default-theme look as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes.
 
 It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests and its theme generators.
 

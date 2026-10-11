@@ -26,9 +26,8 @@ above:
   done
 
 pages/: vitepress.dev as VitePress v2.0.0-alpha.20 rendered it (each
-page's generator meta tag says so), fetched 2026-09-28 by rustpress's
-parity refresh (its parity/cache): the markup the layout tests take each
-component from. Re-sync by fetching the same pages from a site built with
+page's generator meta tag says so), fetched 2026-09-28: the markup the
+layout tests take each component from. Re-sync by fetching the same pages from a site built with
 the new tag.
 
 pages/hydrated/: vitepress.dev in a browser, 2026-10-09, after VitePress's

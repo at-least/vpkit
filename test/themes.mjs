@@ -8,8 +8,7 @@
 // the color ramps and the absolutes. Each theme must define all of them in
 // :root and in .dark, plus --vp-shadow-1…5 in :root, and meet the WCAG
 // contrast minimums of the role each token plays (body text, links,
-// buttons, badge text, alert link hovers) in both modes. Ported from
-// rustpress's tests/theme_contract.rs, check for check. Exits 1, listing
+// buttons, badge text, alert link hovers) in both modes. Exits 1, listing
 // every failure.
 
 import { readFileSync, readdirSync } from 'node:fs';
