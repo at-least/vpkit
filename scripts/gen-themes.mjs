@@ -17,12 +17,10 @@
 //
 // The emitted files are the source of truth once committed: rerun after
 // editing the slot maps, rebuild the documentation's theme gallery index
-// from them (node scripts/build-docs.mjs), then pass `npm test` (rustpress
-// regenerates its docs gallery index from these files too: node
-// scripts/gen-theme-index.mjs there). The four hand-tuned themes (github,
-// catppuccin, nord, rose-pine) are NOT regenerated here; edit them
-// directly. Nor is vitepress, which scripts/fit-vitepress.mjs writes from
-// tokens.css.
+// from them (node scripts/build-docs.mjs), then pass `npm test`. The four
+// hand-tuned themes (github, catppuccin, nord, rose-pine) are NOT
+// regenerated here; edit them directly. Nor is vitepress, which
+// scripts/fit-vitepress.mjs writes from tokens.css.
 //
 //   node scripts/gen-themes.mjs
 //
