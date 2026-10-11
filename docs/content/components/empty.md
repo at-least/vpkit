@@ -22,10 +22,10 @@ The box a list shows when it has nothing to list. VitePress has none; this is cr
 - `vp-empty-title`: the bold line.
 - `vp-empty-desc`: the smaller line under it, at most 52 characters wide, so a long explanation wraps.
 
-A title alone works, and so does a line of text with neither class, as own-drive's empty folder reads: "This folder is empty."
+A title alone works, and so does a line of text with neither class, as own-drive's empty folder reads: "this folder is empty — drop files or folders anywhere, or use the upload button".
 
 {% <vp_example title="A line of text"> %}
-<div class="vp-empty">This folder is empty.</div>
+<div class="vp-empty">this folder is empty — drop files or folders anywhere, or use the upload button</div>
 {% </vp_example> %}
 
 Inside a `vp-doc` (the markdown's styles, `content.css`) the lines keep their places: the markdown's rule for paragraphs would space them as the markdown's, so the lines set their margins and line for that place.

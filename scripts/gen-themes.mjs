@@ -12,8 +12,8 @@
 // dimmed to 0.75 in a container as custom-block.css and alert.css dim a
 // hovered link. vars.css describes -2 as the button's hover ground; the
 // brand button's is emitted as its own --vp-button-brand-hover-bg instead,
-// since in dark mode no one color can be both (measured over all 222
-// themes).
+// since in dark mode no one color can be both (measured over the 222
+// themes of 2026-10-10).
 //
 // The emitted files are the source of truth once committed: rerun after
 // editing the slot maps, rebuild the documentation's theme gallery index

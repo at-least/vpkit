@@ -14,7 +14,7 @@ The rules are unlayered, so a stylesheet loaded later can override any variable 
 
 ## Color themes
 
-`themes/` holds 223 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use, the brand button's hover color `--vp-button-brand-hover-bg`, and the five `--vp-shadow-*`, for light (`:root`) and dark (`.dark`). Import one after vpkit, or link it after your compiled stylesheet:
+`themes/` holds 223 ready-made color themes. Each is a whole design: it sets every `--vp-c-*` color the stylesheets use and the brand button's hover color `--vp-button-brand-hover-bg` for light (`:root`) and dark (`.dark`), and the five `--vp-shadow-*` once, at `:root`. Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";

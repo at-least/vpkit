@@ -66,6 +66,6 @@ vpkit's 223 color themes, each a whole design for light and dark. Pick one below
 
 ## The themes
 
-The 25 curated themes are hand-tuned or mapped by hand from their published palettes; the other 198 are mapped from the Helix editor's palettes.
+Twenty-four of the 25 curated themes are hand-tuned or mapped by hand from their published palettes, and `vitepress` is fitted from `tokens.css`; the other 198 are mapped from the Helix editor's palettes.
 
 {{ <vp_theme_gallery /> }}

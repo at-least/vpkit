@@ -1,6 +1,6 @@
 // The color math vpkit's theme generators and tests share: sRGB luminance
 // and WCAG contrast as test/themes.mjs checks them, alpha compositing with
-// halves rounded up as the test's Math.round does, and the fits the
+// halves rounded up (the test's paint, which it imports), and the fits the
 // generators step a color through, toward black in light mode and toward
 // white in dark. A color is a hex string (`#rrggbb`) or an [r, g, b] array;
 // the fits take and return hex.

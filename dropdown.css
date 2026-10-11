@@ -19,7 +19,8 @@
  * `aria-current` with a value (not "false", "" or "undefined") or
  * `aria-checked="true"`, where VPMenuLink
  * has `.active`. `vp-dropdown-group` holds items under an optional
- * `vp-dropdown-title`; every group but the first has a rule above it.
+ * `vp-dropdown-title`; every group has a rule above it unless it starts
+ * the panel.
  *
  * The markup is flat where VitePress's is two lists (ul.items of li), so
  * VPMenuLink's rule for a link right after a group, which draws the rule

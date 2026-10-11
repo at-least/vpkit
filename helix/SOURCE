@@ -6,5 +6,4 @@ a plain copy of runtime/themes from a Helix checkout, then rerun
 scripts/gen-themes.mjs and update this note.
 
 scripts/gen-themes.mjs reads their [palette] tables, following a file's
-`inherits` as Helix does, to build themes/;
-rustpress also embeds them as its syntax-highlighting color schemes.
+`inherits` as Helix does, to build themes/.
