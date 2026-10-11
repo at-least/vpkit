@@ -2263,7 +2263,7 @@ button:focus-visible {
     padding: 3rem 1.5rem;
     text-align: center;
     color: var(--vp-c-text-2);
-    background-color: var(--vp-c-default-soft);
+    background-color: var(--vp-c-bg-soft);
   }
   .vp-empty-title {
     font-weight: 600;

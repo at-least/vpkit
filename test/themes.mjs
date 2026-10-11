@@ -176,8 +176,9 @@ for (const name of names) {
       // body text, on the page and on the elevated surface
       minimum('text-1', bg, 7.0);
       minimum('text-1', elv, 7.0);
-      // secondary text also sits on the sidebar / code-block surfaces, and
-      // on the elevated one (a menu's group title)
+      // secondary text also sits on the sidebar / code-block surfaces (and
+      // vp-empty's box, on bg-soft), and on the elevated one (a menu's group
+      // title)
       minimum('text-2', bg, 4.5);
       minimum('text-2', hex('bg-alt'), 4.5);
       minimum('text-2', hex('bg-soft'), 4.5);

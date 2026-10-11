@@ -60,6 +60,13 @@ export const known = [
       "the alert's link hover dimming (opacity 0.75) also reaches a vp-btn link inside it; the button sets no opacity of its own",
   },
   {
+    case: /^empty state$/,
+    target: 'box',
+    prop: 'background-color',
+    reason:
+      "vp-empty's box is on bg-soft, vp-card's ground, where crashcart's recipe had default-soft: the contract holds text-2 on bg-soft, and on default-soft 72 of the 446 theme halves were below 4.5:1 (open decision 17)",
+  },
+  {
     case: /^page$/,
     target: 'body',
     prop: 'font-family',
