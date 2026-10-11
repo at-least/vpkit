@@ -1,6 +1,7 @@
 /* vpkit — empty state: the box a list shows when it has nothing to list.
  * VitePress has none; this is crashcart's `empty-frame`, on VitePress's
- * tokens, and own-drive's `EMPTY` line fits inside it. An optional
+ * tokens; own-drive's empty lines (its `EMPTY`) take it as a line of
+ * text. An optional
  * import: `@import "vpkit/empty.css";`
  *
  *   <div class="vp-empty">
