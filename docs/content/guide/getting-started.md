@@ -54,7 +54,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 ## Components
 
-The components are imports of their own, one file each, so a site ships only the ones it uses:
+The components are one import each, so a site ships only the ones it uses:
 
 ```css
 @import "vpkit";

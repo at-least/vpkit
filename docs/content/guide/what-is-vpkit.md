@@ -5,9 +5,9 @@ description = "VitePress's default-theme look as a Tailwind CSS v4 theme: variab
 
 # What is vpkit?
 
-vpkit is the look of [VitePress](https://vitepress.dev)'s default theme as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` theme variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes.
+vpkit is the look of [VitePress](https://vitepress.dev)'s default theme as a [Tailwind CSS v4](https://tailwindcss.com) theme: the `--vp-*` variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode and the Inter webfonts, plus VitePress's components as CSS classes (`vp-btn`, …) and 223 color themes.
 
-It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests and its theme generators.
+It is plain CSS for Tailwind to compile. There is no build step; `npm install` is only needed to run its tests and theme generators.
 
 You are reading a site built on it: [vpkit-zola](https://github.com/at-least/vpkit-zola), a Zola theme on vpkit's layout, draws these pages, and the examples in them are vpkit's components as an app uses them.
 
