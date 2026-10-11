@@ -5,7 +5,12 @@
  *
  * An icon is a `vpi-*` class: a 1em mask over currentColor, so it takes the
  * text color and size around it. The icons are Lucide's (ISC; the copyright
- * and permission notice is in LICENSE-Lucide). */
+ * and permission notice is in LICENSE-Lucide). Each is an inline SVG, a
+ * data: URL: a page with a Content-Security-Policy allows `img-src data:`,
+ * or the browser refuses the masks and every icon shows nothing. vpkit's
+ * additions: an unresolved icon masks to nothing, and under forced colors,
+ * which replace the background color the mask paints with by the page's,
+ * an icon paints in the system's text color. */
 
 @layer components {
   [class^='vpi-'],
@@ -32,6 +37,14 @@
     mask-size: 100% 100%;
     background-color: currentColor;
     color: inherit;
+  }
+  @media (forced-colors: active) {
+    [class^='vpi-']:not(.bg),
+    [class*=' vpi-']:not(.bg),
+    .vp-icon:not(.bg) {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
   }
 
   /* internal icons - used under ISC from https://lucide.dev/ */
