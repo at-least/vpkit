@@ -41,7 +41,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 | --- | --- |
 | `vpkit/theme.css` | the `dark:` variant, the breakpoints, the semantic utilities |
 | `vpkit/tokens.css` | the `--vp-*` variables (plain CSS, no Tailwind directive) |
-| `vpkit/doc.css` | code-block and external-link rules for rendered markdown |
+| `vpkit/doc.css` | the external-link rules for rendered markdown |
 | `vpkit/base.css` | the page's colors and typography, the placeholder color, VitePress's global element rules |
 
 `base.css`'s element rules are unlayered and reset focus outlines (`button:focus { outline: none }`), so a project that draws its own focus rings should leave it out, and paint its page itself:

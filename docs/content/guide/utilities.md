@@ -73,11 +73,11 @@ The variables from VitePress's `vars.css`: colors, typography, z-indexes, and th
 
 ## Global rules
 
-Rules that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines (a focused field keeps a transparent 2px outline where VitePress has none: nothing on screen, the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws), reduced motion, CJK line breaking, the Alpine `[x-cloak]` rule.
+Rules that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines (a focused field keeps a transparent 2px outline where VitePress has none: nothing on screen, the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws), reduced motion, CJK line breaking.
 
 ## Markdown rules
 
-`doc.css`: the code-block line notations under `.vp-doc pre`, the code-block title bar and the external-link icon. VitePress's styles for the rest of the markdown are `content.css`, for a docs theme: [Docs Layout](@/guide/layout.md).
+`doc.css`: the external-link icon. VitePress's styles for the rest of the markdown are `content.css`, for a docs theme: [Docs Layout](@/guide/layout.md).
 
 ## Graded containers
 

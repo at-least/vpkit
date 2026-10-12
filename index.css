@@ -10,7 +10,7 @@
  * tokens.css and theme.css without base.css's global rules:
  *   theme.css   the dark variant, breakpoints and semantic utilities
  *   tokens.css  the --vp-* variables
- *   doc.css     code-block and external-link rules for rendered markdown
+ *   doc.css     the external-link rules for rendered markdown
  *   base.css    the page's colors and VitePress's global element rules
  * Everything project-specific (the @source paths, layer order beyond
  * Tailwind's own) belongs in the importing stylesheet. */

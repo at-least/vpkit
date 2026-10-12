@@ -5,8 +5,8 @@
  * unlayered, so it beats every utility: the color scheme of the
  * appearance, CJK line breaking, bold at 600, the pointer cursor on
  * buttons, overflow-wrap, no autospace in code, the focus-outline resets,
- * reduced motion and the Alpine [x-cloak] rule. A project that draws its
- * own focus rings should not take this file, since `button:focus {
+ * reduced motion. A project that draws its own focus rings should not
+ * take this file, since `button:focus {
  * outline: none }` would remove them.
  *
  * One addition to VitePress's rules (DESIGN.md, rule 12): a focused input,
@@ -129,11 +129,4 @@ button:focus-visible {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
   }
-}
-
-/* Alpine pre-init cloak: with a deferred Alpine bundle, x-cloak elements
-   (nav screen, backdrop, dropdowns, search modal) would flash on first
-   paint without this. Outside every @layer so utilities can't outrank it. */
-[x-cloak] {
-  display: none !important;
 }
