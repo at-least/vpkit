@@ -21,7 +21,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 
 // Intentional differences from upstream, by the key `scope :: property`
-export const known = [
+const known = [
   {
     key: /graded-containers/,
     reason:

@@ -6,7 +6,7 @@
 // the fits take and return hex.
 export const black = '#000000';
 export const white = '#ffffff';
-export const parseHex = (hex) => {
+const parseHex = (hex) => {
   const n = parseInt(hex, 16);
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 };

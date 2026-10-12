@@ -138,20 +138,18 @@ for (const name of names) {
   const css = read(`themes/${name}.css`);
 
   // a complete design: the whole contract in both modes, the shadows once
-  for (const selector of [':root', '.dark']) {
-    const values = modeValues(css, selector);
+  const [root, dark] = [modeValues(css, ':root'), modeValues(css, '.dark')];
+  for (const [selector, values] of [[':root', root], ['.dark', dark]]) {
     const missing = required.filter((token) => !values.has(`--vp-c-${token}`));
     checks++;
     if (missing.length) fail(`theme ${name}, ${selector}: missing tokens ${missing.join(', ')} — a theme must define the whole contract`);
   }
-  const root = modeValues(css, ':root');
   for (let i = 1; i <= 5; i++) {
     checks++;
     if (!root.has(`--vp-shadow-${i}`)) fail(`theme ${name}: missing --vp-shadow-${i}`);
   }
 
-  for (const selector of [':root', '.dark']) {
-    const values = modeValues(css, selector);
+  for (const [selector, values] of [[':root', root], ['.dark', dark]]) {
     const label = `theme ${name} ${selector}`;
     try {
       const hex = (token) => color(values, token);
@@ -242,12 +240,11 @@ for (const name of names) {
       // them (--vp-code-link-hover-color), and the info, note and details
       // containers, whose tint and code tint are the default-soft
       const codeBg = color(values, 'default-soft', bg);
-      const grayTint = color(values, 'default-soft', bg);
       minimum('brand-2', bg, 4.5);
       minimum('brand-2', elv, 4.5);
       minimum('brand-2', codeBg, 4.5);
-      dimmed('brand-2', grayTint);
-      dimmed('brand-2', color(values, 'default-soft', grayTint));
+      dimmed('brand-2', codeBg);
+      dimmed('brand-2', color(values, 'default-soft', codeBg));
 
       // badge / container foregrounds, against their own soft background
       // (composited over the page bg when rgba); a role's -2 is the hovered

@@ -58,7 +58,7 @@ export function mergeThemes(parent, child) {
 }
 
 // A vendored Helix theme with its `inherits` chain followed.
-export function load(stem) {
+function load(stem) {
   const data = parse(readFileSync(join(HELIX, `${stem}.toml`), 'utf8'));
   if ('inherits' in data) return mergeThemes(load(data.inherits), data);
   return data;
@@ -409,7 +409,7 @@ const derivedDark = ({ bg, text1, brand1, success, warning, danger, important, s
   success, warning, danger, important, sponsor,
 });
 
-export function curated() {
+function curated() {
   for (const spec of SPECS) {
     const adjusted = new Set();
     const dm = resolve(spec.dark);
@@ -601,7 +601,7 @@ export function autoSlots(stem) {
   }];
 }
 
-export function auto() {
+function auto() {
   const regenerated = new Set();
   const stems = readdirSync(HELIX).filter((f) => f.endsWith('.toml')).sort().map((f) => f.slice(0, -5));
 
