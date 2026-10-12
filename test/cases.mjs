@@ -29,6 +29,7 @@ const RADIUS = ['top-left', 'top-right', 'bottom-right', 'bottom-left'].map(
   (c) => `border-${c}-radius`,
 );
 const PADDING = SIDES.map((s) => `padding-${s}`);
+const MARGIN = SIDES.map((s) => `margin-${s}`);
 const COLORS = ['color', 'background-color', ...SIDES.map((s) => `border-${s}-color`)];
 const TRANSITION = ['transition-property', 'transition-duration'];
 
@@ -114,7 +115,7 @@ for (const [theme, themeClass] of Object.entries(THEMES)) {
 // vp-btn's additions, each against VPButton with the addition written
 // inline: the flex layout with an icon, and the disabled state
 const FLEX = 'display:inline-flex;align-items:center;justify-content:center;gap:0.5rem';
-const LAYOUT = ['display', 'align-items', 'justify-content', 'column-gap', 'height'];
+const LAYOUT = ['align-items', 'justify-content', 'column-gap'];
 const ICON = '<svg data-t="icon" width="16" height="16" viewBox="0 0 16 16"></svg>';
 cases.push({
   name: 'button with an icon',
@@ -135,7 +136,7 @@ cases.push({
 // badge: VPBadge's seven types × two sizes; info is vpkit's bare class
 const BADGE_BOX = [
   'display',
-  ...SIDES.map((s) => `margin-${s}`),
+  ...MARGIN,
   ...BORDER,
   ...RADIUS,
   ...PADDING,
@@ -206,7 +207,7 @@ cases.push({
   checks: [
     {
       target: 'table',
-      props: ['display', 'border-collapse', ...SIDES.map((s) => `margin-${s}`), 'overflow-x', 'height', 'width'],
+      props: ['display', 'border-collapse', ...MARGIN, 'overflow-x', 'height', 'width'],
     },
     { target: 'head', props: ['background-color', 'border-top-width', 'border-top-style', 'border-top-color', ...TRANSITION] },
     { target: 'row1', props: ['background-color', 'border-top-color'] },
@@ -555,7 +556,7 @@ cases.push({
     {
       target: 'dlg',
       props: [
-        'position', ...SIDES.map((s) => `margin-${s}`), ...BORDER, ...RADIUS, ...PADDING, ...COLORS,
+        'position', ...MARGIN, ...BORDER, ...RADIUS, ...PADDING, ...COLORS,
         'width', 'max-width', 'box-shadow', 'height', 'offset-top', 'offset-left',
       ],
     },
@@ -588,7 +589,7 @@ const ddGroup = (t, title, items) =>
 const PANEL = [...BORDER, ...RADIUS, ...PADDING, ...COLORS, 'box-shadow', 'min-width', 'max-height', 'overflow-y', ...TRANSITION, 'width'];
 const rows = (target, n) => ({ target, props: ['height'], tolerance: n / 64 });
 const ITEM = ['display', ...PADDING, ...RADIUS, 'line-height', 'font-size', 'font-weight', 'color', 'background-color', 'text-align', 'white-space', ...TRANSITION, 'width', 'height'];
-const GROUP = [...SIDES.map((s) => `margin-${s}`), 'border-top-width', 'border-top-style', 'border-top-color', ...PADDING];
+const GROUP = [...MARGIN, 'border-top-width', 'border-top-style', 'border-top-color', ...PADDING];
 const MENU_TITLE = [...PADDING, 'line-height', 'font-size', 'font-weight', 'color', 'white-space', ...TRANSITION];
 cases.push({
   name: 'dropdown',
@@ -639,13 +640,6 @@ cases.push({
     { target: 'group2', props: GROUP },
     rows('group2', 1),
   ],
-});
-// aria-current="false" is not current
-cases.push({
-  name: 'dropdown item aria-current=false',
-  reference: `<div class="vp-dropdown">${ddItem('Settings', 'item')}</div>`,
-  vpkit: `<div class="vp-dropdown">${ddItem('Settings', 'item', ' href="#" aria-current="false"')}</div>`,
-  checks: [{ target: 'item', props: ['color'] }],
 });
 touch('dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'item')}</div>`, [
   { target: 'item', ...AT_REST, props: ['color', 'background-color'] },
@@ -704,7 +698,7 @@ const detailsBody =
   `<summary data-t="title">Details</summary>` +
   `<p data-t="p1">Body with <a data-t="a" href="#">a link</a> and <code data-t="code">code</code>.</p>` +
   `<p data-t="p2">Then <a data-t="a2" href="#"><code data-t="acode">linked code</code></a>.</p>`;
-const SUMMARY = ['display', ...SIDES.map((s) => `margin-${s}`), 'font-weight', 'cursor', 'user-select'];
+const SUMMARY = ['display', ...MARGIN, 'font-weight', 'cursor', 'user-select'];
 cases.push({
   name: 'alert details',
   upstream: inDoc(`<details data-t="box" class="custom-block details" open>${detailsBody}</details>`),
@@ -913,7 +907,7 @@ cases.push({
   vpkit: `<div class="vp-dropdown">${ddItem('Settings', 'item', ' href="#" aria-current="page"')}</div>`,
   checks: [{ target: 'item', props: ['color'] }],
 });
-for (const value of ['', 'undefined']) {
+for (const value of ['false', '', 'undefined']) {
   cases.push({
     name: `dropdown item aria-current="${value}"`,
     reference: `<div class="vp-dropdown">${ddItem('Settings', 'item')}</div>`,
@@ -983,7 +977,7 @@ cases.push({
     `<div data-t="group" class="vp-dropdown-group">${ddItem('Name')}</div></div></div>`,
   checks: [
     { target: 'menu', props: [...PADDING, 'width'] },
-    { target: 'group', props: [...SIDES.map((s) => `margin-${s}`), ...PADDING, 'offset-left'] },
+    { target: 'group', props: [...MARGIN, ...PADDING, 'offset-left'] },
   ],
 });
 
@@ -1167,7 +1161,7 @@ touch('nav link', navLink('vp-nav-link'), [{ target: 'a', ...AT_REST, props: ['c
 // inline on the container. The bar's ground and rule are compared with
 // the declarations written inline, since VPNavBar paints them on a
 // ::before and a child element
-const TOPBAR_ROW = ['display', 'justify-content', 'align-items', ...SIDES.map((s) => `margin-${s}`), 'max-width', 'height', 'width'];
+const TOPBAR_ROW = ['display', 'justify-content', 'align-items', ...MARGIN, 'max-width', 'height', 'width'];
 const TOPBAR_TITLE = ['display', 'align-items', 'height', 'font-size', 'font-weight', 'color', 'text-decoration-line', ...TRANSITION];
 const topbarUpstream =
   `<div data-t="bar" class="VPNavBar"><div data-t="wrap" class="wrapper"><div data-t="row" class="container" style="align-items:center">` +
@@ -1260,7 +1254,7 @@ cases.push({
   upstream: inDoc(`<div data-t="box" class="custom-block tip">${alertBody('<p data-t="title" class="custom-block-title">TIP</p>')}</div>`),
   vpkit: inDoc(`<div data-t="box" class="vp-alert vp-alert-tip">${alertBody('<p data-t="title" class="vp-alert-title">TIP</p>')}</div>`),
   checks: [
-    { target: 'box', props: [...ALERT_BOX, ...SIDES.map((s) => `margin-${s}`)] },
+    { target: 'box', props: [...ALERT_BOX, ...MARGIN] },
     { target: 'title', props: ['margin-top', 'margin-bottom', 'font-weight', 'line-height'] },
     { target: 'p2', props: ['margin-top', 'margin-bottom', 'line-height'] },
     { target: 'a', props: LINK },

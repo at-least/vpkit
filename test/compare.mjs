@@ -19,15 +19,14 @@
 //
 // Exits 1, listing every differing property, when any case differs.
 
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
 import { unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { cases, known } from './cases.mjs';
+import { compileCss } from './compile.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -46,22 +45,6 @@ const UPSTREAM = [
   'components/VPSwitch.vue',
   'components/VPSwitchAppearance.vue',
 ];
-
-function vpkitCss() {
-  const dir = mkdtempSync(join(tmpdir(), 'vpkit-test-'));
-  try {
-    const out = join(dir, 'vpkit.css');
-    execFileSync(
-      join(ROOT, 'node_modules/.bin/tailwindcss'),
-      // minified, as consumers ship it
-      ['-i', join(ROOT, 'test/entry.css'), '-o', out, '--minify'],
-      { stdio: 'pipe' },
-    );
-    return readFileSync(out, 'utf8');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-}
 
 // a .vue file contributes its <style> block: `scoped` only adds an
 // attribute selector, which an isolated page doesn't need, and a
@@ -163,10 +146,9 @@ const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 const selected = only ? cases.filter((c) => only.test(c.name)) : cases;
 if (!selected.length) throw new Error(`CASES=${process.env.CASES} matches no case`);
 
-const sides = { upstream: upstreamCss(UPSTREAM), vpkit: vpkitCss() };
+const sides = { upstream: upstreamCss(UPSTREAM), vpkit: compileCss('test/entry.css') };
 const browser = await chromium.launch();
 const failures = [];
-const expected = [];
 let compared = 0;
 try {
   for (const c of selected) {
@@ -192,16 +174,14 @@ try {
         for (const prop of check.props) {
           compared++;
           if (same(ref[prop], vpkit[prop], prop, check.tolerance)) continue;
-          const line = `${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`;
           const delta = known.find(
             (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,
           );
           if (!delta) {
-            failures.push(line);
+            failures.push(`${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`);
             continue;
           }
           delta.hits = (delta.hits ?? 0) + 1;
-          expected.push(line);
         }
       }
       for (const { page } of Object.values(pages)) await page.close();
@@ -222,6 +202,6 @@ for (const k of known) {
 for (const f of failures) console.log(`DIFF  ${f}`);
 console.log(
   `${selected.length} cases × light/dark: ${compared} computed values compared, ` +
-    `${failures.length} differ, ${expected.length} known`,
+    `${failures.length} differ, ${known.reduce((n, k) => n + (k.hits ?? 0), 0)} known`,
 );
 process.exit(failures.length ? 1 : 0);

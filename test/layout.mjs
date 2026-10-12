@@ -20,15 +20,14 @@
 //
 // prints a case's markup with vpkit's classes instead.
 
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compileStyle } from '@vue/compiler-sfc';
 import { chromium } from 'playwright-chromium';
 
 import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
+import { compileCss } from './compile.mjs';
 import { GLOBAL, LAYOUT, rootOf } from './layout-map.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -244,24 +243,6 @@ const PSEUDO_PROPS = [
   'content', 'display', 'position', ...SIDES, 'width', 'height', 'color', 'background-color',
   'background-image', 'opacity', 'transform', 'mask-image',
 ];
-
-function vpkitCss() {
-  const dir = mkdtempSync(join(tmpdir(), 'vpkit-layout-'));
-  try {
-    const out = join(dir, 'vpkit.css');
-    execFileSync(
-      join(ROOT, 'node_modules/.bin/tailwindcss'),
-      // unminified, as a docs theme should ship it: the minifier rounds
-      // numbers to six digits, and VitePress's line-height 1.3333333 as
-      // 1.33333 makes every h2 1/64px shorter, 0.375px down the markdown page
-      ['-i', join(ROOT, 'test/layout-entry.css'), '-o', out],
-      { stdio: 'pipe' },
-    );
-    return readFileSync(out, 'utf8');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-}
 
 // VitePress's global stylesheets, as its theme loads them; of fonts.css
 // only the :root rule that puts Inter first (the rest fetches webfonts).
@@ -567,7 +548,7 @@ if (process.argv[2] === '--markup') {
 }
 
 const upstreamBase = upstreamGlobals();
-const vpkit = vpkitCss();
+const vpkit = compileCss('test/layout-entry.css', { minify: false });
 const browser = await chromium.launch();
 const expected = [];
 let compared = 0;

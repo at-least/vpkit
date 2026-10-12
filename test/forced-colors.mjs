@@ -9,27 +9,9 @@
 // compare.mjs compiles vpkit. Exits 1, naming each pair that renders the
 // same.
 
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-
-function vpkitCss() {
-  const dir = mkdtempSync(join(tmpdir(), 'vpkit-test-'));
-  try {
-    const out = join(dir, 'vpkit.css');
-    execFileSync(join(ROOT, 'node_modules/.bin/tailwindcss'), ['-i', join(ROOT, 'test/entry.css'), '-o', out, '--minify'], {
-      stdio: 'pipe',
-    });
-    return readFileSync(out, 'utf8');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-}
+import { compileCss } from './compile.mjs';
 
 const toggle = (checked) =>
   `<button class="vp-toggle" type="button" role="switch" aria-checked="${checked}"><span class="vp-toggle-check"></span></button>`;
@@ -48,7 +30,7 @@ const PAIRS = [
   ['an icon and an empty box its size', icon, noIcon],
 ];
 
-const css = vpkitCss();
+const css = compileCss('test/entry.css');
 const browser = await chromium.launch();
 const failures = [];
 try {
