@@ -22,7 +22,6 @@ export const LAYOUT = {
   VPContent: { file: 'components/VPContent.vue' },
   // `vp-doc` is the markdown content's class, inside VPDoc
   VPDoc: { file: 'components/VPDoc.vue', block: 'vp-doc-page' },
-  VPPage: { file: 'components/VPPage.vue' },
   VPSkipLink: { file: 'components/VPSkipLink.vue' },
   VPBackdrop: { file: 'components/VPBackdrop.vue' },
   VPSidebar: { file: 'components/VPSidebar.vue' },
@@ -130,7 +129,7 @@ export function blockOf(component) {
   const entry = LAYOUT[component];
   if (!entry) throw new Error(`no layout component ${component}`);
   if (entry.block) return entry.block;
-  const name = component === entry.root ? component : component.replace(/^VP/, '');
+  const name = component.replace(/^VP/, '');
   return `vp-${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`;
 }
 

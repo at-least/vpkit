@@ -23,7 +23,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // the component's style blocks; only scoped ones are its own
 export function styleOf(component) {
   const src = readFileSync(join(ROOT, 'test/upstream', LAYOUT[component].file), 'utf8');
-  // a component without a <style> (VPPage) has no rules to port
+  // a component without a <style> (VPDocAsideSponsors) has no rules to port
   const blocks = [...src.matchAll(/<style([^>]*)>([\s\S]*?)<\/style>/g)];
   for (const [, attrs] of blocks) {
     if (!/\bscoped\b/.test(attrs)) throw new Error(`${component}: unscoped <style${attrs}> needs a decision`);
@@ -81,17 +81,6 @@ function classesOf(compound) {
   return names;
 }
 
-// rename a selector's classes, nested ones included
-function renamed(selector, rename) {
-  return selector.map((c) => {
-    if (c.type === 'class') return { ...c, name: rename(c.name) };
-    if (c.type === 'pseudo-class' && NESTED.has(c.kind)) {
-      return { ...c, selectors: c.selectors.map((s) => renamed(s, rename)) };
-    }
-    return c;
-  });
-}
-
 // the component's own class → vpkit's name for it; a class it reaches
 // inside a child with :deep() takes the child's name for it
 export function namer(component, states) {
@@ -118,7 +107,7 @@ export function rootStates(component, css = unwrapDeep(styleOf(component))) {
   const states = new Set(LAYOUT[component].states);
   transform({
     filename: `${component}.css`,
-    code: Buffer.from(unwrapDeep(css)),
+    code: Buffer.from(css),
     visitor: {
       Selector(selector) {
         eachCompound(selector, (compound) => {
@@ -173,7 +162,7 @@ function scopeBare(prelude, block) {
 // the CSS text with every rule's selector renamed; declarations, at-rule
 // preludes and comments stay as upstream wrote them; block: the
 // component's, which scopes its bare selectors
-export function renameCss(css, rename, block) {
+function renameCss(css, rename, block) {
   let out = '';
   let start = 0; // where the current prelude began
   const open = []; // the blocks around: 'rule', 'at', 'keyframes'
@@ -195,8 +184,8 @@ export function renameCss(css, rename, block) {
       open.push(at ? (/^\s*@(-webkit-)?keyframes\b/.test(prelude) ? 'keyframes' : 'at') : 'rule');
       out += '{';
       start = i + 1;
-    } else if (ch === '}' || ch === ';') {
-      if (ch === '}') open.pop();
+    } else if (ch === '}') {
+      open.pop();
       out += css.slice(start, i + 1);
       start = i + 1;
     }
@@ -209,7 +198,7 @@ export function cssClasses(css) {
   const names = new Set();
   transform({
     filename: 'classes.css',
-    code: Buffer.from(unwrapDeep(css)),
+    code: Buffer.from(css),
     visitor: {
       Selector(selector) {
         eachCompound(selector, (compound) => {
@@ -222,7 +211,7 @@ export function cssClasses(css) {
   return names;
 }
 
-export function portCss(component) {
+function portCss(component) {
   const css = unwrapDeep(styleOf(component));
   return renameCss(css, namer(component, rootStates(component, css)), blockOf(component)).trim();
 }
