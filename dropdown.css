@@ -102,11 +102,6 @@
     padding-top: 0;
   }
 
-  .vp-dropdown-group + .vp-dropdown-group {
-    margin-top: 0.75rem;
-    border-top: 1px solid var(--vp-c-divider);
-  }
-
   .vp-dropdown-title {
     padding: 0 0.75rem;
     line-height: 2.2857143;

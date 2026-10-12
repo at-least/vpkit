@@ -118,8 +118,6 @@
     --vp-alert-border: var(--vp-custom-block-note-border);
     --vp-alert-text: var(--vp-custom-block-note-text);
     --vp-alert-bg: var(--vp-custom-block-note-bg);
-    --vp-alert-link: var(--vp-c-brand-1);
-    --vp-alert-link-hover: var(--vp-c-brand-2);
     --vp-alert-code-bg: var(--vp-custom-block-note-code-bg);
   }
 
@@ -163,8 +161,6 @@
     --vp-alert-border: var(--vp-custom-block-details-border);
     --vp-alert-text: var(--vp-custom-block-details-text);
     --vp-alert-bg: var(--vp-custom-block-details-bg);
-    --vp-alert-link: var(--vp-c-brand-1);
-    --vp-alert-link-hover: var(--vp-c-brand-2);
     --vp-alert-code-bg: var(--vp-custom-block-details-code-bg);
   }
 

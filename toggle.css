@@ -114,10 +114,6 @@
   }
 
   /* VPSwitchAppearance: the knob and the two icons follow .dark */
-  .vp-toggle-appearance.vp-toggle .vpi-sun {
-    opacity: 1;
-  }
-
   .vp-toggle-appearance.vp-toggle .vpi-moon {
     opacity: 0;
   }
