@@ -71,7 +71,6 @@ if (JSON.stringify(index.map((t) => t.name)) !== JSON.stringify(['', ...stems]))
       [/\b(\d+) (?:ready-made )?color themes\b/g, total, 'color themes'],
       [/\b(\d+) of them\b/g, total, 'of them'],
       [/\b(\d+) are curated\b/g, curated, 'curated'],
-      [/\bThe (\d+) curated themes\b/g, curated, 'curated'],
       [/\b(\d+) are mapped automatically\b/g, helix, 'Helix-mapped'],
       [/\bthe other (\d+) are mapped\b/g, helix, 'Helix-mapped'],
     ]) {
