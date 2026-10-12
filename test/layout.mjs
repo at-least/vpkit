@@ -287,9 +287,13 @@ function trees(browser, c) {
   const own = [...cssClasses(css)];
   const root = rootOf(c.component);
   const rename = namer(c.component, states);
-  const names = { root, own, states: [...states],
+  const names = {
+    root,
+    own,
+    states: [...states],
     // the port's own name for every class the tree can carry, globals aside
-    map: Object.fromEntries([root, ...own, ...states].map((n) => [n, rename(n)])) };
+    map: Object.fromEntries([root, ...own, ...states].map((n) => [n, rename(n)])),
+  };
   return browser.newPage().then(async (page) => {
     const result = await page.evaluate(
       ([html, names, toggle, fromPage, globals]) => {

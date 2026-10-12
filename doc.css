@@ -1,9 +1,7 @@
 /* vpkit — the external-link rules for rendered markdown: the arrow on
- * .vp-external-link-icon. Omitted (DESIGN.md, rule 12): the code-block
- * title bar, the line notations and the line-number gutter, matched by
- * nothing any measured consumer renders; VitePress's own classes for them
- * are content.css's. Part of index.css; `@import "vpkit/doc.css"` takes it
- * alone. */
+ * .vp-external-link-icon. A code block's highlighted, diff and focused
+ * lines and its line numbers are VitePress's own classes, in content.css.
+ * Part of index.css; `@import "vpkit/doc.css"` takes it alone. */
 
 /* Component: External link icon — upstream vp-doc.css: an inline box
    (a 9px word joiner padded 11px wide) masked with the arrow and centered

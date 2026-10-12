@@ -4,10 +4,10 @@
  * the preflight, so a utility on the element still wins. The rest is
  * unlayered, so it beats every utility: the color scheme of the
  * appearance, CJK line breaking, bold at 600, the pointer cursor on
- * buttons, overflow-wrap, no autospace in code, the focus-outline resets,
- * reduced motion. A project that draws its own focus rings should not
- * take this file, since `button:focus {
- * outline: none }` would remove them.
+ * buttons, overflow-wrap, no autospace in code, the focus-outline resets
+ * and reduced motion. A project that draws its own focus rings should not
+ * take this file, since `button:focus { outline: none }` would remove
+ * them.
  *
  * One addition to VitePress's rules (DESIGN.md, rule 12): a focused input,
  * textarea or select carries a transparent 2px outline where VitePress
