@@ -281,7 +281,8 @@ function buildMode(mode, m, adjusted = new Set()) {
   // on the tint of code inside it, or the tint is thinned by 0.01 until it
   // does (a mid-tone dark half, where twice-tinted grounds turn mid-gray).
   // Not below 0.06, where a container would lose its color; a tint that
-  // can't make room by then stays as it was (test/themes.mjs lists those)
+  // can't make room by then stays as it was (test/themes.mjs fails the
+  // theme there)
   const room = (color, a) => {
     const end = mode === 'light' ? black : white;
     const fits = (x) => [composite(color, x, bg), composite(color, x, composite(color, x, bg))].every((g) => contrast(composite(end, 0.75, g), g) >= 4.5 + EPS);

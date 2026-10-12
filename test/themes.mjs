@@ -44,19 +44,8 @@ const UPSTREAM_SLIPS = ['shadow-3'];
 
 const isRamp = (token) => RAMPS.some((ramp) => token === ramp || token.startsWith(`${ramp}-`));
 
-// Shortfalls the generator cannot fit, each with its cause; a failure that
-// matches one is reported instead of failing, and an entry that matches
-// nothing fails the run, so none outlives its cause.
-const SHORTFALLS = [];
-
 const failures = [];
-const expected = [];
-const fail = (message) => {
-  const s = SHORTFALLS.find((x) => message.startsWith(`theme ${x.theme} ${x.selector}:`) && x.pattern.test(message));
-  if (!s) return failures.push(message);
-  s.hits = (s.hits ?? 0) + 1;
-  expected.push(message);
-};
+const fail = (message) => failures.push(message);
 
 // every --vp-c-* token the base references, minus ramps and absolutes:
 // derived, not hand-maintained, so it cannot drift from what the
@@ -263,14 +252,9 @@ for (const name of names) {
   }
 }
 
-for (const s of SHORTFALLS) {
-  if (s.hits) console.log(`KNOWN ${s.hits}× ${s.theme} ${s.selector} ${s.pattern}: ${s.reason}`);
-  else failures.push(`shortfall no longer occurs, remove it: ${s.theme} ${s.selector} ${s.pattern}`);
-}
-for (const e of expected) console.log(`  known  ${e}`);
 for (const f of failures) console.log(`FAIL  ${f}`);
 console.log(
   `${names.length} themes × :root/.dark against a contract of ${required.length} tokens: ` +
-    `${checks} checks, ${failures.length} failed, ${expected.length} known shortfalls`,
+    `${checks} checks, ${failures.length} failed`,
 );
 process.exit(failures.length ? 1 : 0);
