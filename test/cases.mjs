@@ -30,7 +30,8 @@ const RADIUS = ['top-left', 'top-right', 'bottom-right', 'bottom-left'].map(
 );
 const PADDING = SIDES.map((s) => `padding-${s}`);
 const MARGIN = SIDES.map((s) => `margin-${s}`);
-const COLORS = ['color', 'background-color', ...SIDES.map((s) => `border-${s}-color`)];
+const BORDER_COLOR = SIDES.map((s) => `border-${s}-color`);
+const COLORS = ['color', 'background-color', ...BORDER_COLOR];
 const TRANSITION = ['transition-property', 'transition-duration'];
 
 export const cases = [];
@@ -319,6 +320,12 @@ const LINK = [
   'opacity',
 ];
 const CODE = ['font-size', 'color', 'background-color', ...RADIUS, ...PADDING, ...TRANSITION];
+const ALERT_INSIDES = [
+  { target: 'a', props: LINK },
+  { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
+  { target: 'code', props: CODE },
+  { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+];
 // VitePress renders a container inside .vp-doc, whose rules for links and
 // code meet custom-block.css's: the alert is compared with that rendering
 const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
@@ -335,10 +342,7 @@ for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'ca
       { target: 'box', props: ALERT_BOX },
       { target: 'title', props: ['font-weight'] },
       { target: 'p2', props: ['margin-top', 'margin-bottom'] },
-      { target: 'a', props: LINK },
-      { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
-      { target: 'code', props: CODE },
-      { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+      ...ALERT_INSIDES,
     ],
   });
 }
@@ -524,7 +528,7 @@ cases.push({
 // the harness's `height` is the bounding box, which the turning ring
 // widens past 18px at most angles
 const SPIN = [
-  'width', 'block-size', 'box-sizing', ...BORDER, ...SIDES.map((s) => `border-${s}-color`), ...RADIUS,
+  'width', 'block-size', 'box-sizing', ...BORDER, ...BORDER_COLOR, ...RADIUS,
   'visibility', 'flex-grow', 'flex-shrink', 'flex-basis',
   'animation-duration', 'animation-timing-function', 'animation-iteration-count',
 ];
@@ -708,10 +712,7 @@ cases.push({
     { target: 'title', props: SUMMARY },
     { target: 'p1', props: ['margin-top', 'margin-bottom'] },
     { target: 'p2', props: ['margin-top', 'margin-bottom'] },
-    { target: 'a', props: LINK },
-    { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
-    { target: 'code', props: CODE },
-    { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+    ...ALERT_INSIDES,
   ],
 });
 cases.push({
@@ -765,7 +766,7 @@ cases.push({
   checks: [
     {
       target: 'kbd',
-      props: [...BORDER, ...SIDES.map((s) => `border-${s}-color`), ...RADIUS, ...PADDING, 'min-width', 'text-align', 'vertical-align', 'background-color', 'box-shadow'],
+      props: [...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'min-width', 'text-align', 'vertical-align', 'background-color', 'box-shadow'],
     },
   ],
 });
@@ -1001,7 +1002,7 @@ for (const [theme, cls] of [['brand', 'vp-btn vp-btn-brand'], ['alt', 'vp-btn'],
     name: `spinner in a ${theme} button`,
     reference: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner" style="${SPIN_IN_BUTTON}"></span>Paying</button>`,
     vpkit: `<button class="${cls}" disabled><span data-t="spin" class="vp-spinner"></span>Paying</button>`,
-    checks: [{ target: 'spin', props: SIDES.map((s) => `border-${s}-color`) }],
+    checks: [{ target: 'spin', props: BORDER_COLOR }],
   });
 }
 
@@ -1036,7 +1037,7 @@ for (const type of ['note', 'tip', 'important', 'caution', 'warning']) {
 // is the page's color, so only its border and radius are compared; a link
 // card hovered takes the brand border, as vp-card does
 const CRASHCART_CARD = 'background:var(--vp-c-bg);color:var(--vp-c-text-1);border:1px solid var(--vp-c-divider);border-radius:0.75rem;overflow:hidden';
-const OUTLINE_CARD = [...BORDER, ...RADIUS, ...SIDES.map((s) => `border-${s}-color`)];
+const OUTLINE_CARD = [...BORDER, ...RADIUS, ...BORDER_COLOR];
 cases.push({
   name: 'card outline',
   reference: `<div data-t="card" style="${CRASHCART_CARD}">${CARD_TEXT('', '')}</div>`,
@@ -1055,7 +1056,7 @@ cases.push({
   vpkit: card('a', 'vp-card vp-card-outline', CARD_TEXT('vp-card-title', 'vp-card-details')),
   checks: [
     { target: 'card', props: [...RADIUS, ...PADDING, 'color', 'text-decoration-line', ...TRANSITION] },
-    { target: 'card', state: ['hover'], props: SIDES.map((s) => `border-${s}-color`) },
+    { target: 'card', state: ['hover'], props: BORDER_COLOR },
   ],
 });
 
@@ -1257,10 +1258,7 @@ cases.push({
     { target: 'box', props: [...ALERT_BOX, ...MARGIN] },
     { target: 'title', props: ['margin-top', 'margin-bottom', 'font-weight', 'line-height'] },
     { target: 'p2', props: ['margin-top', 'margin-bottom', 'line-height'] },
-    { target: 'a', props: LINK },
-    { target: 'a', state: ['hover'], props: ['color', 'opacity'] },
-    { target: 'code', props: CODE },
-    { target: 'acode', on: 'a2', state: ['hover'], props: ['color'] },
+    ...ALERT_INSIDES,
   ],
 });
 cases.push({

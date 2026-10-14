@@ -461,15 +461,13 @@ function familyCss(c, scopeOf) {
 
 // lengths match within 1/32px: layout rounds to 1/64px
 const PX = /^-?\d+(\.\d+)?px$/;
-const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
 // a data: URL's image, decoded and spelled one way: Tailwind's compiler
 // re-encodes VitePress's SVG URLs (' as %27, no space before />)
 const DATA_URL = /url\("data:image\/svg\+xml,([^"]*)"\)/g;
 const svgText = (v) =>
   v.replace(DATA_URL, (_, data) => `url(svg:${decodeURIComponent(data).replace(/"/g, "'").replace(/\s*(\/?>)/g, '$1').replace(/\s+/g, ' ').trim()})`);
 
-function same(a, b, prop) {
-  if (prop.endsWith('box-shadow')) [a, b] = [a.replace(NO_SHADOW, ''), b.replace(NO_SHADOW, '')];
+function same(a, b) {
   if (typeof a === 'string' && typeof b === 'string' && a.includes('data:image/svg+xml')) [a, b] = [svgText(a), svgText(b)];
   if (a === b) return true;
   if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) <= 1 / 32;
@@ -554,7 +552,6 @@ if (process.argv[2] === '--markup') {
 const upstreamBase = upstreamGlobals();
 const vpkit = compileCss('test/layout-entry.css', { minify: false });
 const browser = await chromium.launch();
-const expected = [];
 let compared = 0;
 let renders = 0;
 try {
@@ -575,15 +572,13 @@ try {
         up.forEach((u, i) => {
           for (const prop of Object.keys(u)) {
             compared++;
-            if (same(u[prop], vp[i][prop], prop)) continue;
-            const line = `${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`;
+            if (same(u[prop], vp[i][prop])) continue;
             const delta = known.find((k) => k.case.test(label) && k.element.test(where[i]) && k.prop === prop);
             if (!delta) {
-              failures.push(line);
+              failures.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);
               continue;
             }
             delta.hits = (delta.hits ?? 0) + 1;
-            expected.push(line);
           }
         });
       }
@@ -600,6 +595,6 @@ for (const k of known) {
 for (const f of failures) console.log(`DIFF  ${f}`);
 console.log(
   `${cases.length} layout cases in ${renders} renders (widths, dark, states): ${compared} values compared, ` +
-    `${failures.length} differ, ${expected.length} known`,
+    `${failures.length} differ, ${known.reduce((n, k) => n + (k.hits ?? 0), 0)} known`,
 );
 process.exit(failures.length ? 1 : 0);
