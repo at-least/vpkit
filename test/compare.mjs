@@ -8,7 +8,10 @@
 // (a component nested in another against the same one standalone). A
 // case with `touch` renders both pages as a touch screen, where
 // (hover: none) matches; with a check's `refState`, the reference gets
-// a different forced state than vpkit (`[]`: none, at rest). A case's
+// a different forced state than vpkit (`[]`: none, at rest), and with
+// `refPseudo` a different pseudo-element (`null`: the element itself, for
+// the scrim VitePress draws as an element where vpkit's is a dialog's
+// ::backdrop). A case's
 // `upstreamFiles` are originals only that case's upstream page loads, for
 // components whose stylesheets name generic classes (`.title`, `.link`)
 // that the other cases' markup also uses. A case's `width` is the
@@ -168,6 +171,7 @@ try {
           ...check,
           target: check.refTarget ?? check.target,
           state: 'refState' in check ? check.refState : check.state,
+          pseudo: 'refPseudo' in check ? check.refPseudo : check.pseudo,
         });
         const vpkit = await measure(pages.vpkit, check);
         const where = `${c.name} [${dark ? 'dark' : 'light'}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;

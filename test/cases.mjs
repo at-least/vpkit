@@ -574,6 +574,52 @@ cases.push({
   ],
 });
 
+// drawer: VPSidebar as a phone shows it (its open state, under 60rem,
+// where its desktop rules don't apply: at 375px the viewport sizes it, at
+// 800px its max-width does) against vp-drawer on a <dialog> opened with
+// showModal() by the dialog case's script; VPBackdrop, the scrim VitePress
+// draws as an element, against the dialog's ::backdrop (`refPseudo: null`
+// reads the reference's element itself). What the element brings and
+// VPSidebar has no need of (a modal dialog's size, insets, margin, border
+// and text color) the drawer sets back to the aside's, so the box is
+// compared on every side
+const SIDEBAR_FILES = ['components/VPSidebar.vue', 'components/VPBackdrop.vue'];
+const drawerBody = `<nav><a href="#">Guide</a><a href="#">Reference</a></nav>`;
+const DRAWER_BOX = [
+  'position', ...SIDES, 'offset-top', 'offset-left', 'height', 'width', 'max-width', 'max-height',
+  ...MARGIN, ...BORDER, ...PADDING, ...COLORS, 'opacity', 'transform', 'box-shadow',
+  'overflow-x', 'overflow-y', 'overscroll-behavior-x', 'overscroll-behavior-y',
+  ...TRANSITION, 'transition-timing-function', 'transition-behavior',
+];
+const BACKDROP = ['position', ...SIDES, 'background-color', 'opacity', ...TRANSITION];
+for (const width of [375, 800]) {
+  cases.push({
+    name: `drawer at ${width}px`,
+    width,
+    upstreamFiles: SIDEBAR_FILES,
+    upstream: `<div data-t="back" class="VPBackdrop"></div><aside data-t="dlg" class="VPSidebar open">${drawerBody}</aside>`,
+    vpkit: `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`,
+    checks: [
+      { target: 'dlg', props: DRAWER_BOX },
+      { target: 'dlg', pseudo: '::backdrop', refTarget: 'back', refPseudo: null, props: BACKDROP },
+    ],
+  });
+}
+// the closed state, where the slide out ends: VitePress's closed sidebar
+// with vpkit's addition written inline (the display and overlay
+// transitions, allow-discrete, that keep a closing dialog on screen and
+// in the top layer until the slide ends) against the closed drawer shown
+// (display: block inline): a closed dialog has no box, and its transform
+// reads none
+cases.push({
+  name: 'drawer closed',
+  width: 375,
+  upstreamFiles: SIDEBAR_FILES,
+  upstream: `<aside data-t="dlg" class="VPSidebar" style="transition:opacity 0.5s, transform 0.25s ease, display 0.5s allow-discrete, overlay 0.5s allow-discrete">${drawerBody}</aside>`,
+  vpkit: `<dialog data-t="dlg" class="vp-drawer" style="display:block">${drawerBody}</dialog>`,
+  checks: [{ target: 'dlg', props: ['opacity', 'transform', ...TRANSITION, 'transition-timing-function', 'transition-behavior'] }],
+});
+
 // dropdown: VPMenu with VPMenuLink items and VPMenuGroup groups, as
 // VitePress renders them (ul/li), against vp-dropdown's flat markup: items
 // and groups straight in the panel. A <button> item stands where upstream
@@ -995,6 +1041,12 @@ cases.push({
   name: 'dialog backdrop without the variable',
   reference: `<dialog data-t="dlg" class="vp-dialog"></dialog><style>[data-t="dlg"]::backdrop{background-color:rgba(0, 0, 0, 0.6)}</style>${OPEN}`,
   vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-dialog"></dialog>${OPEN}`,
+  checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
+});
+cases.push({
+  name: 'drawer backdrop without the variable',
+  reference: `<dialog data-t="dlg" class="vp-drawer"></dialog><style>[data-t="dlg"]::backdrop{background-color:rgba(0, 0, 0, 0.6)}</style>${OPEN}`,
+  vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-drawer"></dialog>${OPEN}`,
   checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
 });
 
@@ -1420,6 +1472,10 @@ for (const [name, markup, checks] of [
     { target: 'a', props: LOOK },
     { target: 'a', state: ['hover'], props: CRUMB_HOVER },
     { target: 'cur', props: LOOK },
+  ]],
+  // the markdown has no rule for a dialog; what is inside the panel is the page's
+  ['drawer', `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`, [
+    { target: 'dlg', props: [...PADDING, ...COLORS, 'width', 'opacity'] },
   ]],
 ]) {
   cases.push({

@@ -1,0 +1,111 @@
+/* vpkit — drawer, ported from VitePress's sidebar as a phone shows it
+ * (VPSidebar.vue under 60rem: the panel that slides in from the left over
+ * VPBackdrop.vue's scrim), on the <dialog> element, which brings the top
+ * layer, the focus trap, Escape and ::backdrop. An optional import:
+ * `@import "vpkit/drawer.css";`
+ *
+ *   <dialog class="vp-drawer" aria-label="Menu">
+ *     <nav>…</nav>
+ *     <form method="dialog"><button class="vp-btn">Close</button></form>
+ *   </dialog>
+ *
+ * Open it with showModal(). `vp-drawer` is VPSidebar's open panel: fixed
+ * at the left edge from the top of the viewport to its bottom (the one
+ * component that says where it is, since a drawer is its edge), 4rem
+ * narrower than the viewport and at most 20rem (a width utility sets
+ * another), on --vp-sidebar-bg-color under `2rem 2rem 6rem` of padding,
+ * scrolling its content and keeping a scroll from reaching the page
+ * (overscroll-behavior: contain), under --vp-shadow-1 in dark mode
+ * (VitePress's light sidebar names a shadow token nothing defines,
+ * `--vp-c-shadow-3`, so it paints none, and so does the drawer). Its
+ * ::backdrop is VPBackdrop: --vp-backdrop-bg-color, with tokens.css's
+ * value as the fallback where ::backdrop inherits nothing (before Chrome
+ * 122 and Safari 17.4, as dialog.css says). The open state is the
+ * element's own `[open]`, where VitePress has `.open`.
+ *
+ * The slide is VitePress's. Opening, the panel comes in from the left
+ * over 0.5s on VitePress's curve as it fades in over 0.25s, from the
+ * state `@starting-style` gives it, and the scrim fades in over 0.5s;
+ * closing, the panel slides out over 0.25s as it fades over 0.5s and the
+ * scrim fades over 0.25s, the dialog kept on screen and in the top layer
+ * until the slide ends by the `display` and `overlay` transitions
+ * (allow-discrete). Measured in Chromium, which the tests run; by the
+ * browsers' compatibility data, Firefox (129 and later) slides it in but
+ * ends a `display` transition at once, so there it closes at once, and
+ * Safari (17.5 and later) slides it in and out but has no `overlay`, so
+ * there a closing drawer leaves the top layer at once with its scrim and
+ * finishes its slide in the page's stacking — UNVERIFIED in both.
+ *
+ * What the element brings and VPSidebar has no need of, the drawer sets
+ * back to the aside's: text-1 (a dialog's text is the system's black by
+ * the browser's stylesheet), a border of no width (the browser's dialog
+ * has one; its style stays, as VitePress's reset leaves every element's
+ * at `solid`), `height: auto` with no max-height
+ * and `right: auto` (a modal dialog is sized to its content and inset on
+ * every side), `margin: 0`. Not ported: VitePress's z-index (the top
+ * layer needs none), `visibility`, the layout top's offset, the sidebar's
+ * desktop rules from 60rem, the scrim's `display: none` from 80rem, and
+ * the body scroll lock (as vp-dialog). */
+
+@layer components {
+  .vp-drawer {
+    position: fixed;
+    inset: 0 auto 0 0;
+    margin: 0;
+    border-width: 0;
+    padding: 2rem 2rem 6rem;
+    width: calc(100vw - 4rem);
+    max-width: 20rem;
+    height: auto;
+    max-height: none;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-sidebar-bg-color);
+    opacity: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition:
+      opacity 0.5s,
+      transform 0.25s ease,
+      display 0.5s allow-discrete,
+      overlay 0.5s allow-discrete;
+    overscroll-behavior: contain;
+  }
+
+  .vp-drawer[open] {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.25s, transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  /* what the open panel slides in from: VitePress's closed one */
+  @starting-style {
+    .vp-drawer[open] {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+
+  .dark .vp-drawer {
+    box-shadow: var(--vp-shadow-1);
+  }
+
+  /* the scrim needs no display or overlay transition of its own: it is
+     drawn as long as its dialog is in the top layer */
+  .vp-drawer::backdrop {
+    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .vp-drawer[open]::backdrop {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+
+  @starting-style {
+    .vp-drawer[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}

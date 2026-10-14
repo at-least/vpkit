@@ -191,6 +191,9 @@
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
+  .mt-6 {
+    margin-top: calc(var(--spacing) * 6);
+  }
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
@@ -2305,6 +2308,53 @@ button:focus-visible {
   }
   .vp-doc .vp-accordion-title {
     margin: 0;
+  }
+  .vp-drawer {
+    position: fixed;
+    inset: 0 auto 0 0;
+    margin: 0;
+    border-width: 0;
+    padding: 2rem 2rem 6rem;
+    width: calc(100vw - 4rem);
+    max-width: 20rem;
+    height: auto;
+    max-height: none;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-sidebar-bg-color);
+    opacity: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: opacity 0.5s, transform 0.25s ease, display 0.5s allow-discrete, overlay 0.5s allow-discrete;
+    overscroll-behavior: contain;
+  }
+  .vp-drawer[open] {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.25s, transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  @starting-style {
+    .vp-drawer[open] {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+  .dark .vp-drawer {
+    box-shadow: var(--vp-shadow-1);
+  }
+  .vp-drawer::backdrop {
+    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .vp-drawer[open]::backdrop {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+  @starting-style {
+    .vp-drawer[open]::backdrop {
+      opacity: 0;
+    }
   }
 }
 @property --tw-translate-x {
