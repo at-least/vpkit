@@ -32,6 +32,7 @@
 @import "../hamburger.css";
 @import "../empty.css";
 @import "../divider.css";
+@import "../avatar.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the
    "in a doc" cases measure the components against its rules */
 @import "../content.css";

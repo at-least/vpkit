@@ -21,7 +21,7 @@ above:
     VPNavBarHamburger VPNavAppearance VPSwitch VPSwitchAppearance \
     VPNavSocialLinks VPSocialLinks VPSocialLink VPNavTranslations VPNavScreen \
     VPDocFooter VPDocFooterLastUpdated VPFooter VPHome VPHero VPButton \
-    VPFeatures VPFeature VPHomeContent VPLocalSearchBox; do
+    VPFeatures VPFeature VPHomeContent VPLocalSearchBox VPTeamMembersItem; do
     cp $U/components/$c.vue test/upstream/components/
   done
 

@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty-seven exist, in twenty-six files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty-eight exist, in twenty-seven files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -150,6 +150,7 @@ For a component from an app recipe:
 | `vp-hamburger` | VPNavBarHamburger | `vp-hamburger-box`; `aria-expanded`; the bars take the text color under forced colors |
 | `vp-empty` | crashcart's `empty-frame` (a recipe) | `vp-empty-title`, `vp-empty-desc` |
 | `vp-divider` | `vp-doc.css`: `.vp-doc hr`; VPNavBar's rule between two of its clusters | `vp-divider-vertical`; `aria-orientation` |
+| `vp-avatar` | VPTeamMembersItem: `.avatar`, `.avatar-img` | on an `<img>`; a size utility for another size |
 
 ### When a new one is built
 
@@ -289,6 +290,7 @@ own-drive's modal (the `MODAL` recipe) on the `<dialog>` element, which brings t
 | `vp-kbd` | VPLocalSearchBox: `.search-keyboard-shortcuts kbd` | inline-block, `rgba(128,128,128,0.1)` inside a `rgba(128,128,128,0.15)` border, 0.25rem radius, `0.1875rem 0.375rem` padding, `min-width: 1.5rem`, centered, `0 2px 2px 0 rgba(0,0,0,0.1)` | VitePress's literal grays, the same in both modes: the one original with no token to read, so rule 9 is kept by copying them |
 | `vp-mark` | VPLocalSearchBox: `mark` | `--vp-local-search-highlight-bg` on `--vp-local-search-highlight-text`, 0.125rem radius, `0 0.125rem` padding; the tokens are the search's, `brand-1` and `neutral-inverse` | — |
 | `vp-divider` | `vp-doc.css`: `.vp-doc hr`; VPNavBar: the `::before` between two of the bar's clusters | on an `<hr>`: the markdown's rule, `margin: 1rem 0` (VitePress's own, kept as `vp-table`'s margin is) over a 1px `divider` border-top; `vp-divider-vertical` the bar's, a 1px by 1.5rem `divider` ground with 0.5rem at each side, for a flex row, which says `aria-orientation="vertical"` | the vertical rule is a background, which forced colors erase, so there it takes the text color (`test/forced-colors.mjs`, against an empty box its size); the bar's rule is a pseudo-element, so its case holds the declarations written inline, as the top bar's ground does |
+| `vp-avatar` | VPTeamMembersItem: `.avatar` (the round box of the small card) and `.avatar-img` (the picture filling it) | one element where the original has two, as `vp-card` is: on an `<img>`, a 4rem circle (the small card's; the medium's is 6rem) under `--vp-shadow-3`, `object-fit: cover`, `flex-shrink: 0`; a size utility sets another size, as the one component whose size is its own because a picture with no size is its file's; in a `vp-doc` it sets `margin: 0` against the markdown's rule for images | not ported: the box's `margin: 0 auto` (placement); `VPTeamMembersItem.vue` joins the copy list in `test/upstream/SOURCE` for its case |
 
 ### From app recipes
 

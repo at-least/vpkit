@@ -1130,6 +1130,30 @@ cases.push({
   checks: [{ target: 'hr', props: [...RULE, 'display', 'height'] }],
 });
 
+// avatar: VPTeamMembersItem's round picture, the box (.avatar, in the
+// small card) and the image filling it (.avatar-img), against vp-avatar on
+// the image alone; then inside a vp-doc against itself outside one. The
+// original's styles are loaded for this case alone: they name .title,
+// .name and .links
+const AVATAR_SRC = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23888'/%3E%3C/svg%3E";
+const vpkitAvatar = `<img data-t="img" class="vp-avatar" src="${AVATAR_SRC}" alt="">`;
+cases.push({
+  name: 'avatar',
+  upstreamFiles: ['components/VPTeamMembersItem.vue'],
+  upstream: `<article class="VPTeamMembersItem small"><div class="profile"><figure data-t="box" class="avatar"><img data-t="img" class="avatar-img" src="${AVATAR_SRC}" alt=""></figure></div></article>`,
+  vpkit: vpkitAvatar,
+  checks: [
+    { target: 'img', refTarget: 'box', props: ['flex-shrink', 'width', 'height', ...RADIUS, 'box-shadow'] },
+    { target: 'img', props: ['object-fit', ...RADIUS, 'width', 'height'] },
+  ],
+});
+cases.push({
+  name: 'avatar in a doc',
+  reference: `<div>${vpkitAvatar}</div>`,
+  vpkit: inDoc(vpkitAvatar),
+  checks: [{ target: 'img', props: [...MARGIN, 'width', 'height', 'max-width'] }],
+});
+
 // skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
 // it so that the component's position wins as its scoped rules do) against
 // vp-skip, hidden at rest and shown while focused

@@ -1,0 +1,36 @@
+/* vpkit — avatar, ported from VitePress's VPTeamMembersItem (the team
+ * page's member card): its round picture. An optional import:
+ * `@import "vpkit/avatar.css";`
+ *
+ *   <img class="vp-avatar" src="/avatars/ada.jpg" alt="Ada Lovelace">
+ *   <img class="vp-avatar size-8" src="/avatars/ada.jpg" alt="">
+ *
+ * One element where VPTeamMembersItem has two (the round box, `.avatar`,
+ * and the picture filling it, `.avatar-img`): a 4rem circle, the small
+ * card's size, under --vp-shadow-3, the picture cropped to it
+ * (object-fit: cover) and never squeezed in a flex row (flex-shrink: 0).
+ * The size is VitePress's small card's, where every other component
+ * leaves size to the page, because a picture with no size is its file's;
+ * a size utility sets another (`size-8` for a row, `size-24` for the
+ * medium card's 6rem), and `shadow-none` removes the shadow. Tailwind's
+ * preflight makes it a block; `inline-block align-middle` puts it in a
+ * line of text. Not ported: the box's centering (`margin: 0 auto`,
+ * placement). Inside a vp-doc (content.css), whose rule for an image
+ * gives it margins, it keeps its place. */
+
+@layer components {
+  .vp-avatar {
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--vp-shadow-3);
+  }
+
+  /* inside a vp-doc (content.css), whose rule for an image gives it
+     margins above and below: none */
+  .vp-doc .vp-avatar {
+    margin: 0;
+  }
+}
