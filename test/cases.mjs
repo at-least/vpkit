@@ -5,6 +5,10 @@ import {
   OWN_DRIVE_BTN_DANGER,
   OWN_DRIVE_BTN_ROW,
   OWN_DRIVE_CARD,
+  OWN_DRIVE_CRUMB,
+  OWN_DRIVE_CRUMBS,
+  OWN_DRIVE_CRUMB_CURRENT,
+  OWN_DRIVE_CRUMB_SLASH,
   OWN_DRIVE_EMPTY,
   OWN_DRIVE_MODAL,
   OWN_DRIVE_MODAL_H3,
@@ -928,6 +932,7 @@ const HOVER_COLOR = (target) => ({ target, state: ['hover'], props: ['color'] })
 const IN_ALERT = [
   ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
   ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
+  ['breadcrumb item', `<ol class="vp-breadcrumb"><li><a data-t="x" class="vp-breadcrumb-item" href="#">root</a></li></ol>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
   // an icon has no text for the alert's link weight to draw
   ['icon button', `<a data-t="x" class="vp-icon-btn" href="#" aria-label="Like"><span class="vpi-heart"></span></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
   ['card', card('a', 'vp-card', CARD_TEXT('vp-card-title', 'vp-card-details')), [
@@ -1154,6 +1159,35 @@ cases.push({
   checks: [{ target: 'img', props: [...MARGIN, 'width', 'height', 'max-width'] }],
 });
 
+// breadcrumb: own-drive's folder path (its nav, a crumb that is a link,
+// the current folder's crumb, and the slash between crumbs) against
+// vp-breadcrumb: the list, its items at rest and hovered, and the slash the
+// list draws before every item but the first, which own-drive writes as a
+// span: its color is read on the pseudo-element on both sides (a span with
+// none still computes one). The recipe's default cursor on the current
+// crumb is its own: the element supplies its cursor
+const CRUMB = ['color', 'text-decoration-line', 'font-weight', 'font-size'];
+const CRUMB_HOVER = ['color', 'text-decoration-line'];
+const vpkitCrumbs =
+  `<nav aria-label="Breadcrumb"><ol data-t="list" class="vp-breadcrumb"><li><a data-t="a" class="vp-breadcrumb-item" href="#">root</a></li>` +
+  `<li data-t="li"><a data-t="cur" class="vp-breadcrumb-item" href="#" aria-current="page">docs</a></li></ol></nav>`;
+cases.push({
+  name: 'breadcrumb',
+  reference:
+    `<nav data-t="list" class="${OWN_DRIVE_CRUMBS}"><a data-t="a" class="${OWN_DRIVE_CRUMB}" href="#">root</a>` +
+    `<span data-t="slash" class="${OWN_DRIVE_CRUMB_SLASH}"> / </span><a data-t="cur" class="${OWN_DRIVE_CRUMB_CURRENT}" href="#">docs</a></nav>`,
+  vpkit: vpkitCrumbs,
+  checks: [
+    { target: 'list', props: ['min-width', 'font-size', 'overflow-wrap'] },
+    { target: 'a', props: CRUMB },
+    { target: 'a', state: ['hover'], props: CRUMB_HOVER },
+    { target: 'cur', props: CRUMB },
+    { target: 'cur', state: ['hover'], props: CRUMB_HOVER },
+    { target: 'li', refTarget: 'slash', pseudo: '::before', props: ['color'] },
+  ],
+});
+touch('breadcrumb item', vpkitCrumbs, [{ target: 'a', ...AT_REST, props: CRUMB_HOVER }]);
+
 // skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
 // it so that the component's position wins as its scoped rules do) against
 // vp-skip, hidden at rest and shown while focused
@@ -1343,6 +1377,14 @@ for (const [name, markup, checks] of [
   ]],
   ['dialog title', `<h2 data-t="x" class="vp-dialog-title">Rename</h2>`, [
     { target: 'x', props: ['margin-top', 'margin-bottom', 'border-top-width', 'padding-top', 'letter-spacing', 'line-height', 'font-size', 'font-weight'] },
+  ]],
+  ['breadcrumb', vpkitCrumbs, [
+    { target: 'list', props: ['display', ...MARGIN, ...PADDING, 'list-style-type'] },
+    { target: 'li', props: ['margin-top', 'display'] },
+    // the transition is the recipe's: none, so in a doc the markdown's link fade applies
+    { target: 'a', props: LOOK },
+    { target: 'a', state: ['hover'], props: CRUMB_HOVER },
+    { target: 'cur', props: LOOK },
   ]],
 ]) {
   cases.push({

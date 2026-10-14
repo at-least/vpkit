@@ -72,6 +72,14 @@ export const OWN_DRIVE_CARD =
 // state's line (`EMPTY`, web.rs:467), the second consumer of vp-empty
 export const OWN_DRIVE_EMPTY = 'py-[3.5rem] px-4 text-center text-text-2';
 
+// own-drive src/web.rs at 638e3f8, verbatim as of 2026-10-15: the folder
+// path over the file list (`browse_main`, web.rs:988): its nav, a crumb
+// that is a link, the current folder's crumb and the slash between crumbs
+export const OWN_DRIVE_CRUMBS = 'min-w-0 [overflow-wrap:anywhere] text-[.875rem]';
+export const OWN_DRIVE_CRUMB = 'text-text-2 no-underline hover:text-text-1 hover:underline';
+export const OWN_DRIVE_CRUMB_CURRENT = 'text-text-1 cursor-default font-semibold hover:no-underline';
+export const OWN_DRIVE_CRUMB_SLASH = 'text-text-3';
+
 // totality crates/web/src/ui.rs `BADGE`, `BADGE_SUCCESS` and `BADGE_DANGER`,
 // verbatim as of 2026-10-10: vp-badge on the page's color with the type's
 // tint as its border, the reference for vp-badge-outline

@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty-eight exist, in twenty-seven files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty-nine exist, in twenty-eight files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -151,6 +151,7 @@ For a component from an app recipe:
 | `vp-empty` | crashcart's `empty-frame` (a recipe) | `vp-empty-title`, `vp-empty-desc` |
 | `vp-divider` | `vp-doc.css`: `.vp-doc hr`; VPNavBar's rule between two of its clusters | `vp-divider-vertical`; `aria-orientation` |
 | `vp-avatar` | VPTeamMembersItem: `.avatar`, `.avatar-img` | on an `<img>`; a size utility for another size |
+| `vp-breadcrumb` | own-drive's folder path (a recipe) | `vp-breadcrumb-item`; `aria-current="page"` |
 
 ### When a new one is built
 
@@ -304,6 +305,7 @@ own-drive's modal (the `MODAL` recipe) on the `<dialog>` element, which brings t
 | `vp-btn-ghost` | crashcart's `btn-ghost` | a `vp-btn` modifier in the variable pattern: transparent border and ground, `text-2`; hovered and pressed `text-1` on `default-soft`, `vp-icon-btn`'s colors | measured against the recipe as utilities over `vp-btn`, and against `vp-icon-btn` for the colors; decision 13 |
 | `vp-empty` | crashcart's `empty-frame`, `empty-title`, `empty-desc`; own-drive's `EMPTY`, which takes it | the box (`bg-soft`, `vp-card`'s ground, where the recipe has `default-soft`: decision 17; a 0.75rem radius, 3rem by 1.5rem of padding, centered lines 0.375rem apart in `text-2`), the bold title in `text-1`, the 0.875rem description at most 52ch wide; in a `vp-doc` the lines keep their places | own-drive's line, which has no box, is compared on its color and alignment; decision 14 |
 | `vp-progress` | own-drive's `BAR`, `BAR_FILL`, which take it | a 0.3rem track on `default-soft` with 0.15rem radii, as wide as its container, a `brand-1` fill (`Highlight` under forced colors) | two spans; a native `<progress>` needs vendor pseudo-elements. One site (the quota bar; the load bar is another thing) |
+| `vp-breadcrumb` | own-drive's folder path (`browse_main`'s `#crumbs` nav) | the list (`<ol>`): a wrapping flex row of 0.875rem text, `min-width: 0`, `overflow-wrap: anywhere`, a slash in `text-3` drawn as `li + li::before` with 0.375rem at each side (the recipe writes it as a span; the spacing is vpkit's); the item, a link or a span: `text-2`, no underline, `text-1` underlined on hover, the current one (`aria-current="page"`, where the recipe keys on being last) `text-1` at 600 with no underline hovered; `font-weight: inherit` so an alert's rule for links leaves it; in a `vp-doc` the list sets no margin, indent or numbers and its items no gap | one site, built on the owner's ask (decision 18); not ported: the recipe's default cursor on the current crumb, which is a link there (rule 4: the element supplies its cursor); the slash's color is read on the pseudo-element on both sides |
 
 ### The apps' chrome
 
@@ -367,6 +369,7 @@ What stays in totality: the store's flex-column `<body>` (`flex min-h-screen fle
 | `BTN_CHIP` | stays — an alt button collapsed to a 1.9rem square (VPButton's alt colors: a gray ground, `text-1`, the alt border); as a `vp-icon-btn` it would lose the ground and the color; a `vp-btn` squared with utilities is the closer class, not measured |
 | `TD`, `TH`, `TR`, `DL`, `INPUT` | stay — own-drive's own looks |
 | `BAR`, `#msg`, `EMPTY` | `vp-progress`, `vp-toast`, `vp-empty` — the bars a `role="progressbar"` with `aria-valuenow`, the toast a manual popover whose placement, live region and `.err` color are the page's |
+| the folder path (`#crumbs` in `browse_main`) | `vp-breadcrumb` holds the recipe; own-drive still draws it as utilities (a span for each slash, the current folder a link with the default cursor), and would take the list with `vp-breadcrumb-item` on each crumb and `aria-current="page"` on the current one |
 | the header, its brand link | `vp-topbar`, `vp-topbar-title h-auto` — not `vp-topbar-row`: the bar is one 64px line and the header's controls wrap onto more lines below about 1280px (measured: 90.6px tall at 1100, 82.6 at 768, 130.6 at 375), so the row stays the header's own flex utilities and a 64px title would make a wrapped header's first line 64px; the paddings stay its own (1.25rem, .75rem under 700px), lined up with the page's inset |
 | its cards | `vp-card vp-card-outline` (decision 12) — the padding, the inner layout and the hover stay utilities, the selected and arrow-key states app rules at two classes (`.card:is(.selected)`) |
 
