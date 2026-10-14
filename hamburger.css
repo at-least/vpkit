@@ -66,7 +66,7 @@
   /* open: the cross. After the hover rules, which it outranks by order at
      the same specificity, as VitePress's .active rules do */
   .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(1) { top: 0.375rem; transform: translateX(0) rotate(225deg); }
-  .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(2) { top: 0.375rem; transform: translateX(1rem); }
+  .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(2) { transform: translateX(1rem); }
   .vp-hamburger[aria-expanded="true"] :where(.vp-hamburger-box) > span:nth-child(3) { top: 0.375rem; transform: translateX(0) rotate(135deg); }
 
   .vp-hamburger[aria-expanded="true"] {
