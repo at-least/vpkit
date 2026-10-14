@@ -24,7 +24,7 @@ Each component is rendered next to the VitePress original in headless Chromium a
 
 ## Forced colors
 
-`test/forced-colors.mjs` renders, with Chromium's emulation of Windows' contrast themes, the components that show a state only with a background or a shadow, which those themes replace: a checked and an unchecked toggle, and a progress bar at two values, must render differently.
+`test/forced-colors.mjs` renders, with Chromium's emulation of Windows' contrast themes, the components that show a state only with a background or a shadow, which those themes replace: a checked and an unchecked toggle, a progress bar at two values, an open and a closed hamburger, an icon against an empty box its size, and a vertical divider against an empty box its size, must each render differently.
 
 ## Layout
 
