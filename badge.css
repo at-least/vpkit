@@ -22,10 +22,10 @@
  * keeps the contrast the theme contract holds the text to.
  *
  * Variables and modifiers work as in button.css. VPBadge's own rules for a
- * badge in a .vp-doc heading (h1 to h6, content.css's or doc.css's) and in
- * the doc footer (layout.css's vp-doc-footer, where it is hidden) are here
- * too, as VitePress keeps them with the badge; they set the properties
- * themselves, so they win over vp-badge-small as VitePress's do. */
+ * badge in a .vp-doc heading (h1 to h6, content.css's) and in the doc
+ * footer (layout.css's vp-doc-footer, where it is hidden) are here too, as
+ * VitePress keeps them with the badge; they set the properties themselves,
+ * so they win over vp-badge-small as VitePress's do. */
 
 @layer components {
   .vp-badge {

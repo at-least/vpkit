@@ -33,15 +33,15 @@
  * is `@variant hover`, like Tailwind's `hover:` (VPSwitch's also sticks to
  * a tapped switch on a touch screen). The `.dark` rules are VPSwitch's
  * own: there, the icon's color and its opacity transition exist only in
- * dark mode. The modifier's rules are compounds (.vp-toggle-appearance
- * .vp-toggle), as in button.css.
+ * dark mode. The modifier's rules are compounds
+ * (.vp-toggle-appearance.vp-toggle), as in button.css.
  *
  * The icon rules are one compound longer than VPSwitch's (`.vp-toggle
- * .vp-toggle-icon [class^='vpi-']`, where VPSwitch has `.icon [class^=
- * 'vpi-']`): Vue's scoping attribute gave VitePress's rule a third class
- * of specificity, which the port drops, and without it the rule ties with
- * icons.css's `[class^='vpi-']:not(.bg) { color: inherit }` at (0,2,0), so
- * the import order would decide the icon's color. */
+ * .vp-toggle-icon [class^='vpi-']`, where VPSwitch has
+ * `.icon [class^='vpi-']`): Vue's scoping attribute gave VitePress's rule
+ * a third class of specificity, which the port drops, and without it the
+ * rule ties with icons.css's `[class^='vpi-']:not(.bg) { color: inherit }`
+ * at (0,2,0), so the import order would decide the icon's color. */
 
 @layer components {
   .vp-toggle {
