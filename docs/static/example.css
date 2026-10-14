@@ -2179,6 +2179,24 @@ button:focus-visible {
     margin: 0;
     line-height: 1.5;
   }
+  .vp-divider {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+  .vp-divider-vertical.vp-divider {
+    margin: 0 0.5rem;
+    border: none;
+    width: 1px;
+    height: 1.5rem;
+    background-color: var(--vp-c-divider);
+  }
+  @media (forced-colors: active) {
+    .vp-divider-vertical.vp-divider {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

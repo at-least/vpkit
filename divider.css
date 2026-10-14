@@ -1,0 +1,52 @@
+/* vpkit — divider, ported from VitePress's markdown rule (`.vp-doc hr`)
+ * and the navbar's rule between two of its clusters (VPNavBar's
+ * `::before` on the cluster after the menu). An optional import:
+ * `@import "vpkit/divider.css";`
+ *
+ *   <hr class="vp-divider">
+ *
+ *   <div class="flex items-center">
+ *     <a class="vp-link" href="/docs">Docs</a>
+ *     <hr class="vp-divider vp-divider-vertical" aria-orientation="vertical">
+ *     <a class="vp-link" href="/blog">Blog</a>
+ *   </div>
+ *
+ * `vp-divider` alone is the markdown's rule: a 1px line of the divider
+ * color across its container, 1rem above and below (VitePress's own
+ * spacing, kept as vp-table keeps its margin; `my-0` removes it).
+ *
+ * Modifier, used together with `vp-divider`:
+ *   vp-divider-vertical   the navbar's rule: a 1px by 1.5rem line of the
+ *                         divider color with 0.5rem at each side, for a
+ *                         row of items (a flex row centers it, as the
+ *                         bar's does)
+ *
+ * On an <hr>, a separator for assistive technology; the vertical one says
+ * so with aria-orientation="vertical". In a flex row an <hr> is a flex
+ * item, as VitePress's ::before is. One addition: under forced colors
+ * (Windows' contrast themes) the browser erases backgrounds, and the
+ * vertical rule is one, so there it takes the text color; the horizontal
+ * rule is a border, which forced colors keep. */
+
+@layer components {
+  .vp-divider {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  .vp-divider-vertical.vp-divider {
+    margin: 0 0.5rem;
+    border: none;
+    width: 1px;
+    height: 1.5rem;
+    background-color: var(--vp-c-divider);
+  }
+
+  @media (forced-colors: active) {
+    .vp-divider-vertical.vp-divider {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

@@ -1099,6 +1099,37 @@ cases.push({
   ],
 });
 
+// divider: the markdown's rule (.vp-doc hr) against vp-divider, and the
+// navbar's rule between two of its clusters (VPNavBar.vue's `::before` on
+// the cluster after the menu, its declarations written inline, since a
+// pseudo-element can't be the reference of an element) against
+// vp-divider-vertical, each in a flex row as the bar's is; then the
+// vertical rule inside a vp-doc against itself outside one
+const RULE = [...MARGIN, ...BORDER, ...BORDER_COLOR, 'width', 'height', 'background-color'];
+cases.push({
+  name: 'divider',
+  upstream: `<div class="vp-doc"><hr data-t="hr"></div>`,
+  vpkit: `<hr data-t="hr" class="vp-divider">`,
+  checks: [{ target: 'hr', props: RULE }],
+});
+// the pseudo-element has the browser's border, none, where Tailwind's
+// preflight gives a <span> `0 solid`
+const NAVBAR_RULE = 'margin-right:0.5rem;margin-left:0.5rem;width:1px;height:1.5rem;background-color:var(--vp-c-divider);border:none';
+const row = (rule) => `<div style="display:flex;align-items:center"><span>Menu</span>${rule}<span>Appearance</span></div>`;
+const vpkitVertical = `<hr data-t="hr" class="vp-divider vp-divider-vertical" aria-orientation="vertical">`;
+cases.push({
+  name: 'divider vertical',
+  reference: row(`<span data-t="hr" style="${NAVBAR_RULE}"></span>`),
+  vpkit: row(vpkitVertical),
+  checks: [{ target: 'hr', props: [...RULE, 'display', 'offset-top', 'offset-left'] }],
+});
+cases.push({
+  name: 'divider vertical in a doc',
+  reference: `<div>${row(vpkitVertical)}</div>`,
+  vpkit: inDoc(row(vpkitVertical)),
+  checks: [{ target: 'hr', props: [...RULE, 'display', 'height'] }],
+});
+
 // skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
 // it so that the component's position wins as its scoped rules do) against
 // vp-skip, hidden at rest and shown while focused
