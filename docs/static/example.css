@@ -2268,6 +2268,44 @@ button:focus-visible {
   .vp-doc .vp-breadcrumb > li {
     margin-top: 0;
   }
+  .vp-accordion {
+    border-bottom: 1px solid var(--vp-c-divider);
+    transition: border-color 0.5s;
+  }
+  .vp-accordion[open] {
+    padding-bottom: 0.625rem;
+  }
+  .vp-accordion-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.25rem 0.6875rem 0;
+    width: 100%;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    cursor: pointer;
+    transition: color 0.25s;
+  }
+  @media (hover: hover) {
+    .vp-accordion-title:hover {
+      color: var(--vp-c-brand-1);
+    }
+  }
+  .vp-accordion[open] > .vp-accordion-title {
+    padding-bottom: 0.375rem;
+    color: var(--vp-c-brand-1);
+  }
+  .vp-accordion-icon {
+    transition: transform 0.25s;
+  }
+  .vp-accordion[open] > .vp-accordion-title > .vp-accordion-icon {
+    transform: rotate(45deg);
+  }
+  .vp-doc .vp-accordion-title {
+    margin: 0;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

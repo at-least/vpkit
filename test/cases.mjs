@@ -1188,6 +1188,37 @@ cases.push({
 });
 touch('breadcrumb item', vpkitCrumbs, [{ target: 'a', ...AT_REST, props: CRUMB_HOVER }]);
 
+// accordion: VitePress's nav screen group (VPNavScreenMenuGroup, in
+// VPNavMenuGroup.vue: the row a phone's menu opens into its links) against
+// vp-accordion on a <details>, closed and open (`.open` there, `[open]`
+// here), the title at rest and hovered, the icon; then inside a vp-doc
+// against itself outside one. The original's styles are loaded for these
+// cases alone: they name .button
+const ACCORDION_BOX = ['border-bottom-width', 'border-bottom-style', 'border-bottom-color', ...PADDING, ...TRANSITION];
+const ACCORDION_TITLE = ['display', 'justify-content', 'align-items', ...PADDING, 'width', 'line-height', 'font-size', 'font-weight', 'color', 'cursor', ...TRANSITION, 'height'];
+const ACCORDION_ICON = ['transform', ...TRANSITION, 'width', 'height'];
+const vpkitAccordion = (open) =>
+  `<details data-t="box" class="vp-accordion"${open ? ' open' : ''}><summary data-t="title" class="vp-accordion-title">Guide` +
+  `<span data-t="icon" class="vpi-plus vp-accordion-icon" aria-hidden="true"></span></summary><p>Orders placed before noon ship the same day.</p></details>`;
+for (const open of [false, true]) {
+  cases.push({
+    name: `accordion${open ? ' open' : ''}`,
+    upstreamFiles: ['components/VPNavMenuGroup.vue'],
+    upstream:
+      `<div data-t="box" class="VPNavMenuGroup VPNavScreenMenuGroup${open ? ' open' : ''}"><button data-t="title" type="button" class="button" aria-expanded="${open}">` +
+      `<span class="button-text">Guide</span><span data-t="icon" class="vpi-plus button-icon" aria-hidden="true"></span></button>` +
+      `<ul class="items"${open ? '' : ' style="display:none"'}><li>Orders placed before noon ship the same day.</li></ul></div>`,
+    vpkit: vpkitAccordion(open),
+    checks: [
+      { target: 'box', props: ACCORDION_BOX },
+      { target: 'title', props: ACCORDION_TITLE },
+      { target: 'title', state: ['hover'], props: ['color'] },
+      { target: 'icon', props: ACCORDION_ICON },
+    ],
+  });
+}
+touch('accordion title', vpkitAccordion(false), [{ target: 'title', ...AT_REST, props: ['color'] }]);
+
 // skip link: VPSkipLink (with VitePress's visually-hidden, loaded before
 // it so that the component's position wins as its scoped rules do) against
 // vp-skip, hidden at rest and shown while focused
@@ -1377,6 +1408,10 @@ for (const [name, markup, checks] of [
   ]],
   ['dialog title', `<h2 data-t="x" class="vp-dialog-title">Rename</h2>`, [
     { target: 'x', props: ['margin-top', 'margin-bottom', 'border-top-width', 'padding-top', 'letter-spacing', 'line-height', 'font-size', 'font-weight'] },
+  ]],
+  ['accordion title', vpkitAccordion(true), [
+    { target: 'title', props: [...MARGIN, 'line-height', 'font-size', 'font-weight', 'color', 'height'] },
+    { target: 'box', props: PADDING },
   ]],
   ['breadcrumb', vpkitCrumbs, [
     { target: 'list', props: ['display', ...MARGIN, ...PADDING, 'list-style-type'] },

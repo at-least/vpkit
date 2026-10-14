@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Twenty-nine exist, in twenty-eight files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Thirty exist, in twenty-nine files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -152,6 +152,7 @@ For a component from an app recipe:
 | `vp-divider` | `vp-doc.css`: `.vp-doc hr`; VPNavBar's rule between two of its clusters | `vp-divider-vertical`; `aria-orientation` |
 | `vp-avatar` | VPTeamMembersItem: `.avatar`, `.avatar-img` | on an `<img>`; a size utility for another size |
 | `vp-breadcrumb` | own-drive's folder path (a recipe) | `vp-breadcrumb-item`; `aria-current="page"` |
+| `vp-accordion` | VPNavMenuGroup's screen variant (VPNavScreenMenuGroup) | `vp-accordion-title`, `vp-accordion-icon`; `[open]` on a `<details>` |
 
 ### When a new one is built
 
@@ -292,6 +293,7 @@ own-drive's modal (the `MODAL` recipe) on the `<dialog>` element, which brings t
 | `vp-mark` | VPLocalSearchBox: `mark` | `--vp-local-search-highlight-bg` on `--vp-local-search-highlight-text`, 0.125rem radius, `0 0.125rem` padding; the tokens are the search's, `brand-1` and `neutral-inverse` | — |
 | `vp-divider` | `vp-doc.css`: `.vp-doc hr`; VPNavBar: the `::before` between two of the bar's clusters | on an `<hr>`: the markdown's rule, `margin: 1rem 0` (VitePress's own, kept as `vp-table`'s margin is) over a 1px `divider` border-top; `vp-divider-vertical` the bar's, a 1px by 1.5rem `divider` ground with 0.5rem at each side, for a flex row, which says `aria-orientation="vertical"` | the vertical rule is a background, which forced colors erase, so there it takes the text color (`test/forced-colors.mjs`, against an empty box its size); the bar's rule is a pseudo-element, so its case holds the declarations written inline, as the top bar's ground does |
 | `vp-avatar` | VPTeamMembersItem: `.avatar` (the round box of the small card) and `.avatar-img` (the picture filling it) | one element where the original has two, as `vp-card` is: on an `<img>`, a 4rem circle (the small card's; the medium's is 6rem) under `--vp-shadow-3`, `object-fit: cover`, `flex-shrink: 0`; a size utility sets another size, as the one component whose size is its own because a picture with no size is its file's; in a `vp-doc` it sets `margin: 0` against the markdown's rule for images | not ported: the box's `margin: 0 auto` (placement); `VPTeamMembersItem.vue` joins the copy list in `test/upstream/SOURCE` for its case |
+| `vp-accordion` | VPNavMenuGroup.vue: `.VPNavScreenMenuGroup`, its `.button` and `.button-icon` (the row a phone's menu opens into its links) | a section on a `<details>`: a `divider` border-bottom with a 0.5s border-color transition, `padding-bottom: 0.625rem` while `[open]` (the element's state, where VitePress has `.open`); `vp-accordion-title` the summary: a flex row, `0.75rem 0.25rem 0.6875rem 0` of padding (0.375rem below while open), line height 1.7142857, 0.875rem/500, `text-1`, brand on hover and while open, `cursor: pointer` (rule 4's exception: a summary has no cursor to give, VitePress's row is a button); `vp-accordion-icon` the `vpi-plus` at the row's end, `rotate(45deg)` while open with VitePress's 0.25s transition; in a `vp-doc` the title sets `margin: 0` against the markdown's rule for a summary | the flex row drops Chromium's summary marker; Safari's is UNVERIFIED (the tests run Chromium only). Not ported: `.active` (the group that holds the current page) and the look of the menu's links inside |
 
 ### From app recipes
 
