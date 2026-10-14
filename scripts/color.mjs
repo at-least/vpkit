@@ -55,17 +55,13 @@ export function composite(color, alpha, bg) {
 // were fitted with it, so it stays
 export const EPS = 0.03;
 
-// darken (light mode) / lighten (dark mode) until target contrast; if the
-// primary direction cannot reach it, try the other way
+// darken (light mode) / lighten (dark mode) until target contrast
 export function fit(c, against, target, mode) {
   target += EPS;
-  for (const t of mode === 'light' ? [black, white] : [white, black]) {
-    let cur = c;
-    for (let i = 0; i < 60; i++) {
-      if (contrast(cur, against) >= target) return cur;
-      cur = mix(cur, t, 0.04);
-    }
-    if (contrast(cur, against) > contrast(c, against)) c = cur;
+  let cur = c;
+  for (let i = 0; i < 60; i++) {
+    if (contrast(cur, against) >= target) return cur;
+    cur = mix(cur, mode === 'light' ? black : white, 0.04);
   }
   return c;
 }

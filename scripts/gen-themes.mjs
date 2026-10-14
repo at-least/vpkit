@@ -114,10 +114,9 @@ const SPECS = [
     light: { f: 'ayu_light', m: { bg: 'background', bg_alt: 'black', bg_elv: 'white',
       text1: 'foreground', border: 'dark_gray',
       brand1: 'blue', success: 'green', warning: 'orange', danger: 'red', important: 'magenta', sponsor: 'red' } },
-    dark: { f: 'ayu_dark', m: { bg: 'background', bg_alt: 'black', bg_elv: 'dark_gray',
+    dark: { f: 'ayu_dark', m: { bg: 'background', bg_alt: '#0b0f14', bg_elv: 'dark_gray',
       text1: 'foreground', border: 'dark_gray',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta' } },
-    dark_alt: { bg_alt: '#0b0f14' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta' } } },
   { name: 'solarized', desc: 'the classic: selective contrast, warm and marine',
     light: { f: 'solarized_light', m: { bg: 'base03', bg_alt: 'base02', bg_elv: 'base03',
       text1: 'base01', border: 'base015',
@@ -414,7 +413,6 @@ function curated() {
   for (const spec of SPECS) {
     const adjusted = new Set();
     const dm = resolve(spec.dark);
-    Object.assign(dm, spec.dark_alt); // per-theme literal fixes (ayu's)
     const dark = buildMode('dark', dm, adjusted);
     // the light half: the palette's own, or derived from dm as the dark build fitted it
     const [lightMap, note] = spec.light === 'derived'
@@ -514,27 +512,16 @@ export function autoSlots(stem) {
     return (lightPalette ? minBy : maxBy)(pool, lum);
   };
 
-  let bg, alt = null, elv = null;
+  let bg;
   if (uiBg !== null) bg = uiBg;
-  else if (bgNamed.length) {
-    bg = (lightPalette ? maxBy : minBy)(bgNamed, lum);
-    const surfaces = bgNamed.filter((v) => v !== bg).sort((a, b) => lum(a) - lum(b));
-    if (surfaces.length) {
-      const towardFg = lightPalette ? surfaces.reverse() : surfaces;
-      [alt, elv] = [towardFg[0], towardFg[Math.min(1, towardFg.length - 1)]];
-    } else alt = mix(bg, fgOf(bg), 0.1);
-  } else bg = (lightPalette ? maxBy : minBy)(colors, lum);
+  else if (bgNamed.length) bg = (lightPalette ? maxBy : minBy)(bgNamed, lum);
+  else bg = (lightPalette ? maxBy : minBy)(colors, lum);
 
   const fg = fgOf(bg);
-  alt ??= mix(bg, fg, lightPalette ? 0.06 : 0.1);
-  elv ??= mix(bg, fg, lightPalette ? 0.03 : 0.18);
-  // elevation convention (matches the stock look): elevated surfaces are
-  // never darker than the page bg
-  if (lum(elv) < lum(bg)) elv = lightPalette ? bg : mix(bg, fg, 0.16);
 
   const buckets = {};
   for (const [k, v] of Object.entries(p)) {
-    if ([bg, alt, elv, fg].includes(v) || NEUTRAL_RE.test(k) || BG_RE.test(k)) continue;
+    if ([bg, fg].includes(v) || NEUTRAL_RE.test(k) || BG_RE.test(k)) continue;
     const [r, g, b] = rgb(v);
     const [h, l, sat] = rgbToHls(r / 255, g / 255, b / 255);
     if (sat < 0.15 || l < 0.06 || l > 0.96) continue;
@@ -571,16 +558,8 @@ export function autoSlots(stem) {
     taken.add(c);
   }
 
-  // surface guard: body text must be ABLE to reach 7:1: mid-tone "dark"
-  // backgrounds get nudged toward black (and vice versa), or the text fit
-  // exhausts at white/black and still fails
-  const toward = (c, t, stop) => {
-    while (t === black ? lum(c) > stop : lum(c) < stop) c = mix(c, t, 0.03);
-    return c;
-  };
   if (!lightPalette) {
-    if (lum(bg) > 0.082) bg = toward(bg, black, 0.082);
-    // and a hovered link in a container must be able to reach AA: white
+    // a hovered link in a container must be able to reach AA: white
     // dimmed to 0.75 on the thinnest tint the room rule leaves (0.06, here
     // of white, the lightest a tint can be) and on code's tint inside it.
     // A mid-gray "soft" page (seoul256-dark-soft's #4e4e4e) moves toward
@@ -591,10 +570,9 @@ export function autoSlots(stem) {
       return [tint, composite(white, 0.06, tint)].every((g) => contrast(composite(white, 0.75, g), g) >= 4.5 + EPS);
     };
     bg = stepTo(bg, black, 100, leavesRoom);
-  } else if (lum(bg) < 0.3) bg = toward(bg, white, 0.3);
-  // the surfaces over the guarded page (the palette's own served the hue
-  // buckets above); the elevated one never darker than the page
-  elv = mix(bg, fg, lightPalette ? 0.03 : 0.18);
+  }
+  // the surfaces over the page; the elevated one never darker than it
+  const elv = mix(bg, fg, lightPalette ? 0.03 : 0.18);
   return [lightPalette ? 'light' : 'dark', {
     bg, bg_alt: mix(bg, fg, lightPalette ? 0.06 : 0.1), bg_elv: lum(elv) >= lum(bg) ? elv : bg,
     text1: fg, border: mix(fg, bg, 0.32),
