@@ -26,4 +26,4 @@ States are attributes, never classes: `vp-btn:disabled`, `vp-input[aria-invalid=
 
 ## How close to VitePress
 
-Each component is rendered next to its VitePress original, v2.0.0-alpha.20, in headless Chromium, and their computed styles compared in both modes and with `:hover` and `:active` forced; the layout and the markdown are compared with pages VitePress rendered. Where vpkit differs on purpose, the tests list the difference with its reason. [Tests](https://github.com/at-least/vpkit/blob/main/test/README.md)
+Each component is rendered next to its VitePress original, v2.0.0-alpha.20, or, for the eight VitePress has none of, next to the recipe it was built from, in headless Chromium, and their computed styles compared in both modes and with `:hover` and `:active` forced; the layout and the markdown are compared with pages VitePress rendered. Where vpkit differs on purpose, the tests list the difference with its reason. [Tests](https://github.com/at-least/vpkit/blob/main/test/README.md)
