@@ -77,7 +77,7 @@ Rules that cannot be utilities (`base.css`): the color scheme of the appearance,
 
 ## Markdown rules
 
-`doc.css`: the external-link icon. VitePress's styles for the rest of the markdown are `content.css`, for a docs theme: [Docs Layout](@/guide/layout.md).
+`doc.css`: the external-link icon. VitePress's styles for the rest of the markdown are `content.css`: [Getting Started](@/guide/getting-started.md#markdown-and-icons).
 
 ## Graded containers
 

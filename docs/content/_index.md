@@ -41,6 +41,6 @@ link_text = "Try them"
 icon = "📐"
 title = "The docs layout"
 details = "VitePress's navbar, sidebar, outline, home page and markdown styles as classes, for a docs theme. This site is built with one, vpkit-zola."
-link = "@/guide/layout.md"
-link_text = "Docs layout"
+link = "https://github.com/at-least/vpkit-zola"
+link_text = "vpkit-zola"
 +++

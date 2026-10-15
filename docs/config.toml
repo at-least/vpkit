@@ -67,7 +67,6 @@ text = "Using vpkit"
 items = [
   { text = "Utilities and Variables", link = "@/guide/utilities.md" },
   { text = "Themes", link = "@/themes.md" },
-  { text = "Docs Layout", link = "@/guide/layout.md" },
 ]
 
 [[extra.sidebar]]

@@ -64,6 +64,20 @@ The components are one import each, so a site ships only the ones it uses:
 
 [Components](@/components/_index.md) has the whole list.
 
+## Markdown and icons
+
+Two more optional imports, outside `vpkit`, for a page that renders markdown or shows VitePress's icons:
+
+```css
+@import "vpkit/content.css";
+@import "vpkit/icons.css";
+```
+
+- `content.css`: the markdown inside `<div class="vp-doc">`, VitePress's own styles for it with its own class names: headings with `.header-anchor` links, `.custom-block` containers and GitHub alerts, `div[class*='language-']` code blocks (copy button, language label, highlighted, diff and focused lines, line numbers), `.vp-code-group` tabs. Not the code's colors: those come with the highlighter, as Shiki's do in VitePress. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
+- `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`). Each is an inline SVG in a `data:` URL, so a page with a Content-Security-Policy allows `img-src data:`, or every icon shows nothing. Under forced colors an icon paints in the system's text color, where the mask's own ground would be erased.
+
+The rest of VitePress's page, the navbar, the sidebar, the outline, the home page and the footers, is `layout.css`, for a docs theme: VitePress's markup with its classes renamed, by the scheme in the file's header. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it.
+
 ## Fonts
 
 `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Serve this package's `fonts/` directory next to your built CSS.
