@@ -111,6 +111,10 @@ items = [
   { text = "Alert", link = "@/components/alert.md" },
   { text = "Card", link = "@/components/card.md" },
   { text = "Table", link = "@/components/table.md" },
+  { text = "Empty State", link = "@/components/empty.md" },
+  { text = "Accordion", link = "@/components/accordion.md" },
+  { text = "Divider", link = "@/components/divider.md" },
+  { text = "Avatar", link = "@/components/avatar.md" },
 ]
 
 [[extra.sidebar."/components/"]]
@@ -119,7 +123,18 @@ items = [
   { text = "Dropdown", link = "@/components/dropdown.md" },
   { text = "Tabs", link = "@/components/tabs.md" },
   { text = "Dialog", link = "@/components/dialog.md" },
+  { text = "Drawer", link = "@/components/drawer.md" },
   { text = "Toast", link = "@/components/toast.md" },
+]
+
+[[extra.sidebar."/components/"]]
+text = "Navigation"
+items = [
+  { text = "Skip Link", link = "@/components/skip.md" },
+  { text = "Nav Link", link = "@/components/nav-link.md" },
+  { text = "Top Bar", link = "@/components/topbar.md" },
+  { text = "Hamburger", link = "@/components/hamburger.md" },
+  { text = "Breadcrumb", link = "@/components/breadcrumb.md" },
 ]
 
 [[extra.sidebar."/components/"]]
