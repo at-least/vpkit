@@ -17,7 +17,7 @@ VitePress's `VPNavMenuLink`: a link of the navbar's menu, in the bar and in the 
 <button class="vp-nav-link" type="button">Sign out</button>
 {% </vp_example> %}
 
-- `vp-nav-link`: a flex row as tall as the navbar, 0.75rem of padding each side, 0.875rem text at weight 500, brand on hover and while it is the current page's (`aria-current="page"`, where VitePress has `.active`). On a `<button>` it is the same row: a form's submit drawn as a link of the menu.
+- `vp-nav-link`: a flex row as tall as the navbar, brand on hover and while it is the current page's (`aria-current="page"`, where VitePress has `.active`). On a `<button>` it is the same row: a form's submit drawn as a link of the menu.
 - `vp-nav-link-screen`: the screen's link, a block with a divider under it.
 
 {% <vp_example title="The screen's links" layout="stack"> %}

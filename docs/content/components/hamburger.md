@@ -20,8 +20,8 @@ VitePress's `VPNavBarHamburger`, the button at the end of the navbar that opens 
 </button>
 {% </vp_example> %}
 
-- `vp-hamburger`: the button, 3rem wide and the navbar's height, centering the bars. Hovered, the bars slide apart. Open (`aria-expanded="true"`, where VitePress has `.active`) the top and bottom bars cross and the middle one slides out of view.
-- `vp-hamburger-box`: the 1rem by 0.875rem frame the three bars, three empty `<span>`s, move in.
+- `vp-hamburger`: the button, the navbar's height, centering the bars. Hovered, the bars slide apart. Open (`aria-expanded="true"`, where VitePress has `.active`) the top and bottom bars cross and the middle one slides out of view.
+- `vp-hamburger-box`: the frame the three bars, three empty `<span>`s, move in.
 
 When the button shows is the page's: `md:hidden` hides it from 768px, where VitePress's bar shows the menu and the hamburger goes. Opening the screen, and the screen itself, are the page's too: set `aria-expanded` on the button, and `aria-controls` to the screen's id. The screen's links are [Nav Link](@/components/nav-link.md)'s `vp-nav-link-screen`.
 

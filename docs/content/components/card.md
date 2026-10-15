@@ -18,7 +18,7 @@ VitePress's `VPFeature`, the home page's feature boxes.
 </a>
 {% </vp_example> %}
 
-- `vp-card`: the soft surface with 1.5rem padding, a flex column filling its container's height. As a link (`<a class="vp-card">`) its border turns brand on hover.
+- `vp-card`: the soft surface, padded, a flex column filling its container's height. As a link (`<a class="vp-card">`) its border turns brand on hover.
 - `vp-card-title`, `vp-card-details`: the bold title and the secondary text under it, which takes the free height.
 
 {% <vp_example title="Cards in a grid"> %}

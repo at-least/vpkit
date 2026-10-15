@@ -25,9 +25,9 @@ VitePress has no dialog. This is vpkit's own, on the `<dialog>` element, which b
 </dialog>
 {% </vp_example> %}
 
-- The elevated surface in a divider border, a 0.75rem radius, `shadow-4`; the backdrop is `--vp-backdrop-bg-color`.
-- `vp-dialog-title`: the 1.05rem semibold title. `vp-dialog-actions`: the buttons, at the end of a row 0.5rem apart.
+- The elevated surface in a divider border, rounded, under `shadow-4`; the backdrop is `--vp-backdrop-bg-color`.
+- `vp-dialog-title`: the semibold title. `vp-dialog-actions`: the buttons, at the end of a row.
 - Open it with `showModal()`. The browser centers a modal dialog with `margin: auto`, which Tailwind's preflight removes from every element, so the dialog sets it back.
-- 26rem wide, at most 92vw: a width of its own, which the components leave to the page otherwise (the progress track and the drawer apart), since a dialog without one shrinks to its content. A width utility replaces it.
+- 26rem wide, at most 92vw, since a dialog without a width shrinks to its content; a width utility replaces it.
 
 The buttons are in a `<form method="dialog">`, which closes the dialog when one is pressed, with no script; Escape closes it too.

@@ -17,8 +17,8 @@ The markdown's horizontal rule (`.vp-doc hr`), and the navbar's vertical rule be
 <p>Returns are free for 30 days.</p>
 {% </vp_example> %}
 
-- `vp-divider`: a 1px line of the divider color across its container, 1rem above and below (VitePress's own spacing, as the table keeps its; `my-0` removes it).
-- `vp-divider-vertical`: the navbar's rule, 1px by 1.5rem with 0.5rem at each side, for a row of items. Say so with `aria-orientation="vertical"`.
+- `vp-divider`: a line of the divider color across its container, 1rem above and below (VitePress's own spacing; `my-0` removes it).
+- `vp-divider-vertical`: the navbar's rule, upright with VitePress's space at each side, for a row of items. Say so with `aria-orientation="vertical"`.
 
 {% <vp_example title="A vertical rule in a row"> %}
 <div class="flex items-center text-sm">

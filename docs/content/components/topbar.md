@@ -26,9 +26,9 @@ VitePress's `VPNavBar` (the bar and the row in it) and `VPNavBarTitle` (the site
 </header>
 {% </vp_example> %}
 
-- `vp-topbar`: the bar, on `--vp-nav-bg-color` with a 1px rule along its bottom, 1.5rem of padding at the left and 0.5rem at the right (2rem each from 768px), nothing wrapping.
+- `vp-topbar`: the bar, on `--vp-nav-bg-color` with a rule along its bottom and VitePress's padding at each end, nothing wrapping.
 - `vp-topbar-row`: the row in it, as tall as the navbar, its ends apart and its items centered, at most `--vp-layout-max-width` less 4rem wide. A bar may hold more than one row.
-- `vp-topbar-title`: the site's name, a flex row the navbar's height at weight 600; a `<span>` in it truncates with an ellipsis when the bar runs out of room.
+- `vp-topbar-title`: the site's name, a bold flex row the navbar's height; a `<span>` in it truncates with an ellipsis when the bar runs out of room.
 
 Where the bar sits is the page's: `sticky top-0 z-(--vp-z-index-nav)`, or fixed. What fills the row is the page's too: [Nav Link](@/components/nav-link.md) for its links, [Icon Button](@/components/icon-btn.md) and [Toggle](@/components/toggle.md) for its controls.
 

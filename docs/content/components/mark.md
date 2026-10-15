@@ -15,4 +15,4 @@ The highlight of VitePress's local search box, which marks the matched words in 
 <p>Found: the <mark class="vp-mark">badge</mark> component.</p>
 {% </vp_example> %}
 
-- The search's highlight colors, the brand under the page's inverse text, with a 0.125rem radius and 0.125rem of padding at each side.
+- The search's highlight colors, the brand under the page's inverse text, rounded, with a little padding at each side.

@@ -22,8 +22,8 @@ A radio or a checkbox drawn as a selectable card. VitePress has none; this is vp
 </label>
 {% </vp_example> %}
 
-- The page ground in a divider border, 1rem padding, 14px text; the control first, 16px, in the brand color.
-- A brand border on hover. While its control is checked: the brand border on the brand tint. While the control has the keyboard's focus: a 2px brand outline around the card.
+- The page ground in a divider border; the control first, in the brand color.
+- A brand border on hover. While its control is checked: the brand border on the brand tint. While the control has the keyboard's focus: a brand outline around the card.
 - Its states are its control's, read with `:has()`: there is nothing to toggle but the control.
 
 {% <vp_example title="A checkbox card"> %}

@@ -18,7 +18,7 @@ A progress bar. VitePress has none; this is vpkit's own.
 </span>
 {% </vp_example> %}
 
-- `vp-progress`: the track, a 0.3rem bar of the soft gray with rounded ends, as wide as its container. In a flex row it claims the whole row and squeezes the items beside it; give it `flex-1` to take only the free space, or a width utility.
+- `vp-progress`: the track, a thin bar of the soft gray with rounded ends, as wide as its container. In a flex row it claims the whole row and squeezes the items beside it; give it `flex-1` to take only the free space, or a width utility.
 - `vp-progress-bar`: the brand fill, empty until the page sets its width. The value for assistive technology goes in the progressbar's `aria-value*` attributes.
 - With forced colors, as in Windows' contrast themes, the track is framed and the fill takes the system's highlight color.
 
