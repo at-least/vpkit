@@ -42,9 +42,9 @@ outline = [2, 3]
 search = true
 
 # one sidebar for the whole site: the guide's group, then the components
-# by kind; VitePress's own docs give the guide and the reference one each,
-# with the guide's ending in a link to the reference. themes.md turns it
-# off in its front matter
+# by kind, on every page but the home and the 404; VitePress's own docs
+# give the guide and the reference one each, with the guide's ending in a
+# link to the reference
 [[extra.sidebar]]
 text = "Introduction"
 items = [
