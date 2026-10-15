@@ -51,10 +51,10 @@ footer = { message = "Released under the MIT License.", copyright = "Copyright Â
 outline = [2, 3]
 search = true
 
-# one sidebar for the whole site: the guide's groups, the components by
-# kind, the tests last; VitePress's own docs give the guide and the
-# reference one each, with the guide's ending in a link to the reference.
-# themes.md turns it off in its front matter
+# one sidebar for the whole site: the guide's groups, then the components
+# by kind; VitePress's own docs give the guide and the reference one each,
+# with the guide's ending in a link to the reference. themes.md turns it
+# off in its front matter
 [[extra.sidebar]]
 text = "Introduction"
 items = [
@@ -138,7 +138,3 @@ items = [
   { text = "Spinner", link = "@/components/spinner.md" },
   { text = "Progress", link = "@/components/progress.md" },
 ]
-
-[[extra.sidebar]]
-text = "Development"
-items = [{ text = "Tests", link = "@/guide/tests.md" }]

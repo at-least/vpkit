@@ -115,6 +115,6 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Accordion](@/components/accordion.md) | `vp-accordion` | VitePress's nav screen group |
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |
 
-A component taken from VitePress is rendered next to its original in a browser and compared, property by property; one VitePress doesn't have is compared the same way with the app recipe it was taken from. [Tests](@/guide/tests.md)
+A component taken from VitePress is rendered next to its original in a browser and compared, property by property; one VitePress doesn't have is compared the same way with the app recipe it was taken from. [Tests](https://github.com/at-least/vpkit/blob/main/test/README.md)
 
 The library's design is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md): the rules every component follows, how one is proven against its original, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them.
