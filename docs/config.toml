@@ -35,11 +35,6 @@ head = [
   { tag = "link", attrs = { rel = "stylesheet", href = "/themes/vitepress.css", data-theme = "vitepress" } },
   { tag = "script", attrs = { src = "/theme-pick.js?v=2" } },
 ]
-nav = [
-  { text = "Guide", link = "@/guide/what-is-vpkit.md", active_match = "^/guide/" },
-  { text = "Components", link = "@/components/_index.md", active_match = "^/components/" },
-  { text = "Themes", link = "@/themes.md", active_match = "^/themes/" },
-]
 social_links = [{ icon = "github", link = "https://github.com/at-least/vpkit" }]
 edit_link = { pattern = "https://github.com/at-least/vpkit/edit/main/docs/content/:path", text = "Edit this page on GitHub" }
 footer = { message = "Released under the MIT License.", copyright = "Copyright © 2026-present newlix" }
