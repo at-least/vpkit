@@ -32,9 +32,10 @@
  * (allow-discrete). Measured in Chromium, which the tests run; by the
  * browsers' compatibility data, Firefox (129 and later) slides it in but
  * ends a `display` transition at once, so there it closes at once, and
- * Safari (17.5 and later) slides it in and out but has no `overlay`, so
- * there a closing drawer leaves the top layer at once with its scrim and
- * finishes its slide in the page's stacking — UNVERIFIED in both. Under
+ * Safari slides it in from 17.5 and, from 18, out too (before 18 it
+ * closes at once, as Firefox does), but has no `overlay`, so there a
+ * closing drawer leaves the top layer at once with its scrim and finishes
+ * its slide in the page's stacking — UNVERIFIED in both. Under
  * prefers-reduced-motion base.css ends every transition, the scrim's too:
  * its rule names ::backdrop, which VitePress's star doesn't match.
  *
