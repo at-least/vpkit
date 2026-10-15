@@ -41,10 +41,11 @@ footer = { message = "Released under the MIT License.", copyright = "Copyright Â
 outline = [2, 3]
 search = true
 
-# one sidebar for the whole site: the guide's group, then the components
-# by kind, on every page but the home and the 404; VitePress's own docs
-# give the guide and the reference one each, with the guide's ending in a
-# link to the reference
+# one sidebar for the whole site: the guide's group, then every component
+# in one list, alphabetical, its heading the overview, as shadcn/ui's docs
+# list theirs; on every page but the home and the 404. VitePress's own
+# docs give the guide and the reference one each, with the guide's ending
+# in a link to the reference
 [[extra.sidebar]]
 text = "Introduction"
 items = [
@@ -56,69 +57,36 @@ items = [
 
 [[extra.sidebar]]
 text = "Components"
-items = [{ text = "Overview", link = "@/components/_index.md" }]
-
-[[extra.sidebar]]
-text = "Actions"
+link = "@/components/_index.md"
 items = [
-  { text = "Button", link = "@/components/button.md" },
-  { text = "Icon Button", link = "@/components/icon-btn.md" },
-  { text = "Link", link = "@/components/link.md" },
-]
-
-[[extra.sidebar]]
-text = "Forms"
-items = [
-  { text = "Input", link = "@/components/input.md" },
-  { text = "Field", link = "@/components/field.md" },
-  { text = "Toggle", link = "@/components/toggle.md" },
-  { text = "Choice", link = "@/components/choice.md" },
-]
-
-[[extra.sidebar]]
-text = "Text"
-items = [
-  { text = "Badge", link = "@/components/badge.md" },
-  { text = "Code", link = "@/components/code.md" },
-  { text = "Key", link = "@/components/kbd.md" },
-  { text = "Highlight", link = "@/components/mark.md" },
-]
-
-[[extra.sidebar]]
-text = "Blocks"
-items = [
-  { text = "Alert", link = "@/components/alert.md" },
-  { text = "Card", link = "@/components/card.md" },
-  { text = "Table", link = "@/components/table.md" },
-  { text = "Empty State", link = "@/components/empty.md" },
   { text = "Accordion", link = "@/components/accordion.md" },
-  { text = "Divider", link = "@/components/divider.md" },
+  { text = "Alert", link = "@/components/alert.md" },
   { text = "Avatar", link = "@/components/avatar.md" },
-]
-
-[[extra.sidebar]]
-text = "Menus and Overlays"
-items = [
-  { text = "Dropdown", link = "@/components/dropdown.md" },
-  { text = "Tabs", link = "@/components/tabs.md" },
-  { text = "Dialog", link = "@/components/dialog.md" },
-  { text = "Drawer", link = "@/components/drawer.md" },
-  { text = "Toast", link = "@/components/toast.md" },
-]
-
-[[extra.sidebar]]
-text = "Navigation"
-items = [
-  { text = "Skip Link", link = "@/components/skip.md" },
-  { text = "Nav Link", link = "@/components/nav-link.md" },
-  { text = "Top Bar", link = "@/components/topbar.md" },
-  { text = "Hamburger", link = "@/components/hamburger.md" },
+  { text = "Badge", link = "@/components/badge.md" },
   { text = "Breadcrumb", link = "@/components/breadcrumb.md" },
-]
-
-[[extra.sidebar]]
-text = "Status"
-items = [
-  { text = "Spinner", link = "@/components/spinner.md" },
+  { text = "Button", link = "@/components/button.md" },
+  { text = "Card", link = "@/components/card.md" },
+  { text = "Choice", link = "@/components/choice.md" },
+  { text = "Code", link = "@/components/code.md" },
+  { text = "Dialog", link = "@/components/dialog.md" },
+  { text = "Divider", link = "@/components/divider.md" },
+  { text = "Drawer", link = "@/components/drawer.md" },
+  { text = "Dropdown", link = "@/components/dropdown.md" },
+  { text = "Empty State", link = "@/components/empty.md" },
+  { text = "Field", link = "@/components/field.md" },
+  { text = "Hamburger", link = "@/components/hamburger.md" },
+  { text = "Highlight", link = "@/components/mark.md" },
+  { text = "Icon Button", link = "@/components/icon-btn.md" },
+  { text = "Input", link = "@/components/input.md" },
+  { text = "Key", link = "@/components/kbd.md" },
+  { text = "Link", link = "@/components/link.md" },
+  { text = "Nav Link", link = "@/components/nav-link.md" },
   { text = "Progress", link = "@/components/progress.md" },
+  { text = "Skip Link", link = "@/components/skip.md" },
+  { text = "Spinner", link = "@/components/spinner.md" },
+  { text = "Table", link = "@/components/table.md" },
+  { text = "Tabs", link = "@/components/tabs.md" },
+  { text = "Toast", link = "@/components/toast.md" },
+  { text = "Toggle", link = "@/components/toggle.md" },
+  { text = "Top Bar", link = "@/components/topbar.md" },
 ]
