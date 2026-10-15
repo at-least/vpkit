@@ -17,9 +17,9 @@
  * the row of buttons at the end. Open it with showModal(): the browser
  * centers a modal dialog with `margin: auto`, which Tailwind's preflight
  * takes from every element, so the dialog sets it back. The width is the
- * recipe's, where every other component leaves it to the page, because a
- * dialog without one shrinks to its content; `w-[32rem]` or any width
- * utility replaces it. */
+ * recipe's, where the components leave it to the page (the progress track
+ * and the drawer apart), because a dialog without one shrinks to its
+ * content; `w-[32rem]` or any width utility replaces it. */
 
 @layer components {
   .vp-dialog {

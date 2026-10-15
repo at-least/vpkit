@@ -41,7 +41,8 @@ const TRANSITION = ['transition-property', 'transition-duration'];
 export const cases = [];
 
 // Intentional differences from upstream. A difference that matches an
-// entry (case name, element, property) is reported instead of failing;
+// entry (case name, element, the pseudo-element if the check reads one,
+// property) is reported instead of failing;
 // an entry that matches nothing fails the run, so none outlives its cause.
 export const known = [
   {
@@ -50,6 +51,13 @@ export const known = [
     prop: 'display',
     reason:
       'vp-btn is inline-flex (centered, 0.5rem gap) so an icon and its label sit side by side, as the apps need; VPButton is inline-block. The "button with an icon" case checks the flex layout against VPButton with that layout inline',
+  },
+  {
+    case: /^drawer at \d+px$/,
+    target: 'dlg',
+    prop: 'transform',
+    reason:
+      "the open drawer has no transform, VitePress's translateX(0): the same place, but a transform makes the panel the containing block of a fixed descendant, and a toast shown inside the open drawer (the page behind it is inert) would sit in the panel's corner instead of the viewport's (the 'a fixed box inside the open drawer' case)",
   },
   {
     case: /^alert info nested in tip$/,
@@ -580,29 +588,32 @@ cases.push({
 // showModal() by the dialog case's script; VPBackdrop, the scrim VitePress
 // draws as an element, against the dialog's ::backdrop (`refPseudo: null`
 // reads the reference's element itself). What the element brings and
-// VPSidebar has no need of (a modal dialog's size, insets, margin, border
-// and text color) the drawer sets back to the aside's, so the box is
-// compared on every side
+// VPSidebar has no need of (a modal dialog's size, insets and text color)
+// the drawer sets back to the aside's, and its margins and borders hold
+// the preflight's zeros, so the box is compared on every side
 const SIDEBAR_FILES = ['components/VPSidebar.vue', 'components/VPBackdrop.vue'];
 const drawerBody = `<nav><a href="#">Guide</a><a href="#">Reference</a></nav>`;
+// VitePress's open sidebar with its scrim beside it; the drawer, opened
+const upstreamDrawer = `<div data-t="back" class="VPBackdrop"></div><aside data-t="dlg" class="VPSidebar open">${drawerBody}</aside>`;
+const vpkitDrawer = `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`;
+// the slide's transition: its properties, durations, curves and behaviors
+const SLIDE = [...TRANSITION, 'transition-timing-function', 'transition-behavior'];
 const DRAWER_BOX = [
   'position', ...SIDES, 'offset-top', 'offset-left', 'height', 'width', 'max-width', 'max-height',
   ...MARGIN, ...BORDER, ...PADDING, ...COLORS, 'opacity', 'transform', 'box-shadow',
-  'overflow-x', 'overflow-y', 'overscroll-behavior-x', 'overscroll-behavior-y',
-  ...TRANSITION, 'transition-timing-function', 'transition-behavior',
+  'overflow-x', 'overflow-y', 'overscroll-behavior-x', 'overscroll-behavior-y', ...SLIDE,
 ];
+// the scrim: VPBackdrop's element against the drawer's ::backdrop
+const scrim = (props) => ({ target: 'dlg', pseudo: '::backdrop', refTarget: 'back', refPseudo: null, props });
 const BACKDROP = ['position', ...SIDES, 'background-color', 'opacity', ...TRANSITION];
 for (const width of [375, 800]) {
   cases.push({
     name: `drawer at ${width}px`,
     width,
     upstreamFiles: SIDEBAR_FILES,
-    upstream: `<div data-t="back" class="VPBackdrop"></div><aside data-t="dlg" class="VPSidebar open">${drawerBody}</aside>`,
-    vpkit: `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`,
-    checks: [
-      { target: 'dlg', props: DRAWER_BOX },
-      { target: 'dlg', pseudo: '::backdrop', refTarget: 'back', refPseudo: null, props: BACKDROP },
-    ],
+    upstream: upstreamDrawer,
+    vpkit: vpkitDrawer,
+    checks: [{ target: 'dlg', props: DRAWER_BOX }, scrim(BACKDROP)],
   });
 }
 // the closed state, where the slide out ends: VitePress's closed sidebar
@@ -610,30 +621,53 @@ for (const width of [375, 800]) {
 // transitions, allow-discrete, that keep a closing dialog on screen and
 // in the top layer until the slide ends) against the closed drawer shown
 // (display: block inline): a closed dialog has no box, and its transform
-// reads none
+// reads none; and VitePress's leaving scrim (Vue's fade-leave classes on
+// VPBackdrop) against the closed drawer's ::backdrop, which Chromium
+// resolves on a dialog with a box
 cases.push({
   name: 'drawer closed',
   width: 375,
   upstreamFiles: SIDEBAR_FILES,
-  upstream: `<aside data-t="dlg" class="VPSidebar" style="transition:opacity 0.5s, transform 0.25s ease, display 0.5s allow-discrete, overlay 0.5s allow-discrete">${drawerBody}</aside>`,
+  upstream:
+    `<div data-t="back" class="VPBackdrop fade-leave-active fade-leave-to"></div>` +
+    `<aside data-t="dlg" class="VPSidebar" style="transition:opacity 0.5s, transform 0.25s ease, display 0.5s allow-discrete, overlay 0.5s allow-discrete">${drawerBody}</aside>`,
   vpkit: `<dialog data-t="dlg" class="vp-drawer" style="display:block">${drawerBody}</dialog>`,
-  checks: [{ target: 'dlg', props: ['opacity', 'transform', ...TRANSITION, 'transition-timing-function', 'transition-behavior'] }],
+  checks: [{ target: 'dlg', props: ['opacity', 'transform', ...SLIDE] }, scrim(['opacity', ...TRANSITION])],
 });
 // under prefers-reduced-motion: VitePress's rule (`*, ::before, ::after`)
 // zeroes its sidebar's and its scrim's durations, the scrim being an
 // element; vpkit's scrim is the dialog's ::backdrop, which the star
 // doesn't match, so base.css's rule names it (vpkit's addition)
+const STILL = [...TRANSITION, 'transition-delay'];
 cases.push({
   name: 'drawer under reduced motion',
   width: 375,
   reducedMotion: true,
   upstreamFiles: SIDEBAR_FILES,
-  upstream: `<div data-t="back" class="VPBackdrop"></div><aside data-t="dlg" class="VPSidebar open">${drawerBody}</aside>`,
-  vpkit: `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`,
-  checks: [
-    { target: 'dlg', props: [...TRANSITION, 'transition-delay'] },
-    { target: 'dlg', pseudo: '::backdrop', refTarget: 'back', refPseudo: null, props: [...TRANSITION, 'transition-delay'] },
-  ],
+  upstream: upstreamDrawer,
+  vpkit: vpkitDrawer,
+  checks: [{ target: 'dlg', props: STILL }, scrim(STILL)],
+});
+// below a layout top: VitePress's --vp-layout-top-height (a banner above
+// the layout, 0px unset), which the drawer reads as VPSidebar does
+const LAYOUT_TOP = `<style>:root{--vp-layout-top-height:3rem}</style>`;
+cases.push({
+  name: 'drawer under a layout top',
+  width: 375,
+  upstreamFiles: SIDEBAR_FILES,
+  upstream: `${LAYOUT_TOP}${upstreamDrawer}`,
+  vpkit: `${LAYOUT_TOP}${vpkitDrawer}`,
+  checks: [{ target: 'dlg', props: ['top', 'offset-top', 'height'] }],
+});
+// a fixed element inside the open drawer, a toast shown while the page
+// behind it is inert: at the viewport's corner, as in the page, since the
+// open panel carries no transform (one would make it the containing block)
+const FIXED_TOAST = `<div data-t="t" class="vp-toast" style="position:fixed;right:1rem;bottom:1rem">Saved</div>`;
+cases.push({
+  name: 'a fixed box inside the open drawer',
+  reference: FIXED_TOAST,
+  vpkit: `<dialog data-t="dlg" class="vp-drawer"><nav>Menu</nav>${FIXED_TOAST}</dialog>${OPEN}`,
+  checks: [{ target: 't', props: ['offset-top', 'offset-left', 'height'] }],
 });
 
 // dropdown: VPMenu with VPMenuLink items and VPMenuGroup groups, as
@@ -1051,20 +1085,18 @@ cases.push({
 
 // the backdrop still dims the page where --vp-backdrop-bg-color doesn't
 // reach ::backdrop (before Chrome 122 and Safari 17.4 it inherits from
-// nothing): here the variable is unset, and the fallback paints
+// nothing): the reference reads the token (the variable defined), vpkit's
+// side has it unset and paints the fallback, so the fallback is held to
 // tokens.css's value
-cases.push({
-  name: 'dialog backdrop without the variable',
-  reference: `<dialog data-t="dlg" class="vp-dialog"></dialog><style>[data-t="dlg"]::backdrop{background-color:rgba(0, 0, 0, 0.6)}</style>${OPEN}`,
-  vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-dialog"></dialog>${OPEN}`,
-  checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
-});
-cases.push({
-  name: 'drawer backdrop without the variable',
-  reference: `<dialog data-t="dlg" class="vp-drawer"></dialog><style>[data-t="dlg"]::backdrop{background-color:rgba(0, 0, 0, 0.6)}</style>${OPEN}`,
-  vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style><dialog data-t="dlg" class="vp-drawer"></dialog>${OPEN}`,
-  checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
-});
+for (const name of ['dialog', 'drawer']) {
+  const markup = `<dialog data-t="dlg" class="vp-${name}"></dialog>${OPEN}`;
+  cases.push({
+    name: `${name} backdrop without the variable`,
+    reference: markup,
+    vpkit: `<style>:root{--vp-backdrop-bg-color:initial}</style>${markup}`,
+    checks: [{ target: 'dlg', pseudo: '::backdrop', props: ['background-color'] }],
+  });
+}
 
 // a spinner in a button turns in the label's color, a 30% ring of it with
 // the full color turning: the label's color is what each button holds
@@ -1490,7 +1522,7 @@ for (const [name, markup, checks] of [
     { target: 'cur', props: LOOK },
   ]],
   // the markdown has no rule for a dialog; what is inside the panel is the page's
-  ['drawer', `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`, [
+  ['drawer', vpkitDrawer, [
     { target: 'dlg', props: [...PADDING, ...COLORS, 'width', 'opacity'] },
   ]],
 ]) {

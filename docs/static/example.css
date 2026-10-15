@@ -2311,9 +2311,10 @@ button:focus-visible {
   }
   .vp-drawer {
     position: fixed;
-    inset: 0 auto 0 0;
-    margin: 0;
-    border-width: 0;
+    top: var(--vp-layout-top-height, 0px);
+    right: auto;
+    bottom: 0;
+    left: 0;
     padding: 2rem 2rem 6rem;
     width: calc(100vw - 4rem);
     max-width: 20rem;
@@ -2330,7 +2331,7 @@ button:focus-visible {
   }
   .vp-drawer[open] {
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
     transition: opacity 0.25s, transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   }
   @starting-style {
@@ -2341,6 +2342,11 @@ button:focus-visible {
   }
   .dark .vp-drawer {
     box-shadow: var(--vp-shadow-1);
+  }
+  @media (forced-colors: active) {
+    .vp-drawer {
+      border-right: 1px solid CanvasText;
+    }
   }
   .vp-drawer::backdrop {
     background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));

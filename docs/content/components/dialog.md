@@ -28,7 +28,7 @@ VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, w
 - The elevated surface in a divider border, a 0.75rem radius, `shadow-4`; the backdrop is `--vp-backdrop-bg-color`.
 - `vp-dialog-title`: the 1.05rem semibold title. `vp-dialog-actions`: the buttons, at the end of a row 0.5rem apart.
 - Open it with `showModal()`. The browser centers a modal dialog with `margin: auto`, which Tailwind's preflight removes from every element, so the dialog sets it back.
-- 26rem wide, at most 92vw: unlike the other components it has a width, since a dialog without one shrinks to its content. A width utility replaces it.
+- 26rem wide, at most 92vw: a width of its own, which the components leave to the page otherwise (the progress track and the drawer apart), since a dialog without one shrinks to its content. A width utility replaces it.
 
 The buttons are in a `<form method="dialog">`, which closes the dialog when one is pressed, with no script; Escape closes it too.
 
