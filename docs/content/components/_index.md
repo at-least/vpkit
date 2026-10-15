@@ -9,36 +9,9 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 
 ```css
 @import "vpkit/button.css";
-@import "vpkit/badge.css";
-@import "vpkit/alert.css";
-@import "vpkit/table.css";
-@import "vpkit/card.css";
-@import "vpkit/input.css";
-@import "vpkit/toggle.css";
-@import "vpkit/link.css";
-@import "vpkit/code.css";
-@import "vpkit/spinner.css";
-@import "vpkit/dialog.css";
-@import "vpkit/dropdown.css";
-@import "vpkit/icon-btn.css";
-@import "vpkit/tabs.css";
-@import "vpkit/kbd.css";
-@import "vpkit/mark.css";
-@import "vpkit/choice.css";
-@import "vpkit/field.css";
-@import "vpkit/toast.css";
-@import "vpkit/progress.css";
-@import "vpkit/skip.css";
-@import "vpkit/nav-link.css";
-@import "vpkit/topbar.css";
-@import "vpkit/hamburger.css";
-@import "vpkit/empty.css";
-@import "vpkit/divider.css";
-@import "vpkit/avatar.css";
-@import "vpkit/breadcrumb.css";
-@import "vpkit/accordion.css";
-@import "vpkit/drawer.css";
 ```
+
+The file is named after the class: `vp-badge` is `vpkit/badge.css`, `vp-icon-btn` is `vpkit/icon-btn.css`; `vp-label` and `vp-field-error` share `vpkit/field.css`. Each page opens with its import.
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
 
@@ -82,39 +55,37 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 
 ## The list
 
-| Component | Classes | Taken from |
+| Component | Classes | Original |
 | --- | --- | --- |
-| [Button](@/components/button.md) | `vp-btn` | VitePress's `VPButton` |
-| [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
-| [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
-| [Input](@/components/input.md) | `vp-input` | totality's input, on VitePress's input variables |
-| [Field](@/components/field.md) | `vp-label`, `vp-field-error` | totality's field label and inline error |
-| [Toggle](@/components/toggle.md) | `vp-toggle` | VitePress's `VPSwitch` and `VPSwitchAppearance` |
-| [Choice](@/components/choice.md) | `vp-choice` | totality's radio drawn as a card |
-| [Badge](@/components/badge.md) | `vp-badge` | VitePress's `VPBadge` |
-| [Code](@/components/code.md) | `vp-code` | VitePress's inline code |
-| [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
-| [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
-| [Alert](@/components/alert.md) | `vp-alert` | VitePress's custom blocks |
-| [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
-| [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
-| [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
-| [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
-| [Dialog](@/components/dialog.md) | `vp-dialog` | own-drive's modal |
-| [Toast](@/components/toast.md) | `vp-toast` | own-drive's status message |
-| [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
-| [Progress](@/components/progress.md) | `vp-progress` | own-drive's storage quota bar |
-| [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
-| [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
-| [Top Bar](@/components/topbar.md) | `vp-topbar` | VitePress's `VPNavBar` and `VPNavBarTitle` |
-| [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
-| [Empty State](@/components/empty.md) | `vp-empty` | crashcart's empty state |
-| [Divider](@/components/divider.md) | `vp-divider` | VitePress's markdown rule, and the navbar's vertical rule |
-| [Avatar](@/components/avatar.md) | `vp-avatar` | the picture of VitePress's `VPTeamMembersItem` |
-| [Breadcrumb](@/components/breadcrumb.md) | `vp-breadcrumb` | own-drive's folder path |
 | [Accordion](@/components/accordion.md) | `vp-accordion` | VitePress's nav screen group |
+| [Alert](@/components/alert.md) | `vp-alert` | VitePress's custom blocks |
+| [Avatar](@/components/avatar.md) | `vp-avatar` | the picture of VitePress's `VPTeamMembersItem` |
+| [Badge](@/components/badge.md) | `vp-badge` | VitePress's `VPBadge` |
+| [Breadcrumb](@/components/breadcrumb.md) | `vp-breadcrumb` | none, vpkit's own: a folder path |
+| [Button](@/components/button.md) | `vp-btn` | VitePress's `VPButton` |
+| [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
+| [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
+| [Code](@/components/code.md) | `vp-code` | VitePress's inline code |
+| [Dialog](@/components/dialog.md) | `vp-dialog` | none, vpkit's own, on `<dialog>` |
+| [Divider](@/components/divider.md) | `vp-divider` | VitePress's markdown rule, and the navbar's vertical rule |
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |
+| [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
+| [Empty State](@/components/empty.md) | `vp-empty` | none, vpkit's own |
+| [Field](@/components/field.md) | `vp-label`, `vp-field-error` | none, vpkit's own |
+| [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
+| [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
+| [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
+| [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
+| [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
+| [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
+| [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
+| [Progress](@/components/progress.md) | `vp-progress` | none, vpkit's own |
+| [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
+| [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
+| [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
+| [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
+| [Toast](@/components/toast.md) | `vp-toast` | none, vpkit's own |
+| [Toggle](@/components/toggle.md) | `vp-toggle` | VitePress's `VPSwitch` and `VPSwitchAppearance` |
+| [Top Bar](@/components/topbar.md) | `vp-topbar` | VitePress's `VPNavBar` and `VPNavBarTitle` |
 
-A component taken from VitePress is rendered next to its original in a browser and compared, property by property; one VitePress doesn't have is compared the same way with the app recipe it was taken from. [Tests](https://github.com/at-least/vpkit/blob/main/test/README.md)
-
-The library's design is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md): the rules every component follows, how one is proven against its original, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them.
+The library's design, the rules every component follows and how each is held to its original, is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).
