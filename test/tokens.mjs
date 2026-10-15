@@ -1,8 +1,9 @@
 // The theme against its source: tokens.css holds every custom property of
 // VitePress's vars.css and fonts.css (fonts.css after vars.css, as
 // VitePress's index.ts imports them), in the same scope (selector and
-// enclosing @media), with the same value; and theme.css's breakpoints are
-// the lengths of upstream's `min-width` media queries, unit included (a
+// enclosing @media), with the same value; a token's fallback written into
+// a stylesheet is tokens.css's value; and theme.css's breakpoints are the
+// lengths of upstream's `min-width` media queries, unit included (a
 // utility in another unit would part from layout.css and the components
 // at a browser font size other than the default).
 //
@@ -86,6 +87,24 @@ for (const [scope, mode] of [[':root:has(.vp-graded-containers)', ':root'], [':r
   }
 }
 
+// a token's fallback written into a stylesheet, `var(--vp-x, value)` (a
+// ::backdrop's, which inherits nothing in older engines), is tokens.css's
+// value of that token, so the copy can't go stale; the tokens VitePress
+// leaves to the page (its layout top, doc top, vh and extra scroll
+// margin, undefined upstream too) have no value to hold a fallback to
+const UNDEFINED = ['--vp-layout-top-height', '--vp-doc-top-height', '--vp-vh', '--vp-extra-scroll-margin'];
+let fallbacks = 0;
+for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.css')).sort()) {
+  for (const m of read(file).matchAll(/var\((--vp-[a-z0-9-]+),\s*((?:[^()]|\([^()]*\))+)\)/g)) {
+    if (UNDEFINED.includes(m[1])) continue;
+    compared++;
+    fallbacks++;
+    const want = vpkit.get(`:root :: ${m[1]}`);
+    const got = m[2].replace(/\s+/g, ' ').trim();
+    if (got !== want) failures.push(`fallback ${file}: var(${m[1]}, ${got}), tokens.css's :root value is ${want}`);
+  }
+}
+
 // the breakpoints: theme.css's values among upstream's min-width queries
 const queries = new Set();
 const upstreamFiles = [
@@ -108,7 +127,7 @@ for (const [entry, n] of hits) {
 }
 for (const f of failures) console.log(`FAIL  ${f}`);
 console.log(
-  `tokens.css against vars.css and fonts.css, the graded palette and ${breakpoints.length} breakpoints: ` +
+  `tokens.css against vars.css and fonts.css, the graded palette, ${fallbacks} fallbacks and ${breakpoints.length} breakpoints: ` +
     `${compared} checks, ${failures.length} failed, ${[...hits.values()].reduce((a, b) => a + b, 0)} known`,
 );
 process.exit(failures.length ? 1 : 0);

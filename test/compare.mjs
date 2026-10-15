@@ -97,6 +97,10 @@ async function open(browser, css, body, dark, touch, width, reducedMotion) {
   );
   const hover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
   if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);
+  // the same guard for the emulated preference: without it a case under
+  // reduced motion would read the same real durations on both sides and pass
+  const reduced = await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (reduced !== Boolean(reducedMotion)) throw new Error(`(prefers-reduced-motion: reduce) is ${reduced} on a page ${reducedMotion ? 'under' : 'without'} reduced motion`);
   await cdp.send('DOM.enable');
   await cdp.send('CSS.enable');
   return { page, cdp };
