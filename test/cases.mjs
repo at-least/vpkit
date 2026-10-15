@@ -619,6 +619,22 @@ cases.push({
   vpkit: `<dialog data-t="dlg" class="vp-drawer" style="display:block">${drawerBody}</dialog>`,
   checks: [{ target: 'dlg', props: ['opacity', 'transform', ...TRANSITION, 'transition-timing-function', 'transition-behavior'] }],
 });
+// under prefers-reduced-motion: VitePress's rule (`*, ::before, ::after`)
+// zeroes its sidebar's and its scrim's durations, the scrim being an
+// element; vpkit's scrim is the dialog's ::backdrop, which the star
+// doesn't match, so base.css's rule names it (vpkit's addition)
+cases.push({
+  name: 'drawer under reduced motion',
+  width: 375,
+  reducedMotion: true,
+  upstreamFiles: SIDEBAR_FILES,
+  upstream: `<div data-t="back" class="VPBackdrop"></div><aside data-t="dlg" class="VPSidebar open">${drawerBody}</aside>`,
+  vpkit: `<dialog data-t="dlg" class="vp-drawer">${drawerBody}</dialog>${OPEN}`,
+  checks: [
+    { target: 'dlg', props: [...TRANSITION, 'transition-delay'] },
+    { target: 'dlg', pseudo: '::backdrop', refTarget: 'back', refPseudo: null, props: [...TRANSITION, 'transition-delay'] },
+  ],
+});
 
 // dropdown: VPMenu with VPMenuLink items and VPMenuGroup groups, as
 // VitePress renders them (ul/li), against vp-dropdown's flat markup: items

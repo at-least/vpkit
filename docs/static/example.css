@@ -1112,7 +1112,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 @media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
+  *, ::before, ::after, ::backdrop {
     animation-delay: -1ms !important;
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;

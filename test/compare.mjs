@@ -15,7 +15,9 @@
 // `upstreamFiles` are originals only that case's upstream page loads, for
 // components whose stylesheets name generic classes (`.title`, `.link`)
 // that the other cases' markup also uses. A case's `width` is the
-// viewport's, for a component VitePress shows only on a narrow screen.
+// viewport's, for a component VitePress shows only on a narrow screen. A
+// case with `reducedMotion` renders both pages under
+// prefers-reduced-motion: reduce.
 //
 //   npm test
 //   CASES='^toggle' node test/compare.mjs   only the cases it matches
@@ -80,9 +82,10 @@ function same(a, b, prop, tolerance = 1 / 32) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
-async function open(browser, css, body, dark, touch, width) {
+async function open(browser, css, body, dark, touch, width, reducedMotion) {
   const page = await browser.newPage();
   if (width) await page.setViewportSize({ width, height: 720 });
+  if (reducedMotion) await page.emulateMedia({ reducedMotion: 'reduce' });
   const cdp = await page.context().newCDPSession(page);
   // Emulation.setEmulatedMedia takes a `hover` feature but Chromium
   // ignores it; touch emulation is what makes (hover: none) match
@@ -161,8 +164,8 @@ try {
         : ['upstream', `${sides.upstream}\n${upstreamCss(c.upstreamFiles ?? [])}`, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
-        ref: await open(browser, refCss, refBody, dark, c.touch, c.width),
-        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch, c.width),
+        ref: await open(browser, refCss, refBody, dark, c.touch, c.width, c.reducedMotion),
+        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch, c.width, c.reducedMotion),
       };
       for (const check of c.checks) {
         // refTarget: the reference's element when it isn't the same one

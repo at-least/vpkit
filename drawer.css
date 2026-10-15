@@ -34,7 +34,9 @@
  * ends a `display` transition at once, so there it closes at once, and
  * Safari (17.5 and later) slides it in and out but has no `overlay`, so
  * there a closing drawer leaves the top layer at once with its scrim and
- * finishes its slide in the page's stacking — UNVERIFIED in both.
+ * finishes its slide in the page's stacking — UNVERIFIED in both. Under
+ * prefers-reduced-motion base.css ends every transition, the scrim's too:
+ * its rule names ::backdrop, which VitePress's star doesn't match.
  *
  * What the element brings and VPSidebar has no need of, the drawer sets
  * back to the aside's: text-1 (a dialog's text is the system's black by
