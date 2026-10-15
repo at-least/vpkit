@@ -76,6 +76,34 @@ Two more optional imports, outside `vpkit`, for a page that renders markdown or 
 - `content.css`: the markdown inside `<div class="vp-doc">`, VitePress's own styles for it with its own class names: headings with `.header-anchor` links, `.custom-block` containers and GitHub alerts, `div[class*='language-']` code blocks (copy button, language label, highlighted, diff and focused lines, line numbers), `.vp-code-group` tabs. Not the code's colors: those come with the highlighter, as Shiki's do in VitePress. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
 - `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`). Each is an inline SVG in a `data:` URL, so a page with a Content-Security-Policy allows `img-src data:`, or every icon shows nothing. Under forced colors an icon paints in the system's text color, where the mask's own ground would be erased.
 
+The icons, all twenty-one:
+
+{% <vp_example title="The icons"> %}
+<ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm">
+  <li class="flex items-center gap-2"><span class="vpi-align-left" aria-hidden="true"></span><code>vpi-align-left</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-arrow-down" aria-hidden="true"></span><code>vpi-arrow-down</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-arrow-left" aria-hidden="true"></span><code>vpi-arrow-left</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-arrow-right" aria-hidden="true"></span><code>vpi-arrow-right</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-arrow-up" aria-hidden="true"></span><code>vpi-arrow-up</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-chevron-down" aria-hidden="true"></span><code>vpi-chevron-down</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-chevron-left" aria-hidden="true"></span><code>vpi-chevron-left</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-chevron-right" aria-hidden="true"></span><code>vpi-chevron-right</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-chevron-up" aria-hidden="true"></span><code>vpi-chevron-up</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-corner-down-left" aria-hidden="true"></span><code>vpi-corner-down-left</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-delete" aria-hidden="true"></span><code>vpi-delete</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-heart" aria-hidden="true"></span><code>vpi-heart</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-languages" aria-hidden="true"></span><code>vpi-languages</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-layout-list" aria-hidden="true"></span><code>vpi-layout-list</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-moon" aria-hidden="true"></span><code>vpi-moon</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-more-horizontal" aria-hidden="true"></span><code>vpi-more-horizontal</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-plus" aria-hidden="true"></span><code>vpi-plus</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-search" aria-hidden="true"></span><code>vpi-search</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-sparkles" aria-hidden="true"></span><code>vpi-sparkles</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-square-pen" aria-hidden="true"></span><code>vpi-square-pen</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-sun" aria-hidden="true"></span><code>vpi-sun</code></li>
+</ul>
+{% </vp_example> %}
+
 The rest of VitePress's page, the navbar, the sidebar, the outline, the home page and the footers, is `layout.css`, for a docs theme: VitePress's markup with its classes renamed, by the scheme in the file's header. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it.
 
 ## Fonts

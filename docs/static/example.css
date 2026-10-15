@@ -279,6 +279,12 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
+  .gap-x-6 {
+    column-gap: calc(var(--spacing) * 6);
+  }
+  .gap-y-3 {
+    row-gap: calc(var(--spacing) * 3);
+  }
   .overflow-hidden {
     overflow: hidden;
   }
