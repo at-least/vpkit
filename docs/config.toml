@@ -51,14 +51,18 @@ footer = { message = "Released under the MIT License.", copyright = "Copyright Â
 outline = [2, 3]
 search = true
 
-[[extra.sidebar."/guide/"]]
+# one sidebar for the whole site: the guide's groups, the components by
+# kind, the tests last; VitePress's own docs give the guide and the
+# reference one each, with the guide's ending in a link to the reference.
+# themes.md turns it off in its front matter
+[[extra.sidebar]]
 text = "Introduction"
 items = [
   { text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
   { text = "Getting Started", link = "@/guide/getting-started.md" },
 ]
 
-[[extra.sidebar."/guide/"]]
+[[extra.sidebar]]
 text = "Using vpkit"
 items = [
   { text = "Utilities and Variables", link = "@/guide/utilities.md" },
@@ -66,20 +70,11 @@ items = [
   { text = "Docs Layout", link = "@/guide/layout.md" },
 ]
 
-[[extra.sidebar."/guide/"]]
-text = "Development"
-items = [
-  { text = "Tests", link = "@/guide/tests.md" },
-]
-
-[[extra.sidebar."/guide/"]]
-items = [{ text = "Components", link = "@/components/_index.md" }]
-
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Components"
 items = [{ text = "Overview", link = "@/components/_index.md" }]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Actions"
 items = [
   { text = "Button", link = "@/components/button.md" },
@@ -87,7 +82,7 @@ items = [
   { text = "Link", link = "@/components/link.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Forms"
 items = [
   { text = "Input", link = "@/components/input.md" },
@@ -96,7 +91,7 @@ items = [
   { text = "Choice", link = "@/components/choice.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Text"
 items = [
   { text = "Badge", link = "@/components/badge.md" },
@@ -105,7 +100,7 @@ items = [
   { text = "Highlight", link = "@/components/mark.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Blocks"
 items = [
   { text = "Alert", link = "@/components/alert.md" },
@@ -117,7 +112,7 @@ items = [
   { text = "Avatar", link = "@/components/avatar.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Menus and Overlays"
 items = [
   { text = "Dropdown", link = "@/components/dropdown.md" },
@@ -127,7 +122,7 @@ items = [
   { text = "Toast", link = "@/components/toast.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Navigation"
 items = [
   { text = "Skip Link", link = "@/components/skip.md" },
@@ -137,9 +132,13 @@ items = [
   { text = "Breadcrumb", link = "@/components/breadcrumb.md" },
 ]
 
-[[extra.sidebar."/components/"]]
+[[extra.sidebar]]
 text = "Status"
 items = [
   { text = "Spinner", link = "@/components/spinner.md" },
   { text = "Progress", link = "@/components/progress.md" },
 ]
+
+[[extra.sidebar]]
+text = "Development"
+items = [{ text = "Tests", link = "@/guide/tests.md" }]
