@@ -26,7 +26,7 @@ link_text = "Utilities and variables"
 [[extra.features]]
 icon = "🧩"
 title = "Components as classes"
-details = "Thirty-one components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, each rendered next to its original in a browser and compared."
+details = "Thirty components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, each rendered next to its original in a browser and compared."
 link = "@/components/_index.md"
 link_text = "The components"
 
