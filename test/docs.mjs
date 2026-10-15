@@ -161,6 +161,21 @@ try {
           if (width < 640 && f.overflow) failures.push(`${frame}: ${f.overflow}`);
           if (!f.dark) failures.push(`${frame}: not in the page's appearance`);
         }
+        // a link to nowhere (`href="#"`) in a frame stays put (example.js): the
+        // browser would otherwise take `#` as the page and load it into the frame
+        const navigated = await page.evaluate(async () => {
+          const out = [];
+          for (const f of document.querySelectorAll('iframe.vp-example')) {
+            const doc = f.contentDocument;
+            const a = doc.querySelector('a[href="#"]');
+            if (!a) continue;
+            a.click();
+            await new Promise((r) => setTimeout(r, 50));
+            if (f.contentDocument !== doc || f.contentWindow.location.href !== 'about:srcdoc') out.push(f.title);
+          }
+          return out;
+        });
+        for (const title of navigated) failures.push(`${where}, "${title}": a link to # navigated the frame`);
         if (width >= 960) {
           // the navbar's switch, both ways
           for (let i = 0; i < 2; i++) {

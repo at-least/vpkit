@@ -40,3 +40,10 @@ new MutationObserver(theme).observe(parent.document.head, { childList: true, sub
 new ResizeObserver(() => {
   frameElement.style.height = `${Math.ceil(root.getBoundingClientRect().height)}px`;
 }).observe(root);
+
+// a link to nowhere (`href="#"`) in an example stays put: a srcdoc frame's
+// base URL is the page's, so the browser would take `#` as the page itself
+// and load the whole page into the frame
+addEventListener('click', (e) => {
+  if (e.target.closest('a[href="#"]')) e.preventDefault();
+});
