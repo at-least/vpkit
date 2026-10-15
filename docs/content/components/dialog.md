@@ -1,11 +1,11 @@
 +++
 title = "Dialog"
-description = "own-drive's modal on the <dialog> element: the elevated surface, a title and a row of actions."
+description = "A modal on the <dialog> element, vpkit's own: the elevated surface, a title and a row of actions."
 +++
 
 # Dialog
 
-VitePress has no dialog. This is own-drive's modal, on the `<dialog>` element, which brings the top layer, the focus trap, Escape and the backdrop.
+VitePress has no dialog. This is vpkit's own, on the `<dialog>` element, which brings the top layer, the focus trap, Escape and the backdrop.
 
 ```css
 @import "vpkit/dialog.css";

@@ -40,7 +40,7 @@ VitePress's `VPBadge`.
 
 ## Outline
 
-On a soft surface, a card or a banded table row, the translucent tint leaves the badge's text short of 4.5:1 (success on `bg-soft`: 4.42:1 in light, measured by totality). `vp-badge-outline` puts the page's color under the text and moves the tint to the border.
+On a soft surface, a card or a banded table row, the translucent tint leaves the badge's text short of 4.5:1 (success on `bg-soft`: 4.42:1 in light). `vp-badge-outline` puts the page's color under the text and moves the tint to the border.
 
 {% <vp_example title="Badges on a soft surface, tinted and outlined"> %}
 <div class="rounded-xl bg-bg-soft p-4">

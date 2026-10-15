@@ -1,11 +1,11 @@
 +++
 title = "Toast"
-description = "own-drive's surface for a short status message."
+description = "The surface of a short status message, vpkit's own."
 +++
 
 # Toast
 
-The surface of a short status message. VitePress has none; this is own-drive's.
+The surface of a short status message. VitePress has none; this is vpkit's own.
 
 ```css
 @import "vpkit/toast.css";

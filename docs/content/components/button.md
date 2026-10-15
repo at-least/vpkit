@@ -20,8 +20,8 @@ VitePress's `VPButton`.
 
 - `vp-btn` alone: the medium size, alt (gray) theme.
 - `vp-btn-brand`, `vp-btn-sponsor`: the other two themes.
-- `vp-btn-danger`: vpkit's addition, own-drive's danger button: danger text on the danger tint, the same hovered and pressed, since the ground is the warning. The tint is laid over the page's color inside the button, so the label keeps its contrast on an alert, a card or a dialog too.
-- `vp-btn-ghost`: vpkit's addition, crashcart's ghost button: no border and no ground, secondary text, and on hover text on the soft gray ground, the colors of the [Icon Button](@/components/icon-btn.md), for a quiet action beside a brand or an alt one.
+- `vp-btn-danger`: vpkit's addition: danger text on the danger tint, the same hovered and pressed, since the ground is the warning. The tint is laid over the page's color inside the button, so the label keeps its contrast on an alert, a card or a dialog too.
+- `vp-btn-ghost`: vpkit's addition: no border and no ground, secondary text, and on hover text on the soft gray ground, the colors of the [Icon Button](@/components/icon-btn.md), for a quiet action beside a brand or an alt one.
 - `vp-btn-big`: the big size.
 
 {% <vp_example title="The big size" layout="row"> %}

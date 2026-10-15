@@ -40,7 +40,7 @@ VitePress's `VPFeature`, the home page's feature boxes.
 
 ## Outline
 
-`vp-card-outline`, vpkit's addition: the card on the page's color in a divider border, for a box of content that is not a feature tile (own-drive's file cards and crashcart's cards). A link card still takes the brand border on hover.
+`vp-card-outline`, vpkit's addition: the card on the page's color in a divider border, for a box of content that is not a feature tile. A link card still takes the brand border on hover.
 
 {% <vp_example title="An outlined card, and one as a link"> %}
 <div class="grid gap-4 sm:grid-cols-2">

@@ -1,11 +1,11 @@
 +++
 title = "Choice"
-description = "totality's radio or checkbox drawn as a selectable card, its states read with :has()."
+description = "A radio or checkbox drawn as a selectable card, vpkit's own, its states read with :has()."
 +++
 
 # Choice
 
-A radio or a checkbox drawn as a selectable card. VitePress has none; this is totality's, on VitePress's tokens.
+A radio or a checkbox drawn as a selectable card. VitePress has none; this is vpkit's own, on VitePress's tokens.
 
 ```css
 @import "vpkit/choice.css";

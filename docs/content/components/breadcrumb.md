@@ -1,11 +1,11 @@
 +++
 title = "Breadcrumb"
-description = "own-drive's folder path as classes: a list of crumbs with a slash between them, the current one bold."
+description = "vpkit's own breadcrumb, which VitePress has none of: a list of crumbs with a slash between them, the current one bold."
 +++
 
 # Breadcrumb
 
-The path to where the page is. VitePress has none; this is own-drive's folder path, on VitePress's tokens.
+The path to where the page is. VitePress has none; this is vpkit's own, on VitePress's tokens.
 
 ```css
 @import "vpkit/breadcrumb.css";
@@ -25,7 +25,7 @@ The path to where the page is. VitePress has none; this is own-drive's folder pa
 - `vp-breadcrumb-item`: a crumb, a link or a span. Secondary text with no underline; `text-1` and underlined on hover. The current one (`aria-current="page"`) is `text-1` at weight 600, and stays so when hovered.
 - The `<nav>` with its label, and the `<ol>` of `<li>`s, are the markup assistive technology reads a breadcrumb from; the list draws the slashes, so they are not read out.
 
-A current crumb that is not a link is a `<span>`; one that is a link, as own-drive's current folder is, keeps the pointer.
+A current crumb that is not a link is a `<span>`; one that is a link keeps the pointer.
 
 {% <vp_example title="The current page as a span, and a long name"> %}
 <nav aria-label="Breadcrumb" class="max-w-xs">

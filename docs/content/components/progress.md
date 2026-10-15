@@ -1,11 +1,11 @@
 +++
 title = "Progress"
-description = "own-drive's storage quota bar: a track and a brand fill whose width the page sets."
+description = "A progress bar, vpkit's own: a track and a brand fill whose width the page sets."
 +++
 
 # Progress
 
-A progress bar. VitePress has none; this is own-drive's storage quota bar.
+A progress bar. VitePress has none; this is vpkit's own.
 
 ```css
 @import "vpkit/progress.css";

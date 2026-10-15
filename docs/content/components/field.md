@@ -1,11 +1,11 @@
 +++
 title = "Field"
-description = "totality's field label and inline error, to go with vp-input."
+description = "A field label and an inline error, vpkit's own, to go with vp-input."
 +++
 
 # Field
 
-A form field's label and its error line, to go with [`vp-input`](@/components/input.md). VitePress has no form fields; these are totality's.
+A form field's label and its error line, to go with [`vp-input`](@/components/input.md). VitePress has no form fields; these are vpkit's own.
 
 ```css
 @import "vpkit/field.css";

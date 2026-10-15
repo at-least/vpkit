@@ -1,11 +1,11 @@
 +++
 title = "Input"
-description = "totality's input on VitePress's input variables: inputs, selects and textareas, with aria-invalid states."
+description = "An input on VitePress's input variables, vpkit's own: inputs, selects and textareas, with aria-invalid states."
 +++
 
 # Input
 
-VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is totality's, built on those variables.
+VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is vpkit's own, built on those variables.
 
 ```css
 @import "vpkit/input.css";
