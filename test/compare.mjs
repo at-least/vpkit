@@ -82,7 +82,7 @@ function same(a, b, prop, tolerance = 1 / 32) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
-async function open(browser, css, body, dark, touch, width, reducedMotion) {
+async function open(browser, css, body, { dark, touch, width, reducedMotion }) {
   const page = await browser.newPage();
   if (width) await page.setViewportSize({ width, height: 720 });
   if (reducedMotion) await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -168,8 +168,8 @@ try {
         : ['upstream', `${sides.upstream}\n${upstreamCss(c.upstreamFiles ?? [])}`, c.upstream];
     for (const dark of [false, true]) {
       const pages = {
-        ref: await open(browser, refCss, refBody, dark, c.touch, c.width, c.reducedMotion),
-        vpkit: await open(browser, sides.vpkit, c.vpkit, dark, c.touch, c.width, c.reducedMotion),
+        ref: await open(browser, refCss, refBody, { ...c, dark }),
+        vpkit: await open(browser, sides.vpkit, c.vpkit, { ...c, dark }),
       };
       for (const check of c.checks) {
         // refTarget: the reference's element when it isn't the same one
@@ -185,8 +185,9 @@ try {
         for (const prop of check.props) {
           compared++;
           if (same(ref[prop], vpkit[prop], prop, check.tolerance)) continue;
+          // an entry names the element, or the pseudo-element a check reads on it
           const delta = known.find(
-            (k) => k.case.test(c.name) && k.target === check.target && k.prop === prop,
+            (k) => k.case.test(c.name) && k.target === check.target && (k.pseudo ?? null) === (check.pseudo ?? null) && k.prop === prop,
           );
           if (!delta) {
             failures.push(`${where} ${prop}: ${label} ${ref[prop]} | vpkit ${vpkit[prop]}`);
