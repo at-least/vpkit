@@ -32,5 +32,3 @@ Without a picture, a `<span>` with initials takes the class for the circle and t
 {% <vp_example title="Initials in place of a picture" layout="row"> %}
 <span class="vp-avatar inline-flex items-center justify-center bg-bg-soft text-text-2 font-semibold" role="img" aria-label="Ada Lovelace">AL</span>
 {% </vp_example> %}
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) the picture keeps its place: the markdown's rule for images would give it margins above and below.

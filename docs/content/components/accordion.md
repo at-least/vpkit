@@ -31,5 +31,3 @@ VitePress's nav screen group (`VPNavScreenMenuGroup`), the row a phone's menu op
 - `vp-accordion-icon`: the plus at the row's end, `vpi-plus` from `icons.css`, which turns into a cross as the section opens.
 
 The browser opens and closes a `<details>` with no script, and the keyboard reaches its summary. What is inside is the page's: a paragraph, a list of links, a form.
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) the title keeps its place: the markdown's rule for a summary would give it margins above and below.

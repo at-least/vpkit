@@ -31,8 +31,6 @@ VitePress's `VPButton`.
 
 Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.
 
-Inside a `vp-doc` (the markdown's styles, `content.css`), a button link keeps its look, at rest and hovered: the markdown's rules are below the components (`@layer base`), so its rule for links never underlines a button or colors it as a link.
-
 {% <vp_example title="A ghost button beside a brand one" layout="row"> %}
 <button class="vp-btn vp-btn-ghost" type="button">Sign out</button>
 <a class="vp-btn vp-btn-ghost" href="#">newlix</a>

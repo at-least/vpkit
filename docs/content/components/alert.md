@@ -65,5 +65,3 @@ A `vp-graded-containers` class anywhere on the page switches warning and caution
   <div class="vp-alert vp-alert-caution"><p class="vp-alert-title">CAUTION</p><p>The caution type, graded.</p></div>
 </div>
 {% </vp_example> %}
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) an alert takes the markdown's margin and its paragraphs the custom block's margins and line, as VitePress's custom block does; its links and code keep the alert's look, since the markdown's rules are below the components (`@layer base`).

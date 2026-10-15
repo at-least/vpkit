@@ -69,5 +69,3 @@ Its padding and layout are the card's: a card of rows that pad themselves, a tab
 {% </vp_example> %}
 
 Not included: the feature icon.
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) a link card keeps its look, at rest and hovered, and its title and details their boxes: the markdown's rules are below the components (`@layer base`), and the card sets for that place what the markdown's rules for headings and paragraphs would add (margins, a rule, padding, letter spacing).

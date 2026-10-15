@@ -36,5 +36,3 @@ A current crumb that is not a link is a `<span>`; one that is a link, as own-dri
   </ol>
 </nav>
 {% </vp_example> %}
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) the list keeps its row: the markdown's rules would indent and number it and space its items, and a crumb keeps its look, since the markdown's rules for links are below the components (`@layer base`).

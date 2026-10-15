@@ -21,5 +21,3 @@ VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
 - A 2.25rem square centering a 1.25rem icon, `text-2`, `text-1` on hover. The icon is a `vpi-*` icon of `icons.css` or an inline SVG, which takes the text color unless it sets its own `fill`.
 - vpkit's addition: a 0.5rem radius and the soft gray ground on hover, so it reads as a control.
 - The button shows only the icon: give it an `aria-label`.
-
-Inside a `vp-doc` (the markdown's styles, `content.css`) an icon link keeps its color and its hover: the markdown's rules are below the components (`@layer base`).
