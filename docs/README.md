@@ -1,6 +1,6 @@
 # vpkit's documentation
 
-vpkit's documentation, as a site built with [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme on vpkit's layout: the guide (what vpkit is, getting started, the utilities and variables, theming, the docs layout), a page for each component, with live examples, and the theme gallery. The pages are under `content/`.
+vpkit's documentation, as a site built with [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme on vpkit's layout: the guide (what vpkit is, getting started, the utilities and variables, the docs layout), a page for each component, with live examples, and the theme gallery. The pages are under `content/`.
 
 From the repository's root:
 

@@ -69,7 +69,7 @@ They resolve to the `--vp-*` variables, so they follow dark mode and a color the
 
 ## The `--vp-*` variables
 
-The variables from VitePress's `vars.css`: colors, typography, z-indexes, and the per-component ones (nav, sidebar, code, buttons, custom blocks, badges, search). Use them directly in arbitrary values, e.g. `h-(--vp-nav-height)`. A stylesheet loaded later can override any of them: [Theming](@/guide/theming.md).
+The variables from VitePress's `vars.css`: colors, typography, z-indexes, and the per-component ones (nav, sidebar, code, buttons, custom blocks, badges, search). Use them directly in arbitrary values, e.g. `h-(--vp-nav-height)`. A stylesheet loaded later can override any of them: [Themes](@/themes.md#your-own-colors).
 
 ## Global rules
 

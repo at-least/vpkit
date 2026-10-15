@@ -15,7 +15,7 @@ You are reading a site built on it: [vpkit-zola](https://github.com/at-least/vpk
 
 - **The theme**: the `--vp-*` variables of VitePress's `vars.css`, the `dark:` variant, VitePress's breakpoints, and the utilities that resolve to the variables, such as `text-text-1`, `bg-bg-alt` and `border-divider`. [Utilities and Variables](@/guide/utilities.md)
 - **Components**: VitePress's look as classes an application page can use, thirty-one of them, one optional import each. [Components](@/components/_index.md)
-- **Color themes**: 223 of them, each a whole design for light and dark. [Theming](@/guide/theming.md)
+- **Color themes**: 223 of them, each a whole design for light and dark. [Themes](@/themes.md)
 - **The docs layout**: VitePress's page layout and markdown styles as classes, for a docs theme. [Docs Layout](@/guide/layout.md)
 
 ## What a component is

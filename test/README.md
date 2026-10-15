@@ -9,7 +9,11 @@ npm test
 
 ## Color themes
 
-`test/themes.mjs` checks every color theme against the contract and the contrast minimums of [Theming](../docs/content/guide/theming.md#what-the-tests-hold-a-theme-to). `test/gen-themes.mjs` checks that the generator reads a Helix palette that `inherits` another as Helix does. `node scripts/fit-vitepress.mjs --check` holds `themes/vitepress.css` to that script's output from `tokens.css`. The contrast math the generators fit with is the test's own, `scripts/color.mjs`; the test's CSS reader, `scripts/css.mjs`, is the fitter's and the gallery index's too.
+`test/themes.mjs` checks every color theme against the contract and the contrast minimums of [Themes](../docs/content/themes.md#what-the-tests-hold-a-theme-to). `test/gen-themes.mjs` checks that the generator reads a Helix palette that `inherits` another as Helix does. `node scripts/fit-vitepress.mjs --check` holds `themes/vitepress.css` to that script's output from `tokens.css`. The contrast math the generators fit with is the test's own, `scripts/color.mjs`; the test's CSS reader, `scripts/css.mjs`, is the fitter's and the gallery index's too.
+
+## Generating themes
+
+The generated themes come from `scripts/gen-themes.mjs`: edit its slot maps, run `node scripts/gen-themes.mjs`, then `node scripts/build-docs.mjs` for the documentation's [gallery](../docs/content/themes.md), then `npm test`. The four hand-tuned ones are edited directly, and the gallery rebuilt the same way. `vitepress` comes from `node scripts/fit-vitepress.mjs`, which fits `tokens.css`'s palette by the generator's own steps; the color math the two scripts and `test/themes.mjs` share is `scripts/color.mjs`, so the fits and the checks are one implementation. `npm test` fails while `themes/vitepress.css` is not its output.
 
 ## The theme
 

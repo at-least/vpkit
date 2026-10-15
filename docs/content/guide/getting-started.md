@@ -84,4 +84,4 @@ Without one, the page is VitePress's stock palette, `tokens.css`'s, which falls 
 @import "vpkit/themes/vitepress.css";
 ```
 
-[Theming](@/guide/theming.md#color-themes) has the 223 of them.
+[Themes](@/themes.md) has the 223 of them.
