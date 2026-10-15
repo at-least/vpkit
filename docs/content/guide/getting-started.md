@@ -7,10 +7,10 @@ description = "Add vpkit to a Tailwind CSS v4 build: the import, the page, the p
 
 ## Installation
 
-Add it as a dependency (here from a sibling checkout):
+vpkit is not on npm: add it from its repository, pinned to a commit with `#<sha>` after the name if you like:
 
 ```sh
-npm install --save-dev ../vpkit
+npm install --save-dev github:at-least/vpkit
 ```
 
 Then import it from your Tailwind entry stylesheet, after Tailwind itself:
