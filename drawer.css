@@ -10,8 +10,9 @@
  *   </dialog>
  *
  * Open it with showModal(). `vp-drawer` is VPSidebar's open panel: fixed
- * at the left edge from the top of the viewport to its bottom (the one
- * component that says where it is, since a drawer is its edge), 4rem
+ * at the left edge from the top of the viewport to its bottom (a
+ * component that says where it is, as vp-skip does, since a drawer is its
+ * edge), 4rem
  * narrower than the viewport and at most 20rem (a width utility sets
  * another), on --vp-sidebar-bg-color under `2rem 2rem 6rem` of padding,
  * scrolling its content and keeping a scroll from reaching the page

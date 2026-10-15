@@ -10,8 +10,8 @@
  * color with --vp-shadow-3 and a 0.5rem radius, above everything
  * (z-index 999). VitePress spells it as two classes, VPSkipLink and
  * visually-hidden; this is the one. It is positioned, where every other
- * component leaves placement to the page, because VitePress's is and a
- * skip link's place is the page's corner. Put it first in <body>, before
+ * component but the drawer leaves placement to the page, because
+ * VitePress's is and a skip link's place is the page's corner. Put it first in <body>, before
  * the navbar, with the id of <main> as its target. */
 
 @layer components {

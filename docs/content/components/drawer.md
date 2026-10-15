@@ -28,7 +28,7 @@ VitePress's sidebar as a phone shows it (`VPSidebar` under 60rem, over `VPBackdr
 - `vp-drawer`: the panel, at the left edge from the top of the page to its bottom, 4rem narrower than the page and at most 20rem, on `--vp-sidebar-bg-color` with 2rem of padding (6rem below, VitePress's room for a phone's bottom bar); `shadow-1` in dark mode. It scrolls its content, and a scroll that reaches its end stays inside it.
 - The backdrop is `--vp-backdrop-bg-color`, `VPBackdrop`'s scrim.
 - The slide is VitePress's: opening, the panel comes in from the left over 0.5s as it fades in, the scrim fading in over 0.5s; closing, it slides out over 0.25s, the scrim fading over 0.25s.
-- Open it with `showModal()`. Where every other component leaves its place to the page, the drawer says its edge, since a drawer that doesn't is not one. `w-*` and `max-w-none` set another width; `top-16` starts it below a bar.
+- Open it with `showModal()`. Where the other components leave their place to the page (the skip link apart, whose place is the page's corner), the drawer says its edge, since a drawer that doesn't is not one. `w-*` and `max-w-none` set another width; `top-16` starts it below a bar.
 
 The links are `vp-nav-link vp-nav-link-screen`, the phone menu's rows; what is inside is the page's. The Close button is in a `<form method="dialog">`, which closes the dialog with no script, and Escape closes it. `closedby="any"` has the browser close it on a click outside too, in Chrome 134 and Firefox 141 (Safari has it in its preview as of October 2026); without it, a click handler on the dialog that checks the click fell outside its box does the same.
 
