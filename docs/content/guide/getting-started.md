@@ -73,7 +73,7 @@ Two more optional imports, outside `vpkit`, for a page that renders markdown or 
 @import "vpkit/icons.css";
 ```
 
-- `content.css`: the markdown inside `<div class="vp-doc">`, VitePress's own styles for it with its own class names: headings with `.header-anchor` links, `.custom-block` containers and GitHub alerts, `div[class*='language-']` code blocks (copy button, language label, highlighted, diff and focused lines, line numbers), `.vp-code-group` tabs. Not the code's colors: those come with the highlighter, as Shiki's do in VitePress. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
+- `content.css`: VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, and code group tabs, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
 - `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`). Each is an inline SVG in a `data:` URL, so a page with a Content-Security-Policy allows `img-src data:`, or every icon shows nothing. Under forced colors an icon paints in the system's text color, where the mask's own ground would be erased.
 
 The icons, all twenty-one:

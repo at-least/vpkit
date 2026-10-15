@@ -11,10 +11,6 @@ What `@import "vpkit"` gives a Tailwind project.
 
 Put `class="dark"` on `<html>`. The `dark:` variant, every `--vp-*` variable and the color scheme (scrollbars, form controls) follow it.
 
-## The page
-
-`base.css` paints the page as VitePress does: `--vp-c-text-1` on `--vp-c-bg` on `<body>`, with VitePress's legibility and font smoothing, and `--vp-c-text-3` placeholders. The rules are in Tailwind's base layer, so a utility on the element, `bg-bg-alt` on `<body>`, still wins. [Getting Started](@/guide/getting-started.md#the-page).
-
 ## Breakpoints
 
 VitePress's, replacing Tailwind's defaults:
@@ -73,11 +69,12 @@ The variables from VitePress's `vars.css`: colors, typography, z-indexes, and th
 
 ## Global rules
 
-Rules that cannot be utilities (`base.css`): the color scheme of the appearance, bold at 600, pointer cursor on buttons, focus outlines (a focused field keeps a transparent 2px outline where VitePress has none: nothing on screen, the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws), reduced motion (the rule names `::backdrop` too, so a dialog's scrim stops with everything else, where VitePress's `*` reaches elements alone), CJK line breaking.
+`base.css` paints the page ([Getting Started](@/guide/getting-started.md#the-page)) and carries the rules that cannot be utilities:
 
-## Markdown rules
-
-`doc.css`: the external-link icon. VitePress's styles for the rest of the markdown are `content.css`: [Getting Started](@/guide/getting-started.md#markdown-and-icons).
+- the color scheme of the appearance, bold at 600, the pointer cursor on buttons, CJK line breaking
+- focus outlines: a focused field keeps a transparent 2px outline where VitePress has none, nothing on screen and the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws
+- reduced motion: every transition and animation off, a dialog's scrim (`::backdrop`) included
+- with it, `doc.css`: the external-link icon of rendered markdown; the rest of the markdown's styles are `content.css` ([Getting Started](@/guide/getting-started.md#markdown-and-icons))
 
 ## Graded containers
 
