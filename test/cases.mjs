@@ -1765,3 +1765,36 @@ cases.push({
     { target: 'remove', state: ['hover'], props: ['color'] },
   ],
 });
+
+// pager: crashcart's pager (src/web/styles/app.css at 4b4fdd6, its
+// declarations written inline) against vp-pager, a summary and two vp-btns,
+// one disabled; then the summary inside a vp-doc against itself outside one
+const pagerMarkup = (ref) =>
+  ref
+    ? `<nav data-t="pager" style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-top:1.25rem" aria-label="Pages">` +
+      `<p data-t="summary" style="font-size:0.875rem;color:var(--vp-c-text-2)">51–100 of 230</p>` +
+      `<div data-t="actions" style="display:flex;gap:0.5rem"><a data-t="newer" class="vp-btn" href="#">Newer</a><button data-t="older" class="vp-btn" type="button" disabled>Older</button></div></nav>`
+    : `<nav data-t="pager" class="vp-pager" aria-label="Pages"><p data-t="summary" class="vp-pager-summary">51–100 of 230</p>` +
+      `<div data-t="actions" class="vp-pager-actions"><a data-t="newer" class="vp-btn" href="#">Newer</a><button data-t="older" class="vp-btn" type="button" disabled>Older</button></div></nav>`;
+const PAGER_LINE = ['font-size', 'color', ...MARGIN, 'line-height', 'offset-left', 'offset-top', 'height'];
+cases.push({
+  name: 'pager',
+  reference: pagerMarkup(true),
+  vpkit: pagerMarkup(false),
+  checks: [
+    { target: 'pager', props: ['display', 'align-items', 'justify-content', 'column-gap', ...PADDING, 'height'] },
+    { target: 'summary', props: PAGER_LINE },
+    { target: 'actions', props: ['display', 'column-gap', 'offset-left', 'offset-top'] },
+    { target: 'newer', props: ['offset-left', 'offset-top'] },
+    { target: 'older', props: ['offset-left', 'offset-top', 'opacity'] },
+  ],
+});
+cases.push({
+  name: 'pager in a doc',
+  reference: `<div>${pagerMarkup(false)}</div>`,
+  vpkit: inDoc(pagerMarkup(false)),
+  checks: [
+    { target: 'pager', props: ['height'] },
+    { target: 'summary', props: PAGER_LINE },
+  ],
+});

@@ -82,6 +82,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
 | [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
 | [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
+| [Pager](@/components/pager.md) | `vp-pager` | none, vpkit's own: a list's summary and its newer and older buttons |
 | [Progress](@/components/progress.md) | `vp-progress` | none, vpkit's own |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |

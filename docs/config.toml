@@ -84,6 +84,7 @@ items = [
   { text = "Key", link = "@/components/kbd.md" },
   { text = "Link", link = "@/components/link.md" },
   { text = "Nav Link", link = "@/components/nav-link.md" },
+  { text = "Pager", link = "@/components/pager.md" },
   { text = "Progress", link = "@/components/progress.md" },
   { text = "Skip Link", link = "@/components/skip.md" },
   { text = "Spinner", link = "@/components/spinner.md" },
