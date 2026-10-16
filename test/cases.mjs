@@ -1846,3 +1846,43 @@ cases.push({
   vpkit: rowsMarkup(false),
   checks: [1, 2, 3].map((n) => ({ target: `row${n}`, props: ROW_PROPS })).concat([{ target: 'card', props: ['height'] }]),
 });
+
+// badge dot, vpkit's addition: a dot before the word in the word's color,
+// the badge laid out as a row around it; against VPBadge with that layout
+// and the dot written inline, then against crashcart's run chips
+// (src/web/styles/app.css at 4b4fdd6: run-chip's row and run-dot's dot,
+// written inline, its color per run as data-run sets it, on the badge
+// type src/web/shell.rs's run_chip gives each run)
+const DOT = 'display:inline-block;width:0.5rem;height:0.5rem;flex-shrink:0;border-radius:999px';
+const DOT_ROW = 'display:inline-flex;align-items:center;gap:0.375rem';
+const DOT_BADGE = ['display', 'align-items', 'column-gap', ...PADDING, 'line-height', 'height', 'transform', 'color'];
+const DOT_PART = ['display', 'width', 'height', 'flex-shrink', ...RADIUS, 'background-color', 'offset-left', 'offset-top'];
+for (const type of ['info', 'tip', 'warning', 'danger']) {
+  const vpType = type === 'info' ? '' : ` vp-badge-${type}`;
+  cases.push({
+    name: `badge ${type} with a dot`,
+    upstream: `<p><span data-t="badge" class="VPBadge ${type}" style="${DOT_ROW}"><span data-t="dot" style="${DOT};background-color:currentColor"></span>in_progress</span></p>`,
+    vpkit: `<p><span data-t="badge" class="vp-badge${vpType}"><span data-t="dot" class="vp-badge-dot"></span>in_progress</span></p>`,
+    checks: [
+      { target: 'badge', props: DOT_BADGE },
+      { target: 'dot', props: DOT_PART },
+    ],
+  });
+}
+for (const [run, type, color] of [
+  ['ok', 'vp-badge-success', '--vp-c-success-1'],
+  ['error', 'vp-badge-danger', '--vp-c-danger-1'],
+  ['in_progress', 'vp-badge-tip', '--vp-c-brand-1'],
+  ['missed', 'vp-badge-warning', '--vp-c-warning-1'],
+  ['never', 'vp-badge-outline', '--vp-c-text-2'],
+]) {
+  cases.push({
+    name: `badge dot, crashcart's ${run} run`,
+    reference: `<p><span data-t="badge" class="vp-badge ${type}" style="${DOT_ROW}"><span data-t="dot" style="${DOT};background:var(${color})"></span>${run}</span></p>`,
+    vpkit: `<p><span data-t="badge" class="vp-badge ${type}"><span data-t="dot" class="vp-badge-dot"></span>${run}</span></p>`,
+    checks: [
+      { target: 'badge', props: DOT_BADGE },
+      { target: 'dot', props: DOT_PART },
+    ],
+  });
+}

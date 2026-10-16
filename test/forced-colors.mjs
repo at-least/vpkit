@@ -31,12 +31,17 @@ const noVertical = '<span style="display:inline-block;width:1px;height:1.5rem"><
 // a pair is shot where it stands)
 const drawer = '<dialog class="vp-drawer" open style="position:static">Menu</dialog>';
 const noDrawer = '<dialog open style="position:static;padding:2rem 2rem 6rem;width:calc(100vw - 4rem);max-width:20rem">Menu</dialog>';
+// a badge's dot is a background in the word's color: against an empty box
+// its size
+const dot = '<span class="vp-badge-dot"></span>';
+const noDot = '<span style="display:inline-block;width:0.5rem;height:0.5rem"></span>';
 const PAIRS = [
   ['a checked and an unchecked toggle', toggle(true), toggle(false)],
   ['a progress bar at 40% and at 0%', bar(40), bar(0)],
   ['an open and a closed hamburger', hamburger(true), hamburger(false)],
   ['an icon and an empty box its size', icon, noIcon],
   ['a vertical divider and an empty box its size', vertical, noVertical],
+  ['a badge dot and an empty box its size', dot, noDot],
   ['an open drawer and a bare dialog its size', drawer, noDrawer],
 ];
 

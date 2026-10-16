@@ -53,6 +53,17 @@ On a soft surface, a card or a banded table row, the translucent tint leaves the
 </div>
 {% </vp_example> %}
 
+## A dot
+
+A status's second carrier, never its only one: `vp-badge-dot`, a vpkit addition, is a dot before the word in the badge's own color, so each type colors it. A badge holding one lays the two out as a row. Under forced colors the dot paints in the system's text color.
+
+{% <vp_example title="Runs of a job, each with its dot" layout="row"> %}
+<span class="vp-badge vp-badge-success"><span class="vp-badge-dot"></span>ok</span>
+<span class="vp-badge vp-badge-danger"><span class="vp-badge-dot"></span>error</span>
+<span class="vp-badge vp-badge-tip"><span class="vp-badge-dot"></span>in_progress</span>
+<span class="vp-badge vp-badge-warning"><span class="vp-badge-dot"></span>missed</span>
+{% </vp_example> %}
+
 ## In the markdown
 
 VPBadge's own adjustments come with it: in a `.vp-doc` heading (`h1` to `h6`) a badge sits centered on the line, with VitePress's margins, padding and line height for each level (small or not), and in the doc footer (`.vp-doc-footer`) it is hidden.
