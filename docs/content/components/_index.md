@@ -66,6 +66,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
 | [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
 | [Code](@/components/code.md) | `vp-code` | VitePress's inline code |
+| [Copy Line](@/components/copy.md) | `vp-copy` | none, vpkit's own: a value to copy, with its button |
 | [Dialog](@/components/dialog.md) | `vp-dialog` | none, vpkit's own, on `<dialog>` |
 | [Divider](@/components/divider.md) | `vp-divider` | VitePress's markdown rule, and the navbar's vertical rule |
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |

@@ -1636,3 +1636,57 @@ cases.push({
     { target: 'sel', state: ['focus'], props: FOCUS_OUTLINE },
   ],
 });
+
+// copy line: crashcart's copybox (src/web/styles/app.css at 4b4fdd6, its
+// declarations written inline, the first and last line's padding as its
+// :first-child and :last-child rules give them) against vp-copy, three lines
+// stacked in a box; then at a phone's width, where a long value pushes the
+// button onto a line of its own; then the value inside a vp-doc against
+// itself outside one
+const COPY_ROW = 'display:flex;flex-wrap:wrap;align-items:baseline;gap:0.75rem;font-family:var(--vp-font-family-mono);font-size:0.8125rem';
+const COPY_LABEL = 'flex-shrink:0;min-width:4.5rem;color:var(--vp-c-text-2);user-select:none';
+const COPY_VALUE = 'flex:1 1 12rem;min-width:0;overflow-wrap:anywhere;color:var(--vp-c-text-1)';
+const COPY_BTN = 'flex-shrink:0;align-self:center';
+const copyLine = (n, value, ref, padding) =>
+  ref
+    ? `<div data-t="row${n}" style="${COPY_ROW};padding:${padding}"><span data-t="label${n}" style="${COPY_LABEL}">${['start', 'ok', 'error'][n - 1]}</span>` +
+      `<code data-t="value${n}" style="${COPY_VALUE}">${value}</code><button data-t="btn${n}" class="vp-btn" type="button" style="${COPY_BTN}">Copy</button></div>`
+    : `<div data-t="row${n}" class="vp-copy"><span data-t="label${n}" class="vp-copy-label">${['start', 'ok', 'error'][n - 1]}</span>` +
+      `<code data-t="value${n}" class="vp-copy-value">${value}</code><button data-t="btn${n}" class="vp-btn" type="button">Copy</button></div>`;
+const COPY_VALUES = [
+  "curl -fsS -m 10 'https://crashcart.example/api/check-in/in_progress?token=cmt_7f3a'",
+  "curl -fsS -m 10 'https://crashcart.example/api/check-in/ok?token=cmt_7f3a&amp;duration=142'",
+  "curl -fsS -m 10 'https://crashcart.example/api/check-in/error?token=cmt_7f3a'",
+];
+const COPY_PADDING = ['0 0 0.375rem', '0.375rem 0', '0.375rem 0 0'];
+const copyBox = (ref) => `<div data-t="box" style="width:40rem">${COPY_VALUES.map((v, i) => copyLine(i + 1, v, ref, COPY_PADDING[i])).join('')}</div>`;
+const COPY_ROW_PROPS = ['display', 'flex-wrap', 'align-items', 'row-gap', 'column-gap', ...PADDING, 'font-family', 'font-size', 'height'];
+const COPY_PART_PROPS = {
+  label: ['flex-shrink', 'min-width', 'color', 'user-select', 'offset-left', 'offset-top', 'width'],
+  value: ['flex-grow', 'flex-shrink', 'flex-basis', 'min-width', 'overflow-wrap', 'color', 'font-family', 'font-size', 'offset-left', 'offset-top', 'width', 'height'],
+  btn: ['flex-shrink', 'align-self', 'offset-left', 'offset-top', 'height'],
+};
+const copyChecks = (rows) =>
+  rows.flatMap((n) => [
+    { target: `row${n}`, props: COPY_ROW_PROPS },
+    ...Object.entries(COPY_PART_PROPS).map(([part, props]) => ({ target: `${part}${n}`, props })),
+  ]);
+cases.push({
+  name: 'copy line',
+  reference: copyBox(true),
+  vpkit: copyBox(false),
+  checks: copyChecks([1, 2, 3]),
+});
+cases.push({
+  name: "copy line at a phone's width",
+  width: 375,
+  reference: `<div data-t="box">${copyLine(1, COPY_VALUES[1], true, '0')}</div>`,
+  vpkit: `<div data-t="box">${copyLine(1, COPY_VALUES[1], false)}</div>`,
+  checks: copyChecks([1]),
+});
+cases.push({
+  name: 'copy line in a doc',
+  reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
+  vpkit: inDoc(copyLine(1, COPY_VALUES[0], false)),
+  checks: [{ target: 'value1', props: [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color', 'height'] }],
+});

@@ -1,0 +1,70 @@
+/* vpkit — copy line: a value to copy (a command, a URL, a key) in the code
+ * face, with an optional label before it and a copy button after it.
+ * VitePress has none; this is crashcart's (its `copybox`), on VitePress's
+ * tokens. An optional import: `@import "vpkit/copy.css";`
+ *
+ *   <div class="vp-copy">
+ *     <span class="vp-copy-label">ok</span>
+ *     <code class="vp-copy-value" id="ok-url">curl -fsS https://…/ok</code>
+ *     <button class="vp-btn" type="button" data-copy="#ok-url">Copy</button>
+ *   </div>
+ *
+ * A wrapping flex row on the baseline, 0.75rem apart, in the code face at
+ * 13px. The label (`vp-copy-label`) is the secondary text, at least 4.5rem
+ * wide so a stack of lines aligns its values, and left out of a selection,
+ * so a selection copies the value alone. The value (`vp-copy-value`) grows
+ * from 12rem and breaks anywhere: a long URL wraps inside the row, and at a
+ * phone's width the button drops to a line of its own rather than squeezing
+ * the value. A `vp-btn` in the row keeps its size, centered on the row.
+ * Lines stacked in one box are 0.375rem from each other, the first and the
+ * last flush with the box. Copying is the page's script
+ * (navigator.clipboard); vpkit ships none. Inside a vp-doc the value keeps
+ * the row's look, not the markdown's inline code. */
+
+@layer components {
+  .vp-copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.375rem 0;
+    font-family: var(--vp-font-family-mono);
+    font-size: 0.8125rem;
+  }
+
+  .vp-copy:first-child {
+    padding-top: 0;
+  }
+
+  .vp-copy:last-child {
+    padding-bottom: 0;
+  }
+
+  .vp-copy-label {
+    flex-shrink: 0;
+    min-width: 4.5rem;
+    color: var(--vp-c-text-2);
+    user-select: none;
+  }
+
+  .vp-copy-value {
+    flex: 1 1 12rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--vp-c-text-1);
+  }
+
+  :where(.vp-copy) > .vp-btn {
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* inside a vp-doc (content.css), whose rule for inline code gives the
+     value a chip: none, the row's size */
+  .vp-doc .vp-copy-value {
+    border-radius: 0;
+    padding: 0;
+    font-size: inherit;
+    background-color: transparent;
+  }
+}

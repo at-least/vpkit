@@ -2384,6 +2384,43 @@ button:focus-visible {
       opacity: 0;
     }
   }
+  .vp-copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.375rem 0;
+    font-family: var(--vp-font-family-mono);
+    font-size: 0.8125rem;
+  }
+  .vp-copy:first-child {
+    padding-top: 0;
+  }
+  .vp-copy:last-child {
+    padding-bottom: 0;
+  }
+  .vp-copy-label {
+    flex-shrink: 0;
+    min-width: 4.5rem;
+    color: var(--vp-c-text-2);
+    user-select: none;
+  }
+  .vp-copy-value {
+    flex: 1 1 12rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--vp-c-text-1);
+  }
+  :where(.vp-copy) > .vp-btn {
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .vp-doc .vp-copy-value {
+    border-radius: 0;
+    padding: 0;
+    font-size: inherit;
+    background-color: transparent;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";
