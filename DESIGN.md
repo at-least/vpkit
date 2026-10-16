@@ -402,22 +402,28 @@ What stays in totality: the store's flex-column `<body>` (`flex min-h-screen fle
 
 | class | is |
 | --- | --- |
-| `btn`, `btn-primary`, `btn-outline`, `btn-sm`, `btn[data-variant]` | `vp-btn`, `vp-btn-brand`, `vp-btn` (the alt theme is the outline), the one size, `vp-btn-brand` for the window pill in force (`secondary`) and `vp-btn` for the others — VitePress's sizes (decision 13), the 44px floor an app rule |
+| `btn`, `btn-primary`, `btn-outline`, `btn-sm`, `btn[data-variant]` | `vp-btn`, `vp-btn-brand`, `vp-btn` (the alt theme is the outline), the one size, `vp-btn` with `aria-current` for the window pill in force and the delivery log's range, brand by that state (decision 19), and `vp-btn` for the others — VitePress's sizes (decision 13), the 44px floor an app rule |
 | `btn-ghost`, `btn-icon` | `vp-btn vp-btn-ghost`; `vp-icon-btn` for the theme toggle |
-| `btn-group` (the window pills, the bulk actions) | stays, a row of `vp-btn`s, wrapping at phone width (the header's lane scrolls) |
+| `btn-group` (the window pills, the bulk actions) | stays, a row of `vp-btn`s, wrapping at phone width (the header's lane scrolls); its current item is `vp-btn`'s `aria-current` state |
 | `badge` with `status-badge[data-variant]`, `level-badge[data-level]`, `run-chip` | `vp-badge` with a type per variant (`shell.rs`'s `status_class` and `run_class`): `brand` → `vp-badge-tip`, `secondary` → `vp-badge-success`, `destructive` → `vp-badge-danger`, `warning` → `vp-badge-warning`, `outline` → `vp-badge-outline`, `muted` → `vp-badge` drawn dashed and dimmed by an app rule on `data-variant`; the level badge's fatal/warning/info/debug map to danger, warning, tip, info, and error to the orange ramp through `--vp-badge-text` and `--vp-badge-bg` (the contract has no orange kind); the run chip's dot stays a span inside, the chip laid out as a row |
 | `card`, `card-header`, `card-link`, `stat-card` | `vp-card vp-card-outline` with the card usage above; the header, the link and the stat card stay |
 | `table`, `table-scroll`, `table-dense`, `table-cards` | `vp-table` (the look: the bordered, banded grid, the soft header, 14px) under crashcart's rules at one class of specificity: a plain full-width table rather than vp-table's scrolling block, `border-collapse: separate` with each cell drawing bottom and right so a sticky header keeps its lines, 0.75rem cells, the sticky offsets per shell shape, the sortable headers, the row hover — which works because the component's cell rules sit behind `:where()`; `table-scroll`, `table-dense` and `table-cards` stay |
 | `input`, `select`, `select-wrap` | `vp-input`, on the select too, with the browser's arrow; the two file inputs keep crashcart's `file-input`, since `vp-input`'s fixed height clips the native chooser |
 | `alert`, `alert-warning`, `alert[data-variant=destructive]`, `alert-title`, `alert-description` | `vp-alert`, `vp-alert-warning`, `vp-alert-danger`, `vp-alert-title`; the description is the alert's paragraph (`flex-1 min-w-0` beside an icon); the icon beside the text is the page's `flex items-start gap-2`, tinted the type's color by an app rule |
 | `form-error` | `vp-field-error` (with `role="alert"` and `hidden` as before) |
+| the field labels, and the radio groups' visible legends | `vp-label`, `mb-0` in a `gap-1.5` wrapper, so the control sits vpkit's 0.375rem below |
+| the plain radio groups (a project's kind, a key's scope, the ignore conditions, the merge candidates) | `vp-choice`, the read-only key scope by its disabled state; a job's schedule and "Resolved in" stay radio rows, their options holding a `vp-input` or a select |
+| inline code, and the short keys and ids shown as values | `vp-code`; a value on a copy line, and code inside a `vp-alert`, stay plain |
+| the multi-project + New job picker | `vp-dropdown` with `vp-dropdown-item` links, under the summary of a `<details>` |
+| the overlay dialogs (the confirm, Ignore, Resolve, Merge) | `vp-dialog` on `<dialog>` opened with `showModal()`, `vp-dialog-title`, `vp-dialog-actions`; no scrim, inert or focus code of its own |
+| secondary text (`--color-muted-fg` inline) | `text-secondary` (decision 20) |
 | `app-header`, `app-header-row`, `brand`, `brand-name`, `nav`, `nav-link` | `vp-topbar` (`sticky top-0 z-(--vp-z-index-nav)`), `vp-topbar-row` twice (the project row at its own height), `vp-topbar-title` for the brand link, and `vp-nav-link` with `aria-current="page"` at 2.25rem in the lane; the status, platform and stream tab rows are `vp-tabs` with `role="tab"` and `aria-selected`; the `nav`'s scrolling lane and the header's grid below 85rem stay |
 | the theme toggle (dark, light, auto) | `vp-icon-btn` around its three icons; `vp-toggle` is two-state |
-| `kbd-help` | `vp-kbd` for the keys |
+| `kbd-help` | gone with crashcart's keyboard shortcut layer (2026-10-17) |
 | `empty-frame`, `empty-title`, `empty-desc` | `vp-empty`, `vp-empty-title`, `vp-empty-desc` |
 | a skip link | `vp-skip` to `<main id="main" tabindex="-1">` |
 | `banner-link`, `save-flash` | `vp-link`; `vp-toast` for the surface, the placement and the fade crashcart's |
-| `pager`, `chip`, `hint-dot`, `stat-*`, `copybox`, `stack`, `frames`, the charts, `toolbar`, `section-title`, `page-title`, `page-desc`, the overlay dialogs, the auth card (a `vp-card vp-card-outline` with its own shadow) | stay — its own product |
+| `pager`, `chip`, `hint-dot`, `stat-*`, `copybox`, `stack`, `frames`, the charts, `toolbar`, `section-title`, `page-title`, `page-desc`, the auth card (a `vp-card vp-card-outline` with its own shadow) | stay — its own product |
 
 ## The documentation site
 
