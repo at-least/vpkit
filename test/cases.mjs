@@ -988,6 +988,36 @@ for (const checked of [false, true]) {
   });
 }
 touch('choice', choice('vp-choice', false), [{ target: 'choice', ...AT_REST, props: COLORS }]);
+// vpkit's addition: a card whose control is disabled is dimmed with a
+// not-allowed cursor, against the recipe with the addition written
+// inline, and hovered it looks as it does at rest (the recipe's hover has
+// no disabled exception); checked, it keeps the checked look
+const DISABLED = 'opacity:0.5;cursor:not-allowed';
+const disabledChoice = (cls, checked, style = '') =>
+  `<label data-t="choice" class="${cls}"${style ? ` style="${style}"` : ''}><input data-t="radio" type="radio" name="scope" disabled${checked ? ' checked' : ''}>` +
+  `<span>read<br>minted on the CLI</span></label>`;
+for (const checked of [false, true]) {
+  cases.push({
+    name: `choice disabled${checked ? ', checked' : ''}`,
+    reference: disabledChoice(TOTALITY_CHOICE, checked, DISABLED),
+    vpkit: disabledChoice('vp-choice', checked),
+    checks: [
+      { target: 'choice', props: [...COLORS, 'opacity', 'cursor'] },
+      { target: 'choice', ...AT_REST, props: [...COLORS, 'opacity'] },
+    ],
+  });
+}
+// only the card's own control: a disabled select nested in its text leaves
+// the card as it is
+cases.push({
+  name: 'choice with a disabled control nested deeper',
+  reference: `<label data-t="choice" class="vp-choice"><input type="radio" name="r"><span>Resolved in <select><option>2.4.1</option></select></span></label>`,
+  vpkit: `<label data-t="choice" class="vp-choice"><input type="radio" name="r"><span>Resolved in <select disabled><option>2.4.1</option></select></span></label>`,
+  checks: [
+    { target: 'choice', props: [...COLORS, 'opacity', 'cursor'] },
+    { target: 'choice', state: ['hover'], props: COLORS },
+  ],
+});
 
 // field: totality's label and inline error around a vp-input against
 // vp-label and vp-field-error

@@ -1971,13 +1971,17 @@ button:focus-visible {
     transition: border-color 0.25s, background-color 0.25s;
   }
   @media (hover: hover) {
-    .vp-choice:hover {
+    .vp-choice:not(:has(> input:disabled)):hover {
       border-color: var(--vp-c-brand-1);
     }
   }
   .vp-choice:has(:checked) {
     border-color: var(--vp-c-brand-1);
     background-color: var(--vp-c-brand-soft);
+  }
+  .vp-choice:has(> input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   .vp-choice:has(:focus-visible) {
     outline: 2px solid var(--vp-c-brand-1);
