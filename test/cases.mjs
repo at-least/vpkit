@@ -1886,3 +1886,43 @@ for (const [run, type, color] of [
     ],
   });
 }
+
+// the appearance switch, vp-icon-btn-appearance: crashcart's three-way
+// switch (src/web/styles/app.css at 4b4fdd6, its .theme-icon rules in a
+// <style> on the parts' places), which shows the icon the root's
+// data-appearance names, against vpkit's modifier, for each value and
+// without one, in light and dark; without one crashcart showed the moon
+// always, where vpkit follows .dark (its change, written in the <style>).
+// The root's attribute is set by the case's own script
+const APPEARANCE_REF =
+  '<style>.ref-switch > :is(.ref-l, .ref-d, .ref-a) { display: none }' +
+  ' html[data-appearance="light"] .ref-switch > .ref-l, html[data-appearance="dark"] .ref-switch > .ref-d,' +
+  ' html[data-appearance="auto"] .ref-switch > .ref-a, html:not([data-appearance]):not(.dark) .ref-switch > .ref-l,' +
+  ' html:not([data-appearance]).dark .ref-switch > .ref-d { display: flex }</style>';
+const appearanceSwitch = (ref, mode) => {
+  const set = mode
+    ? `<script>document.documentElement.setAttribute('data-appearance', '${mode}')</script>`
+    : '<script>document.documentElement.removeAttribute(\'data-appearance\')</script>';
+  const [btn, l, d, a] = ref
+    ? ['vp-icon-btn ref-switch', 'ref-l', 'ref-d', 'ref-a']
+    : ['vp-icon-btn vp-icon-btn-appearance', 'vp-icon-btn-light', 'vp-icon-btn-dark', 'vp-icon-btn-auto'];
+  return (
+    set +
+    (ref ? APPEARANCE_REF : '') +
+    `<button data-t="btn" class="${btn}" type="button" aria-label="Appearance">` +
+    `<span data-t="l" class="vpi-sun ${l}"></span><span data-t="d" class="vpi-moon ${d}"></span><span data-t="a" class="vpi-monitor ${a}"></span></button>`
+  );
+};
+for (const mode of ['light', 'dark', 'auto', '']) {
+  cases.push({
+    name: `icon button appearance ${mode || 'without data-appearance'}`,
+    reference: appearanceSwitch(true, mode),
+    vpkit: appearanceSwitch(false, mode),
+    checks: [
+      { target: 'l', props: ['display', 'width', 'height'] },
+      { target: 'd', props: ['display', 'width', 'height'] },
+      { target: 'a', props: ['display', 'width', 'height'] },
+      { target: 'btn', props: ['width', 'height', 'color'] },
+    ],
+  });
+}

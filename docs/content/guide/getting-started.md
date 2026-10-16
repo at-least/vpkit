@@ -76,7 +76,7 @@ Two more optional imports, outside `vpkit`, for a page that renders markdown or 
 - `content.css`: VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, and code group tabs, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
 - `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`). Each is an inline SVG in a `data:` URL, so a page with a Content-Security-Policy allows `img-src data:`, or every icon shows nothing. Under forced colors an icon paints in the system's text color, where the mask's own ground would be erased.
 
-The icons, all twenty-one:
+The icons, all twenty-two:
 
 {% <vp_example title="The icons"> %}
 <ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm">
@@ -94,6 +94,7 @@ The icons, all twenty-one:
   <li class="flex items-center gap-2"><span class="vpi-heart" aria-hidden="true"></span><code>vpi-heart</code></li>
   <li class="flex items-center gap-2"><span class="vpi-languages" aria-hidden="true"></span><code>vpi-languages</code></li>
   <li class="flex items-center gap-2"><span class="vpi-layout-list" aria-hidden="true"></span><code>vpi-layout-list</code></li>
+  <li class="flex items-center gap-2"><span class="vpi-monitor" aria-hidden="true"></span><code>vpi-monitor</code></li>
   <li class="flex items-center gap-2"><span class="vpi-moon" aria-hidden="true"></span><code>vpi-moon</code></li>
   <li class="flex items-center gap-2"><span class="vpi-more-horizontal" aria-hidden="true"></span><code>vpi-more-horizontal</code></li>
   <li class="flex items-center gap-2"><span class="vpi-plus" aria-hidden="true"></span><code>vpi-plus</code></li>

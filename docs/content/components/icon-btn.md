@@ -21,3 +21,19 @@ VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
 - A square centering its icon, `text-2`, `text-1` on hover. The icon is a `vpi-*` icon of `icons.css` ([the icons](@/guide/getting-started.md#markdown-and-icons)) or an inline SVG, which takes the text color unless it sets its own `fill`.
 - vpkit's addition: rounded corners and the soft gray ground on hover, so it reads as a control.
 - The button shows only the icon: give it an `aria-label`.
+
+## The appearance switch
+
+`vp-icon-btn-appearance`, a vpkit addition, makes the button a switch over the page's appearance, three ways: dark, light, and auto (the system's). Of its three parts, `vp-icon-btn-light`, `vp-icon-btn-dark` and `vp-icon-btn-auto`, it shows the one the root's `data-appearance` names (`light`, `dark` or `auto`); without the attribute, the light or the dark one, as `.dark` says.
+
+{% <vp_example title="The appearance switch, following this page" layout="row"> %}
+<button class="vp-icon-btn vp-icon-btn-appearance" type="button" aria-label="Appearance">
+  <span class="vpi-sun vp-icon-btn-light"></span>
+  <span class="vpi-moon vp-icon-btn-dark"></span>
+  <span class="vpi-monitor vp-icon-btn-auto"></span>
+</button>
+{% </vp_example> %}
+
+- The parts are `vpi-*` icons or inline SVGs. A page whose Content-Security-Policy refuses `data:` images can't paint `icons.css`'s icons, so it draws its own SVGs, each with its part's class.
+- The cycling is your script's: on a click it moves to the next setting, sets `class="dark"` on `<html>` (for auto, from `prefers-color-scheme`), writes `data-appearance` there, and stores the choice. Set both before the first paint, as you set `.dark`.
+- `data-appearance` is a convention the page writes, not an ARIA attribute; give the button an `aria-label` that names the setting it moves to.

@@ -17,7 +17,31 @@
  * solid; here an SVG that sets fill keeps it. The icon's rule is
  * `.vp-icon-btn > :is(span, svg)`, one class and one element, so it wins
  * over icons.css's 1em size whichever file is imported first. The hover is
- * `@variant hover`, like Tailwind's `hover:`. */
+ * `@variant hover`, like Tailwind's `hover:`.
+ *
+ * A modifier, vpkit's (crashcart's dark, light and auto switch), used
+ * together with `vp-icon-btn`:
+ *   vp-icon-btn-appearance   a switch over the page's appearance, three
+ *                            ways: of its three parts, `vp-icon-btn-light`,
+ *                            `vp-icon-btn-dark` and `vp-icon-btn-auto`, it
+ *                            shows the one the root's data-appearance
+ *                            ("light", "dark", "auto") names, and without
+ *                            the attribute the light or the dark one as
+ *                            `.dark` says, as vp-toggle-appearance's knob
+ *                            follows `.dark`
+ *
+ *   <button class="vp-icon-btn vp-icon-btn-appearance" type="button" aria-label="Appearance">
+ *     <span class="vpi-sun vp-icon-btn-light"></span>
+ *     <span class="vpi-moon vp-icon-btn-dark"></span>
+ *     <span class="vpi-monitor vp-icon-btn-auto"></span>
+ *   </button>
+ *
+ * The parts are icons.css's icons or inline SVGs (a page whose CSP refuses
+ * data: images can't paint icons.css's masks). The page's script cycles
+ * the appearance, writes data-appearance on <html> beside `.dark`, and
+ * stores the choice; vpkit ships none. data-appearance is the one state
+ * here no ARIA attribute says, a convention the page writes as it writes
+ * `.dark` (DESIGN.md, decision 21). */
 
 @layer components {
   .vp-icon-btn {
@@ -49,5 +73,19 @@
 
   :where(.vp-icon-btn) svg:not([fill]) {
     fill: currentColor;
+  }
+
+  /* the appearance switch: its three parts hidden, then the one the root's
+     data-appearance names, or without it the one `.dark` says */
+  .vp-icon-btn-appearance.vp-icon-btn > :is(.vp-icon-btn-light, .vp-icon-btn-dark, .vp-icon-btn-auto) {
+    display: none;
+  }
+
+  :root[data-appearance="light"] .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-light,
+  :root[data-appearance="dark"] .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-dark,
+  :root[data-appearance="auto"] .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-auto,
+  :root:not([data-appearance]):not(.dark) .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-light,
+  :root:not([data-appearance]).dark .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-dark {
+    display: flex;
   }
 }
