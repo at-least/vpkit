@@ -26,7 +26,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 ## The page
 
-`base.css` paints the page as VitePress does: the text and background colors on `<body>`, its legibility and font smoothing, and the placeholder color of every input, in Tailwind's base layer, so a utility on the element still wins (`bg-bg-alt` on `<body>`). For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light.
+`base.css` paints the page as VitePress does: the text and background colors on `<body>`, its legibility and font smoothing, and the placeholder color of every input, in Tailwind's base layer, so a utility on the element still wins (`bg-alt` on `<body>`). For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light.
 
 ```html
 <html class="dark">

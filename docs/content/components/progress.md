@@ -28,6 +28,6 @@ A progress bar. VitePress has none; this is vpkit's own.
         aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
     <span class="vp-progress-bar" style="width: 72%"></span>
   </span>
-  <span class="text-text-2">7.2 of 10 GB</span>
+  <span class="text-secondary">7.2 of 10 GB</span>
 </div>
 {% </vp_example> %}

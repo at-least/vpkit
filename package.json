@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "node test/gen-themes.mjs && node scripts/fit-vitepress.mjs --check && node test/themes.mjs && node test/tokens.mjs && node test/compare.mjs && node test/forced-colors.mjs && node test/motion.mjs && node test/layout.mjs && node scripts/build-docs.mjs --check && node test/docs.mjs"
+    "test": "node test/gen-themes.mjs && node scripts/fit-vitepress.mjs --check && node test/themes.mjs && node test/tokens.mjs && node test/utilities.mjs && node test/compare.mjs && node test/forced-colors.mjs && node test/motion.mjs && node test/layout.mjs && node scripts/build-docs.mjs --check && node test/docs.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

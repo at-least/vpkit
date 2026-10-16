@@ -27,25 +27,27 @@ They are in rem because VitePress's media queries are ([vuejs/vitepress#5323](ht
 
 ## Semantic colors
 
-For every color utility (`text-`, `bg-`, `border-`, …): `bg`, `bg-alt`, `bg-elv`, `bg-soft`, `text-1`, `text-2`, `text-3`, `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `text-text-1`, `bg-bg-alt`, `border-divider`, `text-brand-1`, `text-danger-1`.
+The text colors are `text-body`, `text-secondary` and `text-muted` (VitePress's `text-1`, `text-2` and `text-3`), and the grounds `bg-bg` (the page), `bg-alt`, `bg-soft` and `bg-elv`. The others work with every color utility (`text-`, `bg-`, `border-`, …): `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `border-divider`, `text-brand-1`, `bg-danger-soft`.
+
+The first names, which doubled the prefix, still work, with every color utility: `text-text-2`, `bg-bg-alt`, `fill-text-2`.
 
 They resolve to the `--vp-*` variables, so they follow dark mode and a color theme as the components do.
 
 {% <vp_example title="The surfaces and the text colors"> %}
 <div class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
   <div class="rounded-lg border border-divider bg-bg p-3">bg</div>
-  <div class="rounded-lg border border-divider bg-bg-alt p-3">bg-alt</div>
-  <div class="rounded-lg border border-divider bg-bg-elv p-3">bg-elv</div>
-  <div class="rounded-lg border border-divider bg-bg-soft p-3">bg-soft</div>
+  <div class="rounded-lg border border-divider bg-alt p-3">bg-alt</div>
+  <div class="rounded-lg border border-divider bg-elv p-3">bg-elv</div>
+  <div class="rounded-lg border border-divider bg-soft p-3">bg-soft</div>
 </div>
-<p class="mt-4 text-text-1">text-1: the body text</p>
-<p class="text-text-2">text-2: secondary text</p>
-<p class="text-text-3">text-3: muted text</p>
+<p class="mt-4 text-body">text-body: the body text</p>
+<p class="text-secondary">text-secondary: secondary text</p>
+<p class="text-muted">text-muted: muted text</p>
 {% </vp_example> %}
 
 {% <vp_example title="The roles, as text on their soft tints" layout="row"> %}
 <span class="rounded-md bg-brand-soft px-3 py-1 text-sm text-brand-1">brand</span>
-<span class="rounded-md bg-default-soft px-3 py-1 text-sm text-text-1">default</span>
+<span class="rounded-md bg-default-soft px-3 py-1 text-sm text-body">default</span>
 <span class="rounded-md bg-success-soft px-3 py-1 text-sm text-success-1">success</span>
 <span class="rounded-md bg-danger-soft px-3 py-1 text-sm text-danger-1">danger</span>
 <span class="rounded-md border border-divider px-3 py-1 text-sm text-sponsor">sponsor</span>
@@ -56,11 +58,11 @@ They resolve to the `--vp-*` variables, so they follow dark mode and a color the
 `shadow-1` … `shadow-5`, `font-sans`, `font-mono`.
 
 {% <vp_example title="The five shadows" layout="row"> %}
-<div class="rounded-lg bg-bg-elv px-4 py-3 text-sm shadow-1">shadow-1</div>
-<div class="rounded-lg bg-bg-elv px-4 py-3 text-sm shadow-2">shadow-2</div>
-<div class="rounded-lg bg-bg-elv px-4 py-3 text-sm shadow-3">shadow-3</div>
-<div class="rounded-lg bg-bg-elv px-4 py-3 text-sm shadow-4">shadow-4</div>
-<div class="rounded-lg bg-bg-elv px-4 py-3 text-sm shadow-5">shadow-5</div>
+<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-1">shadow-1</div>
+<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-2">shadow-2</div>
+<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-3">shadow-3</div>
+<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-4">shadow-4</div>
+<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-5">shadow-5</div>
 {% </vp_example> %}
 
 ## The `--vp-*` variables

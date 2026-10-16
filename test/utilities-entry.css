@@ -1,0 +1,10 @@
+/* What test/utilities.mjs compiles: the theme alone, with the semantic
+   color names it holds and the names they must not make, listed inline
+   since no source file carries all of them. */
+@import "tailwindcss" source(none);
+@source inline("text-body text-secondary text-muted hover:text-secondary placeholder:text-muted text-secondary/50");
+@source inline("bg-bg bg-alt bg-soft bg-elv hover:bg-soft");
+@source inline("text-text-1 text-text-2 text-text-3 bg-bg-alt bg-bg-soft bg-bg-elv fill-text-2 border-bg-soft");
+@source inline("bg-body bg-secondary bg-muted border-secondary fill-muted text-alt text-soft text-elv border-alt fill-soft");
+@source inline("text-sm text-2xl");
+@import "../index.css";

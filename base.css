@@ -26,7 +26,7 @@
  * Part of index.css; `@import "vpkit/base.css"` takes it alone. */
 
 /* The page, as VitePress's base.css paints it, and the placeholder color.
-   Layered: `bg-bg-alt` on <body>, or `placeholder:text-text-2` on an
+   Layered: `bg-alt` on <body>, or `placeholder:text-secondary` on an
    input, still wins. */
 @layer base {
   body {

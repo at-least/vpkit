@@ -24,7 +24,7 @@
 {%- set newline = `
 ` -%}
 {%- set markup = body | trim -%}
-{%- set frame = `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="` ~ get_url(path="example.css", cachebust=true) ~ `"><script src="` ~ get_url(path="example.js", cachebust=true) ~ `"></script></head><body class="bg-bg text-text-1 p-6` ~ (` flex flex-wrap items-center gap-4` if layout == "row" else (` flex flex-col gap-4` if layout == "stack" else ``)) ~ `">` ~ markup ~ `</body></html>` -%}
+{%- set frame = `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="` ~ get_url(path="example.css", cachebust=true) ~ `"><script src="` ~ get_url(path="example.js", cachebust=true) ~ `"></script></head><body class="bg-bg text-body p-6` ~ (` flex flex-wrap items-center gap-4` if layout == "row" else (` flex flex-col gap-4` if layout == "stack" else ``)) ~ `">` ~ markup ~ `</body></html>` -%}
 <iframe class="vp-example" title="{{ title }}" srcdoc="{{ frame | escape | replace(from=newline, to=`&#10;`) }}" style="display:block;box-sizing:content-box;width:100%;{% if min_height %}min-height:{{ min_height }};{% endif %}margin:16px 0;border:1px solid var(--vp-c-divider);border-radius:8px"></iframe>
 
 ```html

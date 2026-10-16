@@ -1,6 +1,6 @@
 /* vpkit — the Tailwind CSS v4 wiring: the `dark:` variant on a `.dark`
  * class, VitePress's breakpoints (they replace Tailwind's), and the
- * semantic utilities (`text-text-1`, `bg-bg-alt`, `border-divider`, …)
+ * semantic utilities (`text-body`, `bg-alt`, `border-divider`, …)
  * that resolve to the --vp-* variables in tokens.css. Part of index.css;
  * `@import "vpkit/theme.css"` takes it alone. */
 
@@ -24,16 +24,33 @@
 
 /* Semantic tokens mapped onto the --vp-* custom properties below. Because
    the mapping is `inline`, utilities emit the var() directly and follow the
-   .dark overrides (e.g. `text-text-1`, `bg-bg-alt`, `border-divider`). */
+   .dark overrides (e.g. `text-body`, `bg-alt`, `border-divider`). */
 @theme inline {
   --font-sans: var(--vp-font-family-base);
   --font-mono: var(--vp-font-family-mono);
 
+  /* The text colors by the token contract's words for them: text-body,
+     text-secondary and text-muted (VitePress's text-1, -2 and -3). A
+     text- utility reads its color from --text-color-* before --color-*,
+     so these make text- classes and nothing else (no bg-secondary). */
+  --text-color-body: var(--vp-c-text-1);
+  --text-color-secondary: var(--vp-c-text-2);
+  --text-color-muted: var(--vp-c-text-3);
+
+  /* The grounds: bg-bg is the page, and the other three take their short
+     names from --background-color-*, which makes bg- classes only. */
   --color-bg: var(--vp-c-bg);
+  --background-color-alt: var(--vp-c-bg-alt);
+  --background-color-elv: var(--vp-c-bg-elv);
+  --background-color-soft: var(--vp-c-bg-soft);
+
+  /* The first names, which doubled the utility's prefix (text-text-2,
+     bg-bg-alt) and work for every color utility (fill-text-2): kept, since
+     the apps' sources carry them and test/recipes.mjs copies the apps'
+     recipes verbatim. test/utilities.mjs holds both. */
   --color-bg-alt: var(--vp-c-bg-alt);
   --color-bg-elv: var(--vp-c-bg-elv);
   --color-bg-soft: var(--vp-c-bg-soft);
-
   --color-text-1: var(--vp-c-text-1);
   --color-text-2: var(--vp-c-text-2);
   --color-text-3: var(--vp-c-text-3);

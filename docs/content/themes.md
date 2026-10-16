@@ -57,7 +57,7 @@ Pick one below and this page takes it, as a site that imports it would: the page
           aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
       <span class="vp-progress-bar" style="width: 60%"></span>
     </span>
-    <span class="text-text-2">6 of 10 GB</span>
+    <span class="text-secondary">6 of 10 GB</span>
   </div>
 </div>
 {% </vp_example> %}

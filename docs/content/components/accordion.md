@@ -14,15 +14,15 @@ VitePress's nav screen group (`VPNavScreenMenuGroup`), the row a phone's menu op
 {% <vp_example title="Three sections, one open" layout="stack"> %}
 <details class="vp-accordion" open>
   <summary class="vp-accordion-title">Shipping<span class="vpi-plus vp-accordion-icon" aria-hidden="true"></span></summary>
-  <p class="text-sm text-text-2">Orders placed before noon ship the same day. Tracking arrives by email once the parcel leaves the warehouse.</p>
+  <p class="text-sm text-secondary">Orders placed before noon ship the same day. Tracking arrives by email once the parcel leaves the warehouse.</p>
 </details>
 <details class="vp-accordion">
   <summary class="vp-accordion-title">Returns<span class="vpi-plus vp-accordion-icon" aria-hidden="true"></span></summary>
-  <p class="text-sm text-text-2">Returns are free for 30 days.</p>
+  <p class="text-sm text-secondary">Returns are free for 30 days.</p>
 </details>
 <details class="vp-accordion">
   <summary class="vp-accordion-title">Warranty<span class="vpi-plus vp-accordion-icon" aria-hidden="true"></span></summary>
-  <p class="text-sm text-text-2">Two years, from the day of delivery.</p>
+  <p class="text-sm text-secondary">Two years, from the day of delivery.</p>
 </details>
 {% </vp_example> %}
 

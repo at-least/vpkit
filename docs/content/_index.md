@@ -19,7 +19,7 @@ actions = [
 [[extra.features]]
 icon = "🎨"
 title = "VitePress's design"
-details = "The <code>--vp-*</code> variables, breakpoints, dark mode and Inter webfonts of VitePress's default theme, with utilities that resolve to them: <code>text-text-1</code>, <code>bg-bg-alt</code>, <code>border-divider</code>."
+details = "The <code>--vp-*</code> variables, breakpoints, dark mode and Inter webfonts of VitePress's default theme, with utilities that resolve to them: <code>text-body</code>, <code>bg-alt</code>, <code>border-divider</code>."
 link = "@/guide/utilities.md"
 link_text = "Utilities and variables"
 
