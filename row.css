@@ -1,0 +1,25 @@
+/* vpkit — row: one dense row of a list inside a card, ruled off from the
+ * next by a hairline. VitePress has none; this is crashcart's (its board
+ * row), on VitePress's tokens. An optional import:
+ * `@import "vpkit/row.css";`
+ *
+ *   <div class="vp-card vp-card-outline block p-0">
+ *     <div class="vp-row">…</div>
+ *     <div class="vp-row">…</div>
+ *   </div>
+ *
+ * 0.75rem by 1rem of padding and a divider line under it; the last row of
+ * its list draws none, the card's border closing the list. What goes in a
+ * row, and its layout, are the page's: a flex row of a badge, a name and a
+ * line of secondary text, a form, a list item. */
+
+@layer components {
+  .vp-row {
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 1rem;
+  }
+
+  .vp-row:last-child {
+    border-bottom: none;
+  }
+}

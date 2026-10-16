@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Thirty-six exist, in thirty-five files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Thirty-seven exist, in thirty-six files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -26,7 +26,7 @@ vpkit-zola imports the layout, the markdown and `badge.css`, and gets `base.css`
 
 Every component follows these.
 
-1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the thirty-five component files).
+1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the thirty-six component files).
 
 2. **Flat names.** The block is `vp-<name>`; a modifier is `vp-<name>-<modifier>`, used only together with the block; a part is `vp-<name>-<part>`. No BEM separators: `vp-btn-brand`, `vp-card-title`, `vp-alert-title`. (`layout.css` is BEM, `vp-content--has-sidebar`, because VitePress names child components after their parents' parts; app components have no such collisions.) A part keeps VitePress's own name where the original has one: VPFeature's `.title` is `vp-card-title`, the custom block's `.custom-block-title` is `vp-alert-title`. A modifier's rule is the compound `.vp-x-mod.vp-x`, modifier first, so it wins over the block whatever the file order, and so tools that look for a class at the start of a selector find it (totality's CSS coverage test).
 
@@ -159,6 +159,7 @@ For a component from an app recipe:
 | `vp-chip` | crashcart's filter chip (a recipe) | `vp-chip-key`, `vp-chip-value`, `vp-chip-remove` |
 | `vp-pager` | crashcart's `pager` (a recipe) | `vp-pager-summary`, `vp-pager-actions`; `vp-btn`s inside |
 | `vp-stat` | crashcart's stat card (a recipe) | `vp-stat-header`, `vp-stat-title`, `vp-stat-value`, `vp-stat-hint` |
+| `vp-row` | crashcart's board row (a recipe) | `:last-child` draws no line |
 
 ### When a new one is built
 
@@ -341,6 +342,7 @@ VitePress's sidebar as a phone shows it (VPSidebar under 60rem) over VPBackdrop'
 | `vp-chip` | crashcart's `chip`, `chip-key`, `chip-val`, `chip-remove` | a 12px pill (`0.125rem 0.625rem`, `999px`) on `bg-soft`, its parts in a row 0.375rem apart: the key `text-2`, the value 600 `text-1`, the remove control (a link or a button) `text-2`, `text-1` hovered in 0.25s, its 0.3125rem padding a hit area taken back by as much negative margin so the chip keeps its size, its SVG 1rem; `text-decoration: none`, so a `vp-doc`'s link rule leaves the control | one app (crashcart's issue and event filters), on the owner's ask (decision 21); the ground is `bg-soft` where the recipe had `default-soft` (a known difference: the contract holds `text-2` on `bg-soft`, decision 17); not ported: the recipe's pointer cursor (the link's or the button's own, rule 4) |
 | `vp-pager` | crashcart's `pager`, `pager-summary`, `pager-actions` | a flex row, its ends apart and centered on each other, 0.75rem between them, 1.25rem of padding above; the summary 14px `text-2`; the actions a row of `vp-btn`s 0.5rem apart, a disabled one where there is no page that way; inside a `vp-doc` the summary keeps no paragraph margins and the page's line height | one app (crashcart's issue, event and stream lists), on the owner's ask (decision 21); VitePress's previous and next pager is the docs layout's (`layout.css`), not an app's |
 | `vp-stat` | crashcart's `stat_card` (`shell.rs`: a `vp-card vp-card-outline block h-auto overflow-hidden` with `stat-card`'s padding) and its `stat-card-header`, `stat-title`, `stat-value`, `stat-hint` | the box `vp-card-outline`'s look (`bg` in a divider border, a 0.75rem radius) with 1rem by 1.25rem of padding; the header a row on the baseline, its ends apart, 0.5rem at least between; the title 13px/500 `text-2`, the value 22px/600 in tabular figures, the hint 13px `text-2` 0.25rem under, at most 75ch; inside a `vp-doc` the title keeps none of the markdown's heading rules (margins, the rule above, its padding, letter and line spacing) and the hint none of its paragraph margins | one app (crashcart's project overview), on the owner's ask (decision 21); not ported: the stat grid and the stat as a link to its list (`stat-card-link`), the page's |
+| `vp-row` | crashcart's `board-row` | 0.75rem by 1rem of padding over a 1px divider line, the last row of its list without one, the card's border closing it; what the row holds and its layout are the page's | one app (crashcart's fleet board, its alert channels and issue activity), on the owner's ask (decision 21); not ported: the muted row's dimming (`[data-muted]`, the board's own state, which no ARIA attribute says, so an app rule over the component, rule 4) and the board's why-line link |
 
 ### The apps' chrome
 

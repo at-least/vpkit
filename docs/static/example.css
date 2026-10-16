@@ -221,6 +221,9 @@
     width: calc(var(--spacing) * 24);
     height: calc(var(--spacing) * 24);
   }
+  .h-auto {
+    height: auto;
+  }
   .w-28 {
     width: calc(var(--spacing) * 28);
   }
@@ -282,8 +285,14 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
+  .gap-x-3 {
+    column-gap: calc(var(--spacing) * 3);
+  }
   .gap-x-6 {
     column-gap: calc(var(--spacing) * 6);
+  }
+  .gap-y-1 {
+    row-gap: var(--spacing);
   }
   .gap-y-3 {
     row-gap: calc(var(--spacing) * 3);
@@ -2545,6 +2554,13 @@ button:focus-visible {
   .vp-doc .vp-stat-hint {
     margin: 0.25rem 0 0;
     line-height: 1.5;
+  }
+  .vp-row {
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 1rem;
+  }
+  .vp-row:last-child {
+    border-bottom: none;
   }
 }
 @property --tw-translate-x {

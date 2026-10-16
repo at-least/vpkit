@@ -1824,3 +1824,25 @@ const statChecks = [
 ];
 cases.push({ name: 'stat', reference: statMarkup(true), vpkit: statMarkup(false), checks: statChecks });
 cases.push({ name: 'stat in a doc', reference: `<div>${statMarkup(false)}</div>`, vpkit: inDoc(statMarkup(false)), checks: statChecks });
+
+// row: crashcart's board row (src/web/styles/app.css at 4b4fdd6, its
+// declarations written inline, the last row's as its :last-child rule
+// gives them) against vp-row, three rows in an outlined card
+const ROW_REF = 'padding:0.75rem 1rem;border-bottom:1px solid var(--vp-c-divider)';
+const rowsMarkup = (ref) =>
+  `<div data-t="card" class="vp-card vp-card-outline block h-auto p-0">` +
+  [1, 2, 3]
+    .map((n) => {
+      const style = n === 3 ? 'padding:0.75rem 1rem;border-bottom:none' : ROW_REF;
+      const attr = ref ? `style="${style}"` : 'class="vp-row"';
+      return `<div data-t="row${n}" ${attr}><span class="vp-badge vp-badge-danger">Broken</span> shop · panic in send_digest</div>`;
+    })
+    .join('') +
+  '</div>';
+const ROW_PROPS = [...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', 'height', 'offset-top'];
+cases.push({
+  name: 'row',
+  reference: rowsMarkup(true),
+  vpkit: rowsMarkup(false),
+  checks: [1, 2, 3].map((n) => ({ target: `row${n}`, props: ROW_PROPS })).concat([{ target: 'card', props: ['height'] }]),
+});
