@@ -2505,6 +2505,47 @@ button:focus-visible {
     margin: 0;
     line-height: 1.5;
   }
+  .vp-stat {
+    display: block;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg);
+  }
+  .vp-stat-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .vp-stat-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+  .vp-stat-value {
+    font-size: 1.375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .vp-stat-hint {
+    margin-top: 0.25rem;
+    max-width: 75ch;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+  .vp-doc .vp-stat-title {
+    margin: 0;
+    border-top-width: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: 1.5;
+  }
+  .vp-doc .vp-stat-hint {
+    margin: 0.25rem 0 0;
+    line-height: 1.5;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

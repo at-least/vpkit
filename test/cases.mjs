@@ -1798,3 +1798,29 @@ cases.push({
     { target: 'summary', props: PAGER_LINE },
   ],
 });
+
+// stat: crashcart's stat card (src/web/shell.rs's stat_card at 4b4fdd6: a
+// vp-card vp-card-outline block h-auto overflow-hidden with its stat-card
+// padding, and src/web/styles/app.css's stat-card-header, stat-title,
+// stat-value and stat-hint written inline) against vp-stat; then the title
+// and the hint inside a vp-doc against themselves outside one
+const statMarkup = (ref) =>
+  ref
+    ? `<div data-t="box" class="vp-card vp-card-outline block h-auto overflow-hidden" style="padding:1rem 1.25rem;width:16rem">` +
+      `<header data-t="header" style="display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem">` +
+      `<h2 data-t="title" style="font-size:0.8125rem;font-weight:500;color:var(--vp-c-text-2)">Unhandled errors</h2>` +
+      `<span data-t="value" style="font-size:1.375rem;font-weight:600;font-variant-numeric:tabular-nums">1.2k</span></header>` +
+      `<p data-t="hint" style="margin-top:0.25rem;max-width:75ch;font-size:0.8125rem;color:var(--vp-c-text-2)">in the last 7 days</p></div>`
+    : `<div data-t="box" class="vp-stat" style="width:16rem"><header data-t="header" class="vp-stat-header">` +
+      `<h2 data-t="title" class="vp-stat-title">Unhandled errors</h2><span data-t="value" class="vp-stat-value">1.2k</span></header>` +
+      `<p data-t="hint" class="vp-stat-hint">in the last 7 days</p></div>`;
+const STAT_TEXT = ['font-size', 'font-weight', 'color', 'line-height', ...MARGIN, 'offset-left', 'offset-top', 'height'];
+const statChecks = [
+  { target: 'box', props: ['display', ...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'background-color', 'color', 'height'] },
+  { target: 'header', props: ['display', 'align-items', 'justify-content', 'column-gap', 'height'] },
+  { target: 'title', props: [...STAT_TEXT, ...BORDER, ...PADDING, 'letter-spacing'] },
+  { target: 'value', props: [...STAT_TEXT, 'font-variant-numeric'] },
+  { target: 'hint', props: [...STAT_TEXT, 'max-width'] },
+];
+cases.push({ name: 'stat', reference: statMarkup(true), vpkit: statMarkup(false), checks: statChecks });
+cases.push({ name: 'stat in a doc', reference: `<div>${statMarkup(false)}</div>`, vpkit: inDoc(statMarkup(false)), checks: statChecks });

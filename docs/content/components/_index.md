@@ -86,6 +86,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Progress](@/components/progress.md) | `vp-progress` | none, vpkit's own |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
+| [Stat](@/components/stat.md) | `vp-stat` | none, vpkit's own: a number with its title and hint |
 | [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
 | [Toast](@/components/toast.md) | `vp-toast` | none, vpkit's own |

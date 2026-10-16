@@ -88,6 +88,7 @@ items = [
   { text = "Progress", link = "@/components/progress.md" },
   { text = "Skip Link", link = "@/components/skip.md" },
   { text = "Spinner", link = "@/components/spinner.md" },
+  { text = "Stat", link = "@/components/stat.md" },
   { text = "Table", link = "@/components/table.md" },
   { text = "Tabs", link = "@/components/tabs.md" },
   { text = "Toast", link = "@/components/toast.md" },

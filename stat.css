@@ -1,0 +1,76 @@
+/* vpkit — stat: one number in a box, with its title beside it and a hint
+ * under it. VitePress has none; this is crashcart's (its stat card), on
+ * VitePress's tokens. An optional import: `@import "vpkit/stat.css";`
+ *
+ *   <div class="vp-stat">
+ *     <header class="vp-stat-header">
+ *       <h2 class="vp-stat-title">Unhandled errors</h2>
+ *       <span class="vp-stat-value">1.2k</span>
+ *     </header>
+ *     <p class="vp-stat-hint">in the last 7 days</p>
+ *   </div>
+ *
+ * The box is vp-card-outline's look: the page's ground in a divider
+ * border, a 0.75rem radius, here 1rem by 1.25rem of padding. The header
+ * (`vp-stat-header`) is a row on the baseline, the title at one end and the
+ * value at the other, 0.5rem apart at least. The title (`vp-stat-title`)
+ * is 13px at 500 in the secondary text; the value (`vp-stat-value`) 22px at
+ * 600 in tabular figures; the hint (`vp-stat-hint`) 13px secondary text
+ * 0.25rem under the header, at most 75 characters wide. A grid of them,
+ * and a stat that is a link, are the page's. Inside a vp-doc the title
+ * keeps none of the markdown's heading rules and the hint none of its
+ * paragraph margins. */
+
+@layer components {
+  .vp-stat {
+    display: block;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg);
+  }
+
+  .vp-stat-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .vp-stat-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-stat-value {
+    font-size: 1.375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .vp-stat-hint {
+    margin-top: 0.25rem;
+    max-width: 75ch;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+
+  /* inside a vp-doc (content.css), whose rules for a heading and a
+     paragraph give the title a rule above, margins, padding and its own
+     line and letter spacing, and the hint margins and a 28px line: none of
+     it, the page's line height */
+  .vp-doc .vp-stat-title {
+    margin: 0;
+    border-top-width: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: 1.5;
+  }
+
+  .vp-doc .vp-stat-hint {
+    margin: 0.25rem 0 0;
+    line-height: 1.5;
+  }
+}
