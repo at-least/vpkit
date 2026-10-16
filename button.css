@@ -22,6 +22,15 @@
  *                                  alt one
  *   vp-btn-big                     the big size
  *
+ * A state, vpkit's too: a button whose aria-current has a value takes the
+ * brand theme, read as vp-dropdown-item reads it ("false", "" and a
+ * template's stringified "undefined" are not current), so a row of
+ * vp-btns shows its current item from the attribute an app writes anyway,
+ * with no class to swap (crashcart's window pills, totality's admin's
+ * account and tab rows, which each put vp-btn-brand beside the
+ * attribute). It beats every theme modifier: a current ghost or danger
+ * button is brand, the danger tint cleared.
+ *
  * Two additions VPButton doesn't have, because the apps need them: the
  * button is inline-flex, so an icon and its label sit centered side by
  * side 0.5rem apart, and a disabled button is dimmed with a not-allowed
@@ -142,6 +151,23 @@
     --vp-btn-active-border: transparent;
     --vp-btn-active-text: var(--vp-c-text-1);
     --vp-btn-active-bg: var(--vp-c-default-soft);
+  }
+
+  /* the current item: the brand theme's locals at one attribute more than
+     a modifier's compound, so it wins over every theme whatever the order;
+     the danger tint is an image, not a local, so it is cleared here */
+  .vp-btn[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) {
+    --vp-btn-border: var(--vp-button-brand-border);
+    --vp-btn-text: var(--vp-button-brand-text);
+    --vp-btn-bg: var(--vp-button-brand-bg);
+    --vp-btn-hover-border: var(--vp-button-brand-hover-border);
+    --vp-btn-hover-text: var(--vp-button-brand-hover-text);
+    --vp-btn-hover-bg: var(--vp-button-brand-hover-bg);
+    --vp-btn-active-border: var(--vp-button-brand-active-border);
+    --vp-btn-active-text: var(--vp-button-brand-active-text);
+    --vp-btn-active-bg: var(--vp-button-brand-active-bg);
+
+    background-image: none;
   }
 
   .vp-btn-big.vp-btn {

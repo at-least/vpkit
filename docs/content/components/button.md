@@ -46,6 +46,19 @@ Two additions VitePress's button doesn't have: it is `inline-flex`, so an icon a
 <button class="vp-btn vp-btn-brand" type="button" disabled>Paying…</button>
 {% </vp_example> %}
 
+## The current item
+
+A button whose `aria-current` has a value (`page`, `true`, …) takes the brand theme, so a row of buttons shows its current one from the attribute it carries for assistive technology, with no class to swap. `false`, an empty value and `undefined` mean not current, as WAI-ARIA has them. A vpkit addition, and it beats the other themes: a current ghost or danger button is brand too.
+
+{% <vp_example title="A row of buttons with its current one" layout="row"> %}
+<a class="vp-btn" href="#">24h</a>
+<a class="vp-btn" href="#" aria-current="true">7d</a>
+<a class="vp-btn" href="#">30d</a>
+<a class="vp-btn" href="#">90d</a>
+{% </vp_example> %}
+
+The row itself is the page's: a flex row with a gap, `role="group"` and an `aria-label` if it needs a name.
+
 ## Utilities
 
 Like every component, the button sits in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding.

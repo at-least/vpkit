@@ -146,6 +146,42 @@ cases.push({
   checks: [{ target: 'btn', props: [...BUTTON_BOX, ...LAYOUT, ...COLORS, 'opacity'] }],
 });
 
+// the current item, vpkit's state: a vp-btn whose aria-current has a value
+// takes the brand theme, against VPButton's brand theme with vp-btn's flex
+// layout inline (the window pill in force, the current account or tab); a
+// value WAI-ARIA 1.2 treats as false leaves it alt; and the state beats the
+// theme modifiers, the danger tint included
+const CURRENT_CHECKS = [
+  { target: 'btn', props: [...BUTTON_BOX, ...COLORS, 'background-image', ...TRANSITION] },
+  { target: 'btn', state: ['hover'], props: [...COLORS, 'background-image'] },
+  { target: 'btn', state: ['hover', 'active'], props: [...COLORS, 'background-image'] },
+];
+for (const [value, tag] of [['true', 'a'], ['page', 'button']]) {
+  const attrs = tag === 'a' ? ' href="#"' : ' type="button"';
+  cases.push({
+    name: `button current aria-current=${value} <${tag}>`,
+    upstream: `<${tag} data-t="btn" class="VPButton medium brand"${attrs} style="${FLEX}">7d</${tag}>`,
+    vpkit: `<${tag} data-t="btn" class="vp-btn"${attrs} aria-current="${value}">7d</${tag}>`,
+    checks: CURRENT_CHECKS,
+  });
+}
+for (const value of ['false', '', 'undefined']) {
+  cases.push({
+    name: `button aria-current="${value}"`,
+    upstream: `<a data-t="btn" class="VPButton medium alt" href="#" style="${FLEX}">24h</a>`,
+    vpkit: `<a data-t="btn" class="vp-btn" href="#" aria-current="${value}">24h</a>`,
+    checks: CURRENT_CHECKS,
+  });
+}
+for (const theme of ['ghost', 'danger', 'sponsor']) {
+  cases.push({
+    name: `button current over vp-btn-${theme}`,
+    upstream: `<a data-t="btn" class="VPButton medium brand" href="#" style="${FLEX}">7d</a>`,
+    vpkit: `<a data-t="btn" class="vp-btn vp-btn-${theme}" href="#" aria-current="page">7d</a>`,
+    checks: CURRENT_CHECKS,
+  });
+}
+
 // badge: VPBadge's seven types × two sizes; info is vpkit's bare class
 const BADGE_BOX = [
   'display',
@@ -419,6 +455,9 @@ for (const [theme, themeClass] of Object.entries(THEMES)) {
     { target: 'btn', ...AT_REST, props: COLORS },
   ]);
 }
+touch('button current', `<a data-t="btn" class="vp-btn" href="#" aria-current="page">7d</a>`, [
+  { target: 'btn', ...AT_REST, props: COLORS },
+]);
 touch('input', `<input data-t="in" class="vp-input" placeholder="Coupon code">`, [
   { target: 'in', ...AT_REST, props: [...COLORS, 'box-shadow'] },
 ]);
