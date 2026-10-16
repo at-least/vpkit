@@ -1718,3 +1718,50 @@ cases.push({
 touch('file input', `<input data-t="in" class="vp-file" type="file">`, [
   { target: 'in', pseudo: '::file-selector-button', ...AT_REST, props: COLORS },
 ]);
+
+// chip: crashcart's filter chip (src/web/styles/app.css at 4b4fdd6, its
+// declarations written inline, the icon at the 1rem its .icon gives it)
+// against vp-chip, at rest and with the remove control hovered; its ground
+// is bg-soft where the recipe's is default-soft (a known difference); then
+// the control inside a vp-doc against itself outside one
+const CHIP_X = (style) =>
+  `<svg data-t="icon"${style ? ` style="${style}"` : ''} aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>`;
+const chipMarkup = (ref) =>
+  ref
+    ? `<span data-t="chip" style="display:inline-flex;align-items:center;gap:0.375rem;padding:0.125rem 0.625rem;border-radius:999px;background:var(--vp-c-default-soft);font-size:0.75rem;color:var(--vp-c-text-2)">` +
+      `<span data-t="key" style="color:var(--vp-c-text-2)">env</span><span data-t="value" style="font-weight:600;color:var(--vp-c-text-1)">production</span>` +
+      `<a data-t="remove" class="ref-chip-remove" href="#" aria-label="Remove the env filter">${CHIP_X('width:1rem;height:1rem')}</a></span>` +
+      '<style>.ref-chip-remove{display:inline-flex;cursor:pointer;color:var(--vp-c-text-2);padding:0.3125rem;margin:-0.3125rem;transition:color 0.25s;text-decoration:none}.ref-chip-remove:hover{color:var(--vp-c-text-1)}</style>'
+    : `<span data-t="chip" class="vp-chip"><span data-t="key" class="vp-chip-key">env</span><span data-t="value" class="vp-chip-value">production</span>` +
+      `<a data-t="remove" class="vp-chip-remove" href="#" aria-label="Remove the env filter">${CHIP_X('')}</a></span>`;
+const CHIP_BOX = ['display', 'align-items', 'column-gap', ...PADDING, ...RADIUS, 'font-size', 'color', 'background-color', 'height'];
+known.push({
+  case: /^chip$/,
+  target: 'chip',
+  prop: 'background-color',
+  reason:
+    "vp-chip's ground is bg-soft where crashcart's recipe had default-soft: the contract holds the key's secondary text on bg-soft, not on default-soft, as vp-empty's box (open decision 17)",
+});
+cases.push({
+  name: 'chip',
+  reference: chipMarkup(true),
+  vpkit: chipMarkup(false),
+  checks: [
+    { target: 'chip', props: CHIP_BOX },
+    { target: 'key', props: ['color', 'font-weight', 'font-size'] },
+    { target: 'value', props: ['color', 'font-weight', 'font-size'] },
+    { target: 'remove', props: ['display', ...PADDING, ...MARGIN, 'color', 'cursor', 'text-decoration-line', ...TRANSITION, 'offset-left', 'height'] },
+    { target: 'remove', state: ['hover'], props: ['color'] },
+    { target: 'icon', props: ['width', 'height'] },
+  ],
+});
+touch('chip', chipMarkup(false), [{ target: 'remove', ...AT_REST, props: ['color'] }]);
+cases.push({
+  name: 'chip in a doc',
+  reference: `<p>${chipMarkup(false)}</p>`,
+  vpkit: inDoc(`<p>${chipMarkup(false)}</p>`),
+  checks: [
+    { target: 'remove', props: ['color', 'text-decoration-line', ...PADDING, ...MARGIN] },
+    { target: 'remove', state: ['hover'], props: ['color'] },
+  ],
+});

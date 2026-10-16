@@ -38,6 +38,7 @@
 @import "../drawer.css";
 @import "../copy.css";
 @import "../file.css";
+@import "../chip.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the
    "in a doc" cases measure the components against its rules */
 @import "../content.css";
