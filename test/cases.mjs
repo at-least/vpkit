@@ -1690,3 +1690,31 @@ cases.push({
   vpkit: inDoc(copyLine(1, COPY_VALUES[0], false)),
   checks: [{ target: 'value1', props: [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color', 'height'] }],
 });
+
+// file input: crashcart's file-input (src/web/styles/app.css at 4b4fdd6,
+// its rules in a <style>, since the chooser is a pseudo-element no inline
+// style reaches, with vpkit's change written there: the hover keyed on the
+// element, where the recipe hovered the button alone, which a forced :hover
+// on the element doesn't reach; its
+// align-self is placement, the page's) against vp-file: the element, and
+// its ::file-selector-button at rest, hovered and focused from the keyboard
+const REF_FILE =
+  '<style>.ref-file{font-size:0.875rem;color:var(--vp-c-text-1)}' +
+  '.ref-file::file-selector-button{height:2.75rem;margin-right:0.75rem;padding:0 0.75rem;border:1px solid var(--vp-input-border-color);border-radius:0.5rem;background:var(--vp-input-bg-color);color:var(--vp-c-text-1);font-size:0.875rem;cursor:pointer}' +
+  '.ref-file:hover::file-selector-button{border-color:var(--vp-c-brand-1);color:var(--vp-c-brand-1)}' +
+  '.ref-file:focus-visible::file-selector-button{border-color:var(--vp-c-brand-1);box-shadow:0 0 0 2px var(--vp-c-brand-1)}</style>';
+const FILE_BUTTON = [...BORDER, ...RADIUS, ...PADDING, 'block-size', 'margin-right', 'font-size', 'cursor', ...COLORS, 'box-shadow', ...TRANSITION];
+cases.push({
+  name: 'file input',
+  reference: `${REF_FILE}<input data-t="in" class="ref-file" type="file">`,
+  vpkit: `<input data-t="in" class="vp-file" type="file">`,
+  checks: [
+    { target: 'in', props: ['font-size', 'color', 'height', 'width'] },
+    { target: 'in', pseudo: '::file-selector-button', props: FILE_BUTTON },
+    { target: 'in', pseudo: '::file-selector-button', state: ['hover'], props: [...COLORS, 'box-shadow'] },
+    { target: 'in', pseudo: '::file-selector-button', state: ['focus-visible'], props: [...COLORS, 'box-shadow'] },
+  ],
+});
+touch('file input', `<input data-t="in" class="vp-file" type="file">`, [
+  { target: 'in', pseudo: '::file-selector-button', ...AT_REST, props: COLORS },
+]);

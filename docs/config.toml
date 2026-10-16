@@ -75,6 +75,7 @@ items = [
   { text = "Dropdown", link = "@/components/dropdown.md" },
   { text = "Empty State", link = "@/components/empty.md" },
   { text = "Field", link = "@/components/field.md" },
+  { text = "File Input", link = "@/components/file.md" },
   { text = "Hamburger", link = "@/components/hamburger.md" },
   { text = "Highlight", link = "@/components/mark.md" },
   { text = "Icon Button", link = "@/components/icon-btn.md" },

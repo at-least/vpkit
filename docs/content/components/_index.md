@@ -73,6 +73,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
 | [Empty State](@/components/empty.md) | `vp-empty` | none, vpkit's own |
 | [Field](@/components/field.md) | `vp-label`, `vp-field-error` | none, vpkit's own |
+| [File Input](@/components/file.md) | `vp-file` | none, vpkit's own: the file chooser drawn as an input |
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |

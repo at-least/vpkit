@@ -227,6 +227,9 @@
   .w-full {
     width: 100%;
   }
+  .max-w-full {
+    max-width: 100%;
+  }
   .max-w-md {
     max-width: var(--container-md);
   }
@@ -2420,6 +2423,31 @@ button:focus-visible {
     padding: 0;
     font-size: inherit;
     background-color: transparent;
+  }
+  .vp-file {
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+  }
+  .vp-file::file-selector-button {
+    height: 2.75rem;
+    margin-right: 0.75rem;
+    border: 1px solid var(--vp-input-border-color);
+    border-radius: 0.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-input-bg-color);
+    cursor: pointer;
+  }
+  @media (hover: hover) {
+    .vp-file:hover::file-selector-button {
+      border-color: var(--vp-c-brand-1);
+      color: var(--vp-c-brand-1);
+    }
+  }
+  .vp-file:focus-visible::file-selector-button {
+    border-color: var(--vp-c-brand-1);
+    box-shadow: 0 0 0 2px var(--vp-c-brand-1);
   }
 }
 @property --tw-translate-x {

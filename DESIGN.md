@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Thirty-two exist, in thirty-one files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Thirty-three exist, in thirty-two files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -26,7 +26,7 @@ vpkit-zola imports the layout, the markdown and `badge.css`, and gets `base.css`
 
 Every component follows these.
 
-1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the thirty-one component files).
+1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the thirty-two component files).
 
 2. **Flat names.** The block is `vp-<name>`; a modifier is `vp-<name>-<modifier>`, used only together with the block; a part is `vp-<name>-<part>`. No BEM separators: `vp-btn-brand`, `vp-card-title`, `vp-alert-title`. (`layout.css` is BEM, `vp-content--has-sidebar`, because VitePress names child components after their parents' parts; app components have no such collisions.) A part keeps VitePress's own name where the original has one: VPFeature's `.title` is `vp-card-title`, the custom block's `.custom-block-title` is `vp-alert-title`. A modifier's rule is the compound `.vp-x-mod.vp-x`, modifier first, so it wins over the block whatever the file order, and so tools that look for a class at the start of a selector find it (totality's CSS coverage test).
 
@@ -155,6 +155,7 @@ For a component from an app recipe:
 | `vp-accordion` | VPNavMenuGroup's screen variant (VPNavScreenMenuGroup) | `vp-accordion-title`, `vp-accordion-icon`; `[open]` on a `<details>` |
 | `vp-drawer` | VPSidebar as a phone shows it, VPBackdrop | on a `<dialog>`; `[open]`; `::backdrop` |
 | `vp-copy` | crashcart's `copybox` (a recipe) | `vp-copy-label`, `vp-copy-value`; a `vp-btn` inside |
+| `vp-file` | crashcart's `file-input` (a recipe) | on `<input type="file">`, its `::file-selector-button`; `:hover`, `:focus-visible` |
 
 ### When a new one is built
 
@@ -333,6 +334,7 @@ VitePress's sidebar as a phone shows it (VPSidebar under 60rem) over VPBackdrop'
 | `vp-progress` | own-drive's `BAR`, `BAR_FILL`, which take it | a 0.3rem track on `default-soft` with 0.15rem radii, as wide as its container, a `brand-1` fill (`Highlight` under forced colors) | two spans; a native `<progress>` needs vendor pseudo-elements. One site (the quota bar; the load bar is another thing) |
 | `vp-breadcrumb` | own-drive's folder path (`browse_main`'s `#crumbs` nav) | the list (`<ol>`): a wrapping flex row of 0.875rem text, `min-width: 0`, `overflow-wrap: anywhere`, a slash in `text-3` drawn as `li + li::before` with 0.375rem at each side (the recipe writes it as a span; the spacing is vpkit's); the item, a link or a span: `text-2`, no underline, `text-1` underlined on hover, the current one (`aria-current="page"`, where the recipe keys on being last) `text-1` at 600 with no underline hovered; `font-weight: inherit` so an alert's rule for links leaves it; in a `vp-doc` the list sets no margin, indent or numbers and its items no gap | one site, built on the owner's ask (decision 18); not ported: the recipe's default cursor on the current crumb, which is a link there (rule 4: the element supplies its cursor); the slash's color is read on the pseudo-element on both sides |
 | `vp-copy` | crashcart's `copybox`, `copybox-label`, its `code` and `copy-btn` | a wrapping flex row on the baseline, 0.75rem apart, in the code face at 13px, 0.375rem between stacked lines and none above the first or below the last; the label in `text-2`, at least 4.5rem wide and left out of a selection; the value growing from 12rem with `overflow-wrap: anywhere` in `text-1`, so at a phone's width the button takes its own line; a `vp-btn` inside keeps its size, centered on the row; inside a `vp-doc` the value drops the markdown's inline-code chip | one app, built on the owner's ask (decision 21); not ported: the copying, the page's script |
+| `vp-file` | crashcart's `file-input` | the element 14px in `text-1`; its `::file-selector-button` the input's box (44px, the input's border and ground, a 0.5rem radius, 0.75rem side padding, 14px) 0.75rem before the file name; while the element is hovered the button's border and text `brand-1` (the whole element opens the chooser, where the recipe hovered the button alone, which a forced `:hover` on the element doesn't reach, so the case would read nothing); on keyboard focus the brand border and a 2px brand ring, as `vp-input`; no transition, as the recipe has none and the harness reads a pseudo-element's halfway | one app (crashcart's two symbol uploads), on the owner's ask (decision 21); `vp-input` on the element top-aligns the chooser in its fixed box; not ported: the recipe's `align-self: center` (placement) |
 
 ### The apps' chrome
 
