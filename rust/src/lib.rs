@@ -26,9 +26,13 @@
 
 mod empty;
 mod field;
+mod pager;
+mod stat;
 
 pub use empty::Empty;
 pub use field::{Field, field_error_id};
+pub use pager::Pager;
+pub use stat::Stat;
 
 #[cfg(test)]
 mod header;

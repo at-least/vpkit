@@ -26,7 +26,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 
 ### In Rust
 
-For a page rendered with [hypertext](https://crates.io/crates/hypertext), `rust/` is a crate of the components whose markup is more than one class, `Empty` and `Field`, which write the markup each stylesheet documents (the stylesheet is still imported as above). Take it from the repository at the same commit as the CSS:
+For a page rendered with [hypertext](https://crates.io/crates/hypertext), `rust/` is a crate of the components whose markup is more than one class, `Empty`, `Pager`, `Stat` and `Field`, which write the markup each stylesheet documents (the stylesheet is still imported as above). Take it from the repository at the same commit as the CSS:
 
 ```toml
 [dependencies]
