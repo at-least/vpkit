@@ -1,5 +1,7 @@
 use hypertext::{Buffer, Raw, prelude::*};
 
+use crate::Class;
+
 /// Lucide's x (ISC; LICENSE-Lucide), the remove control's icon: an inline
 /// SVG, so a page whose Content-Security-Policy refuses `data:` images
 /// draws it too. `vp-chip-remove` sizes it at 1rem.
@@ -58,9 +60,9 @@ impl Renderable for Chip<'_> {
         };
         rsx! {
             @if let Some(href) = self.href {
-                <a class={ "vp-chip" @if !self.class.is_empty() { " " (self.class) } } href=(href)>(parts)</a>
+                <a class=(Class("vp-chip", self.class)) href=(href)>(parts)</a>
             } @else {
-                <span class={ "vp-chip" @if !self.class.is_empty() { " " (self.class) } }>
+                <span class=(Class("vp-chip", self.class))>
                     (parts)
                     @if let Some(remove) = self.remove_href {
                         <a class="vp-chip-remove" href=(remove) aria-label=(self.remove_label)>(Raw::<_>::dangerously_create(X))</a>

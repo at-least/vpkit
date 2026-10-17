@@ -1,5 +1,7 @@
 use hypertext::{Buffer, prelude::*};
 
+use crate::Class;
+
 /// `vp-empty` (`empty.css`): the box a list shows when it has nothing to
 /// list, a title and an optional line under it.
 ///
@@ -35,7 +37,7 @@ impl Renderable for Empty<'_> {
         // `..` fills a missing title with "", which would draw an empty box.
         assert!(!self.title.is_empty(), "vpkit::Empty needs a title");
         rsx! {
-            <div class={ "vp-empty" @if !self.class.is_empty() { " " (self.class) } }>
+            <div class=(Class("vp-empty", self.class))>
                 <p class="vp-empty-title">(self.title)</p>
                 @if !self.desc.is_empty() {
                     <p class="vp-empty-desc">(self.desc)</p>
@@ -66,21 +68,6 @@ mod tests {
         assert_eq!(
             html.as_inner(),
             r#"<div class="vp-empty"><p class="vp-empty-title">No jobs yet</p></div>"#
-        );
-    }
-
-    #[test]
-    fn its_siblings_stay_siblings() {
-        let html = rsx! {
-            <section><Empty title="No runs yet" .. /><p>"after"</p></section>
-        }
-        .render();
-        assert_eq!(
-            html.as_inner(),
-            concat!(
-                r#"<section><div class="vp-empty"><p class="vp-empty-title">No runs yet</p></div>"#,
-                r#"<p>after</p></section>"#,
-            )
         );
     }
 

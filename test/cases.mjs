@@ -418,7 +418,7 @@ const WARN_PATHS = '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 2
 const iconAlert = (ref, type, titled) => {
   const icon = `<svg data-t="icon" ${ref ? `style="width:1rem;height:1rem;flex-shrink:0;margin-top:4px;color:var(--vp-c-${type}-1)"` : 'class="vp-alert-icon"'} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${WARN_PATHS}</svg>`;
   const title = titled ? '<p data-t="title" class="vp-alert-title">Platform mismatch</p>' : '';
-  return `<div data-t="box" class="vp-alert vp-alert-${type}${ref ? ` ${CRASHCART_ALERT_ROW}` : ''}" ${ref && titled ? 'style="padding-top:1rem;width:24rem"' : 'style="width:24rem"'}>${icon}` +
+  return `<div data-t="box" class="vp-alert vp-alert-${type}${ref ? ` ${CRASHCART_ALERT_ROW}` : ''}" style="width:24rem${ref && titled ? ';padding-top:1rem' : ''}">${icon}` +
     `<div data-t="content"${ref ? ` class="${CRASHCART_ALERT_CONTENT}"` : ''}>${title}<p data-t="p1">Events arrive from a platform this project does not declare.</p><p data-t="p2">Check which app holds this DSN.</p></div></div>`;
 };
 const ICON_ALERT_CHECKS = [
@@ -1096,13 +1096,6 @@ const boxedChecks = [
 ];
 cases.push({ name: 'field in a box', reference: boxedField(true), vpkit: boxedField(false), checks: boxedChecks });
 cases.push({ name: 'field in a box in a doc', reference: `<div>${boxedField(false)}</div>`, vpkit: inDoc(boxedField(false)), checks: boxedChecks });
-// at a phone's width: a field in a row too narrow for its control, the
-// control taking the box's width rather than overflowing it (the recipe's
-// control carries crashcart's min-w-0, vpkit's none)
-const narrowField = (ref) =>
-  `<div style="display:flex;width:9rem"><div data-t="field" class="${ref ? CRASHCART_FIELD : 'vp-field'}">` +
-  `<label class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="n">Nightly backup name</label>` +
-  `<input data-t="input" class="vp-input${ref ? ' min-w-0' : ''}" id="n"></div></div>`;
 // fields in a wrapping row at a desktop's width, each control 16rem wide:
 // crashcart's plain box against vp-field, whose shrinkable column and zero
 // minimum must change nothing where the row has room (the third wraps)
@@ -1126,6 +1119,13 @@ cases.push({
     { target: `i${n}`, props: ['width', 'offset-top'] },
   ]),
 });
+// at a phone's width: a field in a row too narrow for its control, the
+// control taking the box's width rather than overflowing it (the recipe's
+// control carries crashcart's min-w-0, vpkit's none)
+const narrowField = (ref) =>
+  `<div style="display:flex;width:9rem"><div data-t="field" class="${ref ? CRASHCART_FIELD : 'vp-field'}">` +
+  `<label class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="n">Nightly backup name</label>` +
+  `<input data-t="input" class="vp-input${ref ? ' min-w-0' : ''}" id="n"></div></div>`;
 cases.push({
   name: 'field in a narrow row',
   reference: narrowField(true),
@@ -1983,11 +1983,13 @@ cases.push({
 // pager: crashcart's pager (src/web/styles/app.css at 4b4fdd6, its
 // declarations written inline) against vp-pager, a summary and two vp-btns,
 // one disabled; then the summary inside a vp-doc against itself outside one
+const PAGER_ROW = 'display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-top:1.25rem';
+const PAGER_ACTIONS = 'display:flex;gap:0.5rem';
 const pagerMarkup = (ref) =>
   ref
-    ? `<nav data-t="pager" style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-top:1.25rem" aria-label="Pages">` +
+    ? `<nav data-t="pager" style="${PAGER_ROW}" aria-label="Pages">` +
       `<p data-t="summary" style="font-size:0.875rem;color:var(--vp-c-text-2)">51–100 of 230</p>` +
-      `<div data-t="actions" style="display:flex;gap:0.5rem"><a data-t="newer" class="vp-btn" href="#">Newer</a><button data-t="older" class="vp-btn" type="button" disabled>Older</button></div></nav>`
+      `<div data-t="actions" style="${PAGER_ACTIONS}"><a data-t="newer" class="vp-btn" href="#">Newer</a><button data-t="older" class="vp-btn" type="button" disabled>Older</button></div></nav>`
     : `<nav data-t="pager" class="vp-pager" aria-label="Pages"><p data-t="summary" class="vp-pager-summary">51–100 of 230</p>` +
       `<div data-t="actions" class="vp-pager-actions"><a data-t="newer" class="vp-btn" href="#">Newer</a><button data-t="older" class="vp-btn" type="button" disabled>Older</button></div></nav>`;
 const PAGER_LINE = ['font-size', 'color', ...MARGIN, 'line-height', 'offset-left', 'offset-top', 'height'];
@@ -2006,8 +2008,8 @@ cases.push({
 // the addition: with no summary the actions keep the far end, against the
 // recipe with margin-inline-start: auto written on them
 const barePager = (ref) =>
-  `<div style="width:30rem"><nav data-t="pager" ${ref ? 'style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-top:1.25rem"' : 'class="vp-pager"'} aria-label="Pages">` +
-  `<div data-t="actions" ${ref ? 'style="display:flex;gap:0.5rem;margin-inline-start:auto"' : 'class="vp-pager-actions"'}><button data-t="newer" class="vp-btn" type="button" disabled>Newer</button><a data-t="older" class="vp-btn" href="#">Older</a></div></nav></div>`;
+  `<div style="width:30rem"><nav data-t="pager" ${ref ? `style="${PAGER_ROW}"` : 'class="vp-pager"'} aria-label="Pages">` +
+  `<div data-t="actions" ${ref ? `style="${PAGER_ACTIONS};margin-inline-start:auto"` : 'class="vp-pager-actions"'}><button data-t="newer" class="vp-btn" type="button" disabled>Newer</button><a data-t="older" class="vp-btn" href="#">Older</a></div></nav></div>`;
 cases.push({
   name: 'pager without a summary',
   reference: barePager(true),

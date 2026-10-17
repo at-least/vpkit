@@ -82,13 +82,12 @@
     min-width: 0;
   }
 
-  /* centered on the first line: the block's line is 1.7142857em, the icon
-     1rem */
+  /* centered on the first line, whatever the block's line height */
   .vp-alert-icon {
     flex-shrink: 0;
     width: 1rem;
     height: 1rem;
-    margin-top: calc((1.7142857em - 1rem) / 2);
+    margin-top: calc((1lh - 1rem) / 2);
     color: var(--vp-alert-icon);
   }
 

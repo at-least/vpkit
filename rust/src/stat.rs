@@ -1,5 +1,7 @@
 use hypertext::{Buffer, Raw, prelude::*};
 
+use crate::Class;
+
 /// `vp-stat` (`stat.css`): one number in a box, its title beside it and an
 /// optional hint under it.
 ///
@@ -70,7 +72,7 @@ impl<V: Renderable> Renderable for Stat<'_, V> {
         assert!(!value.is_empty(), "vpkit::Stat needs a value");
         let value = Raw::<_>::dangerously_create(value);
         rsx! {
-            <div class={ "vp-stat" @if !self.class.is_empty() { " " (self.class) } }>
+            <div class=(Class("vp-stat", self.class))>
                 <header class="vp-stat-header">
                     <p class="vp-stat-title">(self.title)</p>
                     <span class="vp-stat-value" title=(self.value_title)[!self.value_title.is_empty()]>(value)</span>

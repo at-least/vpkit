@@ -1509,7 +1509,7 @@ button:focus-visible {
     flex-shrink: 0;
     width: 1rem;
     height: 1rem;
-    margin-top: calc((1.7142857em - 1rem) / 2);
+    margin-top: calc((1lh - 1rem) / 2);
     color: var(--vp-alert-icon);
   }
   .vp-alert-title {
@@ -2101,9 +2101,6 @@ button:focus-visible {
   }
   .vp-doc .vp-field-error {
     margin: 0.5rem 0 0;
-  }
-  .vp-doc .vp-field-hint {
-    line-height: 1rem;
   }
   .vp-field > .vp-label, .vp-field > .vp-field-hint, .vp-field > .vp-field-error {
     margin: 0;

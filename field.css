@@ -59,14 +59,9 @@
   }
 
   /* inside a vp-doc (content.css), whose rule for a paragraph gives the
-     line a bottom margin and the hint a 28px line: none, the error's top
-     margin kept, the hint's own line */
+     line a bottom margin: none, the error's top margin kept */
   .vp-doc .vp-field-error {
     margin: 0.5rem 0 0;
-  }
-
-  .vp-doc .vp-field-hint {
-    line-height: 1rem;
   }
 
   /* inside a field the grid's gap spaces the parts: no margins, after the

@@ -67,9 +67,13 @@ pub struct FieldHint<'a> {
 
 impl Renderable for FieldHint<'_> {
     fn render_to(&self, buffer: &mut Buffer) {
-        assert!(!self.text.is_empty(), "vpkit::FieldHint needs a text");
-        rsx! { <p class="vp-field-hint" id=(field_hint_id(self.id))>(self.text)</p> }
-            .render_to(buffer);
+        line(
+            buffer,
+            "FieldHint",
+            "vp-field-hint",
+            &field_hint_id(self.id),
+            self.text,
+        );
     }
 }
 
@@ -85,10 +89,21 @@ pub struct FieldError<'a> {
 
 impl Renderable for FieldError<'_> {
     fn render_to(&self, buffer: &mut Buffer) {
-        assert!(!self.text.is_empty(), "vpkit::FieldError needs a text");
-        rsx! { <p class="vp-field-error" id=(field_error_id(self.id))>(self.text)</p> }
-            .render_to(buffer);
+        line(
+            buffer,
+            "FieldError",
+            "vp-field-error",
+            &field_error_id(self.id),
+            self.text,
+        );
     }
+}
+
+/// A hint's or an error's line under the control: `who` names the
+/// component in the panic an empty text raises.
+fn line(buffer: &mut Buffer, who: &str, class: &'static str, id: &str, text: &str) {
+    assert!(!text.is_empty(), "vpkit::{who} needs a text");
+    rsx! { <p class=(class) id=(id)>(text)</p> }.render_to(buffer);
 }
 
 /// The hint line's id for the control `id`.

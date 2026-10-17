@@ -103,18 +103,29 @@ try {
   // into it resolving to a file
   if (!existsSync(join(RUSTDOC, 'vpkit/index.html'))) throw new Error('no rust/target/doc: run node test/rust.mjs first');
   cpSync(RUSTDOC, join(site, 'rust'), { recursive: true });
-  for (const f of readdirSync(site, { recursive: true }).filter((f) => f.endsWith('index.html') && !f.startsWith('rust/'))) {
-    const at = new URL(`/vpkit/${f.slice(0, -'index.html'.length)}`, ORIGIN);
-    for (const [, href] of readFileSync(join(site, f), 'utf8').matchAll(/href="([^"#]*rust\/[^"#]*)"/g)) {
+  // the file a URL's path serves, as the route below serves it; null for none
+  const fileFor = (pathname) => {
+    const path = decodeURIComponent(pathname);
+    if (!path.startsWith('/vpkit/')) return null;
+    let file = join(site, path.slice('/vpkit'.length));
+    if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
+    return existsSync(file) ? file : null;
+  };
+  // the site's own pages, the crate's documentation aside, read once
+  const built = readdirSync(site, { recursive: true })
+    .filter((f) => f.endsWith('index.html') && !f.startsWith('rust/'))
+    .map((f) => ({ path: `/${f.slice(0, -'index.html'.length)}`, html: readFileSync(join(site, f), 'utf8') }));
+  for (const { path, html } of built) {
+    const at = new URL(`/vpkit${path}`, ORIGIN);
+    for (const [, href] of html.matchAll(/href="([^"#]*rust\/[^"#]*)"/g)) {
       const url = new URL(href, at);
-      if (url.origin !== ORIGIN) continue;
-      if (!existsSync(join(site, url.pathname.slice('/vpkit/'.length)))) failures.push(`/vpkit/${f}: the link ${href} leads to no file`);
+      if (url.origin === ORIGIN && !fileFor(url.pathname)) failures.push(`/vpkit${path}: the link ${href} leads to no file`);
     }
   }
   const css = readFileSync(join(site, 'example.css'), 'utf8');
-  const withExamples = readdirSync(site, { recursive: true })
-    .filter((f) => f.endsWith('index.html') && readFileSync(join(site, f), 'utf8').includes('<iframe class="vp-example"'))
-    .map((f) => `/${f.slice(0, -'index.html'.length)}`)
+  const withExamples = built
+    .filter((p) => p.html.includes('<iframe class="vp-example"'))
+    .map((p) => p.path)
     .sort();
   // after the frames' fonts, two frames for their ResizeObservers
   const settle = (page) =>
@@ -129,11 +140,8 @@ try {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     });
   const serve = (route) => {
-    const path = decodeURIComponent(new URL(route.request().url()).pathname);
-    if (!path.startsWith('/vpkit/')) return route.fulfill({ status: 404, body: '' });
-    let file = join(site, path.slice('/vpkit'.length));
-    if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
-    if (!existsSync(file)) return route.fulfill({ status: 404, body: '' });
+    const file = fileFor(new URL(route.request().url()).pathname);
+    if (!file) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ contentType: TYPES[extname(file)] ?? 'application/octet-stream', body: readFileSync(file) });
   };
   const browser = await chromium.launch();

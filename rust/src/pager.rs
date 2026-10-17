@@ -1,5 +1,7 @@
 use hypertext::{Buffer, prelude::*};
 
+use crate::Class;
+
 /// `vp-pager` (`pager.css`): under a list, a line saying what it shows and
 /// the buttons to the pages either side, a link where there is a page that
 /// way and a disabled button where there is none. `label` names the
@@ -55,7 +57,7 @@ impl Renderable for Pager<'_> {
             "vpkit::Pager needs a next_label"
         );
         rsx! {
-            <nav class={ "vp-pager" @if !self.class.is_empty() { " " (self.class) } } aria-label=(self.label)>
+            <nav class=(Class("vp-pager", self.class)) aria-label=(self.label)>
                 @if !self.summary.is_empty() {
                     <p class="vp-pager-summary">(self.summary)</p>
                 }
