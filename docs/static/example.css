@@ -1353,6 +1353,15 @@ button:focus-visible {
     --vp-btn-line-height: 2.875;
     --vp-btn-font-size: 1rem;
   }
+  :where(.vp-btn) > svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+  :where(.vp-btn-big.vp-btn) > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
   .vp-badge {
     --vp-badge-padding: 0.625rem;
     --vp-badge-line-height: 1.8333333;

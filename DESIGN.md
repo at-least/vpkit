@@ -124,7 +124,7 @@ For a component from an app recipe:
 
 | component | source | classes |
 | --- | --- | --- |
-| `vp-btn` | VPButton | `vp-btn-brand`, `vp-btn-sponsor`, `vp-btn-big`; `:disabled`; `vp-btn-danger` (own-drive's); `vp-btn-ghost` (crashcart's: the icon button's colors on the button's box); `[aria-current]` with a value takes the brand theme (crashcart's and totality's admin's current item in a row; decision 19) |
+| `vp-btn` | VPButton | `vp-btn-brand`, `vp-btn-sponsor`, `vp-btn-big`; `:disabled`; an `<svg>` inside 1rem, 1.25rem in a big one (vpkit's: crashcart's icons, totality's Google mark); `vp-btn-danger` (own-drive's); `vp-btn-ghost` (crashcart's: the icon button's colors on the button's box); `[aria-current]` with a value takes the brand theme (crashcart's and totality's admin's current item in a row; decision 19) |
 | `vp-badge` | VPBadge | seven types, `vp-badge-success` (vpkit's), `vp-badge-small`, `vp-badge-outline` (totality's); `vp-badge-dot` (crashcart's run chip's dot, decision 21: a 0.5rem dot in the word's color, the badge a centered row around it 0.375rem apart, `CanvasText` under forced colors); VPBadge's rules in doc headings and the doc footer |
 | `vp-alert` | the custom blocks | six types, `vp-alert-title`; `vp-alert-details` on a `<details>`; `vp-alert-icon` (crashcart's notices: the block a row, the icon in the type's color, centered on the first line, the content beside it; vpkit's addition) |
 | `vp-table` | the markdown table | `vp-table-scroll`, `vp-table-sticky`, `vp-table-hover`, `vp-table-stack`, `vp-table-sort`, `vp-table-actions`; a checked first-cell checkbox, `aria-current`, `aria-sort` (vpkit's: own-drive's and crashcart's tables) |

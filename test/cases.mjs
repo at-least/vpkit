@@ -45,6 +45,7 @@ import {
   CRASHCART_ROW_HOVER,
   OWN_DRIVE_ROWBTNS,
   CRASHCART_SORT,
+  OWN_DRIVE_ICON_CHIP,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -142,6 +143,29 @@ for (const [theme, themeClass] of Object.entries(THEMES)) {
     }
   }
 }
+
+// an icon in a button with no size of its own: vpkit's addition, 1rem in
+// a vp-btn and 1.25rem in a big one, not shrinking (crashcart's .icon,
+// totality's Google mark); against VPButton with the flex layout and the
+// icon's size written inline
+const BARE_ICON = (style) => `<svg data-t="icon" viewBox="0 0 24 24"${style}><circle cx="12" cy="12" r="10"></circle></svg>`;
+for (const [size, sizeClass, px] of [['medium', '', '1rem'], ['big', ' vp-btn-big', '1.25rem']]) {
+  cases.push({
+    name: `button ${size} with a bare icon`,
+    upstream: `<a data-t="btn" class="VPButton ${size} alt" href="#" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem">${BARE_ICON(` style="width:${px};height:${px};flex-shrink:0"`)}Sign in with Google</a>`,
+    vpkit: `<a data-t="btn" class="vp-btn${sizeClass}" href="#">${BARE_ICON('')}Sign in with Google</a>`,
+    checks: [
+      { target: 'icon', props: ['width', 'height', 'flex-shrink', 'offset-top', 'offset-left'] },
+      { target: 'btn', props: ['height'] },
+    ],
+  });
+}
+cases.push({
+  name: 'button with a sized icon',
+  reference: `<a data-t="btn" class="vp-btn vp-btn-big" href="#">${BARE_ICON(' style="width:1rem;height:1rem;flex-shrink:0"')}Copy</a>`,
+  vpkit: `<a data-t="btn" class="vp-btn vp-btn-big" href="#">${BARE_ICON(` class="${OWN_DRIVE_ICON_CHIP}"`)}Copy</a>`,
+  checks: [{ target: 'icon', props: ['width', 'height'] }],
+});
 
 // vp-btn's additions, each against VPButton with the addition written
 // inline: the flex layout with an icon, and the disabled state

@@ -39,7 +39,7 @@ Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the
 
 ## Icons and the disabled state
 
-Two additions VitePress's button doesn't have: it is `inline-flex`, so an icon and its label sit centered side by side 0.5rem apart, and a `disabled` button is dimmed to half opacity with a not-allowed cursor.
+Additions VitePress's button doesn't have: it is `inline-flex`, so an icon and its label sit centered side by side 0.5rem apart; an `<svg>` straight inside with no size of its own is 1rem, 1.25rem in a big button, and a size utility on it wins; and a `disabled` button is dimmed to half opacity with a not-allowed cursor.
 
 {% <vp_example title="An icon, and a disabled button" layout="row"> %}
 <button class="vp-btn vp-btn-brand" type="button"><span class="vpi-plus"></span>New file</button>
