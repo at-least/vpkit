@@ -27,3 +27,20 @@ VitePress's `VPNavMenuLink`: a link of the navbar's menu, in the bar and in the 
 {% </vp_example> %}
 
 The bar is [Top Bar](@/components/topbar.md); the screen, and opening it, are the page's.
+
+## A lane
+
+`vp-nav-lane` is a row of nav links that scrolls sideways rather than wrap or clip, for a header's second row or a page's section links. Its scrollbar is hidden; a wheel, a drag or a swipe still scrolls it. Its links are 2.25rem tall and stay on one line.
+
+While the lane is wider than its box its edges fade, so a clipped label reads as one that scrolls. CSS can't tell when that is: your script sets `data-overflow` when the lane overflows, and removes it when it fits.
+
+{% <vp_example title="A lane that overflows its box"> %}
+<nav class="vp-nav-lane w-64" aria-label="Project" data-overflow>
+  <a class="vp-nav-link" href="#" aria-current="page">Overview</a>
+  <a class="vp-nav-link" href="#">Issues</a>
+  <a class="vp-nav-link" href="#">Events</a>
+  <a class="vp-nav-link" href="#">Releases</a>
+  <a class="vp-nav-link" href="#">Jobs</a>
+  <a class="vp-nav-link" href="#">Settings</a>
+</nav>
+{% </vp_example> %}

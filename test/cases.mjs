@@ -1231,6 +1231,30 @@ cases.push({
   ],
 });
 
+// nav lane: crashcart's scrolling row of nav links (src/web/styles/app.css
+// at 0b6d7a3, `.nav` and `.nav > .vp-nav-link`, their declarations written
+// inline) against vp-nav-lane, fitting and overflowing (crashcart's
+// nav-overflow class, which app.js sets, against data-overflow)
+const LANE_BOX = 'display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none';
+const LANE_MASK = 'mask-image:linear-gradient(90deg, transparent 0, #000 1rem, #000 calc(100% - 0.75rem), transparent 100%)';
+const LANE_LINK = 'min-height:2.25rem;border-radius:0.375rem;white-space:nowrap';
+const laneLinks = (style) =>
+  ['Overview', 'Issues', 'Events', 'Releases', 'Jobs', 'Settings']
+    .map((l, i) => `<a${i === 0 ? ' data-t="a1"' : ''} class="vp-nav-link" href="#"${style}>${l}</a>`)
+    .join('');
+const LANE_PROPS = ['display', 'column-gap', 'overflow-x', 'scrollbar-width', 'mask-image', 'width', 'height'];
+for (const [name, width, overflow] of [['nav lane', '40rem', false], ['nav lane, overflowing', '12rem', true]]) {
+  cases.push({
+    name,
+    reference: `<nav data-t="lane" style="width:${width};${LANE_BOX}${overflow ? `;${LANE_MASK}` : ''}">${laneLinks(` style="${LANE_LINK}"`)}</nav>`,
+    vpkit: `<nav data-t="lane" class="vp-nav-lane" style="width:${width}"${overflow ? ' data-overflow' : ''}>${laneLinks('')}</nav>`,
+    checks: [
+      { target: 'lane', props: LANE_PROPS },
+      { target: 'a1', props: ['min-height', ...RADIUS, 'white-space', ...PADDING, 'height', 'offset-left'] },
+    ],
+  });
+}
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is
