@@ -23,6 +23,7 @@ A component whose markup is more than one class on one element:
 | Rust | Classes | Page |
 | --- | --- | --- |
 | [`Chip`](../../rust/vpkit/struct.Chip.html) | `vp-chip` | [Chip](@/components/chip.md) |
+| [`Dialog`](../../rust/vpkit/struct.Dialog.html) | `vp-dialog` | [Dialog](@/components/dialog.md) |
 | [`Empty`](../../rust/vpkit/struct.Empty.html) | `vp-empty` | [Empty State](@/components/empty.md) |
 | [`Field`](../../rust/vpkit/struct.Field.html), [`FieldHint`](../../rust/vpkit/struct.FieldHint.html), [`FieldError`](../../rust/vpkit/struct.FieldError.html) | `vp-field` | [Field](@/components/field.md) |
 | [`Pager`](../../rust/vpkit/struct.Pager.html) | `vp-pager` | [Pager](@/components/pager.md) |

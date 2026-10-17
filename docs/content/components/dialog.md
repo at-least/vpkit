@@ -31,3 +31,5 @@ VitePress has no dialog. This is vpkit's own, on the `<dialog>` element, which b
 - 26rem wide, at most 92vw, since a dialog without a width shrinks to its content; a width utility replaces it.
 
 The buttons are in a `<form method="dialog">`, which closes the dialog when one is pressed, with no script; Escape closes it too.
+
+In Rust: [`Dialog`](../../rust/vpkit/struct.Dialog.html), from vpkit's [crate](@/guide/rust.md); the title's id is the dialog's with `-title` after it.

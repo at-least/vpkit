@@ -2,7 +2,7 @@
  * the <dialog> element, which brings the top layer, the focus trap,
  * Escape and ::backdrop. An optional import: `@import "vpkit/dialog.css";`
  *
- *   <dialog class="vp-dialog" aria-labelledby="rename-title">
+ *   <dialog class="vp-dialog" id="rename" aria-labelledby="rename-title">
  *     <h2 class="vp-dialog-title" id="rename-title">Rename</h2>
  *     <p>…</p>
  *     <div class="vp-dialog-actions">
