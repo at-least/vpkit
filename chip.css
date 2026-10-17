@@ -6,7 +6,7 @@
  *   <span class="vp-chip">
  *     <span class="vp-chip-key">env</span>
  *     <span class="vp-chip-value">production</span>
- *     <a class="vp-chip-remove" href="?" aria-label="Remove the env filter"><svg …></svg></a>
+ *     <a class="vp-chip-remove" href="?" aria-label="Remove the env filter"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></a>
  *   </span>
  *
  * A 12px pill 0.625rem across and 0.125rem tall in the soft ground, its
@@ -19,8 +19,11 @@
  * ground is bg-soft, where crashcart's recipe had default-soft: the
  * contract holds secondary text on bg-soft (decision 17, as vp-empty's
  * box). The element supplies the pointer, a link's or a button's, where
- * the recipe set one (rule 4). The icon is the page's: vpkit's icons.css
- * has no cross. */
+ * the recipe set one (rule 4). The cross is Lucide's x as an inline SVG,
+ * which the Rust crate's Chip writes; icons.css has none, since a page
+ * that refuses data: images could not draw it. A chip that opens the list
+ * it names is a link as a whole (`<a class="vp-chip">`), with no remove
+ * control inside it. */
 
 @layer components {
   .vp-chip {

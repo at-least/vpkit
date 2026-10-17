@@ -24,11 +24,13 @@
 //! );
 //! ```
 
+mod chip;
 mod empty;
 mod field;
 mod pager;
 mod stat;
 
+pub use chip::Chip;
 pub use empty::Empty;
 pub use field::{Field, FieldError, FieldHint, field_error_id, field_hint_id};
 pub use pager::Pager;
