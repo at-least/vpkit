@@ -41,6 +41,14 @@ export const TOTALITY_CHOICE =
 export const TOTALITY_FIELD_LABEL = 'mb-1.5 block text-[0.875rem] leading-6 font-medium text-text-1';
 export const TOTALITY_MSG_ERROR = 'mt-2 text-[0.875rem] leading-6 text-danger-1';
 
+// crashcart src/web/pages/jobs.rs and project_new.rs at ee03de1, verbatim
+// as of 2026-10-17: a field's box around its label and control, one column
+// its control may shrink in, the label's margin removed, and the hint line
+// under a control
+export const CRASHCART_FIELD = 'grid grid-cols-1 gap-1.5 min-w-0';
+export const CRASHCART_FIELD_LABEL = 'vp-label mb-0';
+export const CRASHCART_FIELD_HINT = 'text-xs text-secondary';
+
 // own-drive src/web.rs at 8a2c523, verbatim as of 2026-10-10: the status
 // message `#msg` (its class list; placed fixed at the bottom center)
 export const OWN_DRIVE_MSG =

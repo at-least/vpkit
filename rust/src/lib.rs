@@ -30,7 +30,7 @@ mod pager;
 mod stat;
 
 pub use empty::Empty;
-pub use field::{Field, field_error_id};
+pub use field::{Field, FieldError, FieldHint, field_error_id, field_hint_id};
 pub use pager::Pager;
 pub use stat::Stat;
 

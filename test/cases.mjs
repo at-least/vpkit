@@ -20,6 +20,9 @@ import {
   TOTALITY_FIELD_LABEL,
   TOTALITY_INPUT,
   TOTALITY_MSG_ERROR,
+  CRASHCART_FIELD,
+  CRASHCART_FIELD_LABEL,
+  CRASHCART_FIELD_HINT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1033,6 +1036,43 @@ cases.push({
   checks: [
     { target: 'label', props: FIELD_TEXT },
     { target: 'error', props: FIELD_TEXT },
+  ],
+});
+
+// a field's box: crashcart's (its box, its label with the margin removed,
+// its hint) against vp-field, vp-label and vp-field-hint; the error line
+// inside a field is vpkit's addition, against the line with its margin
+// removed inline; then the field inside a vp-doc against itself outside one
+const boxedField = (ref) =>
+  `<div data-t="field" class="${ref ? CRASHCART_FIELD : 'vp-field'}" style="width:20rem">` +
+  `<label data-t="label" class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="code">Coupon code</label>` +
+  `<input data-t="input" class="vp-input" id="code" aria-invalid="true" aria-describedby="code-hint code-error">` +
+  `<p data-t="hint" class="${ref ? CRASHCART_FIELD_HINT : 'vp-field-hint'}" id="code-hint">Printed on the back of the card.</p>` +
+  `<p data-t="error" class="vp-field-error" ${ref ? 'style="margin-top:0"' : ''} id="code-error">This code has expired.</p></div>`;
+const BOXED_PART = ['display', ...MARGIN, 'font-size', 'line-height', 'font-weight', 'color', 'offset-top', 'height'];
+const boxedChecks = [
+  { target: 'field', props: ['display', 'row-gap', 'grid-template-columns', 'min-width', 'height'] },
+  { target: 'label', props: BOXED_PART },
+  { target: 'input', props: ['offset-top'] },
+  { target: 'hint', props: BOXED_PART },
+  { target: 'error', props: BOXED_PART },
+];
+cases.push({ name: 'field in a box', reference: boxedField(true), vpkit: boxedField(false), checks: boxedChecks });
+cases.push({ name: 'field in a box in a doc', reference: `<div>${boxedField(false)}</div>`, vpkit: inDoc(boxedField(false)), checks: boxedChecks });
+// at a phone's width: a field in a row too narrow for its control, the
+// control taking the box's width rather than overflowing it (the recipe's
+// control carries crashcart's min-w-0, vpkit's none)
+const narrowField = (ref) =>
+  `<div style="display:flex;width:9rem"><div data-t="field" class="${ref ? CRASHCART_FIELD : 'vp-field'}">` +
+  `<label class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="n">Nightly backup name</label>` +
+  `<input data-t="input" class="vp-input${ref ? ' min-w-0' : ''}" id="n"></div></div>`;
+cases.push({
+  name: 'field in a narrow row',
+  reference: narrowField(true),
+  vpkit: narrowField(false),
+  checks: [
+    { target: 'field', props: ['width', 'min-width'] },
+    { target: 'input', props: ['width'] },
   ],
 });
 
