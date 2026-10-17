@@ -2639,6 +2639,19 @@ button:focus-visible {
   .vp-row:last-child {
     border-bottom: none;
   }
+  .vp-panel {
+    --vp-panel-padding: 1rem;
+    display: block;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: var(--vp-panel-padding);
+    overflow: clip;
+    background-color: var(--vp-c-bg);
+    transition: border-color 0.25s, background-color 0.25s;
+  }
+  .vp-panel-flush.vp-panel {
+    --vp-panel-padding: 0;
+  }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);
     --vp-inline-btn-hover-text: var(--vp-c-text-1);

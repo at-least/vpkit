@@ -26,6 +26,9 @@ import {
   CRASHCART_FIELD_HINT,
   CRASHCART_ALERT_ROW,
   CRASHCART_ALERT_CONTENT,
+  CRASHCART_PANEL,
+  CRASHCART_PANEL_FLUSH,
+  CRASHCART_PANEL_FORM,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -2093,6 +2096,46 @@ cases.push({
   reference: rowsMarkup(true),
   vpkit: rowsMarkup(false),
   checks: [1, 2, 3].map((n) => ({ target: `row${n}`, props: ROW_PROPS })).concat([{ target: 'card', props: ['height'] }]),
+});
+
+// panel: crashcart's outlined card undone to a block against vp-panel, a
+// paragraph inside; vpkit's change, clip where the recipe has hidden (a
+// sticky header inside keeps sticking), written inline on the recipe; then
+// flush against the recipe's p-0, a form row (its padding vpkit's 1rem where
+// the recipe has p-3, written inline), and the panel inside a vp-doc
+const PANEL_BOX = ['display', ...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'overflow-x', 'overflow-y', 'background-color', 'color', ...TRANSITION, 'height', 'width'];
+const panelBody = '<p data-t="p" style="margin:0">Releases this project has seen, newest first.</p>';
+cases.push({
+  name: 'panel',
+  reference: `<div style="width:24rem"><section data-t="box" class="${CRASHCART_PANEL}" style="overflow:clip">${panelBody}</section></div>`,
+  vpkit: `<div style="width:24rem"><section data-t="box" class="vp-panel">${panelBody}</section></div>`,
+  checks: [{ target: 'box', props: PANEL_BOX }, { target: 'p', props: ['offset-left', 'offset-top'] }],
+});
+cases.push({
+  name: 'panel, flush',
+  reference: `<div style="width:24rem"><section data-t="box" class="${CRASHCART_PANEL_FLUSH}" style="overflow:clip">${panelBody}</section></div>`,
+  vpkit: `<div style="width:24rem"><section data-t="box" class="vp-panel vp-panel-flush">${panelBody}</section></div>`,
+  checks: [{ target: 'box', props: PANEL_BOX }, { target: 'p', props: ['offset-left', 'offset-top'] }],
+});
+const panelForm = (ref) =>
+  `<div style="width:30rem"><form data-t="box" class="${ref ? CRASHCART_PANEL_FORM : 'vp-panel mt-1 flex flex-wrap items-end gap-3'}"${ref ? ' style="overflow:clip;padding:1rem"' : ''}>` +
+  `<input data-t="in" class="vp-input" style="width:12rem"><button data-t="btn" class="vp-btn" type="submit">Save</button></form></div>`;
+cases.push({
+  name: 'panel as a form row',
+  reference: panelForm(true),
+  vpkit: panelForm(false),
+  checks: [
+    { target: 'box', props: [...PANEL_BOX, 'flex-wrap', 'align-items', 'column-gap', 'margin-top'] },
+    { target: 'in', props: ['offset-left', 'offset-top'] },
+    { target: 'btn', props: ['offset-left', 'offset-top'] },
+  ],
+});
+cases.push({
+  name: 'panel in a doc',
+  reference: `<div><section data-t="box" class="vp-panel">${panelBody}</section></div>`,
+  vpkit: inDoc(`<section data-t="box" class="vp-panel">${panelBody}</section>`),
+  // the box's own look; its height follows the markdown's 28px paragraph line
+  checks: [{ target: 'box', props: PANEL_BOX.filter((p) => p !== 'height') }],
 });
 
 // badge dot, vpkit's addition: a dot before the word in the word's color,

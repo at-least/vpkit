@@ -1,0 +1,38 @@
+/* vpkit — panel: a box of content on the page, a form, a list of rows, a
+ * table. VitePress has none for an app (VPFeature, vp-card, is a tile of a
+ * grid); this is crashcart's (its outlined card undone to a block,
+ * `vp-card vp-card-outline block h-auto overflow-hidden p-4`), on
+ * VitePress's tokens. An optional import: `@import "vpkit/panel.css";`
+ *
+ *   <section class="vp-panel">
+ *     <p>Releases this project has seen.</p>
+ *   </section>
+ *
+ * The outlined card's surface as a block: the page's ground in a divider
+ * border, a 0.75rem radius, 1rem of padding, as tall as its content. It
+ * clips what overflows its rounded corners with `overflow: clip`, where the
+ * recipe had `hidden`: clip makes no scroll container, so a sticky table
+ * header inside still sticks to the page. Modifier, used together with
+ * `vp-panel`:
+ *   vp-panel-flush   no padding, for a table or a list of vp-rows whose
+ *                    cells and rows carry their own
+ * A layout utility on it wins (`class="vp-panel flex flex-wrap gap-3"`);
+ * its width and its place are the page's. */
+
+@layer components {
+  .vp-panel {
+    --vp-panel-padding: 1rem;
+
+    display: block;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: var(--vp-panel-padding);
+    overflow: clip;
+    background-color: var(--vp-c-bg);
+    transition: border-color 0.25s, background-color 0.25s;
+  }
+
+  .vp-panel-flush.vp-panel {
+    --vp-panel-padding: 0;
+  }
+}
