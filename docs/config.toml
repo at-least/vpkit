@@ -96,6 +96,7 @@ items = [
   { text = "Pre", link = "@/components/pre.md" },
   { text = "Progress", link = "@/components/progress.md" },
   { text = "Row", link = "@/components/row.md" },
+  { text = "Side Navigation", link = "@/components/sidenav.md" },
   { text = "Skip Link", link = "@/components/skip.md" },
   { text = "Spinner", link = "@/components/spinner.md" },
   { text = "Stat", link = "@/components/stat.md" },

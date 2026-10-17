@@ -93,6 +93,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Pre](@/components/pre.md) | `vp-pre` | VitePress's code block |
 | [Progress](@/components/progress.md) | `vp-progress` | none, vpkit's own |
 | [Row](@/components/row.md) | `vp-row` | none, vpkit's own: a dense row of a list in a panel |
+| [Side Navigation](@/components/sidenav.md) | `vp-sidenav` | VitePress's `VPSidebarItem` |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
 | [Stat](@/components/stat.md) | `vp-stat` | none, vpkit's own: a number with its title and hint |

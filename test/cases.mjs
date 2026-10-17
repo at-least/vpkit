@@ -1143,6 +1143,62 @@ cases.push({
   checks: [{ target: 'd', props: ['display', 'column-gap', 'font-size', 'line-height', 'color', ...MARGIN, ...SIDES.map((side) => `border-${side}-width`), 'height'] }],
 });
 
+// side navigation: VitePress's VPSidebarItem, a group's title (its
+// level-0 text) over a list of links drawn as its nested level (the
+// level-1 item's bordered list, its level-2 links, the current one with its
+// indicator), against vp-sidenav; the indicator an element upstream, the
+// current link's ::before in vpkit; hover on the link, and on a touch
+// screen; then inside a vp-doc against itself outside one
+const SIDE_FILES = ['components/VPSidebarItem.vue'];
+const sideUpstream =
+  '<div style="width:16rem"><div class="VPSidebarItem level-0 has-active"><div class="item"><h2 data-t="title" class="text">Accounts</h2></div>' +
+  '<div class="items"><div class="VPSidebarItem level-1 has-active"><div data-t="items" class="items">' +
+  '<div class="VPSidebarItem level-2 is-link"><div class="item"><div class="indicator"></div><a data-t="a1" class="VPLink link" href="#"><p data-t="link1" class="text">Search</p></a></div></div>' +
+  '<div class="VPSidebarItem level-2 is-link is-active"><div class="item"><div data-t="ind" class="indicator"></div><a data-t="a2" class="VPLink link" href="#"><p data-t="link2" class="text">Orders</p></a></div></div>' +
+  '</div></div></div></div></div>';
+const sideVpkit =
+  '<div style="width:16rem"><nav class="vp-sidenav" aria-label="Main"><div class="vp-sidenav-group"><p data-t="title" class="vp-sidenav-title">Accounts</p>' +
+  '<ul data-t="items" class="vp-sidenav-items">' +
+  '<li><a data-t="a1" class="vp-sidenav-link" href="#"><span data-t="link1">Search</span></a></li>' +
+  '<li><a data-t="a2" class="vp-sidenav-link" href="#" aria-current="page"><span data-t="link2">Orders</span></a></li>' +
+  '</ul></div></nav></div>';
+const SIDE_TEXT = ['line-height', 'font-size', 'font-weight', 'color', ...TRANSITION];
+const SIDE_CHECKS = [
+  { target: 'title', props: [...SIDE_TEXT.filter((p) => !p.startsWith('transition')), ...PADDING, 'height'] },
+  { target: 'items', props: ['border-left-width', 'border-left-style', 'border-left-color', 'padding-left'] },
+  { target: 'a1', refTarget: 'link1', props: [...SIDE_TEXT, ...PADDING, 'height'] },
+  { target: 'link1', on: 'a1', state: ['hover'], props: ['color'] },
+  { target: 'link2', props: ['color'] },
+  {
+    target: 'a2',
+    pseudo: '::before',
+    refTarget: 'ind',
+    refPseudo: null,
+    props: ['position', 'top', 'bottom', 'left', 'width', ...RADIUS, 'background-color', ...TRANSITION],
+  },
+];
+cases.push({ name: 'side navigation', upstreamFiles: SIDE_FILES, upstream: sideUpstream, vpkit: sideVpkit, checks: SIDE_CHECKS });
+// its <nav>, VPSidebar's: a focus target drawn with no outline
+cases.push({
+  name: 'side navigation, focused',
+  upstreamFiles: ['components/VPSidebar.vue'],
+  upstream: '<nav data-t="nav" class="nav" tabindex="-1">Main</nav>',
+  vpkit: '<nav data-t="nav" class="vp-sidenav" tabindex="-1">Main</nav>',
+  checks: [{ target: 'nav', state: ['focus'], props: ['outline-style', 'outline-width'] }],
+});
+touch('side navigation', sideVpkit, [{ target: 'link1', on: 'a1', ...AT_REST, props: ['color'] }]);
+cases.push({
+  name: 'side navigation in a doc',
+  reference: sideVpkit,
+  vpkit: inDoc(sideVpkit),
+  checks: [
+    { target: 'title', props: [...SIDE_TEXT, ...MARGIN, ...PADDING] },
+    { target: 'items', props: [...MARGIN, ...PADDING, 'list-style-type'] },
+    { target: 'a1', props: [...SIDE_TEXT, 'text-decoration-line', 'offset-top'] },
+    { target: 'a2', props: ['color', 'text-decoration-line'] },
+  ],
+});
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is
