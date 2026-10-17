@@ -59,9 +59,10 @@ export const CRASHCART_ALERT_ROW = 'flex items-start gap-2';
 export const CRASHCART_ALERT_CONTENT = 'flex-1 min-w-0';
 
 // crashcart src/web/pages/*.rs at 74f94da, verbatim as of 2026-10-18: the
-// outlined card undone to a block of content (44 of its 68 outlined cards
-// take this shape; p-0 around a table or rows, p-3 or p-4 around a form),
-// and the form row on the same card
+// outlined card undone to a block of content, `block h-auto overflow-hidden`
+// with p-4, p-3 or p-0 (36 of its 64 outlined cards, the two auth cards
+// aside), and the form row on the same card (7 of its 14 flex-row cards are
+// a <form>, 3 of them with this class list)
 export const CRASHCART_PANEL = 'vp-card vp-card-outline block h-auto overflow-hidden p-4';
 export const CRASHCART_PANEL_FLUSH = 'vp-card vp-card-outline block h-auto overflow-hidden p-0';
 export const CRASHCART_PANEL_FORM = 'vp-card vp-card-outline flex-row h-auto overflow-hidden mt-1 flex flex-wrap items-end gap-3 p-3';

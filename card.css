@@ -19,14 +19,13 @@
  * Modifier, used together with `vp-card`:
  *   vp-card-outline   vpkit's addition: the card on the page's color in a
  *                     divider border, where VPFeature's is the soft fill
- *                     in a border of the same color. own-drive's cards and
- *                     crashcart's `card` draw it, for a box of content
- *                     that is not a feature tile. The ground is the page's
- *                     color and opaque, as vp-badge-outline's is, so the
- *                     box is the same on any surface. A link card still
- *                     takes the brand border on hover; its padding and
- *                     layout are vp-card's (`block p-0` for a card of rows
- *                     that pad themselves). */
+ *                     in a border of the same color. own-drive's grid
+ *                     tiles and crashcart's auth card draw it. The ground
+ *                     is the page's color and opaque, as vp-badge-outline's
+ *                     is, so the box is the same on any surface. A link
+ *                     card still takes the brand border on hover; its
+ *                     padding and layout are vp-card's. A box of content,
+ *                     a form, rows or a table, is vp-panel (panel.css). */
 
 @layer components {
   .vp-card {

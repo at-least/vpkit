@@ -11,19 +11,28 @@
  * The outlined card's surface as a block: the page's ground in a divider
  * border, a 0.75rem radius, 1rem of padding, as tall as its content. It
  * clips what overflows its rounded corners with `overflow: clip`, where the
- * recipe had `hidden`: clip makes no scroll container, so a sticky table
- * header inside still sticks to the page. Modifier, used together with
- * `vp-panel`:
- *   vp-panel-flush   no padding, for a table or a list of vp-rows whose
- *                    cells and rows carry their own
- * A layout utility on it wins (`class="vp-panel flex flex-wrap gap-3"`);
- * its width and its place are the page's. */
+ * recipe had `hidden`: clip makes no scroll container, so a sticky header
+ * inside sticks to the page when nothing between them scrolls (a vp-table
+ * does: it scrolls sideways on its own), and no formatting context, so a
+ * float inside is not contained. vpkit's addition, `min-width: 0`: hidden's
+ * scroll container gave a grid or flex item no minimum width, so a line that
+ * doesn't wrap stays in a narrow track, clipped, as in the recipe. Modifier,
+ * used together with `vp-panel`:
+ *   vp-panel-flush   no padding, for content that carries its own, a list
+ *                    of vp-rows (a vp-table in it keeps its margin and its
+ *                    outer cell borders)
+ * A layout utility on it wins (`class="vp-panel flex flex-wrap items-end
+ * gap-3"`, a form row); its width and its place are the page's. Not
+ * ported: vp-card's link card (the brand border on hover, and the color,
+ * weight and underline it keeps against the markdown's rule for links); a
+ * panel is not a link. */
 
 @layer components {
   .vp-panel {
     --vp-panel-padding: 1rem;
 
     display: block;
+    min-width: 0;
     border: 1px solid var(--vp-c-divider);
     border-radius: 0.75rem;
     padding: var(--vp-panel-padding);
