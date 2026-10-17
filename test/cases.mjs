@@ -1106,6 +1106,8 @@ const IN_ALERT = [
     { target: 'title', props: LOOK },
     { target: 'details', props: ['color', 'font-weight'] },
   ]],
+  // an icon has no text for the alert's link weight to draw
+  ['inline button', `<a data-t="x" class="vp-inline-btn" href="#" aria-label="Open"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
 ];
 for (const [name, markup, checks] of IN_ALERT) {
   cases.push({
@@ -1784,6 +1786,68 @@ cases.push({
   checks: [
     { target: 'remove', props: ['color', 'text-decoration-line', ...PADDING, ...MARGIN] },
     { target: 'remove', state: ['hover'], props: ['color'] },
+  ],
+});
+
+// inline button: crashcart's event id copy control (src/web/pages/event.rs
+// at 181c032: the chip's remove control it borrowed, chip.css at 70353e2,
+// its declarations in a <style> for the hover, the icon at the 1rem its
+// .icon gives it) against vp-inline-btn, in a 12px line of a flex row as
+// the event page lays it out: the control's box at rest and hovered, its
+// icon and the row; then the row against its text alone, which the
+// control leaves as tall as it was; then on a touch screen, and as a link
+// in a doc (the alert's link rule is IN_ALERT's)
+const COPY_SVG = (style) =>
+  `<svg data-t="icon"${style ? ` style="${style}"` : ''} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>`;
+const inlineRow = (control) =>
+  `<div data-t="row" style="display:flex;align-items:center;gap:0.25rem;width:20rem;font-size:0.75rem;line-height:1rem">` +
+  `<span data-t="text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4</span>${control}</div>`;
+const inlineBtn = (ref, tag = 'button') => {
+  const attrs = tag === 'button' ? 'type="button" aria-label="Copy the event id"' : 'href="#" aria-label="Open the event"';
+  return ref
+    ? inlineRow(`<${tag} data-t="btn" class="ref-inline-btn" ${attrs}>${COPY_SVG('width:1rem;height:1rem')}</${tag}>`) +
+        '<style>.ref-inline-btn{display:inline-flex;cursor:pointer;color:var(--vp-c-text-2);padding:0.3125rem;margin:-0.3125rem;transition:color 0.25s;text-decoration:none}.ref-inline-btn:hover{color:var(--vp-c-text-1)}</style>'
+    : inlineRow(`<${tag} data-t="btn" class="vp-inline-btn" ${attrs}>${COPY_SVG('')}</${tag}>`);
+};
+const INLINE_BTN_BOX = ['display', ...PADDING, ...MARGIN, 'color', 'cursor', 'text-decoration-line', ...TRANSITION, 'offset-left', 'offset-top', 'width', 'height'];
+cases.push({
+  name: 'inline button',
+  reference: inlineBtn(true),
+  vpkit: inlineBtn(false),
+  checks: [
+    { target: 'btn', props: INLINE_BTN_BOX },
+    { target: 'btn', state: ['hover'], props: ['color'] },
+    { target: 'icon', props: ['width', 'height'] },
+    { target: 'row', props: ['height'] },
+    { target: 'text', props: ['offset-top', 'width'] },
+  ],
+});
+cases.push({
+  name: 'inline button on a link',
+  reference: inlineBtn(true, 'a'),
+  vpkit: inlineBtn(false, 'a'),
+  checks: [
+    { target: 'btn', props: INLINE_BTN_BOX },
+    { target: 'btn', state: ['hover'], props: ['color'] },
+  ],
+});
+cases.push({
+  name: 'inline button in a line',
+  reference: inlineRow(''),
+  vpkit: inlineBtn(false),
+  checks: [
+    { target: 'row', props: ['height'] },
+    { target: 'text', props: ['offset-top', 'height'] },
+  ],
+});
+touch('inline button', inlineBtn(false), [{ target: 'btn', ...AT_REST, props: ['color'] }]);
+cases.push({
+  name: 'inline button in a doc',
+  reference: `<p>${inlineBtn(false, 'a')}</p>`,
+  vpkit: inDoc(`<p>${inlineBtn(false, 'a')}</p>`),
+  checks: [
+    { target: 'btn', props: ['color', 'text-decoration-line', ...PADDING, ...MARGIN] },
+    { target: 'btn', state: ['hover'], props: ['color'] },
   ],
 });
 

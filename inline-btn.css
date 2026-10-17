@@ -1,0 +1,50 @@
+/* vpkit — inline button: an icon control inside a line of text (copy the
+ * id beside it, open the value it follows) that leaves the line as tall as
+ * it was. VitePress has none; this is crashcart's (its event id's copy
+ * control, which borrowed the chip's remove control), on VitePress's
+ * tokens. An optional import: `@import "vpkit/inline-btn.css";`
+ *
+ *   <div class="flex items-center gap-1">
+ *     <span id="event-id" class="truncate">a1b2c3d4e5f6</span>
+ *     <button class="vp-inline-btn" type="button" aria-label="Copy the event id"><svg …></svg></button>
+ *   </div>
+ *
+ * The icon, a vpi-* icon of icons.css or an inline SVG, is 1rem, in the
+ * secondary text, the body text when hovered (`@variant hover`, 0.25s).
+ * Its 0.3125rem of padding is a hit area larger than the icon, cancelled
+ * by as much negative margin, so the box the line lays out is the icon's:
+ * vp-chip-remove's measures, as the recipe borrowed them. On a <button> or
+ * an <a>, which supplies the pointer where the recipe set one (rule 4);
+ * the label is the page's (aria-label), and so is the placement, in a row
+ * centered on its text as above. Not vp-icon-btn: that 2.25rem box is a
+ * toolbar's control, and in a line of text it truncated the id beside it
+ * and grew the row (crashcart, measured). The colors are the button's own
+ * variables, as in link.css. */
+
+@layer components {
+  .vp-inline-btn {
+    --vp-inline-btn-text: var(--vp-c-text-2);
+    --vp-inline-btn-hover-text: var(--vp-c-text-1);
+
+    display: inline-flex;
+    margin: -0.3125rem;
+    padding: 0.3125rem;
+    color: var(--vp-inline-btn-text);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+
+  /* a rule of its own, as in button.css */
+  .vp-inline-btn {
+    @variant hover {
+      color: var(--vp-inline-btn-hover-text);
+    }
+  }
+
+  /* one class and one element, so it wins over icons.css's 1em size
+     whichever file is imported first, as in icon-btn.css */
+  .vp-inline-btn > :is(span, svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+}

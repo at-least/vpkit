@@ -78,6 +78,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
+| [Inline Button](@/components/inline-btn.md) | `vp-inline-btn` | none, vpkit's own: an icon control in a line of text |
 | [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
 | [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
