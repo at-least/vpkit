@@ -35,6 +35,9 @@ import {
   TOTALITY_ROSTER_NAME,
   TOTALITY_ROSTER_DETAIL,
   CRASHCART_ISSUE_LINK_HOVER,
+  TOTALITY_ORDER_DL,
+  CRASHCART_META_DL,
+  CRASHCART_META_DT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -654,6 +657,60 @@ cases.push({
     { target: 'h2', props: [...HEADING, ...IN_DOC_BOX] },
     { target: 'h3', props: [...HEADING, ...IN_DOC_BOX] },
   ],
+});
+
+// description list: totality's order details (each term over its value,
+// one column, two from 640px) against vp-dl with the page's sm:grid-cols-2,
+// wide and at a phone's width; crashcart's event metadata (terms beside
+// their values) against vp-dl-inline, vpkit's type and baseline alignment
+// written inline; then both inside a vp-doc against themselves outside one
+const DL_TERM = ['font-size', 'line-height', 'font-weight', 'color', 'text-transform', 'letter-spacing', ...MARGIN, 'offset-top', 'offset-left'];
+const DL_DESC = ['font-size', 'line-height', 'font-weight', 'color', 'overflow-wrap', ...MARGIN, 'offset-top', 'offset-left', 'width'];
+const DL_LIST = ['display', 'row-gap', 'column-gap', 'grid-template-columns', 'align-items', 'height'];
+const orderDl = (cls) =>
+  `<dl data-t="dl" class="${cls}">` +
+  '<div><dt data-t="dt1">Ordered</dt><dd data-t="dd1">2026-10-18</dd></div>' +
+  '<div><dt data-t="dt2">Invoice email</dt><dd data-t="dd2">someone.with.a.long.address@example.com</dd></div>' +
+  '<div><dt data-t="dt3">Total</dt><dd data-t="dd3">NT$1,280</dd></div>' +
+  '</dl>';
+const dlChecks = [
+  { target: 'dl', props: DL_LIST },
+  ...[1, 2, 3].flatMap((n) => [{ target: `dt${n}`, props: DL_TERM }, { target: `dd${n}`, props: DL_DESC }]),
+];
+for (const [name, width] of [['description list', undefined], ["description list at a phone's width", 375]]) {
+  cases.push({
+    name,
+    width,
+    reference: `<div style="width:min(40rem,100%)">${orderDl(TOTALITY_ORDER_DL)}</div>`,
+    vpkit: `<div style="width:min(40rem,100%)">${orderDl('vp-dl sm:grid-cols-2')}</div>`,
+    checks: dlChecks,
+  });
+}
+const DL_INLINE_TERM = 'text-transform:none;letter-spacing:normal;font-size:0.75rem;line-height:1.25rem;font-weight:500';
+const DL_INLINE_DESC = 'font-size:0.875rem;line-height:1.5rem;color:var(--vp-c-text-1);overflow-wrap:anywhere';
+const metaDl = (ref) => {
+  const dt = ref ? `class="${CRASHCART_META_DT}" style="${DL_INLINE_TERM}"` : '';
+  const dd = ref ? `style="${DL_INLINE_DESC}"` : '';
+  return (
+    `<div style="width:20rem"><dl data-t="dl" ${ref ? `class="${CRASHCART_META_DL}" style="grid-template-columns:max-content minmax(0,1fr);align-items:baseline"` : 'class="vp-dl vp-dl-inline"'}>` +
+    [['Release', '2.4.1'], ['Device ID', '3f9c2b7e-very-long-identifier-0042'], ['OS', 'iOS 18.1']]
+      .map(([t, d], i) => `<dt data-t="dt${i + 1}" ${dt}>${t}</dt><dd data-t="dd${i + 1}" ${dd}>${d}</dd>`)
+      .join('') +
+    '</dl></div>'
+  );
+};
+cases.push({ name: 'description list, inline', reference: metaDl(true), vpkit: metaDl(false), checks: dlChecks });
+cases.push({
+  name: 'description list in a doc',
+  reference: `<div style="width:40rem">${orderDl('vp-dl sm:grid-cols-2')}</div>`,
+  vpkit: `<div style="width:40rem">${inDoc(orderDl('vp-dl sm:grid-cols-2'))}</div>`,
+  checks: dlChecks,
+});
+cases.push({
+  name: 'description list, inline, in a doc',
+  reference: metaDl(false),
+  vpkit: inDoc(metaDl(false)),
+  checks: dlChecks,
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's

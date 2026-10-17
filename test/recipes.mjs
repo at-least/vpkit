@@ -135,3 +135,17 @@ export const TOTALITY_ROSTER_DETAIL = 'block text-[0.8125rem] leading-5 text-sec
 // gray-soft, VitePress's default-soft), as a utility; its 0.25s
 // background-color transition is written inline where it is the reference
 export const CRASHCART_ISSUE_LINK_HOVER = 'hover:bg-default-soft';
+
+// totality crates/store/src/pages.rs at cbcbb503, verbatim as of
+// 2026-10-18 but for its placement in the order card (mt-4, the rule above
+// it, pt-4): an order's details, each term over its value in a <div>, one
+// column and two from 640px; the reference for vp-dl
+export const TOTALITY_ORDER_DL =
+  'grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 [&>div]:min-w-0 [&_dt]:text-[0.75rem] [&_dt]:leading-5 [&_dt]:font-medium [&_dt]:text-secondary [&_dd]:text-[0.875rem] [&_dd]:leading-6 [&_dd]:text-body [&_dd]:[overflow-wrap:anywhere]';
+
+// crashcart src/web/pages/event.rs at 0b6d7a3, verbatim as of 2026-10-18:
+// an event's metadata, terms beside their values (its columns inline:
+// `grid-template-columns:max-content minmax(0,1fr)`), the term uppercase;
+// the reference for vp-dl-inline, with vpkit's type written inline
+export const CRASHCART_META_DL = 'grid text-xs gap-x-3 gap-y-1';
+export const CRASHCART_META_DT = 'uppercase tracking-wide text-secondary';

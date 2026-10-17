@@ -2734,6 +2734,31 @@ button:focus-visible {
     letter-spacing: normal;
     line-height: inherit;
   }
+  .vp-dl {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+  }
+  :where(.vp-dl) > div {
+    min-width: 0;
+  }
+  :where(.vp-dl) dt {
+    line-height: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+  :where(.vp-dl) dd {
+    margin: 0;
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+    overflow-wrap: anywhere;
+  }
+  .vp-dl-inline.vp-dl {
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+  }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);
     --vp-inline-btn-hover-text: var(--vp-c-text-1);

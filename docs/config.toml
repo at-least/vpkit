@@ -71,6 +71,7 @@ items = [
   { text = "Choice", link = "@/components/choice.md" },
   { text = "Code", link = "@/components/code.md" },
   { text = "Copy Line", link = "@/components/copy.md" },
+  { text = "Description List", link = "@/components/dl.md" },
   { text = "Dialog", link = "@/components/dialog.md" },
   { text = "Divider", link = "@/components/divider.md" },
   { text = "Drawer", link = "@/components/drawer.md" },

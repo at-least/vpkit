@@ -1,0 +1,59 @@
+/* vpkit — description list: terms and their values, a record's details.
+ * VitePress has none; this is vpkit's own (totality's order details,
+ * crashcart's event metadata), on VitePress's tokens. An optional import:
+ * `@import "vpkit/dl.css";`
+ *
+ *   <dl class="vp-dl sm:grid-cols-2">
+ *     <div><dt>Ordered</dt><dd>2026-10-18</dd></div>
+ *     <div><dt>Total</dt><dd>NT$1,280</dd></div>
+ *   </dl>
+ *
+ * Each term over its value, a pair in a <div>, the pairs a grid 0.75rem
+ * apart, 1.5rem between columns; one column, more as the page sets them
+ * (`sm:grid-cols-2`). The term 0.75rem at 1.25rem, weight 500, in text-2;
+ * the value 0.875rem at 1.5rem in text-1, breaking a long word (an
+ * address) rather than overflow, so a value that must stay on one line
+ * takes `truncate`. Its rules for the terms and values sit behind :where()
+ * (rule 6): a utility on a <dt> or <dd> wins. Modifier, used together with
+ * `vp-dl`:
+ *   vp-dl-inline   each term beside its value, <dt> and <dd> straight in
+ *                  the list: two columns, the terms as wide as the widest,
+ *                  0.25rem between rows and 0.75rem between the columns,
+ *                  on one baseline
+ *
+ *   <dl class="vp-dl vp-dl-inline">
+ *     <dt>Release</dt><dd>2.4.1</dd>
+ *     <dt>OS</dt><dd>iOS 18.1</dd>
+ *   </dl> */
+
+@layer components {
+  .vp-dl {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+  }
+
+  :where(.vp-dl) > div {
+    min-width: 0;
+  }
+
+  :where(.vp-dl) dt {
+    line-height: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  :where(.vp-dl) dd {
+    margin: 0;
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+    overflow-wrap: anywhere;
+  }
+
+  .vp-dl-inline.vp-dl {
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+  }
+}
