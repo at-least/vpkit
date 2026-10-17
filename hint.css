@@ -1,0 +1,91 @@
+/* vpkit — hint: a small "i" beside a word whose tooltip says what it means,
+ * shown hovered, focused from the keyboard, or open after a tap (a title
+ * attribute, which touch and most assistive technology never show, is
+ * what it replaces). VitePress has none; this is vpkit's own (crashcart's
+ * hint dot), on VitePress's tokens. An optional import:
+ * `@import "vpkit/hint.css";`
+ *
+ *   <button type="button" class="vp-hint" data-hint="Ignored issues stay out of the counts." aria-label="About ignored" aria-expanded="false" aria-describedby="hint-ignored">i</button>
+ *   <span class="vp-hint-text" id="hint-ignored">Ignored issues stay out of the counts.</span>
+ *
+ * The dot: a 0.875rem circle in a divider border, its "i" 0.625rem in
+ * text-2, the button's pointer cursor (base.css; crashcart's help cursor
+ * gives way, rule 4). Its tooltip is drawn after it from its
+ * data-hint: under it and centered on it, at most 22rem wide, 0.75rem text
+ * in text-1 on the elevated ground in a border, a 0.375rem radius,
+ * --vp-shadow-2. It shows while the dot is hovered (`@variant hover`: not
+ * on a touch screen, which keeps a tapped element hovered), focused from
+ * the keyboard, or open, `aria-expanded="true"`, which the page's script
+ * toggles on a tap (and drops on a tap elsewhere); vpkit ships no script.
+ * The tooltip is drawn, not read: vp-hint-text, a visually hidden copy the
+ * dot's aria-describedby names, is what a screen reader reads. Its place
+ * beside the word is the page's (`ml-1`). The crate's `Hint` writes both. */
+
+@layer components {
+  .vp-hint {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: 1px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 999px;
+    padding: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    line-height: 1;
+    font-size: 0.625rem;
+    color: var(--vp-c-text-2);
+    background-color: transparent;
+  }
+
+  .vp-hint::after {
+    content: attr(data-hint);
+    position: absolute;
+    top: calc(100% + 0.375rem);
+    left: 50%;
+    z-index: 30;
+    display: none;
+    border: 1px solid var(--vp-c-border);
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.5rem;
+    width: max-content;
+    max-width: 22rem;
+    line-height: 1.4;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: left;
+    text-transform: none;
+    white-space: normal;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-2);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .vp-hint:focus-visible::after,
+  .vp-hint[aria-expanded="true"]::after {
+    display: block;
+  }
+
+  .vp-hint {
+    @variant hover {
+      &::after {
+        display: block;
+      }
+    }
+  }
+
+  .vp-hint-text {
+    position: absolute;
+    margin: -1px;
+    border-width: 0;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}

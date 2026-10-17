@@ -1074,6 +1074,49 @@ cases.push({
   checks: [{ target: 'p', props: POPOVER }],
 });
 
+// hint: crashcart's hint dot (src/web/styles/app.css at 0b6d7a3, its
+// declarations written inline; its margin, placement, left out, and its
+// help cursor, which a button's pointer replaces, rule 4) against
+// vp-hint; its tooltip, crashcart's ::after from data-hint, an element in
+// the reference, with vpkit's tokens written inline (the elevated ground
+// where crashcart had the page's, --vp-shadow-2 where it had a literal
+// shadow), hidden at rest and shown hovered, focused from the keyboard and
+// open (aria-expanded="true", which a tap sets), not on a touch screen's
+// hover; and its visually hidden copy against Tailwind's sr-only, inline
+const HINT_DOT = 'display:inline-flex;align-items:center;justify-content:center;width:0.875rem;height:0.875rem;border:1px solid var(--vp-c-divider);border-radius:999px;background:none;color:var(--vp-c-text-2);font-size:0.625rem;line-height:1;position:relative;vertical-align:1px';
+const HINT_TIP = (shown) => `display:${shown ? 'block' : 'none'};position:absolute;top:calc(100% + 0.375rem);left:50%;transform:translateX(-50%);width:max-content;max-width:22rem;padding:0.375rem 0.5rem;border:1px solid var(--vp-c-border);border-radius:0.375rem;background:var(--vp-c-bg-elv);box-shadow:var(--vp-shadow-2);color:var(--vp-c-text-1);font-size:0.75rem;font-weight:400;line-height:1.4;text-transform:none;white-space:normal;text-align:left;z-index:30;pointer-events:none`;
+const HINT_TEXT = 'Ignored issues stay out of the counts until they come back.';
+const HINT_DOT_PROPS = ['display', 'align-items', 'justify-content', 'width', 'height', ...BORDER, ...BORDER_COLOR, ...RADIUS, 'background-color', 'color', 'font-size', 'line-height', 'cursor', 'position', 'vertical-align', ...PADDING];
+const HINT_TIP_PROPS = ['display', 'position', 'top', 'left', 'transform', 'max-width', ...PADDING, ...BORDER, ...BORDER_COLOR, ...RADIUS, 'background-color', 'box-shadow', 'color', 'font-size', 'font-weight', 'line-height', 'text-transform', 'white-space', 'text-align', 'z-index', 'pointer-events'];
+const hintRef = (shown, attrs = '') =>
+  `<p>Ignored <button data-t="dot" type="button" style="${HINT_DOT}"${attrs}>i<span data-t="tip" style="${HINT_TIP(shown)}">${HINT_TEXT}</span></button></p>`;
+const hintVpkit = (attrs = 'aria-expanded="false"') =>
+  `<p>Ignored <button data-t="dot" type="button" class="vp-hint" data-hint="${HINT_TEXT}" aria-label="About ignored" ${attrs}>i</button></p>`;
+const TIP = (state) => ({ target: 'dot', ...(state ? { state } : {}), pseudo: '::after', refTarget: 'tip', refPseudo: null, refState: [], props: HINT_TIP_PROPS });
+cases.push({
+  name: 'hint',
+  reference: hintRef(false),
+  vpkit: hintVpkit(),
+  checks: [{ target: 'dot', props: HINT_DOT_PROPS }, TIP(null)],
+});
+for (const [name, state, attrs] of [['hint, hovered', ['hover'], undefined], ['hint, focused from the keyboard', ['focus-visible'], undefined], ['hint, open', null, 'aria-expanded="true"']]) {
+  cases.push({ name, reference: hintRef(true), vpkit: hintVpkit(attrs), checks: [TIP(state)] });
+}
+cases.push({
+  name: 'hint on a touch screen',
+  touch: true,
+  reference: hintRef(false),
+  vpkit: hintVpkit(),
+  checks: [TIP(['hover'])],
+});
+const SR_ONLY = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0';
+cases.push({
+  name: 'hint text',
+  reference: `<p><span data-t="t" style="${SR_ONLY}">${HINT_TEXT}</span></p>`,
+  vpkit: `<p><span data-t="t" class="vp-hint-text">${HINT_TEXT}</span></p>`,
+  checks: [{ target: 't', props: ['position', 'width', 'height', ...PADDING, ...MARGIN, 'overflow-x', 'overflow-y', 'clip', 'white-space', 'border-top-width'] }],
+});
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is

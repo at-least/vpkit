@@ -80,6 +80,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
 | [Heading](@/components/heading.md) | `vp-page-title`, `vp-page-desc`, `vp-section-title`, `vp-group-title` | VitePress's doc headings, and vpkit's own: a page's description, a group's title |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
+| [Hint](@/components/hint.md) | `vp-hint`, `vp-hint-text` | none, vpkit's own: a word's meaning in a tooltip |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
 | [Inline Button](@/components/inline-btn.md) | `vp-inline-btn` | none, vpkit's own: an icon control in a line of text |
 | [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
