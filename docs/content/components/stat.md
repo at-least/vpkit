@@ -43,7 +43,7 @@ One number in a box, with its title beside it and a hint under it. VitePress has
 - `vp-stat-hint`: 13px secondary text under the header, at most 75 characters wide.
 - The grid, and a stat that is a link to the list it counts, are yours.
 
-In Rust: [`Stat`](../../rust/vpkit/struct.Stat.html), from vpkit's [crate](@/guide/rust.md).
+In Rust: [`Stat`](../../rust/vpkit/struct.Stat.html), from vpkit's [crate](@/guide/rust.md). With an `href` it writes the stat as a link.
 
 ## A stat that is a link
 

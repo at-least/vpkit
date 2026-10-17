@@ -3,7 +3,7 @@ use hypertext::{Buffer, Raw, prelude::*};
 use crate::Class;
 
 /// `vp-stat` (`stat.css`): one number in a box, its title beside it and an
-/// optional hint under it.
+/// optional hint under it; with an `href`, a link to the list it counts.
 ///
 /// The value is any [`Renderable`]: text with `..` filling the fields left
 /// out, or markup (a badge beside the figure, a colored figure) with every
@@ -38,6 +38,7 @@ use crate::Class;
 ///         hint=""
 ///         value_title=""
 ///         class=""
+///         href=""
 ///     />
 /// }
 /// .render();
@@ -61,6 +62,9 @@ pub struct Stat<'a, V: Renderable = &'a str> {
     pub value_title: &'a str,
     /// The page's utilities on the box; `""` for none.
     pub class: &'a str,
+    /// Where the stat leads, the list it counts: the box is then an `<a>`
+    /// (`a.vp-stat`, the brand border hovered); `""` leaves it a `<div>`.
+    pub href: &'a str,
 }
 
 impl<V: Renderable> Renderable for Stat<'_, V> {
@@ -71,16 +75,21 @@ impl<V: Renderable> Renderable for Stat<'_, V> {
         let value = self.value.render().into_inner();
         assert!(!value.is_empty(), "vpkit::Stat needs a value");
         let value = Raw::<_>::dangerously_create(value);
+        let inner = rsx! {
+            <header class="vp-stat-header">
+                <p class="vp-stat-title">(self.title)</p>
+                <span class="vp-stat-value" title=(self.value_title)[!self.value_title.is_empty()]>(value)</span>
+            </header>
+            @if !self.hint.is_empty() {
+                <p class="vp-stat-hint">(self.hint)</p>
+            }
+        };
         rsx! {
-            <div class=(Class("vp-stat", self.class))>
-                <header class="vp-stat-header">
-                    <p class="vp-stat-title">(self.title)</p>
-                    <span class="vp-stat-value" title=(self.value_title)[!self.value_title.is_empty()]>(value)</span>
-                </header>
-                @if !self.hint.is_empty() {
-                    <p class="vp-stat-hint">(self.hint)</p>
-                }
-            </div>
+            @if self.href.is_empty() {
+                <div class=(Class("vp-stat", self.class))>(inner)</div>
+            } @else {
+                <a class=(Class("vp-stat", self.class)) href=(self.href)>(inner)</a>
+            }
         }
         .render_to(buffer);
     }
@@ -124,6 +133,7 @@ mod tests {
                 hint="in this release"
                 value_title=""
                 class=""
+                href=""
             />
         }
         .render();
@@ -134,6 +144,22 @@ mod tests {
                 r#"<p class="vp-stat-title">Unhandled errors</p>"#,
                 r#"<span class="vp-stat-value">&lt;1 <span class="vp-badge">sampled</span></span></header>"#,
                 r#"<p class="vp-stat-hint">in this release</p></div>"#,
+            )
+        );
+    }
+
+    #[test]
+    fn a_stat_with_an_href_is_a_link() {
+        let html = rsx! {
+            <Stat title="Open issues" value="42" href="/p/shop/issues" .. />
+        }
+        .render();
+        assert_eq!(
+            html.as_inner(),
+            concat!(
+                r#"<a class="vp-stat" href="/p/shop/issues"><header class="vp-stat-header">"#,
+                r#"<p class="vp-stat-title">Open issues</p>"#,
+                r#"<span class="vp-stat-value">42</span></header></a>"#,
             )
         );
     }
