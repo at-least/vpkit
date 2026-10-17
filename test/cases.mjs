@@ -2099,11 +2099,9 @@ cases.push({
 });
 
 // panel: crashcart's outlined card undone to a block against vp-panel, a
-// paragraph inside; vpkit's change, clip where the recipe has hidden (no
-// scroll container, so a sticky header inside sticks to the scroller around
-// the panel), written inline on the recipe; then flush against the recipe's
-// p-0, a form row (its padding vpkit's 1rem where the recipe has p-3, written
-// inline), the panel in a grid track and a flex row, and inside a vp-doc
+// paragraph inside; then flush against the recipe's p-0, a form row (its
+// padding vpkit's 1rem where the recipe has p-3, written inline), the panel
+// in a grid track and a flex row, and inside a vp-doc
 const PANEL_BOX = ['display', ...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'overflow-x', 'overflow-y', 'background-color', 'color', ...TRANSITION, 'height', 'width'];
 const panelBody = '<p data-t="p">Releases this project has seen, newest first.</p>';
 const panelBox = (attrs) => `<div style="width:24rem"><section data-t="box" ${attrs}>${panelBody}</section></div>`;
@@ -2113,13 +2111,13 @@ for (const [name, recipe, vpkit] of [
 ]) {
   cases.push({
     name,
-    reference: panelBox(`class="${recipe}" style="overflow:clip"`),
+    reference: panelBox(`class="${recipe}"`),
     vpkit: panelBox(`class="${vpkit}"`),
     checks: [{ target: 'box', props: PANEL_BOX }, { target: 'p', props: ['offset-left', 'offset-top'] }],
   });
 }
 const panelForm = (ref) =>
-  `<div style="width:30rem"><form data-t="box" class="${ref ? CRASHCART_PANEL_FORM : 'vp-panel mt-1 flex flex-wrap items-end gap-3'}"${ref ? ' style="overflow:clip;padding:1rem"' : ''}>` +
+  `<div style="width:30rem"><form data-t="box" class="${ref ? CRASHCART_PANEL_FORM : 'vp-panel mt-1 flex flex-wrap items-end gap-3'}"${ref ? ' style="padding:1rem"' : ''}>` +
   `<input data-t="in" class="vp-input" style="width:12rem"><button data-t="btn" class="vp-btn" type="submit">Save</button></form></div>`;
 cases.push({
   name: 'panel as a form row',
@@ -2131,10 +2129,9 @@ cases.push({
     { target: 'btn', props: ['offset-left', 'offset-top'] },
   ],
 });
-// vpkit's addition, min-width: 0: the recipe's hidden made the box a scroll
-// container, whose automatic minimum width as a grid or flex item is zero,
-// and clip makes none, so a line that doesn't wrap widened the track; against
-// the recipe as written, in a grid and in a flex row narrower than the line
+// overflow: hidden makes the box a scroll container, whose automatic
+// minimum width as a grid or flex item is zero, so a line that doesn't wrap
+// stays in a track narrower than it, clipped
 const panelLine = '<p style="white-space:nowrap">Releases this project has seen, newest first, each with its crash-free sessions.</p>';
 const panelInTrack = (cls) =>
   `<div style="display:grid;width:20rem"><section data-t="grid" class="${cls}">${panelLine}</section></div>` +
@@ -2144,6 +2141,16 @@ cases.push({
   reference: panelInTrack(CRASHCART_PANEL),
   vpkit: panelInTrack('vp-panel'),
   checks: ['grid', 'flex'].map((target) => ({ target, props: ['width', 'height'] })),
+});
+// hidden makes a formatting context too, so a float inside is contained:
+// the panel is as tall as a float taller than its text
+const panelFloat = (cls) =>
+  `<div style="width:24rem"><section data-t="box" class="${cls}"><div style="float:left;width:4rem;height:8rem"></div>${panelBody}</section></div>`;
+cases.push({
+  name: 'panel around a float',
+  reference: panelFloat(CRASHCART_PANEL),
+  vpkit: panelFloat('vp-panel'),
+  checks: [{ target: 'box', props: ['height'] }],
 });
 // a panel inside a flush panel keeps its own padding, the local each
 // vp-panel declares (rule 5), against a panel alone

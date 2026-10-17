@@ -2623,11 +2623,10 @@ button:focus-visible {
   .vp-panel {
     --vp-panel-padding: 1rem;
     display: block;
-    min-width: 0;
     border: 1px solid var(--vp-c-divider);
     border-radius: 0.75rem;
     padding: var(--vp-panel-padding);
-    overflow: clip;
+    overflow: hidden;
     background-color: var(--vp-c-bg);
     transition: border-color 0.25s, background-color 0.25s;
   }
