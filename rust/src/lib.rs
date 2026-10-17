@@ -17,7 +17,7 @@
 //! use hypertext::prelude::*;
 //! use vpkit::Empty;
 //!
-//! let html = rsx! { <Empty title="No issues" ..> }.render();
+//! let html = rsx! { <Empty title="No issues" .. /> }.render();
 //! assert_eq!(
 //!     html.as_inner(),
 //!     r#"<div class="vp-empty"><p class="vp-empty-title">No issues</p></div>"#,

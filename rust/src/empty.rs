@@ -8,7 +8,7 @@ use hypertext::{Buffer, prelude::*};
 /// use vpkit::Empty;
 ///
 /// let html = rsx! {
-///     <Empty title="No issues" desc="Nothing matched these filters." class="mt-4" ..>
+///     <Empty title="No issues" desc="Nothing matched these filters." class="mt-4" .. />
 /// }
 /// .render();
 /// assert_eq!(
@@ -54,7 +54,7 @@ mod tests {
     #[test]
     fn renders_the_stylesheets_markup() {
         let html = rsx! {
-            <Empty title="No issues" desc="Nothing matched these filters in the last 7 days." ..>
+            <Empty title="No issues" desc="Nothing matched these filters in the last 7 days." .. />
         }
         .render();
         assert_eq!(*html.as_inner(), example(include_str!("../../empty.css")));
@@ -62,7 +62,7 @@ mod tests {
 
     #[test]
     fn a_title_alone_has_no_second_line() {
-        let html = rsx! { <Empty title="No jobs yet" ..> }.render();
+        let html = rsx! { <Empty title="No jobs yet" .. /> }.render();
         assert_eq!(
             html.as_inner(),
             r#"<div class="vp-empty"><p class="vp-empty-title">No jobs yet</p></div>"#
@@ -70,8 +70,23 @@ mod tests {
     }
 
     #[test]
+    fn its_siblings_stay_siblings() {
+        let html = rsx! {
+            <section><Empty title="No runs yet" .. /><p>"after"</p></section>
+        }
+        .render();
+        assert_eq!(
+            html.as_inner(),
+            concat!(
+                r#"<section><div class="vp-empty"><p class="vp-empty-title">No runs yet</p></div>"#,
+                r#"<p>after</p></section>"#,
+            )
+        );
+    }
+
+    #[test]
     fn escapes_its_text() {
-        let html = rsx! { <Empty title="<b>" desc="a & b" ..> }.render();
+        let html = rsx! { <Empty title="<b>" desc="a & b" .. /> }.render();
         assert_eq!(
             html.as_inner(),
             concat!(
@@ -84,6 +99,6 @@ mod tests {
     #[test]
     #[should_panic(expected = "vpkit::Empty needs a title")]
     fn panics_without_a_title() {
-        rsx! { <Empty desc="Nothing here." ..> }.render();
+        rsx! { <Empty desc="Nothing here." .. /> }.render();
     }
 }

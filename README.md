@@ -37,7 +37,7 @@ vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
 use hypertext::prelude::*;
 use vpkit::Empty;
 
-rsx! { <Empty title="No issues" desc="Nothing matched these filters." ..> }
+rsx! { <Empty title="No issues" desc="Nothing matched these filters." .. /> }
 ```
 
 ## Documentation

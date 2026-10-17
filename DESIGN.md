@@ -451,7 +451,7 @@ What stays in totality: the store's flex-column `<body>` (`flex min-h-screen fle
 
 What it holds follows from hypertext's component tag, measured on 0.12.1:
 
-- `..` in a tag (`<Empty title="No issues" ..>`) fills the fields it leaves out from `Default`. A body is passed to a field named `children` as a `Lazy`, which has no `Default`, so a component with a body takes every field written out.
+- `..` in a tag (`<Empty title="No issues" .. />`, self-closing: without the slash the tag opens a body that the macro gives back only when it meets a closing tag of another name) fills the fields it leaves out from `Default`. A body is passed to a field named `children` as a `Lazy`, which has no `Default`, so a component with a body takes every field written out.
 - A literal value goes into its field as it is: `class="mb-0"` fits a `&str` field and fails on an `Option<&str>`.
 - A `#[component]` function cannot take a body (the value moves out of `&self`, E0507), and a struct with a `children: R` field and its own `Renderable` impl can (`<Field ...>control</Field>`).
 
