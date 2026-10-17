@@ -5,7 +5,10 @@ use hypertext::{Buffer, Raw, prelude::*};
 ///
 /// The value is any [`Renderable`]: text with `..` filling the fields left
 /// out, or markup (a badge beside the figure, a colored figure) with every
-/// field written, since markup has no default.
+/// field written, since markup has no default. `rsx!` is a `move`
+/// closure, so a value's `rsx!` inside a page's moves what it names out
+/// of the page's closure, which does not compile (E0507): bind a reference
+/// with `@let` first and name that.
 ///
 /// ```
 /// use hypertext::prelude::*;
@@ -24,11 +27,12 @@ use hypertext::{Buffer, Raw, prelude::*};
 ///     ),
 /// );
 ///
-/// let rate = 99.2;
+/// let rate = String::from("99.2%");
 /// let html = rsx! {
+///     @let rate = &rate;
 ///     <Stat
 ///         title="Crash-free"
-///         value=(rsx! { <span class="text-danger">(rate)"%"</span> })
+///         value=(rsx! { <span class="text-danger">(rate)</span> })
 ///         hint=""
 ///         value_title=""
 ///         class=""
