@@ -788,6 +788,36 @@ cases.push({
   checks: [{ target: 'dot', props: LONE_DOT }],
 });
 
+// pre: VitePress's code block (vp-doc.css: the language container, its
+// <pre> and its <code>) against vp-pre on a <pre> holding a <code>: the
+// container's ground, radius and height on the <pre>, the code's box and
+// type; then inside a vp-doc and inside an alert (whose rule for bare code
+// would draw its chip around the block's code) against itself alone
+const PRE_JSON = '{\n  "level": "error",\n  "message": "panic in send_digest: connection reset by peer, after 3 retries over 40 seconds"\n}';
+const PRE_BOX = ['background-color', ...RADIUS, 'overflow-x', ...MARGIN, 'height'];
+const PRE_CODE = ['display', ...PADDING, 'line-height', 'font-size', 'font-family', 'color', 'background-color', ...RADIUS, 'tab-size', ...TRANSITION, 'offset-top', 'offset-left'];
+const vpPre = `<pre data-t="box" class="vp-pre"><code data-t="code">${PRE_JSON}</code></pre>`;
+cases.push({
+  name: 'pre',
+  upstream: `<div style="width:30rem"><div class="vp-doc"><div data-t="box" class="language-json"><pre><code data-t="code">${PRE_JSON}</code></pre></div></div></div>`,
+  vpkit: `<div style="width:30rem">${vpPre}</div>`,
+  checks: [{ target: 'box', props: PRE_BOX }, { target: 'code', props: PRE_CODE }],
+});
+cases.push({
+  name: 'pre in a doc',
+  reference: `<div style="width:30rem">${vpPre}</div>`,
+  vpkit: `<div style="width:30rem">${inDoc(vpPre)}</div>`,
+  checks: [{ target: 'box', props: PRE_BOX }, { target: 'code', props: PRE_CODE }],
+});
+// in an alert: VitePress's code block in a custom block, whose code is
+// 0.875em of the block's 14px; its margin there is the block's
+cases.push({
+  name: 'pre in an alert',
+  upstream: `<div style="width:30rem"><div class="vp-doc"><div class="custom-block tip"><div data-t="box" class="language-json"><pre><code data-t="code">${PRE_JSON}</code></pre></div></div></div></div>`,
+  vpkit: `<div style="width:30rem"><div class="vp-alert vp-alert-tip">${vpPre}</div></div>`,
+  checks: [{ target: 'box', props: PRE_BOX.filter((p) => !p.startsWith('margin')) }, { target: 'code', props: PRE_CODE }],
+});
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is

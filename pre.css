@@ -1,0 +1,50 @@
+/* vpkit — pre: a block of code or raw text outside the markdown, ported
+ * from VitePress's code block (vp-doc.css: the language container, its
+ * <pre> and its <code>). An optional import: `@import "vpkit/pre.css";`
+ *
+ *   <pre class="vp-pre"><code>{ "level": "error" }</code></pre>
+ *
+ * One element where VitePress has two (the container and its <pre>): the
+ * code block's ground (--vp-code-block-bg), a 0.5rem radius, 1.25rem of
+ * padding above and below, scrolling sideways, and VitePress's own 1rem
+ * above and below it (as vp-table keeps the markdown's margin; `my-0`
+ * removes it). The text goes in a <code>, VitePress's: a block 1.5rem in
+ * from either side, as wide as its longest line (so the side padding holds
+ * where the block scrolls), at --vp-code-font-size and
+ * --vp-code-line-height in --vp-code-block-color, tabs 4 wide. That rule is
+ * `.vp-pre > code`, one class and one element, as link.css's for code in a
+ * link: it wins over an alert's rule for bare code, which would draw its
+ * chip around the block's text; inside an alert the code is 0.875em of the
+ * alert's 0.875rem, as VitePress's code block in a custom block is. Lines
+ * that should wrap take `whitespace-pre-wrap`; a block that should stop
+ * growing takes a height and `overflow-y-auto`. Not ported: the language
+ * label, the copy button, line highlights (the highlighter's), and the
+ * block's full bleed on a phone (its negative margins, placement, rule 8),
+ * so the radius holds at every width. */
+
+@layer components {
+  .vp-pre {
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    padding: 1.25rem 0;
+    overflow-x: auto;
+    tab-size: 4;
+    text-align: left;
+    background-color: var(--vp-code-block-bg);
+    transition: background-color 0.5s;
+  }
+
+  .vp-pre > code {
+    display: block;
+    border-radius: 0;
+    padding: 0 1.5rem;
+    width: fit-content;
+    min-width: 100%;
+    line-height: var(--vp-code-line-height);
+    font-size: var(--vp-code-font-size);
+    color: var(--vp-code-block-color);
+    background-color: transparent;
+    tab-size: 4;
+    transition: color 0.5s;
+  }
+}

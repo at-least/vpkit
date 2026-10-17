@@ -91,6 +91,7 @@ items = [
   { text = "Nav Link", link = "@/components/nav-link.md" },
   { text = "Pager", link = "@/components/pager.md" },
   { text = "Panel", link = "@/components/panel.md" },
+  { text = "Pre", link = "@/components/pre.md" },
   { text = "Progress", link = "@/components/progress.md" },
   { text = "Row", link = "@/components/row.md" },
   { text = "Skip Link", link = "@/components/skip.md" },

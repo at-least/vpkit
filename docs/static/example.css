@@ -2803,6 +2803,29 @@ button:focus-visible {
       background-color: CanvasText;
     }
   }
+  .vp-pre {
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    padding: 1.25rem 0;
+    overflow-x: auto;
+    tab-size: 4;
+    text-align: left;
+    background-color: var(--vp-code-block-bg);
+    transition: background-color 0.5s;
+  }
+  .vp-pre > code {
+    display: block;
+    border-radius: 0;
+    padding: 0 1.5rem;
+    width: fit-content;
+    min-width: 100%;
+    line-height: var(--vp-code-line-height);
+    font-size: var(--vp-code-font-size);
+    color: var(--vp-code-block-color);
+    background-color: transparent;
+    tab-size: 4;
+    transition: color 0.5s;
+  }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);
     --vp-inline-btn-hover-text: var(--vp-c-text-1);
