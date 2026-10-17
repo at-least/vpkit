@@ -86,6 +86,7 @@ items = [
   { text = "Highlight", link = "@/components/mark.md" },
   { text = "Hint", link = "@/components/hint.md" },
   { text = "Icon Button", link = "@/components/icon-btn.md" },
+  { text = "Icon Tile", link = "@/components/icon-tile.md" },
   { text = "Inline Button", link = "@/components/inline-btn.md" },
   { text = "Input", link = "@/components/input.md" },
   { text = "Key", link = "@/components/kbd.md" },

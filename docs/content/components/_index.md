@@ -83,6 +83,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Hint](@/components/hint.md) | `vp-hint`, `vp-hint-text` | none, vpkit's own: a word's meaning in a tooltip |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
+| [Icon Tile](@/components/icon-tile.md) | `vp-icon-tile` | none, vpkit's own: a row's mark |
 | [Inline Button](@/components/inline-btn.md) | `vp-inline-btn` | none, vpkit's own: an icon control in a line of text |
 | [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |

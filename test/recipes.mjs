@@ -215,3 +215,9 @@ export const TOTALITY_DIVIDER_LINE = 'h-px flex-1 bg-divider';
 // placement and a wash); the reference for vp-dropzone
 export const OWN_DRIVE_DROP_TARGET =
   'border-2 border-dashed border-brand-1 rounded-[1rem] py-[3rem] px-[5rem] text-[1.25rem] font-semibold text-brand-1 bg-[color:var(--vp-c-bg-elv)] shadow-4';
+
+// totality crates/store/src/ui.rs at cbcbb503, verbatim as of 2026-10-18: a
+// roster line's tile (`ROSTER_TILE`), a login's mark in a bordered square;
+// the reference for vp-icon-tile
+export const TOTALITY_ROSTER_TILE =
+  'flex size-10 flex-none items-center justify-center rounded-lg border border-divider bg-bg text-secondary [&_svg]:size-5';

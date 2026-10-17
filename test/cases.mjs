@@ -50,6 +50,7 @@ import {
   TOTALITY_DIVIDER_LABEL,
   TOTALITY_DIVIDER_LINE,
   OWN_DRIVE_DROP_TARGET,
+  TOTALITY_ROSTER_TILE,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1270,6 +1271,23 @@ cases.push({
   reference: '<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>',
   vpkit: inDoc('<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>'),
   checks: [{ target: 'z', props: [...DROP, ...MARGIN] }],
+});
+
+// icon tile: totality's roster tile, in a row, against vp-icon-tile; an
+// icon with a size utility of its own keeps it
+const TILE_SVG = (cls = '') => `<svg data-t="icon"${cls ? ` class="${cls}"` : ''} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>`;
+const TILE = ['display', 'width', 'height', 'flex-shrink', 'flex-grow', 'align-items', 'justify-content', ...BORDER, ...BORDER_COLOR, ...RADIUS, 'background-color', 'color'];
+cases.push({
+  name: 'icon tile',
+  reference: `<div style="display:flex;align-items:center;gap:0.75rem;width:6rem"><span data-t="tile" class="${TOTALITY_ROSTER_TILE}">${TILE_SVG()}</span><span>Phone number</span></div>`,
+  vpkit: `<div style="display:flex;align-items:center;gap:0.75rem;width:6rem"><span data-t="tile" class="vp-icon-tile">${TILE_SVG()}</span><span>Phone number</span></div>`,
+  checks: [{ target: 'tile', props: TILE }, { target: 'icon', props: ['width', 'height', 'offset-left', 'offset-top'] }],
+});
+cases.push({
+  name: 'icon tile, an icon with a size of its own',
+  reference: `<span class="vp-icon-tile">${TILE_SVG()}</span>`.replace('<svg data-t="icon"', '<svg data-t="icon" style="width:1rem;height:1rem"'),
+  vpkit: `<span class="vp-icon-tile">${TILE_SVG(OWN_DRIVE_ICON_CHIP)}</span>`,
+  checks: [{ target: 'icon', props: ['width', 'height'] }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
