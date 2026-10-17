@@ -13,7 +13,20 @@
  * instead. `vp-progress-bar` is the brand fill inside it, empty until
  * the page sets its width, which carries the value; the track clips it.
  * The value for assistive technology is the page's, in the progressbar's
- * aria-value* attributes. */
+ * aria-value* attributes.
+ *
+ * A progressbar with no aria-valuenow is indeterminate, as WAI-ARIA has it:
+ * work under way whose end isn't known (vpkit's, own-drive's load bar).
+ * Its fill is a 30% bar sweeping across the track, left to right, every
+ * second. Under reduced motion, where base.css cuts every animation to a
+ * millisecond and the bar would rest at the left like a 30% value, it is
+ * the whole track's width at 0.6 instead (own-drive's rule), so it reads
+ * as busy, not as a value. A load bar at the top of the window is the
+ * page's placement (`fixed inset-x-0 top-0 h-0.5`).
+ *
+ *   <span class="vp-progress" role="progressbar" aria-label="Loading">
+ *     <span class="vp-progress-bar"></span>
+ *   </span> */
 
 @layer components {
   .vp-progress {
@@ -30,6 +43,28 @@
     width: 0;
     height: 100%;
     background-color: var(--vp-c-brand-1);
+  }
+
+  .vp-progress[role="progressbar"]:not([aria-valuenow]) > .vp-progress-bar {
+    width: 30%;
+    animation: vp-progress-sweep 1s linear infinite;
+  }
+
+  @keyframes vp-progress-sweep {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(450%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vp-progress[role="progressbar"]:not([aria-valuenow]) > .vp-progress-bar {
+      width: 100%;
+      opacity: 0.6;
+    }
   }
 
   /* Forced colors replace both grounds with the page's, and the bar shows

@@ -31,3 +31,13 @@ A progress bar. VitePress has none; this is vpkit's own.
   <span class="text-secondary">7.2 of 10 GB</span>
 </div>
 {% </vp_example> %}
+
+## Indeterminate
+
+A progress bar with `role="progressbar"` and no `aria-valuenow` is indeterminate: work under way whose end isn't known. Its fill sweeps across the track, left to right, every second. Under reduced motion it fills the track at a lower opacity instead, so it reads as busy rather than as a value. A load bar along the top of the window is yours to place (`fixed inset-x-0 top-0 h-0.5`).
+
+{% <vp_example title="Loading"> %}
+<span class="vp-progress w-48" role="progressbar" aria-label="Loading">
+  <span class="vp-progress-bar"></span>
+</span>
+{% </vp_example> %}

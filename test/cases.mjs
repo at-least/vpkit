@@ -1907,6 +1907,27 @@ cases.push({
   checks: [{ target: 'fill', props: ['width'] }],
 });
 
+// indeterminate: a progressbar with no value (own-drive's load bar,
+// styles/app.css at 9aff0f4: a 30% bar sweeping across in 1s, its
+// declarations written inline, the keyframes' names apart), and under
+// reduced motion its full-width bar at 0.6
+const SWEEP = ['width', 'animation-duration', 'animation-timing-function', 'animation-iteration-count', 'opacity'];
+const loading = (fill) =>
+  `<div style="width:300px"><span data-t="track" class="vp-progress" role="progressbar" aria-label="Loading"><span data-t="fill" class="vp-progress-bar"${fill}></span></span></div>`;
+cases.push({
+  name: 'progress, indeterminate',
+  reference: loading(' style="width:30%;animation:od-load 1s linear infinite"'),
+  vpkit: loading(''),
+  checks: [{ target: 'fill', props: SWEEP }],
+});
+cases.push({
+  name: 'progress, indeterminate, reduced motion',
+  reducedMotion: true,
+  reference: loading(' style="width:100%;opacity:0.6"'),
+  vpkit: loading(''),
+  checks: [{ target: 'fill', props: ['width', 'opacity'] }],
+});
+
 // the current item by aria-current: a value marks it, and the values WAI-ARIA
 // 1.2 treats as false ("false", "", and a template's stringified undefined)
 // leave it plain
