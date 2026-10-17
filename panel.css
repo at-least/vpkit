@@ -14,6 +14,20 @@
  * recipe does: a scroll container, so a float inside is contained and, as a
  * grid or flex item, a line that doesn't wrap stays in a narrow track,
  * clipped; a sticky header inside sticks to the panel, not to the page.
+ * Part, vpkit's (crashcart's card header): vp-panel-header, a flush
+ * panel's head row, its title and an action at either end on one baseline
+ * (a flex row, a 0.5rem gap), 0.75rem by 1rem of padding over a divider
+ * line, in small secondary text (0.8125rem, text-2) that a quiet link
+ * takes; its title is a vp-group-title (heading.css):
+ *
+ *   <section class="vp-panel vp-panel-flush">
+ *     <header class="vp-panel-header">
+ *       <h2 class="vp-group-title">Deploys</h2>
+ *       <a class="vp-link vp-link-quiet font-medium" href="/releases">Releases</a>
+ *     </header>
+ *     <div class="p-4">…</div>
+ *   </section>
+ *
  * Modifier, used together with `vp-panel`:
  *   vp-panel-flush   no padding, for content that carries its own, a list
  *                    of vp-rows (a vp-table in it keeps its margin and its
@@ -39,5 +53,16 @@
 
   .vp-panel-flush.vp-panel {
     --vp-panel-padding: 0;
+  }
+
+  .vp-panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
   }
 }

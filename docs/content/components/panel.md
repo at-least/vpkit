@@ -41,3 +41,18 @@ A box of content on the page: a form, a list of rows, a table. VitePress has non
 {% </vp_example> %}
 
 Not included: a panel as a link. A [Card](@/components/card.md) that is a link takes the brand border on hover.
+
+## Header
+
+`vp-panel-header` is a flush panel's head row: its title and an action at either end, on one baseline, over a divider line, in small secondary text that a quiet [Link](@/components/link.md) takes. Its title is a `vp-group-title` ([Heading](@/components/heading.md)); the content under it carries its own padding, or is rows.
+
+{% <vp_example title="A panel with a header"> %}
+<section class="vp-panel vp-panel-flush">
+  <header class="vp-panel-header">
+    <h2 class="vp-group-title">Deploys</h2>
+    <a class="vp-link vp-link-quiet font-medium" href="#">Releases</a>
+  </header>
+  <div class="vp-row">2.4.1 · 3h ago</div>
+  <div class="vp-row">2.4.0 · yesterday</div>
+</section>
+{% </vp_example> %}

@@ -79,6 +79,7 @@ items = [
   { text = "Field", link = "@/components/field.md" },
   { text = "File Input", link = "@/components/file.md" },
   { text = "Hamburger", link = "@/components/hamburger.md" },
+  { text = "Heading", link = "@/components/heading.md" },
   { text = "Highlight", link = "@/components/mark.md" },
   { text = "Icon Button", link = "@/components/icon-btn.md" },
   { text = "Inline Button", link = "@/components/inline-btn.md" },

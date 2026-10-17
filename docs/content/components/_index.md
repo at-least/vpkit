@@ -76,6 +76,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Field](@/components/field.md) | `vp-field`, `vp-label`, `vp-field-hint`, `vp-field-error` | none, vpkit's own |
 | [File Input](@/components/file.md) | `vp-file` | none, vpkit's own: the file chooser drawn as an input |
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
+| [Heading](@/components/heading.md) | `vp-page-title`, `vp-page-desc`, `vp-section-title`, `vp-group-title` | VitePress's doc headings, and vpkit's own: a page's description, a group's title |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
 | [Inline Button](@/components/inline-btn.md) | `vp-inline-btn` | none, vpkit's own: an icon control in a line of text |

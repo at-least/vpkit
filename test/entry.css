@@ -42,6 +42,7 @@
 @import "../pager.css";
 @import "../stat.css";
 @import "../row.css";
+@import "../heading.css";
 @import "../panel.css";
 @import "../inline-btn.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the

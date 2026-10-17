@@ -595,6 +595,67 @@ touch('link', `<a data-t="a" class="vp-link" href="#">Orders <code data-t="code"
   { target: 'code', on: 'a', ...AT_REST, props: ['color'] },
 ]);
 
+// headings: VitePress's doc h1 against vp-page-title (wide, and at a
+// phone's width, where it is smaller) and its h3 against vp-section-title
+// (its margin, placement, left out); crashcart's page description and
+// small title (src/web/styles/app.css at 0b6d7a3, their declarations
+// written inline) against vp-page-desc and vp-group-title; then each
+// inside a vp-doc against itself outside one, on the elements an app puts
+// them on, the section and group titles on an h2, whose markdown rule has
+// a rule above it, padding and margins
+const HEADING = ['font-size', 'line-height', 'letter-spacing', 'font-weight', 'color', 'height'];
+cases.push({
+  name: 'page title',
+  upstream: '<div class="vp-doc"><h1 data-t="h">Releases</h1></div>',
+  vpkit: '<h1 data-t="h" class="vp-page-title">Releases</h1>',
+  checks: [{ target: 'h', props: [...HEADING, ...MARGIN] }],
+});
+cases.push({
+  name: "page title at a phone's width",
+  width: 375,
+  upstream: '<div class="vp-doc"><h1 data-t="h">Releases</h1></div>',
+  vpkit: '<h1 data-t="h" class="vp-page-title">Releases</h1>',
+  checks: [{ target: 'h', props: HEADING }],
+});
+cases.push({
+  name: 'section title',
+  upstream: '<div class="vp-doc"><h3 data-t="h">Retention</h3></div>',
+  vpkit: '<h3 data-t="h" class="vp-section-title">Retention</h3>',
+  checks: [{ target: 'h', props: HEADING }],
+});
+const CRASHCART_PAGE_DESC = 'max-width:65ch;font-size:0.9375rem;line-height:1.75;color:var(--vp-c-text-2)';
+const CRASHCART_STAT_TITLE = 'font-size:0.8125rem;font-weight:500;color:var(--vp-c-text-2)';
+const PAGE_DESC_TEXT = 'Every version this project has shipped, with its crash-free sessions and the issues it introduced, newest first.';
+cases.push({
+  name: 'page description',
+  reference: `<p data-t="p" style="${CRASHCART_PAGE_DESC}">${PAGE_DESC_TEXT}</p>`,
+  vpkit: `<p data-t="p" class="vp-page-desc">${PAGE_DESC_TEXT}</p>`,
+  checks: [{ target: 'p', props: ['max-width', 'font-size', 'line-height', 'color', 'height', ...MARGIN] }],
+});
+cases.push({
+  name: 'group title',
+  reference: `<h3 data-t="h" style="${CRASHCART_STAT_TITLE}">API keys</h3>`,
+  vpkit: '<h3 data-t="h" class="vp-group-title">API keys</h3>',
+  checks: [{ target: 'h', props: [...HEADING, ...MARGIN] }],
+});
+const headings =
+  '<h1 data-t="h1" class="vp-page-title">Releases</h1>' +
+  `<p data-t="desc" class="vp-page-desc">${PAGE_DESC_TEXT}</p>` +
+  '<h2 data-t="h2" class="vp-section-title">Retention</h2>' +
+  '<h2 data-t="h3" class="vp-group-title">API keys</h2>';
+const IN_DOC_BOX = [...MARGIN, 'border-top-width', 'padding-top', 'offset-top'];
+cases.push({
+  name: 'headings in a doc',
+  reference: `<div>${headings}</div>`,
+  vpkit: inDoc(headings),
+  checks: [
+    { target: 'h1', props: [...HEADING, ...IN_DOC_BOX] },
+    { target: 'desc', props: ['max-width', 'font-size', 'line-height', 'color', 'height', ...IN_DOC_BOX] },
+    { target: 'h2', props: [...HEADING, ...IN_DOC_BOX] },
+    { target: 'h3', props: [...HEADING, ...IN_DOC_BOX] },
+  ],
+});
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is
@@ -2248,6 +2309,43 @@ cases.push({
   vpkit: panelFloat('vp-panel'),
   checks: [{ target: 'box', props: ['height'] }],
 });
+// panel header: crashcart's card header, its title and its link
+// (src/web/styles/app.css at 0b6d7a3, their declarations written inline,
+// the link's colors as utilities so its hover applies), on a flush panel,
+// against vp-panel-header with vp-group-title and a quiet link; the
+// header's own text color and size, vpkit's, written inline; then inside
+// a vp-doc against itself outside one
+const CRASHCART_CARD_HEADER = 'display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem;padding:0.75rem 1rem;border-bottom:1px solid var(--vp-c-divider)';
+const CRASHCART_CARD_LINK = 'font-size:0.8125rem;font-weight:500;transition:color 0.25s,opacity 0.25s';
+const panelHeader = (ref) =>
+  `<div style="width:24rem" class="vp-panel vp-panel-flush">` +
+  (ref
+    ? `<header data-t="head" style="${CRASHCART_CARD_HEADER};color:var(--vp-c-text-2);font-size:0.8125rem"><h2 data-t="title" style="${CRASHCART_STAT_TITLE}">Deploys</h2><a data-t="link" href="#" class="text-text-2 hover:text-brand-1" style="${CRASHCART_CARD_LINK}">Releases</a></header>`
+    : '<header data-t="head" class="vp-panel-header"><h2 data-t="title" class="vp-group-title">Deploys</h2><a data-t="link" href="#" class="vp-link vp-link-quiet font-medium">Releases</a></header>') +
+  '<p class="p-4">Nothing deployed yet.</p></div>';
+const PANEL_HEAD = ['display', 'align-items', 'justify-content', 'column-gap', ...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', 'color', 'font-size', 'height'];
+cases.push({
+  name: 'panel header',
+  reference: panelHeader(true),
+  vpkit: panelHeader(false),
+  checks: [
+    { target: 'head', props: PANEL_HEAD },
+    { target: 'title', props: [...HEADING, 'offset-top', 'offset-left'] },
+    { target: 'link', props: ['color', 'font-size', 'font-weight', 'text-decoration-line', 'offset-top', 'offset-left'] },
+    { target: 'link', state: ['hover'], props: ['color'] },
+  ],
+});
+cases.push({
+  name: 'panel header in a doc',
+  reference: `<div>${panelHeader(false)}</div>`,
+  vpkit: inDoc(panelHeader(false)),
+  checks: [
+    { target: 'head', props: PANEL_HEAD },
+    { target: 'title', props: [...HEADING, ...MARGIN, 'border-top-width', 'padding-top', 'offset-top'] },
+    { target: 'link', props: ['color', 'font-size', 'font-weight', 'text-decoration-line'] },
+  ],
+});
+
 // a panel inside a flush panel keeps its own padding, the local each
 // vp-panel declares (rule 5), against a panel alone
 cases.push({
