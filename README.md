@@ -24,6 +24,22 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 
 `@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in. `fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: serve this package's `fonts/` directory next to your built CSS. `base.css` paints the page as VitePress does; put `class="dark"` on `<html>` for dark mode. A color theme is one more import after vpkit (`@import "vpkit/themes/nord.css"`); `vpkit/themes/vitepress.css` is VitePress's own palette with its contrast shortfalls fitted, which the apps built on vpkit and the documentation site import.
 
+### In Rust
+
+For a page rendered with [hypertext](https://crates.io/crates/hypertext), `rust/` is a crate of the components whose markup is more than one class, `Empty` and `Field`, which write the markup each stylesheet documents (the stylesheet is still imported as above). Take it from the repository at the same commit as the CSS:
+
+```toml
+[dependencies]
+vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+```
+
+```rust
+use hypertext::prelude::*;
+use vpkit::Empty;
+
+rsx! { <Empty title="No issues" desc="Nothing matched these filters." ..> }
+```
+
 ## Documentation
 
 The documentation is at <https://at-least.github.io/vpkit/>: a site in `docs/`, built with [vpkit-zola](https://github.com/at-least/vpkit-zola), with live examples of every component and a gallery of the color themes. `cd docs && zola serve` serves it locally ([docs/README.md](docs/README.md)). Its pages:
@@ -32,7 +48,7 @@ The documentation is at <https://at-least.github.io/vpkit/>: a site in `docs/`, 
 - [Components](docs/content/components/_index.md): [Button](docs/content/components/button.md), [Icon Button](docs/content/components/icon-btn.md), [Inline Button](docs/content/components/inline-btn.md), [Link](docs/content/components/link.md), [Input](docs/content/components/input.md), [Field](docs/content/components/field.md), [Toggle](docs/content/components/toggle.md), [Choice](docs/content/components/choice.md), [Badge](docs/content/components/badge.md), [Code](docs/content/components/code.md), [Key](docs/content/components/kbd.md), [Highlight](docs/content/components/mark.md), [Alert](docs/content/components/alert.md), [Card](docs/content/components/card.md), [Table](docs/content/components/table.md), [Dropdown](docs/content/components/dropdown.md), [Tabs](docs/content/components/tabs.md), [Dialog](docs/content/components/dialog.md), [Toast](docs/content/components/toast.md), [Spinner](docs/content/components/spinner.md), [Progress](docs/content/components/progress.md), [Skip Link](docs/content/components/skip.md), [Nav Link](docs/content/components/nav-link.md), [Top Bar](docs/content/components/topbar.md), [Hamburger](docs/content/components/hamburger.md), [Empty State](docs/content/components/empty.md), [Divider](docs/content/components/divider.md), [Avatar](docs/content/components/avatar.md), [Breadcrumb](docs/content/components/breadcrumb.md), [Accordion](docs/content/components/accordion.md), [Drawer](docs/content/components/drawer.md), [Copy Line](docs/content/components/copy.md), [File Input](docs/content/components/file.md), [Chip](docs/content/components/chip.md), [Pager](docs/content/components/pager.md), [Stat](docs/content/components/stat.md), [Row](docs/content/components/row.md).
 - [Themes](docs/content/themes.md): every color theme, to try on the page; what a theme sets, where they come from, your own colors, switching at runtime.
 
-The library's design is [DESIGN.md](DESIGN.md): the rules every component follows, how one is proven against its original, when a new one is built, what stays a utility, and where the apps built on vpkit stand on them.
+The library's design is [DESIGN.md](DESIGN.md): the rules every component follows, how one is proven against its original, when a new one is built, what stays a utility, the hypertext crate, and where the apps built on vpkit stand on them.
 
 ## Tests
 
@@ -42,6 +58,8 @@ npm test
 ```
 
 `npm test` holds every color theme to its contract and contrast minimums, holds `tokens.css` and the breakpoints to VitePress's `vars.css`, `fonts.css` and media queries, renders each component and the layout next to VitePress's originals in headless Chromium and compares their computed styles, and builds the documentation and checks its examples and its theme gallery: [test/README.md](test/README.md) has what each test checks. The documentation's test needs [zola](https://www.getzola.org) and vpkit-zola as a sibling checkout (`../vpkit-zola`).
+
+The crate's tests hold each component to the markup its stylesheet's header documents: `cd rust && cargo test`.
 
 The generated files, and what writes them:
 
