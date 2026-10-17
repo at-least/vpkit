@@ -2546,6 +2546,7 @@ button:focus-visible {
   .vp-pager-actions {
     display: flex;
     gap: 0.5rem;
+    margin-inline-start: auto;
   }
   .vp-doc .vp-pager-summary {
     margin: 0;
@@ -2583,9 +2584,6 @@ button:focus-visible {
   }
   .vp-doc .vp-stat-title {
     margin: 0;
-    border-top-width: 0;
-    padding-top: 0;
-    letter-spacing: normal;
     line-height: 1.5;
   }
   .vp-doc .vp-stat-hint {

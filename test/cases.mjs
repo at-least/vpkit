@@ -1874,6 +1874,21 @@ cases.push({
     { target: 'older', props: ['offset-left', 'offset-top', 'opacity'] },
   ],
 });
+// the addition: with no summary the actions keep the far end, against the
+// recipe with margin-inline-start: auto written on them
+const barePager = (ref) =>
+  `<div style="width:30rem"><nav data-t="pager" ${ref ? 'style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-top:1.25rem"' : 'class="vp-pager"'} aria-label="Pages">` +
+  `<div data-t="actions" ${ref ? 'style="display:flex;gap:0.5rem;margin-inline-start:auto"' : 'class="vp-pager-actions"'}><button data-t="newer" class="vp-btn" type="button" disabled>Newer</button><a data-t="older" class="vp-btn" href="#">Older</a></div></nav></div>`;
+cases.push({
+  name: 'pager without a summary',
+  reference: barePager(true),
+  vpkit: barePager(false),
+  checks: [
+    { target: 'pager', props: ['height'] },
+    { target: 'actions', props: ['margin-left', 'offset-left', 'offset-top'] },
+    { target: 'older', props: ['offset-left', 'offset-top'] },
+  ],
+});
 cases.push({
   name: 'pager in a doc',
   reference: `<div>${pagerMarkup(false)}</div>`,
@@ -1887,17 +1902,18 @@ cases.push({
 // stat: crashcart's stat card (src/web/shell.rs's stat_card at 4b4fdd6: a
 // vp-card vp-card-outline block h-auto overflow-hidden with its stat-card
 // padding, and src/web/styles/app.css's stat-card-header, stat-title,
-// stat-value and stat-hint written inline) against vp-stat; then the title
-// and the hint inside a vp-doc against themselves outside one
+// stat-value and stat-hint written inline, its title a paragraph as
+// vpkit's is) against vp-stat; then the title and the hint inside a vp-doc
+// against themselves outside one
 const statMarkup = (ref) =>
   ref
     ? `<div data-t="box" class="vp-card vp-card-outline block h-auto overflow-hidden" style="padding:1rem 1.25rem;width:16rem">` +
       `<header data-t="header" style="display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem">` +
-      `<h2 data-t="title" style="font-size:0.8125rem;font-weight:500;color:var(--vp-c-text-2)">Unhandled errors</h2>` +
+      `<p data-t="title" style="font-size:0.8125rem;font-weight:500;color:var(--vp-c-text-2)">Unhandled errors</p>` +
       `<span data-t="value" style="font-size:1.375rem;font-weight:600;font-variant-numeric:tabular-nums">1.2k</span></header>` +
       `<p data-t="hint" style="margin-top:0.25rem;max-width:75ch;font-size:0.8125rem;color:var(--vp-c-text-2)">in the last 7 days</p></div>`
     : `<div data-t="box" class="vp-stat" style="width:16rem"><header data-t="header" class="vp-stat-header">` +
-      `<h2 data-t="title" class="vp-stat-title">Unhandled errors</h2><span data-t="value" class="vp-stat-value">1.2k</span></header>` +
+      `<p data-t="title" class="vp-stat-title">Unhandled errors</p><span data-t="value" class="vp-stat-value">1.2k</span></header>` +
       `<p data-t="hint" class="vp-stat-hint">in the last 7 days</p></div>`;
 const STAT_TEXT = ['font-size', 'font-weight', 'color', 'line-height', ...MARGIN, 'offset-left', 'offset-top', 'height'];
 const statChecks = [

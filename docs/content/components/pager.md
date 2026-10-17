@@ -24,6 +24,7 @@ Under a list, a line saying what it shows and the buttons to the pages either si
 - `vp-pager`: the summary at one end and the buttons at the other, centered on each other, with 1.25rem above, so it sits that far under the list.
 - `vp-pager-summary`: 14px secondary text.
 - `vp-pager-actions`: a row of [Buttons](@/components/button.md) 0.5rem apart. Where there is no page that way, a disabled button keeps the row's shape.
+- vpkit's addition: the buttons keep the far end without a summary too, as a cursor's pager that counts nothing has them.
 
 {% <vp_example title="The first page: nothing newer"> %}
 <nav class="vp-pager" aria-label="Pages">
@@ -34,3 +35,14 @@ Under a list, a line saying what it shows and the buttons to the pages either si
   </div>
 </nav>
 {% </vp_example> %}
+
+{% <vp_example title="No summary"> %}
+<nav class="vp-pager" aria-label="Event pages">
+  <div class="vp-pager-actions">
+    <button class="vp-btn" type="button" disabled>Newest</button>
+    <a class="vp-btn" href="#">Older</a>
+  </div>
+</nav>
+{% </vp_example> %}
+
+Give each pager its own `aria-label`, so a page with two lists has two navigation landmarks a screen reader can tell apart.

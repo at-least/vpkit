@@ -16,8 +16,12 @@
  * between them, 1.25rem of padding above, so it sits that far under the
  * list it pages. The summary (`vp-pager-summary`) is 14px secondary text;
  * the actions (`vp-pager-actions`) a row of vp-btns 0.5rem apart, a
- * disabled one where there is no page that way. Inside a vp-doc the
- * summary keeps no paragraph margins and the page's line height. */
+ * disabled one where there is no page that way. One addition the recipe
+ * doesn't have: the actions keep the row's far end (margin-inline-start:
+ * auto), so a pager with no summary, a cursor's that counts nothing, has
+ * its buttons where every pager has them, not at the start. Inside a
+ * vp-doc the summary keeps no paragraph margins and the page's line
+ * height. */
 
 @layer components {
   .vp-pager {
@@ -36,6 +40,7 @@
   .vp-pager-actions {
     display: flex;
     gap: 0.5rem;
+    margin-inline-start: auto;
   }
 
   /* inside a vp-doc (content.css), whose rule for a paragraph gives the

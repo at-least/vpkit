@@ -4,7 +4,7 @@
  *
  *   <div class="vp-stat">
  *     <header class="vp-stat-header">
- *       <h2 class="vp-stat-title">Unhandled errors</h2>
+ *       <p class="vp-stat-title">Unhandled errors</p>
  *       <span class="vp-stat-value">1.2k</span>
  *     </header>
  *     <p class="vp-stat-hint">in the last 7 days</p>
@@ -17,9 +17,10 @@
  * is 13px at 500 in the secondary text; the value (`vp-stat-value`) 22px at
  * 600 in tabular figures; the hint (`vp-stat-hint`) 13px secondary text
  * 0.25rem under the header, at most 75 characters wide. A grid of them,
- * and a stat that is a link, are the page's. Inside a vp-doc the title
- * keeps none of the markdown's heading rules and the hint none of its
- * paragraph margins. */
+ * and a stat that is a link, are the page's. The title is a paragraph, not
+ * a heading: a grid of stats is one section's figures, not sections of
+ * its own. Inside a vp-doc the title and the hint keep none of the
+ * markdown's paragraph margins. */
 
 @layer components {
   .vp-stat {
@@ -57,15 +58,11 @@
     color: var(--vp-c-text-2);
   }
 
-  /* inside a vp-doc (content.css), whose rules for a heading and a
-     paragraph give the title a rule above, margins, padding and its own
-     line and letter spacing, and the hint margins and a 28px line: none of
-     it, the page's line height */
+  /* inside a vp-doc (content.css), whose rule for a paragraph gives the
+     title and the hint margins and a 28px line: none of it, the page's
+     line height */
   .vp-doc .vp-stat-title {
     margin: 0;
-    border-top-width: 0;
-    padding-top: 0;
-    letter-spacing: normal;
     line-height: 1.5;
   }
 
