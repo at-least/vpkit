@@ -2759,6 +2759,20 @@ button:focus-visible {
     align-items: baseline;
     gap: 0.25rem 0.75rem;
   }
+  .vp-status {
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--vp-c-text-2);
+  }
+  .vp-status[data-state="error"] {
+    color: var(--vp-c-danger-1);
+  }
+  .vp-status[data-state="success"] {
+    color: var(--vp-c-success-1);
+  }
+  :where(.vp-status) :is(p, ul, ol, dl, table, h2, h3, h4) {
+    color: var(--vp-c-text-1);
+  }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);
     --vp-inline-btn-hover-text: var(--vp-c-text-1);

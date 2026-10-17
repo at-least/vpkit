@@ -38,6 +38,8 @@ import {
   TOTALITY_ORDER_DL,
   CRASHCART_META_DL,
   CRASHCART_META_DT,
+  TOTALITY_RESULT,
+  TOTALITY_ADMIN_RESULT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -711,6 +713,51 @@ cases.push({
   reference: metaDl(false),
   vpkit: inDoc(metaDl(false)),
   checks: dlChecks,
+});
+
+// status: totality's result slot against vp-status (the page's margin,
+// `mt-4`, on both), at rest, in its error state (the store's
+// data-result="error" against vpkit's data-state="error"), in a success
+// state (crashcart's ok ink, var(--ok), written inline); the admin's slot
+// holding a fragment, whose paragraph and table keep the document's ink;
+// then inside a vp-doc against itself outside one
+const STATUS = ['font-size', 'line-height', 'color', ...MARGIN, 'height'];
+const STATUS_TEXT = 'Sent: the code is valid for 10 minutes.';
+cases.push({
+  name: 'status',
+  reference: `<div data-t="s" class="${TOTALITY_RESULT}">${STATUS_TEXT}</div>`,
+  vpkit: `<div data-t="s" class="vp-status mt-4">${STATUS_TEXT}</div>`,
+  checks: [{ target: 's', props: STATUS }],
+});
+cases.push({
+  name: 'status, error',
+  reference: `<div data-t="s" class="${TOTALITY_RESULT}" data-result="error">That code has expired.</div>`,
+  vpkit: '<div data-t="s" class="vp-status mt-4" data-state="error">That code has expired.</div>',
+  checks: [{ target: 's', props: STATUS }],
+});
+cases.push({
+  name: 'status, success',
+  reference: `<div data-t="s" class="${TOTALITY_RESULT}" style="color:var(--vp-c-success-1)">Saved.</div>`,
+  vpkit: '<div data-t="s" class="vp-status mt-4" data-state="success">Saved.</div>',
+  checks: [{ target: 's', props: STATUS }],
+});
+const statusFragment = (cls) =>
+  `<div data-t="s" class="${cls}"><p data-t="p">3 orders matched.</p><table data-t="table"><tr><td>ORD-1</td></tr></table></div>`;
+cases.push({
+  name: 'status holding a fragment',
+  reference: statusFragment(TOTALITY_ADMIN_RESULT),
+  vpkit: statusFragment('vp-status mt-4'),
+  checks: [
+    { target: 's', props: STATUS },
+    { target: 'p', props: ['color', 'font-size'] },
+    { target: 'table', props: ['color', 'font-size'] },
+  ],
+});
+cases.push({
+  name: 'status in a doc',
+  reference: `<div><div data-t="s" class="vp-status" data-state="error">That code has expired.</div></div>`,
+  vpkit: inDoc('<div data-t="s" class="vp-status" data-state="error">That code has expired.</div>'),
+  checks: [{ target: 's', props: STATUS }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's

@@ -149,3 +149,14 @@ export const TOTALITY_ORDER_DL =
 // the reference for vp-dl-inline, with vpkit's type written inline
 export const CRASHCART_META_DL = 'grid text-xs gap-x-3 gap-y-1';
 export const CRASHCART_META_DT = 'uppercase tracking-wide text-secondary';
+
+// totality crates/store/src/ui.rs and crates/admin/src/ui.rs at cbcbb503,
+// verbatim as of 2026-10-18: where htmx drops a handler's reply (`RESULT`),
+// one line of secondary text, danger once the page marks it
+// `data-result="error"`; the admin's hides while empty and gives a
+// fragment's block elements the document's ink. The references for
+// vp-status
+export const TOTALITY_RESULT =
+  'mt-4 text-[0.875rem] leading-6 text-secondary empty:mt-0 data-[result=error]:text-danger-1';
+export const TOTALITY_ADMIN_RESULT =
+  'mt-4 text-[0.875rem] leading-6 text-secondary empty:hidden [&_:is(table,h2,h3,h4,p,ol,ul,dl)]:text-body';
