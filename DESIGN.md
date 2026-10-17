@@ -375,7 +375,7 @@ VitePress parts that stay in `layout.css` and are not app components: the doc fo
 
 What each app's recipe became, and what each app still draws itself. The apps decide when they move; vpkit decides the components' shape (decision 24); this records the state.
 
-**totality** (`crates/store/src/ui.rs`, `views.rs`; the admin's `crates/admin/src/ui.rs`, `views.rs`, `pages.rs`): both sites are on vpkit.
+**totality** (`crates/store/src/ui.rs`, `views.rs`; the admin's `crates/admin/src/ui.rs`, `views.rs`, `pages.rs`): both sites are on vpkit, its stylesheets compiled from the `../vpkit` checkout and the crate a cargo git dependency at that commit (both sites' `Cargo.toml`).
 
 | recipe | is |
 | --- | --- |
@@ -389,7 +389,7 @@ What each app's recipe became, and what each app still draws itself. The apps de
 | `CODE` | `vp-code` |
 | the prose | the store's whole column is a `vp-doc`, so `PROSE`, `PROSE_LEDE`, `H1`, `H2`, `H3` and `LIST_*` are gone and the headings carry no class; `LEDE` is `text-text-2`; `[&_img]:rounded-lg` stays on the introduction block |
 | the appearance switch | `web::ui::appearance_switch`: `vp-toggle vp-toggle-appearance` with `vpi-sun` and `vpi-moon`, in both sites' bars; both import `icons.css` |
-| `FIELD_LABEL`, `MSG_ERROR`, `CHOICE` | `vp-label`, `vp-field-error`, `vp-choice` |
+| `FIELD_LABEL`, `MSG_ERROR`, `CHOICE` | the fields are `vpkit::Field` boxes (`vp-field`), 23 across the two sites, each label tied to its control, the coupon's error a `FieldError`; a width on a field stays on a box around it; `FIELD_LABEL` is left only on the invoice's Google email caption, which labels no control; `vp-choice` |
 | `web::ui::SKIP_LINK`, `NAV_LINK`, `SCREEN_LINK`, the bar | `vp-skip`; `vp-nav-link` and `vp-nav-link vp-nav-link-screen`; `vp-topbar` with `vp-topbar-row` and `vp-topbar-title` |
 
 **totality's admin** renders class-less markup: `<main>` is a `vp-doc` (`content.css`; `ui::DOC = "vp-doc mx-auto max-w-[960px] px-6 py-8 lg:px-12 lg:py-10"`), so the headings, paragraphs, lists, links, code and tables take VitePress's rules without a class each, and its tables have no scrolling wrappers. The bar is `vp-topbar` with utilities (`NAVBAR`, `NAVBAR_INNER`, `NAVBAR_TITLE` in `ui.rs`); the sidebar and the document column are utilities in its `ui.rs`, from what `layout.css` holds for a docs theme, which an app does not import: its one `<aside>` (`SIDEBAR`, slid in by the `is-open` class under lg over its own scrim, a fixed column from lg) is both the phone's drawer and the desktop's sidebar, and `vp-drawer`, a modal `<dialog>`, covers only the first, so it stays until the admin splits the two. Its danger button is the grounded `vp-btn vp-btn-danger`, not a solid one (decision 1); its hamburger is `vp-icon-btn` with `vpi-align-left`; it takes the same skip link, bar, title and nav link as the store, and its `FEATURE` tiles and alert paragraphs carry no utilities undoing the markdown's rules.
