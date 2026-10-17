@@ -46,6 +46,7 @@ import {
   OWN_DRIVE_ROWBTNS,
   CRASHCART_SORT,
   OWN_DRIVE_ICON_CHIP,
+  OWN_DRIVE_UPLOADS,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1048,6 +1049,29 @@ cases.push({
   upstream: `<div style="width:30rem"><div class="vp-doc"><div class="custom-block tip"><div data-t="box" class="language-json"><pre><code data-t="code">${PRE_JSON}</code></pre></div></div></div></div>`,
   vpkit: `<div style="width:30rem"><div class="vp-alert vp-alert-tip">${vpPre}</div></div>`,
   checks: [{ target: 'box', props: PRE_BOX.filter((p) => !p.startsWith('margin')) }, { target: 'code', props: PRE_CODE }],
+});
+
+// popover: VitePress's VPMenu surface (no items) against vp-popover on a
+// <div> and on an open manual popover, whose browser defaults (its
+// border, padding, colors) it must override; then against own-drive's
+// uploads panel, whose ground, border, radius and shadow it keeps (its
+// padding gives way to VPMenu's 0.75rem, written inline)
+const POPOVER = [...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'color', 'background-color', 'box-shadow', ...TRANSITION];
+const POPOVER_BODY = '<p>notes.txt · uploaded</p><p>photos.zip · 40%</p>';
+for (const [name, tag] of [['popover', 'div'], ['popover on a [popover]', 'div popover="manual"']]) {
+  cases.push({
+    name,
+    upstreamFiles: ['components/VPMenu.vue'],
+    upstream: `<div style="display:inline-block"><div data-t="p" class="VPMenu" style="max-height:none;min-width:0;overflow-y:visible">${POPOVER_BODY}</div></div>`,
+    vpkit: `<div style="display:inline-block"><${tag} data-t="p" class="vp-popover" style="position:static;margin:0">${POPOVER_BODY}</${tag.split(' ')[0]}></div>`,
+    checks: [{ target: 'p', props: POPOVER }],
+  });
+}
+cases.push({
+  name: "popover, own-drive's uploads panel",
+  reference: `<div data-t="p" class="${OWN_DRIVE_UPLOADS}" style="padding:0.75rem;color:var(--vp-c-text-1);transition:background-color 0.5s">${POPOVER_BODY}</div>`,
+  vpkit: `<div data-t="p" class="vp-popover">${POPOVER_BODY}</div>`,
+  checks: [{ target: 'p', props: POPOVER }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's

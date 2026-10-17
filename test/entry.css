@@ -47,6 +47,7 @@
 @import "../status.css";
 @import "../dot.css";
 @import "../pre.css";
+@import "../popover.css";
 @import "../panel.css";
 @import "../inline-btn.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the

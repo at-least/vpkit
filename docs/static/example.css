@@ -185,6 +185,9 @@
   .ms-auto {
     margin-inline-start: auto;
   }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
   }
@@ -223,6 +226,9 @@
   }
   .w-28 {
     width: calc(var(--spacing) * 28);
+  }
+  .w-72 {
+    width: calc(var(--spacing) * 72);
   }
   .w-full {
     width: 100%;
@@ -2935,6 +2941,15 @@ button:focus-visible {
     background-color: transparent;
     tab-size: 4;
     transition: color 0.5s;
+  }
+  .vp-popover {
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-3);
+    transition: background-color 0.5s;
   }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);

@@ -195,3 +195,9 @@ export const CRASHCART_SORT = 'cursor-pointer underline decoration-dotted decora
 // chip's icon (`icon_chip`), sized by utilities; the reference for a size
 // utility winning over vp-btn's rule for its icon
 export const OWN_DRIVE_ICON_CHIP = 'fill-current w-4 h-4';
+
+// own-drive src/web.rs at 9aff0f4, verbatim as of 2026-10-18 but for its
+// placement (`fixed right-4 bottom-[3.4rem] z-[…] w-80 max-w-[92vw]`): the
+// uploads panel's surface (`#uploads`), the reference for vp-popover with
+// VitePress's VPMenu
+export const OWN_DRIVE_UPLOADS = 'bg-[color:var(--vp-c-bg-elv)] border border-divider rounded-[.75rem] px-[.8rem] py-[.7rem] shadow-3';
