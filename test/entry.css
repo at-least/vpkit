@@ -53,6 +53,7 @@
 @import "../screen.css";
 @import "../dropzone.css";
 @import "../icon-tile.css";
+@import "../thumb.css";
 @import "../panel.css";
 @import "../inline-btn.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the

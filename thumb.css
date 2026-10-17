@@ -1,0 +1,38 @@
+/* vpkit — thumbnail: an image in a frame, a cover or an attachment's
+ * preview, alone or as a link to what it shows. VitePress has none; this
+ * is vpkit's own (totality's album covers, crashcart's image attachments),
+ * on VitePress's tokens. An optional import: `@import "vpkit/thumb.css";`
+ *
+ *   <a class="vp-thumb" href="/intro/42"><img src="/covers/42.jpg" alt="Album"></a>
+ *
+ * A block that clips its image to a 0.5rem radius, in a divider border, on
+ * the page's ground (where an image with transparency, or one contained in
+ * a square, shows). A thumbnail that is a link (`a.vp-thumb`) takes the
+ * brand border while hovered (`@variant hover`), as a link card does,
+ * where crashcart dimmed its attachments; it has the text's color and no
+ * underline, inside a vp-doc too, where its image keeps no margin of the
+ * markdown's. The image's size and fit are the page's (`w-full
+ * aspect-square object-contain`, `max-h-40`). */
+
+@layer components {
+  .vp-thumb {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    background-color: var(--vp-c-bg);
+    transition: border-color 0.25s;
+  }
+
+  a.vp-thumb {
+    @variant hover {
+      border-color: var(--vp-c-brand-1);
+    }
+  }
+
+  :where(.vp-thumb) > img {
+    margin: 0;
+  }
+}

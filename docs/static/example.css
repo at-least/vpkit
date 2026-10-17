@@ -218,6 +218,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
   .size-4 {
     width: calc(var(--spacing) * 4);
     height: calc(var(--spacing) * 4);
@@ -232,6 +235,9 @@
   }
   .w-28 {
     width: calc(var(--spacing) * 28);
+  }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
   }
   .w-48 {
     width: calc(var(--spacing) * 48);
@@ -377,6 +383,9 @@
   }
   .bg-success-soft {
     background-color: var(--vp-c-success-soft);
+  }
+  .object-contain {
+    object-fit: contain;
   }
   .p-3 {
     padding: calc(var(--spacing) * 3);
@@ -3194,6 +3203,24 @@ button:focus-visible {
   :where(.vp-icon-tile) svg {
     width: 1.25rem;
     height: 1.25rem;
+  }
+  .vp-thumb {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    background-color: var(--vp-c-bg);
+    transition: border-color 0.25s;
+  }
+  @media (hover: hover) {
+    a.vp-thumb:hover {
+      border-color: var(--vp-c-brand-1);
+    }
+  }
+  :where(.vp-thumb) > img {
+    margin: 0;
   }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);

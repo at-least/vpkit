@@ -106,6 +106,7 @@ items = [
   { text = "Status", link = "@/components/status.md" },
   { text = "Table", link = "@/components/table.md" },
   { text = "Tabs", link = "@/components/tabs.md" },
+  { text = "Thumbnail", link = "@/components/thumb.md" },
   { text = "Toast", link = "@/components/toast.md" },
   { text = "Toggle", link = "@/components/toggle.md" },
   { text = "Top Bar", link = "@/components/topbar.md" },

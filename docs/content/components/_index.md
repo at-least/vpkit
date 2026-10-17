@@ -103,6 +103,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Status](@/components/status.md) | `vp-status` | none, vpkit's own: the reply to what was just done |
 | [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
+| [Thumbnail](@/components/thumb.md) | `vp-thumb` | none, vpkit's own: an image in a frame |
 | [Toast](@/components/toast.md) | `vp-toast` | none, vpkit's own |
 | [Toggle](@/components/toggle.md) | `vp-toggle` | VitePress's `VPSwitch` and `VPSwitchAppearance` |
 | [Top Bar](@/components/topbar.md) | `vp-topbar` | VitePress's `VPNavBar` and `VPNavBarTitle` |

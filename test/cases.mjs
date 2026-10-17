@@ -51,6 +51,7 @@ import {
   TOTALITY_DIVIDER_LINE,
   OWN_DRIVE_DROP_TARGET,
   TOTALITY_ROSTER_TILE,
+  TOTALITY_COVER_LINK,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1288,6 +1289,25 @@ cases.push({
   reference: `<span class="vp-icon-tile">${TILE_SVG()}</span>`.replace('<svg data-t="icon"', '<svg data-t="icon" style="width:1rem;height:1rem"'),
   vpkit: `<span class="vp-icon-tile">${TILE_SVG(OWN_DRIVE_ICON_CHIP)}</span>`,
   checks: [{ target: 'icon', props: ['width', 'height'] }],
+});
+
+// thumbnail: totality's album cover link against vp-thumb, at rest and
+// hovered; on a touch screen; then inside a vp-doc, whose rule for images
+// gives margins, against itself outside one
+const COVER = '<img data-t="img" style="width:100%;aspect-ratio:1;object-fit:contain" alt="" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 4 4%22/%3E">';
+const THUMB = ['display', 'overflow-x', 'overflow-y', ...BORDER, ...BORDER_COLOR, ...RADIUS, 'background-color', ...TRANSITION, 'height'];
+cases.push({
+  name: 'thumbnail',
+  reference: `<div style="width:10rem"><a data-t="t" href="#" class="${TOTALITY_COVER_LINK}" style="transition:border-color 0.25s">${COVER}</a></div>`,
+  vpkit: `<div style="width:10rem"><a data-t="t" href="#" class="vp-thumb">${COVER}</a></div>`,
+  checks: [{ target: 't', props: THUMB }, { target: 't', state: ['hover'], props: BORDER_COLOR }],
+});
+touch('thumbnail', `<div style="width:10rem"><a data-t="t" href="#" class="vp-thumb">${COVER}</a></div>`, [{ target: 't', ...AT_REST, props: BORDER_COLOR }]);
+cases.push({
+  name: 'thumbnail in a doc',
+  reference: `<div style="width:10rem"><a data-t="t" href="#" class="vp-thumb">${COVER}</a></div>`,
+  vpkit: inDoc(`<div style="width:10rem"><a data-t="t" href="#" class="vp-thumb">${COVER}</a></div>`),
+  checks: [{ target: 't', props: [...THUMB, 'color', 'text-decoration-line'] }, { target: 'img', props: [...MARGIN, 'height'] }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's

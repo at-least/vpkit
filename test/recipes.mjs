@@ -221,3 +221,10 @@ export const OWN_DRIVE_DROP_TARGET =
 // the reference for vp-icon-tile
 export const TOTALITY_ROSTER_TILE =
   'flex size-10 flex-none items-center justify-center rounded-lg border border-divider bg-bg text-secondary [&_svg]:size-5';
+
+// totality crates/store/src/views.rs at cbcbb503, verbatim as of
+// 2026-10-18: an album's cover, a link to its course page around the
+// image; the reference for vp-thumb (its transition, which names every
+// color property, written as vpkit's border-color transition inline)
+export const TOTALITY_COVER_LINK =
+  'block overflow-hidden rounded-lg border border-divider bg-bg transition-colors duration-[250ms] hover:border-brand-1';
