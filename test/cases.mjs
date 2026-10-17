@@ -32,6 +32,9 @@ import {
   CRASHCART_WHYLINE,
   OWN_DRIVE_DL,
   OWN_DRIVE_DL_LOC,
+  TOTALITY_ROSTER_NAME,
+  TOTALITY_ROSTER_DETAIL,
+  CRASHCART_ISSUE_LINK_HOVER,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -2138,6 +2141,58 @@ cases.push({
   vpkit: rowsMarkup(false),
   checks: [1, 2, 3].map((n) => ({ target: `row${n}`, props: ROW_PROPS })).concat([{ target: 'card', props: ['height'] }]),
 });
+
+// the row's title and description: totality's roster name and the address
+// under it, in a row's text column; then the same inside a vp-doc, the
+// rows list items of a list as totality's store writes them (the doc's
+// space between list items, and a paragraph's margins, not reaching them)
+const ROW_TEXT = ['display', 'line-height', 'font-size', 'font-weight', 'color', 'overflow-wrap', ...MARGIN, 'height'];
+const rowText = (title, desc, tag = 'span') =>
+  `<span class="min-w-0"><${tag} data-t="title" class="${title}">Google</${tag}>` +
+  `<${tag} data-t="desc" class="${desc}">someone.with.a.long.address@example.com</${tag}></span>`;
+cases.push({
+  name: 'row title and description',
+  reference: `<div style="width:16rem">${rowText(TOTALITY_ROSTER_NAME, TOTALITY_ROSTER_DETAIL)}</div>`,
+  vpkit: `<div style="width:16rem">${rowText('vp-row-title', 'vp-row-desc')}</div>`,
+  checks: [{ target: 'title', props: ROW_TEXT }, { target: 'desc', props: ROW_TEXT }],
+});
+const rowList = (tag) =>
+  `<ul class="m-0 list-none p-0">` +
+  [1, 2].map((n) => `<li data-t="row${n}" class="vp-row">${rowText('vp-row-title', 'vp-row-desc', tag)}</li>`).join('') +
+  `</ul>`;
+for (const tag of ['span', 'p']) {
+  cases.push({
+    name: `row title and description in a doc, as <${tag}>`,
+    reference: `<div style="width:16rem">${rowList(tag)}</div>`,
+    vpkit: `<div style="width:16rem">${inDoc(rowList(tag))}</div>`,
+    checks: [
+      { target: 'row2', props: [...MARGIN, ...PADDING, 'offset-top'] },
+      { target: 'title', props: ROW_TEXT },
+      { target: 'desc', props: ROW_TEXT },
+    ],
+  });
+}
+
+// a row that is a link: crashcart's overview issue link's hover ground
+// and its transition (written inline), on a row's box, with the text's
+// own color and weight and no underline, inside a vp-doc too; then on a
+// touch screen
+const ROW_LINK = ['display', 'color', 'font-weight', 'text-decoration-line', 'background-color', ...TRANSITION];
+const linkRow = (attrs) => `<div class="vp-panel vp-panel-flush"><a data-t="row" href="#" ${attrs}>shop · panic in send_digest</a></div>`;
+const rowLinkRef = linkRow(`class="${CRASHCART_ISSUE_LINK_HOVER} vp-row" style="display:block;color:inherit;text-decoration-line:none;font-weight:inherit;transition:background-color 0.25s"`);
+cases.push({
+  name: 'row as a link',
+  reference: rowLinkRef,
+  vpkit: linkRow('class="vp-row"'),
+  checks: [{ target: 'row', props: [...ROW_LINK, ...PADDING, 'height'] }, { target: 'row', state: ['hover'], props: ROW_LINK }],
+});
+cases.push({
+  name: 'row as a link in a doc',
+  reference: `<div>${linkRow('class="vp-row"')}</div>`,
+  vpkit: inDoc(linkRow('class="vp-row"')),
+  checks: [{ target: 'row', props: ROW_LINK }, { target: 'row', state: ['hover'], props: ROW_LINK }],
+});
+touch('row as a link', linkRow('class="vp-row"'), [{ target: 'row', ...AT_REST, props: ['background-color'] }]);
 
 // panel: crashcart's outlined card undone to a block against vp-panel, a
 // paragraph inside; then flush against the recipe's p-0, a form row (its

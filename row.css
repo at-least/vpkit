@@ -11,7 +11,25 @@
  * 0.75rem by 1rem of padding and a divider line under it; the last row of
  * its list draws none, the panel's border closing the list. What goes in a
  * row, and its layout, are the page's: a flex row of a badge, a name and a
- * line of secondary text, a form, a list item. */
+ * line of secondary text, a form, a list item.
+ *
+ *   <a class="vp-row flex items-center gap-3" href="/logins/google">
+ *     <span class="min-w-0">
+ *       <span class="vp-row-title">Google</span>
+ *       <span class="vp-row-desc">someone@example.com</span>
+ *     </span>
+ *   </a>
+ *
+ * Parts, vpkit's (totality's roster lines and cart lines, crashcart's
+ * overview issue lines): vp-row-title, the row's name, 0.9375rem at 1.5rem
+ * and weight 500 in text-1; vp-row-desc, the line under it, 0.8125rem at
+ * 1.25rem in text-2; each a block that breaks a long word (an address)
+ * rather than overflow, so a name that must stay on one line takes
+ * `truncate`. A row that is a link (`a.vp-row`) is a block with the text's
+ * color and weight and no underline, inside a vp-doc too, on the
+ * default-soft ground while hovered (`@variant hover`), as a dropdown item
+ * is. Inside a vp-doc a row that is a list item, and a part that is a
+ * paragraph, keep no margin of the markdown's. */
 
 @layer components {
   .vp-row {
@@ -21,5 +39,44 @@
 
   .vp-row:last-child {
     border-bottom: none;
+  }
+
+  a.vp-row {
+    display: block;
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.25s;
+  }
+
+  a.vp-row {
+    @variant hover {
+      background-color: var(--vp-c-default-soft);
+    }
+  }
+
+  .vp-row-title {
+    display: block;
+    line-height: 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    overflow-wrap: anywhere;
+  }
+
+  .vp-row-desc {
+    display: block;
+    line-height: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+    overflow-wrap: anywhere;
+  }
+
+  /* inside a vp-doc (content.css), whose rules for list items and
+     paragraphs set margins a row and its parts leave to the page */
+  .vp-doc .vp-row,
+  .vp-doc .vp-row-title,
+  .vp-doc .vp-row-desc {
+    margin: 0;
   }
 }

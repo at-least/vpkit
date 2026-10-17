@@ -123,3 +123,15 @@ export const OWN_DRIVE_DL_LOC = 'text-secondary no-underline font-normal hover:t
 // crashcart src/web/styles/app.css at 0b6d7a3, as of 2026-10-18: its
 // `.whyline` (text-1, no underline, brand-1 on hover) as utilities
 export const CRASHCART_WHYLINE = 'text-text-1 no-underline hover:text-brand-1';
+
+// totality crates/store/src/ui.rs at cbcbb503, verbatim as of 2026-10-18:
+// a roster line's name and the address under it (`ROSTER_NAME`,
+// `ROSTER_DETAIL`), the references for vp-row-title and vp-row-desc
+export const TOTALITY_ROSTER_NAME = 'block text-[0.9375rem] leading-6 font-medium [overflow-wrap:anywhere]';
+export const TOTALITY_ROSTER_DETAIL = 'block text-[0.8125rem] leading-5 text-secondary [overflow-wrap:anywhere]';
+
+// crashcart src/web/styles/app.css at 0b6d7a3, as of 2026-10-18: its
+// `.issue-item-link` hover (an overview list's issue as a link, on
+// gray-soft, VitePress's default-soft), as a utility; its 0.25s
+// background-color transition is written inline where it is the reference
+export const CRASHCART_ISSUE_LINK_HOVER = 'hover:bg-default-soft';
