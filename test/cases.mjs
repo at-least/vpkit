@@ -1333,6 +1333,81 @@ for (const [name, width] of [['site footer', undefined], ["site footer at a phon
 }
 touch('site footer', '<footer class="vp-site-footer"><p>Made by <a data-t="a" href="#">Example Inc.</a></p></footer>', [{ target: 'a', ...AT_REST, props: ['color'] }]);
 
+// touch floor, vpkit's addition: on a coarse pointer the shared controls
+// grow to 44px (crashcart's floor, src/web/styles/app.css at 0b6d7a3, its
+// declarations written inline): a button's height, an icon button's
+// square, a lane's links; a chip's remove control and an inline button a
+// larger hit area its margin cancels, so the line keeps its size
+for (const [name, ref, vpkit, props] of [
+  ['button', '<a data-t="x" class="vp-btn" href="#" style="min-height:2.75rem">Save</a>', '<a data-t="x" class="vp-btn" href="#">Save</a>', ['min-height', 'height']],
+  ['icon button', '<button data-t="x" class="vp-icon-btn" type="button" aria-label="Like" style="width:2.75rem;height:2.75rem"><span class="vpi-heart"></span></button>', '<button data-t="x" class="vp-icon-btn" type="button" aria-label="Like"><span class="vpi-heart"></span></button>', ['width', 'height']],
+  ['lane link', '<nav class="vp-nav-lane"><a data-t="x" class="vp-nav-link" href="#" style="min-height:2.75rem;padding:0.75rem 0.875rem">Issues</a></nav>', '<nav class="vp-nav-lane"><a data-t="x" class="vp-nav-link" href="#">Issues</a></nav>', ['min-height', ...PADDING, 'height']],
+  ['chip remove', '<span class="vp-chip"><span class="vp-chip-value">2.4.1</span><button data-t="x" class="vp-chip-remove" type="button" aria-label="Remove" style="margin:-0.4375rem;padding:0.4375rem"></button></span>', '<span class="vp-chip"><span class="vp-chip-value">2.4.1</span><button data-t="x" class="vp-chip-remove" type="button" aria-label="Remove"></button></span>', [...MARGIN, ...PADDING]],
+  ['inline button', '<p>id <button data-t="x" class="vp-inline-btn" type="button" aria-label="Copy" style="margin:-0.4375rem;padding:0.4375rem"></button></p>', '<p>id <button data-t="x" class="vp-inline-btn" type="button" aria-label="Copy"></button></p>', [...MARGIN, ...PADDING]],
+]) {
+  cases.push({ name: `${name}, the touch floor`, touch: true, reference: ref, vpkit, checks: [{ target: 'x', props }] });
+}
+
+// checkbox: crashcart's row checkbox (its .cb, 1rem in the brand's accent,
+// 1.25rem on a coarse pointer) and the label around it that is its tap
+// target (.cb-hit, a 44px square on a coarse pointer, its margin pulling it
+// over the cell's padding), their declarations inline, against
+// vp-checkbox and vp-checkbox-label, on a desktop and a touch screen
+const CB = 'width:1rem;height:1rem;accent-color:var(--vp-c-brand-1);cursor:pointer';
+const CB_TOUCH = ';width:1.25rem;height:1.25rem';
+const CB_HIT = 'display:inline-flex;align-items:center;justify-content:center;cursor:pointer';
+const CB_HIT_TOUCH = ';width:2.75rem;height:2.75rem;margin:-0.625rem';
+for (const touchScreen of [false, true]) {
+  cases.push({
+    name: `checkbox${touchScreen ? ' on a touch screen' : ''}`,
+    touch: touchScreen,
+    reference: `<table class="vp-table"><tbody><tr><td><label data-t="l" style="${CB_HIT}${touchScreen ? CB_HIT_TOUCH : ''}"><input data-t="c" type="checkbox" aria-label="Select" style="${CB}${touchScreen ? CB_TOUCH : ''}"></label></td><td>shop</td></tr></tbody></table>`,
+    vpkit: '<table class="vp-table"><tbody><tr><td><label data-t="l" class="vp-checkbox-label"><input data-t="c" class="vp-checkbox" type="checkbox" aria-label="Select"></label></td><td>shop</td></tr></tbody></table>',
+    checks: [
+      { target: 'c', props: ['width', 'height', 'accent-color', 'cursor'] },
+      { target: 'l', props: ['display', 'align-items', 'justify-content', 'cursor', 'width', 'height', ...MARGIN] },
+    ],
+  });
+}
+
+// toast states: own-drive's error message (its #msg.err) and crashcart's
+// saved flash (its ok ink) against vp-toast with data-state, the colors
+// written inline on a toast
+for (const [state, token] of [['error', 'danger-1'], ['success', 'success-1']]) {
+  cases.push({
+    name: `toast, ${state}`,
+    reference: `<div data-t="t" class="vp-toast" style="color:var(--vp-c-${token})">Saved notes.txt</div>`,
+    vpkit: `<div data-t="t" class="vp-toast" data-state="${state}">Saved notes.txt</div>`,
+    checks: [{ target: 't', props: ['color', 'background-color', ...BORDER_COLOR] }],
+  });
+}
+
+// a muted row: crashcart's board row of a muted monitor (its
+// .vp-row[data-muted] at 0.6) against data-state="muted"
+cases.push({
+  name: 'row, muted',
+  reference: '<div class="vp-panel vp-panel-flush"><div data-t="r" class="vp-row" style="opacity:0.6">pg-backup · muted</div></div>',
+  vpkit: '<div class="vp-panel vp-panel-flush"><div data-t="r" class="vp-row" data-state="muted">pg-backup · muted</div></div>',
+  checks: [{ target: 'r', props: ['opacity'] }],
+});
+
+// a stat that is a link: crashcart's stat link around a stat (its hover
+// raised the border; vpkit's link surfaces take the brand border, written
+// as a utility), the stat itself the link in vpkit, with the text's color
+// and no underline; on a touch screen
+const STAT_INNER = '<div class="vp-stat-header"><p class="vp-stat-title">Open issues</p><span data-t="v" class="vp-stat-value">42</span></div>';
+cases.push({
+  name: 'stat as a link',
+  reference: `<a data-t="s" href="#" class="vp-stat hover:border-brand-1" style="color:inherit;text-decoration-line:none;transition:border-color 0.25s">${STAT_INNER}</a>`,
+  vpkit: `<a data-t="s" href="#" class="vp-stat">${STAT_INNER}</a>`,
+  checks: [
+    { target: 's', props: ['display', 'color', 'text-decoration-line', ...BORDER_COLOR, ...TRANSITION] },
+    { target: 's', state: ['hover'], props: BORDER_COLOR },
+    { target: 'v', props: ['color', 'text-decoration-line'] },
+  ],
+});
+touch('stat as a link', `<a data-t="s" href="#" class="vp-stat">${STAT_INNER}</a>`, [{ target: 's', ...AT_REST, props: BORDER_COLOR }]);
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is

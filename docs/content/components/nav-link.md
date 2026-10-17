@@ -32,6 +32,8 @@ The bar is [Top Bar](@/components/topbar.md); the screen, and opening it, are th
 
 `vp-nav-lane` is a row of nav links that scrolls sideways rather than wrap or clip, for a header's second row or a page's section links. Its scrollbar is hidden; a wheel, a drag or a swipe still scrolls it. Its links are 2.25rem tall and stay on one line.
 
+On a coarse pointer, a touch screen, its links are 2.75rem tall: a touch target's 44px.
+
 While the lane is wider than its box its edges fade, so a clipped label reads as one that scrolls. CSS can't tell when that is: your script sets `data-overflow` when the lane overflows, and removes it when it fits.
 
 {% <vp_example title="A lane that overflows its box"> %}

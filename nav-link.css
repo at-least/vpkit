@@ -32,7 +32,9 @@
  * it); its links 2.25rem tall where the bar's are as tall as the bar,
  * rounded 0.375rem so a focus ring has a shape, on one line. While it
  * overflows its edges fade, 1rem at the start and 0.75rem at the end, so a
- * clipped label reads as one that scrolls: `data-overflow`, which the
+ * clipped label reads as one that scrolls (on a coarse pointer its links
+ * are 2.75rem tall, a touch target's 44px, with 0.75rem by 0.875rem of
+ * padding, crashcart's floor): `data-overflow`, which the
  * page's script sets when the lane is wider than its box (and clears when
  * it fits), as no CSS can tell.
  *
@@ -94,5 +96,14 @@
     border-radius: 0.375rem;
     min-height: 2.25rem;
     white-space: nowrap;
+  }
+
+  /* the touch floor, vpkit's: a lane's link is 44px tall on a coarse
+     pointer, its padding inside the box */
+  @media (pointer: coarse) {
+    :where(.vp-nav-lane) > .vp-nav-link {
+      min-height: 2.75rem;
+      padding: 0.75rem 0.875rem;
+    }
   }
 }

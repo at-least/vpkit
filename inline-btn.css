@@ -19,7 +19,9 @@
  * centered on its text as above. Not vp-icon-btn: that 2.25rem box is a
  * toolbar's control, and in a line of text it truncated the id beside it
  * and grew the row (crashcart, measured). The colors are the button's own
- * variables, as in link.css. */
+ * variables, as in link.css. On a coarse pointer its hit area grows to
+ * 0.4375rem each side, as much margin cancelling it, so the line keeps
+ * its size (crashcart's). */
 
 @layer components {
   .vp-inline-btn {
@@ -46,5 +48,14 @@
   .vp-inline-btn > :is(span, svg) {
     width: 1rem;
     height: 1rem;
+  }
+
+  /* the touch floor, vpkit's: a larger hit area on a coarse pointer, the
+     margin cancelling it so the line keeps its size (crashcart's) */
+  @media (pointer: coarse) {
+    .vp-inline-btn {
+      margin: -0.4375rem;
+      padding: 0.4375rem;
+    }
   }
 }

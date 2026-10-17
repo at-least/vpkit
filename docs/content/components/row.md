@@ -72,3 +72,14 @@ A row on an `<a>` is a block in the text's own color and weight, with no underli
 {% </vp_example> %}
 
 Inside a `vp-doc` ([Markdown](@/guide/getting-started.md#markdown-and-icons)), a row that is a list item and a part that is a paragraph keep no margin of the markdown's.
+
+## Muted
+
+A row with `data-state="muted"` is dimmed: something on the list that is switched off for now, such as a muted monitor.
+
+{% <vp_example title="A muted row"> %}
+<div class="vp-panel vp-panel-flush">
+  <div class="vp-row">api · healthy</div>
+  <div class="vp-row" data-state="muted">pg-backup · muted until 18:00</div>
+</div>
+{% </vp_example> %}

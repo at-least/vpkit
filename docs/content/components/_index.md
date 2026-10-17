@@ -64,6 +64,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Breadcrumb](@/components/breadcrumb.md) | `vp-breadcrumb` | none, vpkit's own: a folder path |
 | [Button](@/components/button.md) | `vp-btn` | VitePress's `VPButton` |
 | [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
+| [Checkbox](@/components/checkbox.md) | `vp-checkbox`, `vp-checkbox-label` | none, vpkit's own: a bare checkbox and its tap target |
 | [Chip](@/components/chip.md) | `vp-chip` | none, vpkit's own: a removable filter, or a link to the list it names |
 | [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
 | [Code](@/components/code.md) | `vp-code` | VitePress's inline code |

@@ -25,7 +25,9 @@
  * it names is a link as a whole (`<a class="vp-chip">`), with no remove
  * control inside it; inside a vp-doc it keeps its look, setting its own
  * text-decoration and weight, which the markdown's rule for links would
- * otherwise give it (rule 6). */
+ * otherwise give it (rule 6). On a coarse pointer the remove control's hit
+ * area grows by 0.4375rem each side, a margin cancelling it, so the chip
+ * keeps its size (crashcart's). */
 
 @layer components {
   .vp-chip {
@@ -69,5 +71,14 @@
   :where(.vp-chip-remove) > svg {
     width: 1rem;
     height: 1rem;
+  }
+
+  /* the touch floor, vpkit's: a larger hit area on a coarse pointer, the
+     margin cancelling it so the chip keeps its size (crashcart's) */
+  @media (pointer: coarse) {
+    .vp-chip-remove {
+      margin: -0.4375rem;
+      padding: 0.4375rem;
+    }
   }
 }

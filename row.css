@@ -29,7 +29,9 @@
  * color and weight and no underline, inside a vp-doc too, on the
  * default-soft ground while hovered (`@variant hover`), as a dropdown item
  * is. Inside a vp-doc a row that is a list item, and a part that is a
- * paragraph, keep no margin of the markdown's. */
+ * paragraph, keep no margin of the markdown's. A row with
+ * `data-state="muted"` is dimmed to 0.6 (crashcart's muted monitors: a
+ * state no ARIA attribute says, written as vp-status writes its own). */
 
 @layer components {
   .vp-row {
@@ -78,5 +80,9 @@
   .vp-doc .vp-row-title,
   .vp-doc .vp-row-desc {
     margin: 0;
+  }
+
+  .vp-row[data-state="muted"] {
+    opacity: 0.6;
   }
 }

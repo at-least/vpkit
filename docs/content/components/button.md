@@ -66,3 +66,5 @@ Like every component, the button sits in Tailwind's `components` layer, so a uti
 {% <vp_example title="A utility over the button's padding" layout="row"> %}
 <button class="vp-btn px-8" type="button">Wider</button>
 {% </vp_example> %}
+
+On a coarse pointer, a touch screen, a button is at least 2.75rem tall: a touch target's 44px. A mouse keeps VitePress's 40px.

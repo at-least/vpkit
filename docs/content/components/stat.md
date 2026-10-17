@@ -44,3 +44,13 @@ One number in a box, with its title beside it and a hint under it. VitePress has
 - The grid, and a stat that is a link to the list it counts, are yours.
 
 In Rust: [`Stat`](../../rust/vpkit/struct.Stat.html), from vpkit's [crate](@/guide/rust.md).
+
+## A stat that is a link
+
+A stat on an `<a>` opens the list it counts: it keeps the text's color and has no underline, and takes the brand border while hovered.
+
+{% <vp_example title="A figure that opens its list"> %}
+<a class="vp-stat w-56" href="#">
+  <div class="vp-stat-header"><p class="vp-stat-title">Open issues</p><span class="vp-stat-value">42</span></div>
+</a>
+{% </vp_example> %}

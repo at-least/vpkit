@@ -67,6 +67,7 @@ items = [
   { text = "Breadcrumb", link = "@/components/breadcrumb.md" },
   { text = "Button", link = "@/components/button.md" },
   { text = "Card", link = "@/components/card.md" },
+  { text = "Checkbox", link = "@/components/checkbox.md" },
   { text = "Chip", link = "@/components/chip.md" },
   { text = "Choice", link = "@/components/choice.md" },
   { text = "Code", link = "@/components/code.md" },

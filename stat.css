@@ -16,8 +16,11 @@
  * value at the other, 0.5rem apart at least. The title (`vp-stat-title`)
  * is 13px at 500 in the secondary text; the value (`vp-stat-value`) 22px at
  * 600 in tabular figures; the hint (`vp-stat-hint`) 13px secondary text
- * 0.25rem under the header, at most 75 characters wide. A grid of them,
- * and a stat that is a link, are the page's. The title is a paragraph, not
+ * 0.25rem under the header, at most 75 characters wide. A grid of them is
+ * the page's. A stat that is a link (`a.vp-stat`, vpkit's: crashcart's
+ * overview figures, each opening the list it counts) has the text's color
+ * and weight and no underline, and takes the brand border while hovered,
+ * as a link card does. The title is a paragraph, not
  * a heading: a grid of stats is one section's figures, not sections of
  * its own. Inside a vp-doc the title and the hint keep none of the
  * markdown's paragraph margins. */
@@ -69,5 +72,18 @@
   .vp-doc .vp-stat-hint {
     margin: 0.25rem 0 0;
     line-height: 1.5;
+  }
+
+  a.vp-stat {
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.25s;
+  }
+
+  a.vp-stat {
+    @variant hover {
+      border-color: var(--vp-c-brand-1);
+    }
   }
 }

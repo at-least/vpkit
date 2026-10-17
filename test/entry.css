@@ -55,6 +55,7 @@
 @import "../icon-tile.css";
 @import "../thumb.css";
 @import "../site-footer.css";
+@import "../checkbox.css";
 @import "../panel.css";
 @import "../inline-btn.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the

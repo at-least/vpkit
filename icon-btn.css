@@ -17,7 +17,8 @@
  * solid; here an SVG that sets fill keeps it. The icon's rule is
  * `.vp-icon-btn > :is(span, svg)`, one class and one element, so it wins
  * over icons.css's 1em size whichever file is imported first. The hover is
- * `@variant hover`, like Tailwind's `hover:`.
+ * `@variant hover`, like Tailwind's `hover:`. On a coarse pointer the
+ * square is 2.75rem, a touch target's 44px (crashcart's floor).
  *
  * A modifier, vpkit's (crashcart's dark, light and auto switch), used
  * together with `vp-icon-btn`:
@@ -87,5 +88,13 @@
   :root:not([data-appearance]):not(.dark) .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-light,
   :root:not([data-appearance]).dark .vp-icon-btn-appearance.vp-icon-btn > .vp-icon-btn-dark {
     display: flex;
+  }
+
+  /* the touch floor, vpkit's: a 44px square on a coarse pointer */
+  @media (pointer: coarse) {
+    .vp-icon-btn {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
   }
 }

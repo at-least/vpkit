@@ -1,6 +1,6 @@
 # The component library: its design
 
-vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Fifty-two exist, in fifty-one files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, the hypertext crate for their markup, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
+vpkit's components are VitePress's look as CSS classes an application page can use (`vp-btn`, `vp-input`, …). Fifty-three exist, in fifty-two files (`vp-label` and `vp-field-error` share `field.css`). This is the design of the library as a whole: what a component is, the rules every one follows, how it is proven, when a new one is built, what stays a utility, the hypertext crate for their markup, and where the apps built on vpkit stand on them. The documentation (`docs/`) documents what ships; this documents what is decided.
 
 What is called measured here was measured against VitePress v2.0.0-alpha.20 (`test/upstream/SOURCE`) and the apps' sources in their sibling checkouts (`../totality`, `../own-drive`, `../crashcart`); a claim marked *guessed* is one nobody measured.
 
@@ -26,7 +26,7 @@ vpkit-zola imports the layout, the markdown and `badge.css`, and gets `base.css`
 
 Every component follows these.
 
-1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the fifty-one component files).
+1. **One component, one file, in `@layer components`.** A utility on the same element always wins (`class="vp-btn px-8"`). Nothing is unlayered; nothing uses `!important` (measured: none in the fifty-two component files).
 
 2. **Flat names.** The block is `vp-<name>`; a modifier is `vp-<name>-<modifier>`, used only together with the block; a part is `vp-<name>-<part>`. No BEM separators: `vp-btn-brand`, `vp-card-title`, `vp-alert-title`. (`layout.css` is BEM, `vp-content--has-sidebar`, because VitePress names child components after their parents' parts; app components have no such collisions.) A part keeps VitePress's own name where the original has one: VPFeature's `.title` is `vp-card-title`, the custom block's `.custom-block-title` is `vp-alert-title`. A modifier's rule is the compound `.vp-x-mod.vp-x`, modifier first, so it wins over the block whatever the file order, and so tools that look for a class at the start of a selector find it (totality's CSS coverage test).
 
@@ -142,7 +142,7 @@ For a component from an app recipe:
 | `vp-mark` | VPLocalSearchBox: `mark` | — |
 | `vp-choice` | totality's `CHOICE` (a recipe) | `:has(:checked)`, `:has(:focus-visible)`; `:has(> input:disabled)` (vpkit's: dimmed, not-allowed, no hover) |
 | `vp-label`, `vp-field-error` | totality's `FIELD_LABEL`, `MSG_ERROR` (recipes, as `test/recipes.mjs` holds them; the sites now write `vpkit::Field`) | `vp-field`, the field's box, and `vp-field-hint` (crashcart's `grid grid-cols-1 gap-1.5 min-w-0` and `text-xs text-secondary`, recipes); inside a `vp-field` the parts keep no margins (the error's there vpkit's) |
-| `vp-toast` | own-drive's `#msg` (a recipe) | — |
+| `vp-toast` | own-drive's `#msg` (a recipe) | `data-state="error"`, `data-state="success"` (vpkit's) |
 | `vp-progress` | own-drive's `BAR`, `BAR_FILL` (recipes) | `vp-progress-bar`; a `progressbar` with no `aria-valuenow` sweeps (own-drive's load bar) |
 | `vp-skip` | VPSkipLink, with `visually-hidden` | `:focus` |
 | `vp-nav-link` | VPNavMenuLink | `vp-nav-link-screen`; `aria-current="page"`; on `<a>` and `<button>`; `vp-nav-lane` (crashcart's scrolling lanes; `data-overflow`) |
@@ -158,8 +158,8 @@ For a component from an app recipe:
 | `vp-file` | crashcart's `file-input` (a recipe) | on `<input type="file">`, its `::file-selector-button`; `:hover`, `:focus-visible` |
 | `vp-chip` | crashcart's filter chip (a recipe) | `vp-chip-key`, `vp-chip-value`, `vp-chip-remove` |
 | `vp-pager` | crashcart's `pager` (a recipe) | `vp-pager-summary`, `vp-pager-actions`; `vp-btn`s inside; the actions at the far end without a summary (vpkit's) |
-| `vp-stat` | crashcart's stat card (a recipe) | `vp-stat-header`, `vp-stat-title`, `vp-stat-value`, `vp-stat-hint` |
-| `vp-row` | crashcart's board row (a recipe) | `:last-child` draws no line; `vp-row-title`, `vp-row-desc` and `a.vp-row`'s hover ground (vpkit's) |
+| `vp-stat` | crashcart's stat card (a recipe) | `vp-stat-header`, `vp-stat-title`, `vp-stat-value`, `vp-stat-hint`; `a.vp-stat` (vpkit's) |
+| `vp-row` | crashcart's board row (a recipe) | `:last-child` draws no line; `vp-row-title`, `vp-row-desc`, `a.vp-row`'s hover ground and `data-state="muted"` (vpkit's) |
 | `vp-panel` | crashcart's outlined card undone to a block (a recipe) | `vp-panel-flush` (vpkit's: the padding a local); `overflow: hidden` as the recipe has it; `vp-panel-header` (crashcart's card header) |
 | `vp-page-title`, `vp-section-title` | `vp-doc.css`: `.vp-doc h1`, `.vp-doc h3` | `vp-page-desc`, `vp-group-title` (crashcart's page description and small title) |
 | `vp-dl` | totality's order details (a recipe) | `vp-dl-inline` (crashcart's event metadata) |
@@ -168,6 +168,7 @@ For a component from an app recipe:
 | `vp-dropzone` | own-drive's drop target (a recipe) | — |
 | `vp-icon-tile` | totality's roster tile (a recipe) | an `<svg>` inside |
 | `vp-thumb` | totality's album cover link (a recipe) | `a.vp-thumb`'s hover border |
+| `vp-checkbox` | crashcart's row checkbox (a recipe) | `vp-checkbox-label`; a coarse pointer |
 | `vp-pre` | `vp-doc.css`: the code block (`div[class*='language-']`, its `pre` and `code`) | `.vp-pre > code` |
 | `vp-popover` | VPMenu (its surface) | on a `[popover]` or any element |
 | `vp-hint` | crashcart's hint dot (a recipe) | `vp-hint-text`; `:hover`, `:focus-visible`, `aria-expanded="true"` |
@@ -379,6 +380,9 @@ VitePress's sidebar as a phone shows it (VPSidebar under 60rem) over VPBackdrop'
 | `vp-dropzone` | own-drive's drop target (`border-2 border-dashed border-brand-1 rounded-[1rem] py-[3rem] px-[5rem] text-[1.25rem] font-semibold text-brand-1 bg-[color:var(--vp-c-bg-elv)] shadow-4`) | a 2px dashed `brand-1` border, a 1rem radius, `3rem 5rem` padding, 1.25rem at 1.5 and 600 in `brand-1`, `bg-elv`, `--vp-shadow-4`; no margin inside a `vp-doc`; the overlay that shows it (fixed, the brand-soft wash, centering) the page's | own-drive (decision 24) |
 | `vp-icon-tile` | totality's `ROSTER_TILE` (`flex size-10 flex-none items-center justify-center rounded-lg border border-divider bg-bg text-secondary [&_svg]:size-5`) | a 2.5rem flex square, `flex: none`, centered, a 0.5rem radius in a divider border, on `bg`, in `text-2`; its SVG 1.25rem behind `:where()` (rule 6), so a size utility on it wins | totality's login rosters (decision 24) |
 | `vp-thumb` | totality's album cover link (`block overflow-hidden rounded-lg border border-divider bg-bg transition-colors duration-[250ms] hover:border-brand-1`), crashcart's `.attachment-img` (a 0.375rem radius, dimmed to 0.85 hovered, its border on the image) | a block clipping its image to a 0.5rem radius, a divider border, `bg`, the text's color and no underline (inside a `vp-doc` too), a 0.25s border transition; `a.vp-thumb` the brand border hovered (`@variant hover`, a link card's hover, where crashcart dimmed); its image no margin, where the markdown gives one; the image's size and fit the page's | totality's covers and crashcart's attachments (decision 24); own-drive's grid thumbnails stay the file grid's (product) |
+| the touch floor | crashcart's (`@media (pointer: coarse), (max-width: 29.99rem)`: `vp-btn` at least 2.75rem, `vp-icon-btn` 2.75rem square, its lanes' links 2.75rem with `0.75rem 0.875rem`; on a coarse pointer `vp-chip-remove` and `vp-inline-btn` `margin: -0.4375rem; padding: 0.4375rem`) | the same in each component's file under `(pointer: coarse)` alone: a touch target's 44px on a touch screen, VitePress's sizes for a mouse; crashcart's phone-width condition, which its headless audits with a fine pointer needed, not ported (a narrow window with a mouse keeps the desktop's sizes) | every app on a touch screen (decision 24); the harness's touch emulation matches `(pointer: coarse)` (measured), so each floor has a case |
+| `vp-checkbox`, `vp-checkbox-label` | crashcart's `.cb` (1rem, the brand's accent, the pointer; 1.25rem on a coarse pointer) and `.cb-hit` (the label around it, a centered inline flex box; a 2.75rem square pulled over the cell's padding by `-0.625rem` on a coarse pointer) | the same; the name the page's (`aria-label`) | crashcart's select columns and own-drive's, whose checkboxes were the browser's (decision 24) |
+| `vp-toast`'s and `vp-row`'s states, `a.vp-stat` | own-drive's `#msg.err` (an unlayered rule on a JS class), crashcart's saved flash (its ok ink), its `.vp-row[data-muted]` at 0.6, its `a.stat-card-link` around a stat (the border raised hovered) | `vp-toast[data-state="error"]` `danger-1`, `[data-state="success"]` `success-1`, read as `vp-status` reads it; `vp-row[data-state="muted"]` 0.6 (no ARIA attribute says muted; the attribute `vp-status` and the toast read); `a.vp-stat`, the stat itself the link, the text's color and weight, no underline, the brand border hovered (`@variant hover`, the link card's hover, where crashcart raised the border to `border`) | own-drive and crashcart (decision 24) |
 | `vp-progress`, indeterminate | own-drive's `#loadbar` (`styles/app.css`: a 2px, 30% brand bar sweeping `translateX(-100%)` to `450%` in 1s, shown by a class; under reduced motion the full width at 0.6) | `[role="progressbar"]:not([aria-valuenow])` (rule 4: WAI-ARIA's indeterminate progressbar, so no class to swap): the fill 30% wide, `vp-progress-sweep` 1s linear, infinite; under reduced motion, where base.css's rule would leave it resting at the left as if at 30%, the track's full width at 0.6 opacity, its own reduced-motion rule (rule 10's exception, as the spinner keeps VitePress's) | own-drive's load bar (decision 24); its place at the top of the window the page's |
 | `vp-inline-btn` | crashcart's event id copy control (`event.rs`), which borrowed `vp-chip-remove` | a 1rem icon in `text-2`, `text-1` hovered (0.25s), on 0.3125rem of padding cancelled by as much negative margin, so the line lays it out at the icon's size and keeps its height; the colors as locals; on a `<button>` or an `<a>` | one app (crashcart's event page), on the owner's ask (decision 22); not ported: the larger hit area crashcart gives it on a coarse pointer (0.4375rem), an app rule over the component, as its 44px floor is (decision 13) |
 

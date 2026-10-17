@@ -1,0 +1,42 @@
+/* vpkit — checkbox: a bare checkbox in a row or a cell, where vp-choice's
+ * card would be too much (a table's select column). VitePress has none;
+ * this is vpkit's own (crashcart's row checkboxes), on VitePress's tokens.
+ * An optional import: `@import "vpkit/checkbox.css";`
+ *
+ *   <label class="vp-checkbox-label"><input class="vp-checkbox" type="checkbox" aria-label="Select shop"></label>
+ *
+ * vp-checkbox: 1rem, in the brand's accent, the pointer cursor; 1.25rem on
+ * a coarse pointer. vp-checkbox-label: the label around it that is its tap
+ * target, centering it; on a coarse pointer a 2.75rem square, a touch
+ * target's 44px, pulled over the cell's padding by as much negative margin
+ * so the row barely grows. Its name is the page's (`aria-label`, or the
+ * row's text the label holds). */
+
+@layer components {
+  .vp-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--vp-c-brand-1);
+    cursor: pointer;
+  }
+
+  .vp-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  @media (pointer: coarse) {
+    .vp-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .vp-checkbox-label {
+      margin: -0.625rem;
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+}

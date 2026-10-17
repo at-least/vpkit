@@ -37,3 +37,5 @@ VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
 - The parts are `vpi-*` icons or inline SVGs. A page whose Content-Security-Policy refuses `data:` images can't paint `icons.css`'s icons, so it draws its own SVGs, each with its part's class.
 - The cycling is your script's: on a click it moves to the next setting, sets `class="dark"` on `<html>` (for auto, from `prefers-color-scheme`), writes `data-appearance` there, and stores the choice. Set both before the first paint, as you set `.dark`.
 - `data-appearance` is a convention the page writes, not an ARIA attribute; give the button an `aria-label` that names the setting it moves to.
+
+On a coarse pointer, a touch screen, the square is 2.75rem: a touch target's 44px.
