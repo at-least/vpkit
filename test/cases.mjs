@@ -922,6 +922,29 @@ cases.push({
     { target: 'sel', pseudo: '::after', props: TAB_BAR_AFTER },
   ],
 });
+// vpkit's addition: a row of links to pages, a <nav> whose current link
+// has aria-current (what a link that is not a tab over a panel carries),
+// against the same original; aria-current="false" is not current
+cases.push({
+  name: 'tabs as links, the current one by aria-current',
+  upstreamFiles: TAB_FILES,
+  upstream:
+    `<div class="vp-code-group"><div data-t="tabs" class="tabs">` +
+    `<input type="radio" name="group-1" id="tab-1" checked><label data-t="sel" for="tab-1">npm</label>` +
+    `<input type="radio" name="group-1" id="tab-2"><label data-t="tab" for="tab-2">pnpm</label></div></div>`,
+  vpkit:
+    `<nav data-t="tabs" class="vp-tabs" aria-label="Package manager">` +
+    `<a data-t="sel" class="vp-tabs-tab" href="#" aria-current="page">npm</a>` +
+    `<a data-t="tab" class="vp-tabs-tab" href="#" aria-current="false">pnpm</a></nav>`,
+  checks: [
+    { target: 'tabs', props: TAB_BAR },
+    { target: 'tab', props: TAB },
+    { target: 'tab', state: ['hover'], props: ['color'] },
+    { target: 'tab', pseudo: '::after', props: TAB_BAR_AFTER },
+    { target: 'sel', props: TAB },
+    { target: 'sel', pseudo: '::after', props: TAB_BAR_AFTER },
+  ],
+});
 touch('tab', `<div class="vp-tabs" role="tablist"><button data-t="tab" class="vp-tabs-tab" type="button" role="tab" aria-selected="false">pnpm</button></div>`, [
   { target: 'tab', ...AT_REST, props: ['color'] },
 ]);

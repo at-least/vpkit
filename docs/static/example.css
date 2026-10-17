@@ -2014,10 +2014,10 @@ button:focus-visible {
       color: var(--vp-code-tab-hover-text-color);
     }
   }
-  .vp-tabs-tab[aria-selected="true"] {
+  .vp-tabs-tab[aria-selected="true"], .vp-tabs-tab[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) {
     color: var(--vp-code-tab-active-text-color);
   }
-  .vp-tabs-tab[aria-selected="true"]::after {
+  .vp-tabs-tab[aria-selected="true"]::after, .vp-tabs-tab[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"])::after {
     background-color: var(--vp-code-tab-active-bar-color);
   }
   .vp-kbd {

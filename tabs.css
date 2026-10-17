@@ -14,7 +14,15 @@
  * when a 2px brand bar marks it (`::after`). Where VitePress has radio
  * inputs and labels, the tabs are buttons that say which one is selected;
  * showing its panel, and moving the selection with the arrow keys, are the
- * page's. A tab may be a link; `text-decoration: none` keeps the markdown's
+ * page's. vpkit's addition: a row of links to pages, which are no tabs
+ * over panels, is a <nav> whose current link has aria-current, read as
+ * vp-btn reads it ("false", "" and "undefined" are not current):
+ *
+ *   <nav class="vp-tabs" aria-label="Status">
+ *     <a class="vp-tabs-tab" href="?status=open" aria-current="page">Open</a>
+ *     <a class="vp-tabs-tab" href="?status=resolved">Resolved</a>
+ *   </nav>
+ * A tab may be a link; `text-decoration: none` keeps the markdown's
  * rule for links from underlining one inside a vp-doc. Not ported: the bar's bleed to the screen's edges under 640px
  * (-1.5rem each side, square corners), which is the markdown column's. */
 
@@ -65,11 +73,15 @@
     }
   }
 
-  .vp-tabs-tab[aria-selected="true"] {
+  /* selected: a tab over a panel says so with aria-selected, a link to a
+     page with aria-current, read as vp-btn reads it */
+  .vp-tabs-tab[aria-selected="true"],
+  .vp-tabs-tab[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) {
     color: var(--vp-code-tab-active-text-color);
   }
 
-  .vp-tabs-tab[aria-selected="true"]::after {
+  .vp-tabs-tab[aria-selected="true"]::after,
+  .vp-tabs-tab[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"])::after {
     background-color: var(--vp-code-tab-active-bar-color);
   }
 }

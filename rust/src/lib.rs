@@ -32,6 +32,7 @@ mod empty;
 mod field;
 mod pager;
 mod stat;
+mod tabs;
 
 pub use chip::Chip;
 pub use dialog::Dialog;
@@ -39,6 +40,7 @@ pub use empty::Empty;
 pub use field::{Field, FieldError, FieldHint, field_error_id, field_hint_id};
 pub use pager::Pager;
 pub use stat::Stat;
+pub use tabs::{Tab, Tabs};
 
 #[cfg(test)]
 mod header;
