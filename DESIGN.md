@@ -131,7 +131,7 @@ For a component from an app recipe:
 | `vp-card` | VPFeature | `vp-card-title`, `vp-card-details`; `vp-card-outline` (own-drive's and crashcart's: the page's color in a divider border) |
 | `vp-input` | totality's `input_base!` | `aria-invalid`; on `<input>`, `<select>` and `<textarea>` |
 | `vp-toggle` | VPSwitch, VPSwitchAppearance | `vp-toggle-check`, `vp-toggle-icon`; `aria-checked`; `vp-toggle-appearance` |
-| `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors |
+| `vp-link` | `vp-doc.css`: `.vp-doc a` | on `<a>` and `<button>`; code inside takes the link's colors; `vp-link-quiet` (vpkit's) |
 | `vp-code` | `vp-doc.css`: `.vp-doc :not(pre) > code` | — |
 | `vp-spinner` | VPLocalSearchBox: `.search-loading.active` | — |
 | `vp-dialog` | own-drive's `MODAL` (a recipe) | `vp-dialog-title`, `vp-dialog-actions`; `::backdrop` |
@@ -230,7 +230,8 @@ VitePress's link, `.vp-doc a`, as a class: for a link outside the markdown, and 
 - Tokens: `brand-1`, `brand-2`, `--vp-code-link-color`, `--vp-code-link-hover-color` (both `brand-1`/`-2`), in the contract.
 - An app-wide hover color is the token, not the local: `.vp-link { --vp-link-hover-text: … }` misses a `<code>` in the link, which reads `--vp-code-link-hover-color`, and every link in `vp-doc`, which carries no class.
 - On a `<button>`: measured, the `<button>` case renders every compared property as `.vp-doc a` does, so Tailwind's preflight leaves nothing else to reset. The 40px hit area totality gives its text buttons stays utilities (`min-h-10 px-2`).
-- Cases: an `<a>` and a `<button>` against `.vp-doc a` (color, weight, decoration, offset, font size, transition; hover; a `<code>` inside, at rest and while the link is hovered); touch.
+- `vp-link-quiet` (vpkit's addition, rule 12; own-drive's `DL` and `DL_LOC`, crashcart's why lines and its table links, which each drew a link in the text's own color): `--vp-link-text: currentColor` (in `color`, `currentColor` is the parent's color, so the link takes the text around it), `--vp-link-hover-text: var(--vp-c-brand-1)`, `font-weight: inherit`, `text-decoration: none`. A color of its own goes on the text around it: a color utility on the link beats its hover. own-drive's location line underlined on hover; vpkit's quiet link changes color only, as VitePress's nav and outline links do.
+- Cases: an `<a>` and a `<button>` against `.vp-doc a` (color, weight, decoration, offset, font size, transition; hover; a `<code>` inside, at rest and while the link is hovered); touch. The quiet link against own-drive's file name link and crashcart's why line (color, decoration, weight, transition written inline; hover), against own-drive's location line in secondary text (its hover underline removed inline), inside a `vp-doc` and inside an alert against itself, and on a touch screen.
 
 ### `vp-code`
 

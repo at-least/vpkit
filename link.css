@@ -17,7 +17,18 @@
  * The two colors are the link's own variables, as in button.css, so a
  * site retunes them in one rule: `.vp-link { --vp-link-hover-text: … }`.
  * The hover is `@variant hover`, like Tailwind's `hover:`. On a button,
- * the hit area is the page's (`min-h-10 px-2`). */
+ * the hit area is the page's (`min-h-10 px-2`).
+ *
+ * Modifier, used together with `vp-link`, vpkit's addition (own-drive's
+ * file name links, crashcart's why lines and table links):
+ *   vp-link-quiet   a link among text that needn't call out: the color
+ *                   and weight of the text around it (`--vp-link-text` is
+ *                   `currentColor`), no underline, brand-1 on hover; a
+ *                   weight of its own is a utility (`font-medium`), a color
+ *                   the text around it (`text-secondary` on the line), as a
+ *                   color utility on the link itself would beat its hover
+ *
+ *   <a class="vp-link vp-link-quiet font-medium" href="/files/notes.txt">notes.txt</a> */
 
 @layer components {
   .vp-link {
@@ -29,6 +40,14 @@
     text-decoration: underline;
     text-underline-offset: 0.125rem;
     transition: color 0.25s, opacity 0.25s;
+  }
+
+  .vp-link-quiet.vp-link {
+    --vp-link-text: currentColor;
+    --vp-link-hover-text: var(--vp-c-brand-1);
+
+    font-weight: inherit;
+    text-decoration: none;
   }
 
   .vp-link > code {

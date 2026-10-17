@@ -112,3 +112,14 @@ export const OWN_DRIVE_CRUMB_SLASH = 'text-text-3';
 export const TOTALITY_BADGE_OUTLINE = 'vp-badge bg-bg border-default-soft';
 export const TOTALITY_BADGE_OUTLINE_SUCCESS = 'vp-badge vp-badge-success bg-bg border-success-soft';
 export const TOTALITY_BADGE_OUTLINE_DANGER = 'vp-badge vp-badge-danger bg-bg border-danger-soft';
+
+// own-drive src/web.rs at 9aff0f4, verbatim as of 2026-10-18 but for the
+// `dl` JS hook: a file name's link (`DL`), and a search hit's location
+// (`DL_LOC`), quiet metadata underlined on hover; the references for
+// vp-link-quiet, the second with vpkit's no underline written inline
+export const OWN_DRIVE_DL = 'text-body no-underline font-medium hover:text-brand-1';
+export const OWN_DRIVE_DL_LOC = 'text-secondary no-underline font-normal hover:text-brand-1 hover:underline';
+
+// crashcart src/web/styles/app.css at 0b6d7a3, as of 2026-10-18: its
+// `.whyline` (text-1, no underline, brand-1 on hover) as utilities
+export const CRASHCART_WHYLINE = 'text-text-1 no-underline hover:text-brand-1';

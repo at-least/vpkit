@@ -1786,6 +1786,12 @@ button:focus-visible {
     text-underline-offset: 0.125rem;
     transition: color 0.25s, opacity 0.25s;
   }
+  .vp-link-quiet.vp-link {
+    --vp-link-text: currentColor;
+    --vp-link-hover-text: var(--vp-c-brand-1);
+    font-weight: inherit;
+    text-decoration: none;
+  }
   .vp-link > code {
     color: var(--vp-code-link-color);
   }

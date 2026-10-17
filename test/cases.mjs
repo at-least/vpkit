@@ -29,6 +29,9 @@ import {
   CRASHCART_PANEL,
   CRASHCART_PANEL_FLUSH,
   CRASHCART_PANEL_FORM,
+  CRASHCART_WHYLINE,
+  OWN_DRIVE_DL,
+  OWN_DRIVE_DL_LOC,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -587,6 +590,43 @@ for (const tag of ['a', 'button']) {
 touch('link', `<a data-t="a" class="vp-link" href="#">Orders <code data-t="code">code</code></a>`, [
   { target: 'a', ...AT_REST, props: ['color'] },
   { target: 'code', on: 'a', ...AT_REST, props: ['color'] },
+]);
+
+// quiet link, vpkit's addition: own-drive's file name link and crashcart's
+// why line, whose colors and decoration vp-link-quiet takes, with vp-link's
+// color transition written inline (neither recipe has one); its color is
+// the text around it, so own-drive's quiet location line in secondary text
+// keeps that color, with vpkit's no underline on hover written inline;
+// then inside a vp-doc against itself outside one, and on a touch screen
+const QUIET = ['color', 'text-decoration-line', 'font-weight', ...TRANSITION];
+const LINK_FADE = 'transition:color 0.25s,opacity 0.25s';
+for (const [name, ref, vpkit] of [
+  ['link, quiet', `<a data-t="a" href="#" class="${OWN_DRIVE_DL}" style="${LINK_FADE}">notes.txt</a>`, '<a data-t="a" href="#" class="vp-link vp-link-quiet font-medium">notes.txt</a>'],
+  ["link, quiet, crashcart's why line", `<a data-t="a" href="#" class="${CRASHCART_WHYLINE}" style="${LINK_FADE}">3 failures since 09:12</a>`, '<a data-t="a" href="#" class="vp-link vp-link-quiet">3 failures since 09:12</a>'],
+  ['link, quiet, in secondary text', `<p class="text-secondary"><a data-t="a" href="#" class="${OWN_DRIVE_DL_LOC}" style="${LINK_FADE};text-decoration-line:none">docs/2026</a></p>`, '<p class="text-secondary"><a data-t="a" href="#" class="vp-link vp-link-quiet">docs/2026</a></p>'],
+]) {
+  cases.push({
+    name,
+    reference: `<div>${ref}</div>`,
+    vpkit: `<div>${vpkit}</div>`,
+    checks: [
+      { target: 'a', props: QUIET },
+      { target: 'a', state: ['hover'], props: ['color', 'text-decoration-line'] },
+    ],
+  });
+}
+const quietLink = '<p>Kept in <a data-t="a" href="#" class="vp-link vp-link-quiet">docs/2026</a> since May.</p>';
+cases.push({
+  name: 'link, quiet, in a doc',
+  reference: `<div>${quietLink}</div>`,
+  vpkit: inDoc(quietLink),
+  checks: [
+    { target: 'a', props: ['color', 'text-decoration-line', 'font-weight'] },
+    { target: 'a', state: ['hover'], props: ['color', 'text-decoration-line'] },
+  ],
+});
+touch('link, quiet', '<a data-t="a" class="vp-link vp-link-quiet" href="#">notes.txt</a>', [
+  { target: 'a', ...AT_REST, props: ['color'] },
 ]);
 
 // code: VitePress's inline code (.vp-doc :not(pre) > code) against
@@ -1227,6 +1267,7 @@ const IN_ALERT = [
   ]],
   // an icon has no text for the alert's link weight to draw
   ['inline button', `<a data-t="x" class="vp-inline-btn" href="#" aria-label="Open"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
+  ['quiet link', '<p>See <a data-t="x" class="vp-link vp-link-quiet" href="#">the runbook</a>.</p>', [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
   // a chip that is a link: the pill and its key, whose weight it inherits
   ['chip link', `<a data-t="x" class="vp-chip" href="#"><span data-t="key" class="vp-chip-key">release:</span><span data-t="value" class="vp-chip-value">2.4.1</span></a>`, [
     { target: 'x', props: LOOK },
