@@ -21,6 +21,7 @@ import {
   TOTALITY_INPUT,
   TOTALITY_MSG_ERROR,
   CRASHCART_FIELD,
+  CRASHCART_FIELD_IN_ROW,
   CRASHCART_FIELD_LABEL,
   CRASHCART_FIELD_HINT,
 } from './recipes.mjs';
@@ -1066,6 +1067,29 @@ const narrowField = (ref) =>
   `<div style="display:flex;width:9rem"><div data-t="field" class="${ref ? CRASHCART_FIELD : 'vp-field'}">` +
   `<label class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="n">Nightly backup name</label>` +
   `<input data-t="input" class="vp-input${ref ? ' min-w-0' : ''}" id="n"></div></div>`;
+// fields in a wrapping row at a desktop's width, each control 16rem wide:
+// crashcart's plain box against vp-field, whose shrinkable column and zero
+// minimum must change nothing where the row has room (the third wraps)
+const fieldRow = (ref) =>
+  `<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:0.75rem;width:40rem">` +
+  [1, 2, 3]
+    .map(
+      (n) =>
+        `<div data-t="f${n}" class="${ref ? CRASHCART_FIELD_IN_ROW : 'vp-field'}">` +
+        `<label class="${ref ? CRASHCART_FIELD_LABEL : 'vp-label'}" for="r${n}">Name ${n}</label>` +
+        `<input data-t="i${n}" class="vp-input" id="r${n}" style="width:16rem"></div>`,
+    )
+    .join('') +
+  '</div>';
+cases.push({
+  name: 'fields in a row',
+  reference: fieldRow(true),
+  vpkit: fieldRow(false),
+  checks: [1, 2, 3].flatMap((n) => [
+    { target: `f${n}`, props: ['width', 'height', 'offset-left', 'offset-top'] },
+    { target: `i${n}`, props: ['width', 'offset-top'] },
+  ]),
+});
 cases.push({
   name: 'field in a narrow row',
   reference: narrowField(true),

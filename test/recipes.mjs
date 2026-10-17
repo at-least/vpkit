@@ -46,6 +46,9 @@ export const TOTALITY_MSG_ERROR = 'mt-2 text-[0.875rem] leading-6 text-danger-1'
 // its control may shrink in, the label's margin removed, and the hint line
 // under a control
 export const CRASHCART_FIELD = 'grid grid-cols-1 gap-1.5 min-w-0';
+// and src/web/pages/account.rs, settings.rs and alerts.rs at ee03de1: the
+// box where the control has a width of its own, in a wrapping row of fields
+export const CRASHCART_FIELD_IN_ROW = 'grid gap-1.5';
 export const CRASHCART_FIELD_LABEL = 'vp-label mb-0';
 export const CRASHCART_FIELD_HINT = 'text-xs text-secondary';
 
