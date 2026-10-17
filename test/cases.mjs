@@ -49,6 +49,7 @@ import {
   OWN_DRIVE_UPLOADS,
   TOTALITY_DIVIDER_LABEL,
   TOTALITY_DIVIDER_LINE,
+  OWN_DRIVE_DROP_TARGET,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1254,6 +1255,22 @@ for (const [name, width, overflow] of [['nav lane', '40rem', false], ['nav lane,
     ],
   });
 }
+
+// drop zone: own-drive's drop target against vp-dropzone, and inside a
+// vp-doc against itself outside one
+const DROP = [...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'font-size', 'font-weight', 'line-height', 'color', 'background-color', 'box-shadow', 'height', 'width'];
+cases.push({
+  name: 'drop zone',
+  reference: `<div style="display:flex"><div data-t="z" class="${OWN_DRIVE_DROP_TARGET}">drop files or folders to upload</div></div>`,
+  vpkit: '<div style="display:flex"><div data-t="z" class="vp-dropzone">drop files or folders to upload</div></div>',
+  checks: [{ target: 'z', props: DROP }],
+});
+cases.push({
+  name: 'drop zone in a doc',
+  reference: '<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>',
+  vpkit: inDoc('<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>'),
+  checks: [{ target: 'z', props: [...DROP, ...MARGIN] }],
+});
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's

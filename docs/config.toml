@@ -76,6 +76,7 @@ items = [
   { text = "Divider", link = "@/components/divider.md" },
   { text = "Dot", link = "@/components/dot.md" },
   { text = "Drawer", link = "@/components/drawer.md" },
+  { text = "Drop Zone", link = "@/components/dropzone.md" },
   { text = "Dropdown", link = "@/components/dropdown.md" },
   { text = "Empty State", link = "@/components/empty.md" },
   { text = "Field", link = "@/components/field.md" },

@@ -208,3 +208,10 @@ export const OWN_DRIVE_UPLOADS = 'bg-[color:var(--vp-c-bg-elv)] border border-di
 // vp-divider-label
 export const TOTALITY_DIVIDER_LABEL = 'my-6 flex items-center gap-3 text-[0.8125rem] leading-5 text-secondary';
 export const TOTALITY_DIVIDER_LINE = 'h-px flex-1 bg-divider';
+
+// own-drive src/web.rs at 9aff0f4, verbatim as of 2026-10-18: the target
+// its drop overlay centers while files are dragged over the window (the
+// overlay itself, `fixed inset-0 … bg-[color:var(--vp-c-brand-soft)]`, is
+// placement and a wash); the reference for vp-dropzone
+export const OWN_DRIVE_DROP_TARGET =
+  'border-2 border-dashed border-brand-1 rounded-[1rem] py-[3rem] px-[5rem] text-[1.25rem] font-semibold text-brand-1 bg-[color:var(--vp-c-bg-elv)] shadow-4';
