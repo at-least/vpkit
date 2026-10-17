@@ -1199,6 +1199,38 @@ cases.push({
   ],
 });
 
+// nav screen: VitePress's VPNavScreen and its container, at a phone's
+// width (it hides from 48rem), against vp-screen and vp-screen-container;
+// vpkit's screen starts under the bar (top) where VitePress's covers it
+// and pads down past it, written inline on the upstream side; then its
+// labelled appearance row (VPNavAppearance's screen row) against
+// vp-screen-row and vp-screen-label
+const SCREEN = ['position', 'top', 'right', 'bottom', 'left', ...PADDING, 'width', 'background-color', 'overflow-y', 'overscroll-behavior-y', ...TRANSITION];
+const SCREEN_ITEMS = '<a data-t="item" class="vp-nav-link vp-nav-link-screen" href="#">Store</a>';
+cases.push({
+  name: 'nav screen',
+  width: 375,
+  upstreamFiles: ['components/VPNavScreen.vue'],
+  upstream: `<div data-t="s" class="VPNavScreen" style="top:calc(var(--vp-nav-height) + 1px);padding-top:0"><div data-t="c" class="container">${SCREEN_ITEMS}</div></div>`,
+  vpkit: `<div data-t="s" class="vp-screen"><div data-t="c" class="vp-screen-container">${SCREEN_ITEMS}</div></div>`,
+  checks: [
+    { target: 's', props: SCREEN },
+    { target: 'c', props: [...MARGIN, ...PADDING, 'max-width', 'width', 'offset-left', 'offset-top'] },
+  ],
+});
+cases.push({
+  name: 'nav screen appearance row',
+  width: 375,
+  upstreamFiles: ['components/VPNavAppearance.vue'],
+  upstream: '<div style="width:18rem"><div data-t="row" class="VPNavAppearance VPNavScreenAppearance"><p data-t="label" class="text">Appearance</p><span data-t="ctl">switch</span></div></div>',
+  vpkit: '<div style="width:18rem"><div data-t="row" class="vp-screen-row"><p data-t="label" class="vp-screen-label">Appearance</p><span data-t="ctl">switch</span></div></div>',
+  checks: [
+    { target: 'row', props: ['display', 'justify-content', 'align-items', ...RADIUS, ...PADDING, 'background-color', 'height'] },
+    { target: 'label', props: ['line-height', 'font-size', 'font-weight', 'color', ...MARGIN] },
+    { target: 'ctl', props: ['offset-left', 'offset-top'] },
+  ],
+});
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is

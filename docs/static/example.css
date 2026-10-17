@@ -212,6 +212,9 @@
   .grid {
     display: grid;
   }
+  .hidden {
+    display: none;
+  }
   .inline-flex {
     display: inline-flex;
   }
@@ -3087,6 +3090,39 @@ button:focus-visible {
   }
   .vp-sidenav-link[aria-current="page"]::before {
     background-color: var(--vp-c-brand-1);
+  }
+  .vp-screen {
+    position: fixed;
+    top: calc(var(--vp-nav-height) + 1px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0 2rem;
+    width: 100%;
+    background-color: var(--vp-nav-screen-bg-color);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: background-color 0.25s;
+  }
+  .vp-screen-container {
+    margin: 0 auto;
+    padding: 1.5rem 0 6rem;
+    max-width: 18rem;
+  }
+  .vp-screen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.875rem 0.75rem 1rem;
+    background-color: var(--vp-c-bg-soft);
+  }
+  .vp-screen-label {
+    margin: 0;
+    line-height: 2;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
   }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);

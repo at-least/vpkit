@@ -87,6 +87,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
 | [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
 | [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
+| [Nav Screen](@/components/screen.md) | `vp-screen` | VitePress's `VPNavScreen` |
 | [Pager](@/components/pager.md) | `vp-pager` | none, vpkit's own: a list's summary and its newer and older buttons |
 | [Panel](@/components/panel.md) | `vp-panel` | none, vpkit's own: a box of content, a form, rows or a table |
 | [Popover](@/components/popover.md) | `vp-popover` | the surface of VitePress's `VPMenu`, without the menu |
