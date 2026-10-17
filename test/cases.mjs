@@ -1310,6 +1310,29 @@ cases.push({
   checks: [{ target: 't', props: [...THUMB, 'color', 'text-decoration-line'] }, { target: 'img', props: [...MARGIN, 'height'] }],
 });
 
+// site footer: VitePress's VPFooter (its container and message) against
+// vp-site-footer with a paragraph, wide and at a phone's width, its link
+// at rest and hovered; on a touch screen
+const FOOT = ['position', 'z-index', ...BORDER, 'border-top-color', ...PADDING, 'background-color', 'height'];
+const FOOT_TEXT = ['line-height', 'font-size', 'font-weight', 'color', 'text-align', 'max-width', ...MARGIN, 'offset-left', 'width'];
+const FOOT_LINK = ['color', 'text-decoration-line', 'text-underline-offset', ...TRANSITION];
+for (const [name, width] of [['site footer', undefined], ["site footer at a phone's width", 375]]) {
+  cases.push({
+    name,
+    width,
+    upstreamFiles: ['components/VPFooter.vue'],
+    upstream: '<footer data-t="f" class="VPFooter"><div class="container"><p data-t="p" class="message">Made by <a data-t="a" href="#">Example Inc.</a> 16753096</p></div></footer>',
+    vpkit: '<footer data-t="f" class="vp-site-footer"><p data-t="p">Made by <a data-t="a" href="#">Example Inc.</a> 16753096</p></footer>',
+    checks: [
+      { target: 'f', props: FOOT },
+      { target: 'p', props: FOOT_TEXT.filter((p) => !p.startsWith('offset') && p !== 'max-width') },
+      { target: 'a', props: FOOT_LINK },
+      { target: 'a', state: ['hover'], props: ['color'] },
+    ],
+  });
+}
+touch('site footer', '<footer class="vp-site-footer"><p>Made by <a data-t="a" href="#">Example Inc.</a></p></footer>', [{ target: 'a', ...AT_REST, props: ['color'] }]);
+
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
 // color transition written inline (neither recipe has one); its color is
