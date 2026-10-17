@@ -18,8 +18,9 @@
  * the value. A `vp-btn` in the row keeps its size, centered on the row.
  * Lines stacked in one box are 0.375rem from each other, the first and the
  * last flush with the box. Copying is the page's script
- * (navigator.clipboard); vpkit ships none. Inside a vp-doc the value keeps
- * the row's look, not the markdown's inline code. */
+ * (navigator.clipboard); vpkit ships none. Inside a vp-doc or a vp-alert
+ * the value keeps the row's look, not their inline code's chip: it sets
+ * its own size, padding, radius and ground (rule 6). */
 
 @layer components {
   .vp-copy {
@@ -47,24 +48,22 @@
     user-select: none;
   }
 
+  /* the row's size and no chip: a vp-doc's and a vp-alert's rules for
+     inline code (content.css's, `:where(.vp-alert) code`) would otherwise
+     set it at 0.875em on a tinted ground */
   .vp-copy-value {
     flex: 1 1 12rem;
     min-width: 0;
+    border-radius: 0;
+    padding: 0;
     overflow-wrap: anywhere;
+    font-size: inherit;
     color: var(--vp-c-text-1);
+    background-color: transparent;
   }
 
   :where(.vp-copy) > .vp-btn {
     flex-shrink: 0;
     align-self: center;
-  }
-
-  /* inside a vp-doc (content.css), whose rule for inline code gives the
-     value a chip: none, the row's size */
-  .vp-doc .vp-copy-value {
-    border-radius: 0;
-    padding: 0;
-    font-size: inherit;
-    background-color: transparent;
   }
 }

@@ -1690,6 +1690,27 @@ cases.push({
   vpkit: inDoc(copyLine(1, COPY_VALUES[0], false)),
   checks: [{ target: 'value1', props: [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color', 'height'] }],
 });
+// inside an alert of each type, and one in a doc, the value against itself
+// outside: the alert's rule for its inline code (`:where(.vp-alert) code`,
+// the chip at 0.875em) must not reach it (crashcart's missing-symbol
+// notice holds a sentry-cli line). Not its height: the row takes the
+// alert's line height (1.7142857), as every line in the alert does
+const COPY_VALUE_LOOK = [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color'];
+for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'caution']) {
+  const modifier = type === 'info' ? '' : ` vp-alert-${type}`;
+  cases.push({
+    name: `copy line inside an alert, ${type}`,
+    reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
+    vpkit: `<div class="vp-alert${modifier}">${copyLine(1, COPY_VALUES[0], false)}</div>`,
+    checks: [{ target: 'value1', props: COPY_VALUE_LOOK }],
+  });
+}
+cases.push({
+  name: 'copy line inside an alert in a doc',
+  reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
+  vpkit: inDoc(`<div class="vp-alert vp-alert-warning">${copyLine(1, COPY_VALUES[0], false)}</div>`),
+  checks: [{ target: 'value1', props: COPY_VALUE_LOOK }],
+});
 
 // file input: crashcart's file-input (src/web/styles/app.css at 4b4fdd6,
 // its rules in a <style>, since the chooser is a pseudo-element no inline

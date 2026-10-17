@@ -30,11 +30,22 @@ A value to copy, such as a command, a URL or a key, in the code face, with an op
 - `vp-copy-label`, optional: secondary text, at least 4.5rem wide so a stack of lines lines up its values, and left out of a selection, so a selection copies the value alone.
 - `vp-copy-value`: the value, growing from 12rem and breaking anywhere, so a long one wraps inside the row and at a phone's width the button takes a line of its own.
 - A [Button](@/components/button.md) in the row keeps its size, centered on the row. The copying is your script's (`navigator.clipboard`): vpkit ships no JavaScript.
-- Inside a `vp-doc` the value keeps the row's look rather than the markdown's inline code.
+- Inside a `vp-doc` or an [Alert](@/components/alert.md) the value keeps the row's look rather than their inline code's chip: it sets its own size, padding, radius and ground.
 
 {% <vp_example title="A value without a label"> %}
 <div class="vp-copy">
   <code class="vp-copy-value">https://2b1f@crashcart.example/2</code>
   <button class="vp-btn" type="button">Copy</button>
+</div>
+{% </vp_example> %}
+
+{% <vp_example title="A command inside a warning"> %}
+<div class="vp-alert vp-alert-warning">
+  <p>This stack is obfuscated: its debug id <code>d1d2d3d4</code> has no matching symbol file. Upload one with:</p>
+  <div class="vp-copy">
+    <span class="vp-copy-label">sentry-cli</span>
+    <code class="vp-copy-value">sentry-cli upload-proguard --uuid d1d2d3d4 mapping.txt</code>
+    <button class="vp-btn" type="button">Copy</button>
+  </div>
 </div>
 {% </vp_example> %}
