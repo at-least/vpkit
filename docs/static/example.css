@@ -2507,7 +2507,7 @@ button:focus-visible {
     min-width: 0;
     border-radius: 0;
     padding: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     font-size: inherit;
     color: var(--vp-c-text-1);
     background-color: transparent;

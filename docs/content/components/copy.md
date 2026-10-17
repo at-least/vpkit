@@ -28,7 +28,7 @@ A value to copy, such as a command, a URL or a key, in the code face, with an op
 
 - `vp-copy` is the row: wrapping, on the baseline, in the code face at 13px. Lines stacked in one box sit 0.375rem apart, the first and the last flush with the box.
 - `vp-copy-label`, optional: secondary text, at least 4.5rem wide so a stack of lines lines up its values, and left out of a selection, so a selection copies the value alone.
-- `vp-copy-value`: the value, growing from 12rem and breaking anywhere, so a long one wraps inside the row and at a phone's width the button takes a line of its own.
+- `vp-copy-value`: the value, growing from 12rem and breaking a word only where it would overflow, so a long one wraps inside the row, at a phone's width the button takes a line of its own, and in a table cell a command wraps at its spaces.
 - A [Button](@/components/button.md) in the row keeps its size, centered on the row. The copying is your script's (`navigator.clipboard`): vpkit ships no JavaScript.
 - Inside a `vp-doc` or an [Alert](@/components/alert.md) the value keeps the row's look rather than their inline code's chip: it sets its own size, padding, radius and ground.
 

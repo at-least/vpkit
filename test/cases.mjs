@@ -1744,10 +1744,13 @@ cases.push({
 // :first-child and :last-child rules give them) against vp-copy, three lines
 // stacked in a box; then at a phone's width, where a long value pushes the
 // button onto a line of its own; then the value inside a vp-doc against
-// itself outside one
+// itself outside one. vpkit's change: the value's overflow-wrap is
+// break-word, where the recipe had anywhere, written inline on the recipe;
+// the rows' geometry is the recipe's either way, and a copy line in a table
+// cell (below) is where the two part
 const COPY_ROW = 'display:flex;flex-wrap:wrap;align-items:baseline;gap:0.75rem;font-family:var(--vp-font-family-mono);font-size:0.8125rem';
 const COPY_LABEL = 'flex-shrink:0;min-width:4.5rem;color:var(--vp-c-text-2);user-select:none';
-const COPY_VALUE = 'flex:1 1 12rem;min-width:0;overflow-wrap:anywhere;color:var(--vp-c-text-1)';
+const COPY_VALUE = 'flex:1 1 12rem;min-width:0;overflow-wrap:break-word;color:var(--vp-c-text-1)';
 const COPY_BTN = 'flex-shrink:0;align-self:center';
 const copyLine = (n, value, ref, padding) =>
   ref
@@ -1785,6 +1788,25 @@ cases.push({
   reference: `<div data-t="box">${copyLine(1, COPY_VALUES[1], true, '0')}</div>`,
   vpkit: `<div data-t="box">${copyLine(1, COPY_VALUES[1], false)}</div>`,
   checks: copyChecks([1]),
+});
+// in a table cell: crashcart's release page writes overflow-wrap: normal on
+// the value (and padding: 0 on the row, which a lone row has anyway), so an
+// auto table sizes the column by the command's longest word rather than by
+// one character; vpkit's value does the same with no style of its own
+const copyCell = (ref) =>
+  `<table style="width:20rem"><tr><td data-t="name">The release ships an obfuscated build whose mapping file was never uploaded</td><td data-t="cell">` +
+  `<div data-t="row1" class="vp-copy"${ref ? ' style="padding:0"' : ''}><code data-t="value1" class="vp-copy-value"${ref ? ' style="overflow-wrap:normal"' : ''}>sentry-cli upload-proguard --uuid 3f2a mapping.txt</code>` +
+  `<button data-t="btn1" class="vp-btn" type="button">Copy</button></div></td></tr></table>`;
+cases.push({
+  name: 'copy line in a table cell',
+  reference: copyCell(true),
+  vpkit: copyCell(false),
+  checks: [
+    { target: 'name', props: ['width'] },
+    { target: 'cell', props: ['width', 'height'] },
+    { target: 'value1', props: ['width', 'height', 'offset-top'] },
+    { target: 'btn1', props: ['offset-left', 'offset-top'] },
+  ],
 });
 cases.push({
   name: 'copy line in a doc',
