@@ -23,9 +23,9 @@
  * which the Rust crate's Chip writes; icons.css has none, since a page
  * that refuses data: images could not draw it. A chip that opens the list
  * it names is a link as a whole (`<a class="vp-chip">`), with no remove
- * control inside it; inside an alert or a vp-doc it keeps its look, the
- * alert's rule for links underlining, weighting and recoloring none of it
- * (it sets its own text-decoration, weight and hovered color, rule 6). */
+ * control inside it; inside a vp-doc it keeps its look, setting its own
+ * text-decoration and weight, which the markdown's rule for links would
+ * otherwise give it (rule 6). */
 
 @layer components {
   .vp-chip {
@@ -39,15 +39,6 @@
     color: var(--vp-c-text-2);
     text-decoration: none;
     background-color: var(--vp-c-bg-soft);
-  }
-
-  /* a chip that is a link keeps its color hovered inside an alert, whose
-     rule for a hovered link (0,1,1) would recolor it (rule 6); a rule of
-     its own, as in button.css */
-  .vp-chip {
-    @variant hover {
-      color: var(--vp-c-text-2);
-    }
   }
 
   .vp-chip-key {

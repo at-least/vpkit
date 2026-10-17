@@ -13,8 +13,8 @@
  * `hover:`, only on a device that can hover (VPFeature's also sticks to
  * a tapped card on a touch screen). A link card inherits the text's color
  * and weight and has no underline, at rest and hovered, set on the card
- * so that an alert's rules for links don't recolor, embolden or underline
- * one inside it. Not ported: the feature icon.
+ * so that the markdown's rule for links doesn't recolor, embolden or
+ * underline one inside a vp-doc. Not ported: the feature icon.
  *
  * Modifier, used together with `vp-card`:
  *   vp-card-outline   vpkit's addition: the card on the page's color in a

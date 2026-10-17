@@ -42,7 +42,7 @@ VitePress's custom blocks (`::: tip` and the others).
 
 ## What goes inside
 
-Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component keeps its own look too, inside a `vp-doc` as well: a `vp-btn`, `vp-card`, `vp-dropdown-item`, `vp-tabs-tab` or `vp-icon-btn` link is not restyled as a link. Only the alert's link hover dimming applies to it.
+Links, inline code and paragraphs inside take the alert's look. A nested alert keeps its own colors. A component keeps its own look too, inside a `vp-doc` as well: a `vp-btn`, `vp-card`, `vp-dropdown-item`, `vp-tabs-tab` or `vp-icon-btn` link is not restyled as a link, hovered either: the alert's rules for links and inline code are for bare ones.
 
 {% <vp_example title="A button and a nested alert inside an alert"> %}
 <div class="vp-alert vp-alert-danger">

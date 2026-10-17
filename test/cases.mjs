@@ -73,13 +73,6 @@ export const known = [
       "VitePress's `.custom-block.tip code` also matches code inside a nested info block (it comes later in custom-block.css); a nested vp-alert keeps its own code background",
   },
   {
-    case: /^button inside an alert$/,
-    target: 'btn',
-    prop: 'opacity',
-    reason:
-      "the alert's link hover dimming (opacity 0.75) also reaches a vp-btn link inside it; the button sets no opacity of its own",
-  },
-  {
     case: /^empty state$/,
     target: 'box',
     prop: 'background-color',
@@ -1187,13 +1180,13 @@ for (const value of ['false', '', 'undefined']) {
 }
 
 // link components inside an alert keep their own look, at rest and
-// hovered: the alert's rule for links underlines, recolors and weights any
-// <a> that doesn't set those itself (only its hover dimming still reaches
-// them, as it reaches vp-btn). Inside a vp-doc too, where the markdown's
-// link rules are in play. Block
+// hovered, not dimmed: the alert's rules for links match bare links only.
+// Inside a vp-doc too, where the markdown's link rules, which underline,
+// recolor and weight any <a> that doesn't set those itself, are in play. Block
 // wrappers: a card's heading inside a <p> would be parsed out of it
 const LOOK = ['color', 'text-decoration-line', 'font-weight'];
-const HOVER_COLOR = (target) => ({ target, state: ['hover'], props: ['color'] });
+// hovered: the color and no dimming, the alert's hover rule being for bare links
+const HOVER_COLOR = (target) => ({ target, state: ['hover'], props: ['color', 'opacity'] });
 const IN_ALERT = [
   ['dropdown item', `<div class="vp-dropdown">${ddItem('Profile', 'x')}</div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
   ['tab', `<div class="vp-tabs"><a data-t="x" class="vp-tabs-tab" href="#" role="tab" aria-selected="false">npm</a></div>`, [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],

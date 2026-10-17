@@ -17,8 +17,8 @@
  * text-2 with no underline, text-1 and underlined on hover (`@variant
  * hover`, like Tailwind's `hover:`: only on a device that can hover), and
  * the current one (`aria-current="page"`) text-1 at weight 600, with no
- * underline on hover either. Its weight is inherited, set so that an
- * alert's rule for links doesn't embolden one inside it.
+ * underline on hover either. Its weight is inherited, set so that the
+ * markdown's rule for links doesn't embolden one inside a vp-doc.
  *
  * Where own-drive writes the slash as a span between its crumbs, the list
  * draws it on each item after the first (`li + li::before`), 0.375rem from
