@@ -201,3 +201,10 @@ export const OWN_DRIVE_ICON_CHIP = 'fill-current w-4 h-4';
 // uploads panel's surface (`#uploads`), the reference for vp-popover with
 // VitePress's VPMenu
 export const OWN_DRIVE_UPLOADS = 'bg-[color:var(--vp-c-bg-elv)] border border-divider rounded-[.75rem] px-[.8rem] py-[.7rem] shadow-3';
+
+// totality crates/store/src/pages.rs at cbcbb503, verbatim as of
+// 2026-10-18: the line between the Google sign-in and the phone's form,
+// its label between two rules (the two `<span>`s); the reference for
+// vp-divider-label
+export const TOTALITY_DIVIDER_LABEL = 'my-6 flex items-center gap-3 text-[0.8125rem] leading-5 text-secondary';
+export const TOTALITY_DIVIDER_LINE = 'h-px flex-1 bg-divider';

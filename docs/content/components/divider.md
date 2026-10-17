@@ -31,3 +31,11 @@ The markdown's horizontal rule (`.vp-doc hr`), and the navbar's vertical rule be
 {% </vp_example> %}
 
 Under forced colors (Windows' contrast themes) the vertical rule, a background the browser would erase, takes the text color; the horizontal rule is a border, which those themes keep.
+
+## With a label
+
+`vp-divider-label`, with `vp-divider`, on a `<div>` holding a short label: the rule broken by the label centered on it, in small secondary text. The label is read as text; the rules are drawn.
+
+{% <vp_example title="Between two ways to sign in"> %}
+<div class="vp-divider vp-divider-label">or use your phone</div>
+{% </vp_example> %}

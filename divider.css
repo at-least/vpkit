@@ -20,13 +20,22 @@
  *                         divider color with 0.5rem at each side, for a
  *                         row of items (a flex row centers it, as the
  *                         bar's does)
+ *   vp-divider-label      vpkit's (totality's line between two ways to
+ *                         sign in): the rule broken by a label centered on
+ *                         it, on a <div> holding the label, 0.8125rem at
+ *                         1.25rem in text-2, a 1px rule each side 0.75rem
+ *                         from it; the label is read as text, the rules
+ *                         are drawn
+ *
+ *   <div class="vp-divider vp-divider-label">or use your phone</div>
  *
  * On an <hr>, a separator for assistive technology; the vertical one says
  * so with aria-orientation="vertical". In a flex row an <hr> is a flex
  * item, as VitePress's ::before is. One addition: under forced colors
  * (Windows' contrast themes) the browser erases backgrounds, and the
  * vertical rule is one, so there it takes the text color; the horizontal
- * rule is a border, which forced colors keep. */
+ * rule and the labelled divider's rules are borders, which forced colors
+ * keep. */
 
 @layer components {
   .vp-divider {
@@ -41,6 +50,23 @@
     width: 1px;
     height: 1.5rem;
     background-color: var(--vp-c-divider);
+  }
+
+  .vp-divider-label.vp-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: none;
+    line-height: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-divider-label.vp-divider::before,
+  .vp-divider-label.vp-divider::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--vp-c-divider);
   }
 
   @media (forced-colors: active) {

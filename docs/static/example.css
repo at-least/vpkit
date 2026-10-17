@@ -2460,6 +2460,20 @@ button:focus-visible {
     height: 1.5rem;
     background-color: var(--vp-c-divider);
   }
+  .vp-divider-label.vp-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: none;
+    line-height: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+  .vp-divider-label.vp-divider::before, .vp-divider-label.vp-divider::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--vp-c-divider);
+  }
   @media (forced-colors: active) {
     .vp-divider-vertical.vp-divider {
       forced-color-adjust: none;

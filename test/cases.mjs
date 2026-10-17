@@ -47,6 +47,8 @@ import {
   CRASHCART_SORT,
   OWN_DRIVE_ICON_CHIP,
   OWN_DRIVE_UPLOADS,
+  TOTALITY_DIVIDER_LABEL,
+  TOTALITY_DIVIDER_LINE,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -1115,6 +1117,30 @@ cases.push({
   reference: `<p><span data-t="t" style="${SR_ONLY}">${HINT_TEXT}</span></p>`,
   vpkit: `<p><span data-t="t" class="vp-hint-text">${HINT_TEXT}</span></p>`,
   checks: [{ target: 't', props: ['position', 'width', 'height', ...PADDING, ...MARGIN, 'overflow-x', 'overflow-y', 'clip', 'white-space', 'border-top-width'] }],
+});
+
+// labelled divider: totality's line between two ways to sign in (its
+// rules two <span>s, which vp-divider-label draws as ::before and ::after,
+// as a border where they were 1px of background, written inline: forced
+// colors keep a border) against vp-divider-label with the page's my-6;
+// then inside a vp-doc against itself outside one
+const LINE = ['block-size', 'flex-grow', 'flex-shrink', 'border-top-width', 'border-top-style', 'border-top-color', 'background-color'];
+const LINE_AS_BORDER = 'height:0;border-top:1px solid var(--vp-c-divider);background:none';
+cases.push({
+  name: 'divider with a label',
+  reference: `<div data-t="d" class="${TOTALITY_DIVIDER_LABEL}"><span data-t="l1" class="${TOTALITY_DIVIDER_LINE}" style="${LINE_AS_BORDER}"></span>或使用電話<span data-t="l2" class="${TOTALITY_DIVIDER_LINE}" style="${LINE_AS_BORDER}"></span></div>`,
+  vpkit: '<div data-t="d" class="vp-divider vp-divider-label my-6">或使用電話</div>',
+  checks: [
+    { target: 'd', props: ['display', 'align-items', 'column-gap', 'font-size', 'line-height', 'color', ...MARGIN, ...SIDES.map((side) => `border-${side}-width`), 'height'] },
+    { target: 'd', pseudo: '::before', refTarget: 'l1', refPseudo: null, props: LINE },
+    { target: 'd', pseudo: '::after', refTarget: 'l2', refPseudo: null, props: LINE },
+  ],
+});
+cases.push({
+  name: 'divider with a label in a doc',
+  reference: '<div><div data-t="d" class="vp-divider vp-divider-label">或使用電話</div></div>',
+  vpkit: inDoc('<div data-t="d" class="vp-divider vp-divider-label">或使用電話</div>'),
+  checks: [{ target: 'd', props: ['display', 'column-gap', 'font-size', 'line-height', 'color', ...MARGIN, ...SIDES.map((side) => `border-${side}-width`), 'height'] }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
