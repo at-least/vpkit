@@ -71,6 +71,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Description List](@/components/dl.md) | `vp-dl` | none, vpkit's own: terms and their values |
 | [Dialog](@/components/dialog.md) | `vp-dialog` | none, vpkit's own, on `<dialog>` |
 | [Divider](@/components/divider.md) | `vp-divider` | VitePress's markdown rule, and the navbar's vertical rule |
+| [Dot](@/components/dot.md) | `vp-dot` | none, vpkit's own: a legend's key, a status's second carrier |
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |
 | [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
 | [Empty State](@/components/empty.md) | `vp-empty` | none, vpkit's own |

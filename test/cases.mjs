@@ -40,6 +40,7 @@ import {
   CRASHCART_META_DT,
   TOTALITY_RESULT,
   TOTALITY_ADMIN_RESULT,
+  CRASHCART_LEGEND_DOT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -758,6 +759,33 @@ cases.push({
   reference: `<div><div data-t="s" class="vp-status" data-state="error">That code has expired.</div></div>`,
   vpkit: inDoc('<div data-t="s" class="vp-status" data-state="error">That code has expired.</div>'),
   checks: [{ target: 's', props: STATUS }],
+});
+
+// dot: crashcart's legend dot (its color inline, and vp-dot's flex-shrink
+// and badge-dot's 999px radius, the same circle as rounded-full's, written
+// inline) against vp-dot with each kind, with a color the page
+// sets through --vp-dot-color, and in the text's color (its .swatch with
+// no color named, in a text-2 legend line)
+const LONE_DOT = ['display', 'width', 'height', ...RADIUS, 'background-color', 'flex-shrink'];
+for (const [kind, token] of [['success', 'success-1'], ['warning', 'warning-1'], ['danger', 'danger-1'], ['tip', 'tip-1']]) {
+  cases.push({
+    name: `dot ${kind}`,
+    reference: `<span><span data-t="dot" class="${CRASHCART_LEGEND_DOT}" style="background:var(--vp-c-${token});flex-shrink:0;border-radius:999px"></span> 99% and up</span>`,
+    vpkit: `<span><span data-t="dot" class="vp-dot vp-dot-${kind}"></span> 99% and up</span>`,
+    checks: [{ target: 'dot', props: LONE_DOT }],
+  });
+}
+cases.push({
+  name: "dot in the page's color",
+  reference: `<span><span data-t="dot" class="${CRASHCART_LEGEND_DOT}" style="background:var(--vp-c-brand-1);flex-shrink:0;border-radius:999px"></span> stored</span>`,
+  vpkit: '<span><span data-t="dot" class="vp-dot" style="--vp-dot-color:var(--vp-c-brand-1)"></span> stored</span>',
+  checks: [{ target: 'dot', props: LONE_DOT }],
+});
+cases.push({
+  name: "dot in the text's color",
+  reference: `<span class="text-secondary"><span data-t="dot" class="${CRASHCART_LEGEND_DOT}" style="background:var(--vp-c-text-2);flex-shrink:0;border-radius:999px"></span> dropped</span>`,
+  vpkit: '<span class="text-secondary"><span data-t="dot" class="vp-dot"></span> dropped</span>',
+  checks: [{ target: 'dot', props: LONE_DOT }],
 });
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's

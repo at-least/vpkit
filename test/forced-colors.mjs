@@ -35,6 +35,8 @@ const noDrawer = '<dialog open style="position:static;padding:2rem 2rem 6rem;wid
 // its size
 const dot = '<span class="vp-badge-dot"></span>';
 const noDot = '<span style="display:inline-block;width:0.5rem;height:0.5rem"></span>';
+// a dot is a background too: against an empty box its size
+const lone = '<span class="vp-dot vp-dot-success"></span>';
 const PAIRS = [
   ['a checked and an unchecked toggle', toggle(true), toggle(false)],
   ['a progress bar at 40% and at 0%', bar(40), bar(0)],
@@ -42,6 +44,7 @@ const PAIRS = [
   ['an icon and an empty box its size', icon, noIcon],
   ['a vertical divider and an empty box its size', vertical, noVertical],
   ['a badge dot and an empty box its size', dot, noDot],
+  ['a dot and an empty box its size', lone, noDot],
   ['an open drawer and a bare dialog its size', drawer, noDrawer],
 ];
 

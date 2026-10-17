@@ -74,6 +74,7 @@ items = [
   { text = "Description List", link = "@/components/dl.md" },
   { text = "Dialog", link = "@/components/dialog.md" },
   { text = "Divider", link = "@/components/divider.md" },
+  { text = "Dot", link = "@/components/dot.md" },
   { text = "Drawer", link = "@/components/drawer.md" },
   { text = "Dropdown", link = "@/components/dropdown.md" },
   { text = "Empty State", link = "@/components/empty.md" },

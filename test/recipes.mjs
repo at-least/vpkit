@@ -160,3 +160,9 @@ export const TOTALITY_RESULT =
   'mt-4 text-[0.875rem] leading-6 text-secondary empty:mt-0 data-[result=error]:text-danger-1';
 export const TOTALITY_ADMIN_RESULT =
   'mt-4 text-[0.875rem] leading-6 text-secondary empty:hidden [&_:is(table,h2,h3,h4,p,ol,ul,dl)]:text-body';
+
+// crashcart src/web/pages/releases.rs and alerts.rs at 0b6d7a3, verbatim as
+// of 2026-10-18: a legend's dot, its color inline (`background:var(--ok)`);
+// the reference for vp-dot (and its .swatch, the same dot in the text-2 of
+// its legend when it names no color)
+export const CRASHCART_LEGEND_DOT = 'inline-block w-2 h-2 rounded-full';

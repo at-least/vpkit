@@ -1,0 +1,54 @@
+/* vpkit — dot: a small round marker beside a word, a legend's key or a
+ * status's second carrier (the word says it; the dot never alone). VitePress
+ * has none outside a badge; this is vpkit's own (crashcart's legend dots and
+ * swatches; vp-badge-dot is the same dot inside a badge), on VitePress's
+ * tokens. An optional import: `@import "vpkit/dot.css";`
+ *
+ *   <span class="vp-dot vp-dot-success"></span> 99% and up
+ *
+ * 0.5rem round, in `--vp-dot-color`: the text's color (`currentColor`) by
+ * default, so a dot in a secondary line is secondary; a color of the page's
+ * own, a chart's series, is that variable (`style="--vp-dot-color: …"`).
+ * Under forced colors, which erase a background, the dot paints in the
+ * system's text color, as vp-badge-dot does. Modifiers, used together with
+ * `vp-dot`, each a kind's -1 color, as vp-badge's types:
+ *   vp-dot-success   success-1
+ *   vp-dot-warning   warning-1
+ *   vp-dot-danger    danger-1
+ *   vp-dot-tip       tip-1 */
+
+@layer components {
+  .vp-dot {
+    --vp-dot-color: currentColor;
+
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background-color: var(--vp-dot-color);
+  }
+
+  .vp-dot-success.vp-dot {
+    --vp-dot-color: var(--vp-c-success-1);
+  }
+
+  .vp-dot-warning.vp-dot {
+    --vp-dot-color: var(--vp-c-warning-1);
+  }
+
+  .vp-dot-danger.vp-dot {
+    --vp-dot-color: var(--vp-c-danger-1);
+  }
+
+  .vp-dot-tip.vp-dot {
+    --vp-dot-color: var(--vp-c-tip-1);
+  }
+
+  @media (forced-colors: active) {
+    .vp-dot {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

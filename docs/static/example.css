@@ -282,6 +282,9 @@
   .gap-1 {
     gap: var(--spacing);
   }
+  .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -2772,6 +2775,33 @@ button:focus-visible {
   }
   :where(.vp-status) :is(p, ul, ol, dl, table, h2, h3, h4) {
     color: var(--vp-c-text-1);
+  }
+  .vp-dot {
+    --vp-dot-color: currentColor;
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background-color: var(--vp-dot-color);
+  }
+  .vp-dot-success.vp-dot {
+    --vp-dot-color: var(--vp-c-success-1);
+  }
+  .vp-dot-warning.vp-dot {
+    --vp-dot-color: var(--vp-c-warning-1);
+  }
+  .vp-dot-danger.vp-dot {
+    --vp-dot-color: var(--vp-c-danger-1);
+  }
+  .vp-dot-tip.vp-dot {
+    --vp-dot-color: var(--vp-c-tip-1);
+  }
+  @media (forced-colors: active) {
+    .vp-dot {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
   }
   .vp-inline-btn {
     --vp-inline-btn-text: var(--vp-c-text-2);
