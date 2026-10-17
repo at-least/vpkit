@@ -64,7 +64,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Breadcrumb](@/components/breadcrumb.md) | `vp-breadcrumb` | none, vpkit's own: a folder path |
 | [Button](@/components/button.md) | `vp-btn` | VitePress's `VPButton` |
 | [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
-| [Chip](@/components/chip.md) | `vp-chip` | none, vpkit's own: a removable filter |
+| [Chip](@/components/chip.md) | `vp-chip` | none, vpkit's own: a removable filter, or a link to the list it names |
 | [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
 | [Code](@/components/code.md) | `vp-code` | VitePress's inline code |
 | [Copy Line](@/components/copy.md) | `vp-copy` | none, vpkit's own: a value to copy, with its button |
@@ -73,7 +73,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |
 | [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
 | [Empty State](@/components/empty.md) | `vp-empty` | none, vpkit's own |
-| [Field](@/components/field.md) | `vp-label`, `vp-field-error` | none, vpkit's own |
+| [Field](@/components/field.md) | `vp-field`, `vp-label`, `vp-field-hint`, `vp-field-error` | none, vpkit's own |
 | [File Input](@/components/file.md) | `vp-file` | none, vpkit's own: the file chooser drawn as an input |
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |

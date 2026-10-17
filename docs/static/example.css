@@ -2548,8 +2548,15 @@ button:focus-visible {
     border-radius: 999px;
     padding: 0.125rem 0.625rem;
     font-size: 0.75rem;
+    font-weight: inherit;
     color: var(--vp-c-text-2);
+    text-decoration: none;
     background-color: var(--vp-c-bg-soft);
+  }
+  @media (hover: hover) {
+    .vp-chip:hover {
+      color: var(--vp-c-text-2);
+    }
   }
   .vp-chip-key {
     color: var(--vp-c-text-2);

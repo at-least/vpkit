@@ -1208,6 +1208,13 @@ const IN_ALERT = [
   ]],
   // an icon has no text for the alert's link weight to draw
   ['inline button', `<a data-t="x" class="vp-inline-btn" href="#" aria-label="Open"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
+  // a chip that is a link: the pill and its key, whose weight it inherits
+  ['chip link', `<a data-t="x" class="vp-chip" href="#"><span data-t="key" class="vp-chip-key">release:</span><span data-t="value" class="vp-chip-value">2.4.1</span></a>`, [
+    { target: 'x', props: LOOK },
+    HOVER_COLOR('x'),
+    { target: 'key', props: LOOK },
+    { target: 'value', props: LOOK },
+  ]],
 ];
 for (const [name, markup, checks] of IN_ALERT) {
   cases.push({
