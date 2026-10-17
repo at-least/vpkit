@@ -53,6 +53,26 @@ Links, inline code and paragraphs inside take the alert's look. A nested alert k
 </div>
 {% </vp_example> %}
 
+## With an icon
+
+vpkit's addition: an icon (`vp-alert-icon`, an inline SVG) first, then the content in one element. The block becomes a row, the icon 1rem square in the type's color and centered on the first line, the content beside it.
+
+{% <vp_example title="A warning and a danger notice with icons"> %}
+<div class="grid gap-4">
+  <div class="vp-alert vp-alert-warning" role="status">
+    <svg class="vp-alert-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+    <p>Some frames are not symbolicated. Upload symbols of this release to resolve them.</p>
+  </div>
+  <div class="vp-alert vp-alert-danger" role="alert">
+    <svg class="vp-alert-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+    <div>
+      <p class="vp-alert-title">Platform mismatch</p>
+      <p>Events arrive from a platform this project does not declare.</p>
+    </div>
+  </div>
+</div>
+{% </vp_example> %}
+
 Not included: the rules for tables and blockquotes inside a block.
 
 ## Graded containers

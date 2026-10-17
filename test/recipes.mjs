@@ -52,6 +52,12 @@ export const CRASHCART_FIELD_IN_ROW = 'grid gap-1.5';
 export const CRASHCART_FIELD_LABEL = 'vp-label mb-0';
 export const CRASHCART_FIELD_HINT = 'text-xs text-secondary';
 
+// crashcart src/web/pages/overview.rs and jobs.rs at 06a2e0e, verbatim as of
+// 2026-10-17: a notice with an icon, the alert a flex row on the start and
+// its content one column beside the icon (the icon its .icon, 1rem square)
+export const CRASHCART_ALERT_ROW = 'flex items-start gap-2';
+export const CRASHCART_ALERT_CONTENT = 'flex-1 min-w-0';
+
 // own-drive src/web.rs at 8a2c523, verbatim as of 2026-10-10: the status
 // message `#msg` (its class list; placed fixed at the bottom center)
 export const OWN_DRIVE_MSG =

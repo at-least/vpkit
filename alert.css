@@ -18,6 +18,24 @@
  *     <p>Body text.</p>
  *   </details>
  *
+ * vpkit's addition, crashcart's (its warning and danger notices): an icon
+ * beside the text. The icon (`vp-alert-icon`, an inline SVG) comes first
+ * and the content after it in one element:
+ *
+ *   <div class="vp-alert vp-alert-warning" role="status">
+ *     <svg class="vp-alert-icon" aria-hidden="true" viewBox="0 0 24 24">…</svg>
+ *     <div>
+ *       <p class="vp-alert-title">Platform mismatch</p>
+ *       <p>Body text.</p>
+ *     </div>
+ *   </div>
+ *
+ * The block is then a row, the icon 1rem square in the type's color (the
+ * info and details types the text's), centered on the first line, and the
+ * content filling the rest 0.5rem from it, where its paragraphs keep their
+ * margins; a title in the content gives the block a title's top padding,
+ * as one without an icon has.
+ *
  * Not ported: the rules for tables and blockquotes inside a block
  * (markdown-only content).
  *
@@ -37,6 +55,7 @@
     --vp-alert-link: var(--vp-c-brand-1);
     --vp-alert-link-hover: var(--vp-c-brand-2);
     --vp-alert-code-bg: var(--vp-custom-block-info-code-bg);
+    --vp-alert-icon: var(--vp-alert-text);
 
     border: 1px solid var(--vp-alert-border);
     border-radius: 0.5rem;
@@ -47,8 +66,30 @@
     background-color: var(--vp-alert-bg);
   }
 
-  .vp-alert:has(> .vp-alert-title, > summary) {
+  .vp-alert:has(> .vp-alert-title, > summary, > .vp-alert-icon + * > .vp-alert-title:first-child) {
     padding-top: 1rem;
+  }
+
+  /* vpkit's addition: an icon beside the content */
+  .vp-alert:has(> .vp-alert-icon) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .vp-alert:has(> .vp-alert-icon) > :not(.vp-alert-icon) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* centered on the first line: the block's line is 1.7142857em, the icon
+     1rem */
+  .vp-alert-icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: calc((1.7142857em - 1rem) / 2);
+    color: var(--vp-alert-icon);
   }
 
   .vp-alert-title {
@@ -119,6 +160,7 @@
     --vp-alert-text: var(--vp-custom-block-note-text);
     --vp-alert-bg: var(--vp-custom-block-note-bg);
     --vp-alert-code-bg: var(--vp-custom-block-note-code-bg);
+    --vp-alert-icon: var(--vp-c-note-1);
   }
 
   .vp-alert-tip.vp-alert {
@@ -128,6 +170,7 @@
     --vp-alert-link: var(--vp-c-tip-1);
     --vp-alert-link-hover: var(--vp-c-tip-2);
     --vp-alert-code-bg: var(--vp-custom-block-tip-code-bg);
+    --vp-alert-icon: var(--vp-c-tip-1);
   }
 
   .vp-alert-important.vp-alert {
@@ -137,6 +180,7 @@
     --vp-alert-link: var(--vp-c-important-1);
     --vp-alert-link-hover: var(--vp-c-important-2);
     --vp-alert-code-bg: var(--vp-custom-block-important-code-bg);
+    --vp-alert-icon: var(--vp-c-important-1);
   }
 
   .vp-alert-warning.vp-alert {
@@ -146,6 +190,7 @@
     --vp-alert-link: var(--vp-c-warning-1);
     --vp-alert-link-hover: var(--vp-c-warning-2);
     --vp-alert-code-bg: var(--vp-custom-block-warning-code-bg);
+    --vp-alert-icon: var(--vp-c-warning-1);
   }
 
   .vp-alert-danger.vp-alert {
@@ -155,6 +200,7 @@
     --vp-alert-link: var(--vp-c-danger-1);
     --vp-alert-link-hover: var(--vp-c-danger-2);
     --vp-alert-code-bg: var(--vp-custom-block-danger-code-bg);
+    --vp-alert-icon: var(--vp-c-danger-1);
   }
 
   .vp-alert-details.vp-alert {
@@ -182,5 +228,6 @@
     --vp-alert-link: var(--vp-c-caution-1);
     --vp-alert-link-hover: var(--vp-c-caution-2);
     --vp-alert-code-bg: var(--vp-custom-block-caution-code-bg);
+    --vp-alert-icon: var(--vp-c-caution-1);
   }
 }

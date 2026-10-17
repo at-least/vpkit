@@ -24,6 +24,8 @@ import {
   CRASHCART_FIELD_IN_ROW,
   CRASHCART_FIELD_LABEL,
   CRASHCART_FIELD_HINT,
+  CRASHCART_ALERT_ROW,
+  CRASHCART_ALERT_CONTENT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -405,6 +407,40 @@ cases.push({
   upstream: inDoc(`<div data-t="box" class="custom-block info">${alertBody('')}</div>`),
   vpkit: `<div data-t="box" class="vp-alert">${alertBody('')}</div>`,
   checks: [{ target: 'box', props: PADDING }],
+});
+
+// alert with an icon, vpkit's addition: crashcart's notice (its row and
+// content column, its icon 1rem square) against vp-alert-icon, the icon's
+// color, its centering on the first line and a titled block's top padding
+// written inline as the additions; then the same inside a vp-doc against
+// itself outside one
+const WARN_PATHS = '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path>';
+const iconAlert = (ref, type, titled) => {
+  const icon = `<svg data-t="icon" ${ref ? `style="width:1rem;height:1rem;flex-shrink:0;margin-top:4px;color:var(--vp-c-${type}-1)"` : 'class="vp-alert-icon"'} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${WARN_PATHS}</svg>`;
+  const title = titled ? '<p data-t="title" class="vp-alert-title">Platform mismatch</p>' : '';
+  return `<div data-t="box" class="vp-alert vp-alert-${type}${ref ? ` ${CRASHCART_ALERT_ROW}` : ''}" ${ref && titled ? 'style="padding-top:1rem;width:24rem"' : 'style="width:24rem"'}>${icon}` +
+    `<div data-t="content"${ref ? ` class="${CRASHCART_ALERT_CONTENT}"` : ''}>${title}<p data-t="p1">Events arrive from a platform this project does not declare.</p><p data-t="p2">Check which app holds this DSN.</p></div></div>`;
+};
+const ICON_ALERT_CHECKS = [
+  { target: 'box', props: ['display', 'align-items', 'column-gap', ...PADDING, 'height'] },
+  { target: 'icon', props: ['width', 'height', 'margin-top', 'color', 'offset-left', 'offset-top'] },
+  { target: 'content', props: ['width', 'offset-left', 'offset-top', 'height'] },
+  { target: 'p1', props: [...MARGIN, 'offset-top'] },
+  { target: 'p2', props: [...MARGIN, 'offset-top'] },
+];
+for (const [type, titled] of [['warning', false], ['danger', true], ['tip', true]]) {
+  cases.push({
+    name: `alert ${type} with an icon${titled ? ' and a title' : ''}`,
+    reference: iconAlert(true, type, titled),
+    vpkit: iconAlert(false, type, titled),
+    checks: titled ? [...ICON_ALERT_CHECKS, { target: 'title', props: ['offset-top', 'font-weight'] }] : ICON_ALERT_CHECKS,
+  });
+}
+cases.push({
+  name: 'alert with an icon in a doc',
+  reference: `<div>${iconAlert(false, 'danger', true)}</div>`,
+  vpkit: inDoc(iconAlert(false, 'danger', true)),
+  checks: [...ICON_ALERT_CHECKS, { target: 'title', props: ['offset-top'] }],
 });
 
 // an info alert nested in a tip alert keeps the info look
