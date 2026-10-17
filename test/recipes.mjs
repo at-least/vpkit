@@ -166,3 +166,27 @@ export const TOTALITY_ADMIN_RESULT =
 // the reference for vp-dot (and its .swatch, the same dot in the text-2 of
 // its legend when it names no color)
 export const CRASHCART_LEGEND_DOT = 'inline-block w-2 h-2 rounded-full';
+
+// own-drive src/web.rs at 9aff0f4, verbatim as of 2026-10-18 but for its
+// JS hook (`table-box`): the box every table scrolls sideways in
+// (`TABLE_BOX`), a region that takes focus, its indicator drawn 2px inside;
+// the reference for vp-table-scroll
+export const OWN_DRIVE_TABLE_BOX = 'overflow-x-auto focus-visible:-outline-offset-2';
+
+// crashcart src/web/styles/app.css at 0b6d7a3, as of 2026-10-18: a table
+// row that links its page (`tr[data-href]:hover`, on gray-soft, VitePress's
+// default-soft), as a utility; the reference for vp-table-hover
+export const CRASHCART_ROW_HOVER = 'hover:bg-default-soft';
+
+// own-drive styles/app.css at 9aff0f4, as of 2026-10-18: a row's actions,
+// hidden on a device that can hover until the pointer or the keyboard
+// reaches the row (`.rowbtns`), as utilities on the row (a group) and the
+// cell; the reference for vp-table-actions
+export const OWN_DRIVE_ROWBTNS = '[@media(hover:hover)]:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100';
+
+// crashcart src/web/styles/app.css at 0b6d7a3, as of 2026-10-18: a sortable
+// header's link (`.vp-table th a`), a dotted underline in the header's
+// text-2, text-1 hovered, as utilities (its transition, and the current
+// sort's solid underline in text-1, written inline where they are the
+// reference); the reference for vp-table-sort
+export const CRASHCART_SORT = 'cursor-pointer underline decoration-dotted decoration-text-2 underline-offset-[0.15em] hover:text-text-1 hover:decoration-text-1';

@@ -41,6 +41,10 @@ import {
   TOTALITY_RESULT,
   TOTALITY_ADMIN_RESULT,
   CRASHCART_LEGEND_DOT,
+  OWN_DRIVE_TABLE_BOX,
+  CRASHCART_ROW_HOVER,
+  OWN_DRIVE_ROWBTNS,
+  CRASHCART_SORT,
 } from './recipes.mjs';
 
 // The component matrix. Each case renders the same thing twice, with
@@ -279,6 +283,60 @@ cases.push({
     { target: 'td', props: [...BORDER, ...COLORS, ...PADDING, 'text-align', 'font-size', 'font-weight'] },
   ],
 });
+
+// table in a scroll box: own-drive's box (the table in it a plain table
+// filling the box, crashcart's display, width and margin written inline)
+// against vp-table-scroll, a table wider than its box scrolling inside it,
+// and the box's focus indicator drawn 2px inside
+const WIDE_ROWS =
+  '<thead><tr><th data-t="th">Name</th><th>Modified</th></tr></thead>' +
+  '<tbody><tr><td data-t="td">a-very-long-file-name-that-will-not-fit-the-box.tar.gz</td><td>2026-10-18 09:12</td></tr></tbody>';
+const SCROLLED_TABLE = 'display:table;width:100%;margin:0';
+for (const [name, rows] of [['table in a scroll box', TABLE_ROWS], ['table wider than its scroll box', WIDE_ROWS]]) {
+  cases.push({
+    name,
+    reference: `<div data-t="box" tabindex="0" class="${OWN_DRIVE_TABLE_BOX}" style="width:16rem"><table data-t="table" class="vp-table" style="${SCROLLED_TABLE}">${rows}</table></div>`,
+    vpkit: `<div data-t="box" tabindex="0" class="vp-table-scroll" style="width:16rem"><table data-t="table" class="vp-table">${rows}</table></div>`,
+    checks: [
+      { target: 'box', props: ['overflow-x', 'overflow-y', 'height'] },
+      { target: 'box', state: ['focus-visible'], props: ['outline-offset'] },
+      { target: 'table', props: ['display', ...MARGIN, 'width', 'height'] },
+      { target: 'td', props: [...PADDING, 'width', 'height'] },
+    ],
+  });
+}
+
+// sticky header: crashcart's table with its header stuck (its separate
+// borders, each cell drawing its bottom and right, the first column its
+// left and the header its top, so a stuck header keeps its lines; the th
+// sticky above the rows), its declarations written inline, against
+// vp-table-sticky, at the top and under a bar (--vp-table-sticky-top);
+// a sticky table is a plain table, not vp-table's block that scrolls on
+// its own (its width and margin the page's, written inline on both)
+const STICKY_CELL = 'border-width:0 1px 1px 0';
+const stickyRows = (ref, top) => {
+  const th = (first) => (ref ? ` style="${STICKY_CELL};border-top-width:1px;position:sticky;top:${top};z-index:2${first ? ';border-left-width:1px' : ''}"` : '');
+  const td = (first) => (ref ? ` style="${STICKY_CELL}${first ? ';border-left-width:1px' : ''}"` : '');
+  return (
+    `<thead><tr data-t="head"><th data-t="th"${th(true)}>Plan</th><th data-t="th2"${th(false)}>Price</th></tr></thead>` +
+    `<tbody><tr data-t="row1"><td data-t="td"${td(true)}>Pro</td><td data-t="td2"${td(false)}>$9</td></tr>` +
+    `<tr data-t="row2"><td${td(true)}>Team</td><td${td(false)}>$29</td></tr></tbody>`
+  );
+};
+const STICKY_CHECKS = [
+  { target: 'table', props: ['border-collapse', 'border-spacing', 'height', 'width'] },
+  { target: 'row2', props: ['background-color'] },
+  ...['th', 'th2'].map((target) => ({ target, props: [...BORDER, 'border-top-color', 'position', 'top', 'z-index', 'background-color'] })),
+  ...['td', 'td2'].map((target) => ({ target, props: [...BORDER, 'offset-top', 'offset-left'] })),
+];
+for (const [name, top, style] of [['table, sticky', '0px', false], ['table, sticky under a bar', '4rem', true]]) {
+  cases.push({
+    name,
+    reference: `<table data-t="table" class="vp-table" style="${SCROLLED_TABLE};border-collapse:separate;border-spacing:0">${stickyRows(true, top)}</table>`,
+    vpkit: `<table data-t="table" class="vp-table vp-table-sticky" style="width:100%;margin:0${style ? ';--vp-table-sticky-top:4rem' : ''}">${stickyRows(false, top)}</table>`,
+    checks: STICKY_CHECKS,
+  });
+}
 
 // card: VPFeature as a link and as a plain box. VPFeature's padding and
 // flex column live on an inner .box, vp-card's on the card itself
@@ -600,6 +658,156 @@ touch('link', `<a data-t="a" class="vp-link" href="#">Orders <code data-t="code"
   { target: 'a', ...AT_REST, props: ['color'] },
   { target: 'code', on: 'a', ...AT_REST, props: ['color'] },
 ]);
+
+// rows: crashcart's row hover (a row that links its page) against
+// vp-table-hover, on a white and a banded row, and on a touch screen; a
+// row whose checkbox is checked (own-drive's selected row, brand-soft,
+// written inline), hovered too; the row the keyboard's cursor is on
+// (own-drive's 3px brand edge on its first cell, inline) against
+// aria-current, and a row with aria-current="false" against a plain one
+const rowsWith = (row1, row2, cell1 = '') =>
+  '<thead><tr><th></th><th>Name</th></tr></thead>' +
+  `<tbody><tr data-t="row1"${row1}><td data-t="first"${cell1}><input type="checkbox" aria-label="select"${row1.includes('checked') ? ' checked' : ''}></td><td>notes.txt</td></tr>` +
+  `<tr data-t="row2"${row2}><td><input type="checkbox" aria-label="select"></td><td>photos</td></tr></tbody>`;
+const ROW_PAINT = ['background-color', ...TRANSITION];
+cases.push({
+  name: 'table rows, hover',
+  reference: `<table class="vp-table">${rowsWith(` class="${CRASHCART_ROW_HOVER}"`, ` class="${CRASHCART_ROW_HOVER}"`)}</table>`,
+  vpkit: `<table class="vp-table vp-table-hover">${rowsWith('', '')}</table>`,
+  checks: [
+    { target: 'row1', props: ROW_PAINT },
+    { target: 'row1', state: ['hover'], props: ['background-color'] },
+    { target: 'row2', state: ['hover'], props: ['background-color'] },
+  ],
+});
+touch('table rows, hover', `<table class="vp-table vp-table-hover">${rowsWith('', '')}</table>`, [
+  { target: 'row1', ...AT_REST, props: ['background-color'] },
+  { target: 'row2', ...AT_REST, props: ['background-color'] },
+]);
+cases.push({
+  name: 'table rows, selected',
+  reference: `<table class="vp-table">${rowsWith(' style="background-color:var(--vp-c-brand-soft)" data-checked', ' style="background-color:var(--vp-c-brand-soft)" class="x"')}</table>`.replace('data-checked', '').replace('<input type="checkbox" aria-label="select"></td><td>photos', '<input type="checkbox" aria-label="select" checked></td><td>photos'),
+  vpkit: `<table class="vp-table vp-table-hover">${rowsWith(' data-checked', '')}</table>`.replace(' data-checked', '').replace('<input type="checkbox" aria-label="select"></td><td>photos', '<input type="checkbox" aria-label="select" checked></td><td>photos').replace('<tr data-t="row1"><td data-t="first"><input type="checkbox" aria-label="select">', '<tr data-t="row1"><td data-t="first"><input type="checkbox" aria-label="select" checked>'),
+  checks: [
+    { target: 'row1', props: ['background-color'] },
+    { target: 'row1', state: ['hover'], props: ['background-color'] },
+    { target: 'row2', props: ['background-color'] },
+  ],
+});
+cases.push({
+  name: 'table rows, current',
+  reference: `<table class="vp-table">${rowsWith('', '', ' style="box-shadow:inset 3px 0 0 var(--vp-c-brand-1)"')}</table>`,
+  vpkit: `<table class="vp-table">${rowsWith(' aria-current="true"', ' aria-current="false"')}</table>`.replace('<tr data-t="row2" aria-current="false"><td>', '<tr data-t="row2" aria-current="false"><td data-t="first2">'),
+  checks: [
+    { target: 'first', props: ['box-shadow'] },
+    { target: 'first2', refTarget: 'row2', props: ['box-shadow'] },
+  ],
+});
+
+// row actions: own-drive's (hidden on a device that can hover until the
+// row is hovered or holds focus) against vp-table-actions, at rest,
+// with the row hovered and with focus inside it, and on a touch screen,
+// where they always show; on the row the cursor is on and on a selected
+// row they show too (own-drive's .focused and :has(:checked) rules)
+const actionRow = (ref, attrs = '', checked = false) =>
+  `<table class="vp-table"><tbody><tr data-t="row" class="${ref ? 'group' : ''}"${attrs}>` +
+  `<td><input type="checkbox" aria-label="select"${checked ? ' checked' : ''}></td><td>notes.txt</td>` +
+  `<td data-t="acts" class="${ref ? OWN_DRIVE_ROWBTNS : 'vp-table-actions'}"><button class="vp-btn" type="button">rename</button></td></tr></tbody></table>`;
+cases.push({
+  name: 'table row actions',
+  reference: actionRow(true),
+  vpkit: actionRow(false),
+  checks: [
+    { target: 'acts', props: ['opacity'] },
+    { target: 'acts', on: 'row', state: ['hover'], props: ['opacity'] },
+    { target: 'acts', on: 'row', state: ['focus-within'], props: ['opacity'] },
+  ],
+});
+for (const [name, attrs, checked] of [['table row actions, current row', ' aria-current="true"', false], ['table row actions, selected row', '', true]]) {
+  cases.push({
+    name,
+    reference: actionRow(true).replace(` class="${OWN_DRIVE_ROWBTNS}"`, ' style="opacity:1"'),
+    vpkit: actionRow(false, attrs, checked),
+    checks: [{ target: 'acts', props: ['opacity'] }],
+  });
+}
+touch('table row actions', actionRow(false), [{ target: 'acts', ...AT_REST, props: ['opacity'] }]);
+cases.push({
+  name: 'table row actions on a touch screen, at rest',
+  touch: true,
+  reference: actionRow(false).replace(' class="vp-table-actions"', ''),
+  vpkit: actionRow(false),
+  checks: [{ target: 'acts', props: ['opacity'] }],
+});
+
+// sortable header: crashcart's sort link (its dotted underline in the
+// header's color, text-1 hovered; the current sort, which aria-sort on the
+// th names, text-1 with a solid underline; the transition inline) against
+// vp-table-sort, on a link and on a button
+const SORT_LOOK = ['color', 'text-decoration-line', 'text-decoration-style', 'text-decoration-color', 'text-underline-offset', 'font-weight', 'font-size', 'cursor', ...TRANSITION, ...PADDING, ...BORDER, 'background-color'];
+const sortHead = (inner, sort = '') =>
+  `<table class="vp-table"><thead><tr><th${sort}>${inner}</th></tr></thead><tbody><tr><td>x</td></tr></tbody></table>`;
+for (const tag of ['a', 'button']) {
+  const attrs = tag === 'a' ? ' href="#"' : ' type="button"';
+  cases.push({
+    name: `table sort <${tag}>`,
+    reference: sortHead(`<a data-t="s" href="#" class="${CRASHCART_SORT}" style="transition:color 0.25s">Last seen</a>`),
+    vpkit: sortHead(`<${tag} data-t="s" class="vp-table-sort"${attrs}>Last seen</${tag}>`),
+    checks: [{ target: 's', props: SORT_LOOK }, { target: 's', state: ['hover'], props: ['color', 'text-decoration-color'] }],
+  });
+  cases.push({
+    name: `table sort <${tag}>, current`,
+    reference: sortHead(`<a data-t="s" href="#" class="${CRASHCART_SORT}" style="transition:color 0.25s;color:var(--vp-c-text-1);text-decoration-style:solid;text-decoration-color:var(--vp-c-text-1)">Last seen</a>`, ' aria-sort="descending"'),
+    vpkit: sortHead(`<${tag} data-t="s" class="vp-table-sort"${attrs}>Last seen</${tag}>`, ' aria-sort="descending"'),
+    checks: [{ target: 's', props: SORT_LOOK }],
+  });
+}
+touch('table sort', sortHead('<a data-t="s" class="vp-table-sort" href="#">Last seen</a>'), [{ target: 's', ...AT_REST, props: ['color', 'text-decoration-color'] }]);
+
+// stacked at a phone's width: crashcart's small matrices (its cards rules,
+// which apply under 640px, written inline as they apply at 375px, each row
+// keeping vp-table's line above it; each
+// cell's label, which it draws as ::before from data-label, an element in
+// the reference) against vp-table-stack; wide, it stays a table
+const STACK_CELL = 'display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:0.2rem 0;border:0';
+const STACK_LABEL = 'flex:none;font-size:0.75rem;font-weight:600;color:var(--vp-c-text-2)';
+const stackTable = (ref) => {
+  const blk = ref ? ' style="display:block"' : '';
+  const tr = () => (ref ? ' style="display:block;padding:0.6rem 0.75rem"' : '');
+  const td = (label, value, t) =>
+    ref
+      ? `<td data-t="${t}" style="${STACK_CELL}"><span data-t="${t}-label" style="${STACK_LABEL}">${label}</span>${value}</td>`
+      : `<td data-t="${t}" data-label="${label}">${value}</td>`;
+  return (
+    `<table data-t="table" class="vp-table${ref ? '' : ' vp-table-stack'}"${blk}>` +
+    `<thead${ref ? ' style="display:none"' : ''}><tr><th>Project</th><th>Email</th></tr></thead>` +
+    `<tbody${blk}><tr data-t="row1"${tr(1)}>${td('Project', 'shop', 'c1')}${td('Email', 'on', 'c2')}</tr>` +
+    `<tr data-t="row2"${tr(2)}>${td('Project', 'bot-server', 'c3')}${td('Email', 'off', 'c4')}</tr></tbody></table>`
+  );
+};
+const STACK_TD = ['display', 'align-items', 'justify-content', 'column-gap', ...PADDING, ...BORDER, 'height', 'offset-top'];
+cases.push({
+  name: "table, stacked at a phone's width",
+  width: 375,
+  reference: stackTable(true),
+  vpkit: stackTable(false),
+  checks: [
+    { target: 'table', props: ['display', 'height'] },
+    { target: 'row1', props: ['display', ...PADDING, 'border-top-width', 'height'] },
+    { target: 'row2', props: ['display', ...PADDING, 'border-top-width', 'border-top-style', 'border-top-color', 'height', 'offset-top'] },
+    ...['c1', 'c2', 'c3', 'c4'].map((target) => ({ target, props: STACK_TD })),
+    ...['c1', 'c2'].map((t) => ({ target: t, pseudo: '::before', refTarget: `${t}-label`, refPseudo: null, props: ['font-size', 'font-weight', 'color', 'flex-grow', 'flex-shrink'] })),
+  ],
+});
+cases.push({
+  name: 'table, stacked, wide',
+  reference: stackTable(false).replace(' vp-table-stack', ''),
+  vpkit: stackTable(false),
+  checks: [
+    { target: 'table', props: ['display', 'height', 'width'] },
+    { target: 'c1', props: STACK_TD },
+  ],
+});
 
 // headings: VitePress's doc h1 against vp-page-title (wide, and at a
 // phone's width, where it is smaller) and its h3 against vp-section-title

@@ -1646,6 +1646,107 @@ button:focus-visible {
   :where(.vp-table) td {
     font-size: 0.875rem;
   }
+  .vp-table-scroll {
+    overflow-x: auto;
+  }
+  .vp-table-scroll:focus-visible {
+    outline-offset: -2px;
+  }
+  :where(.vp-table-scroll) > .vp-table {
+    display: table;
+    margin: 0;
+    width: 100%;
+  }
+  .vp-table-sticky.vp-table {
+    --vp-table-sticky-top: 0px;
+    display: table;
+    overflow: visible;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  :where(.vp-table-sticky) :is(th, td) {
+    border-width: 0 1px 1px 0;
+  }
+  :where(.vp-table-sticky) :is(th, td):first-child {
+    border-left-width: 1px;
+  }
+  :where(.vp-table-sticky) thead th {
+    position: sticky;
+    top: var(--vp-table-sticky-top);
+    z-index: 2;
+    border-top-width: 1px;
+  }
+  @media (hover: hover) {
+    :where(.vp-table-hover) tbody tr:hover {
+      background-color: var(--vp-c-default-soft);
+    }
+  }
+  :where(.vp-table) tbody tr:has(> :first-child input[type="checkbox"]:checked) {
+    background-color: var(--vp-c-brand-soft);
+  }
+  :where(.vp-table) tbody tr[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) > :first-child {
+    box-shadow: inset 3px 0 0 var(--vp-c-brand-1);
+  }
+  @media (hover: hover) {
+    .vp-table-actions {
+      opacity: 0;
+    }
+    :where(.vp-table) tr:is(:hover, :focus-within, [aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]), :has(> :first-child input[type="checkbox"]:checked)) .vp-table-actions {
+      opacity: 1;
+    }
+  }
+  .vp-table-sort {
+    appearance: none;
+    border-width: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline dotted var(--vp-c-text-2);
+    text-underline-offset: 0.15em;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color 0.25s;
+  }
+  @media (hover: hover) {
+    .vp-table-sort:hover {
+      color: var(--vp-c-text-1);
+      text-decoration-color: var(--vp-c-text-1);
+    }
+  }
+  th[aria-sort]:not([aria-sort="none"]) > .vp-table-sort {
+    color: var(--vp-c-text-1);
+    text-decoration-style: solid;
+    text-decoration-color: var(--vp-c-text-1);
+  }
+  @media (max-width: 40rem) {
+    .vp-table-stack.vp-table, :where(.vp-table-stack) :is(tbody, tr, td) {
+      display: block;
+    }
+    :where(.vp-table-stack) thead {
+      display: none;
+    }
+    :where(.vp-table-stack) tr {
+      padding: 0.6rem 0.75rem;
+    }
+    :where(.vp-table-stack) td {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 0;
+      padding: 0.2rem 0;
+    }
+    :where(.vp-table-stack) td::before {
+      content: attr(data-label);
+      flex: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--vp-c-text-2);
+    }
+    :where(.vp-table-stack) td:is(:not([data-label]), [data-label=""])::before {
+      content: none;
+    }
+  }
   .vp-card {
     display: flex;
     flex-direction: column;
