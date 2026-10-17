@@ -37,3 +37,5 @@ A removable filter: its key and its value in a pill, with a control that removes
 {% </vp_example> %}
 
 A chip can be a link as a whole, to the list its value filters; it then has no remove control, since a control inside a link is no valid HTML.
+
+In Rust: [`Chip`](../../rust/vpkit/struct.Chip.html), from vpkit's [crate](@/guide/rust.md).

@@ -27,3 +27,5 @@ A title alone works, and so does a line of text with neither class.
 {% <vp_example title="A line of text"> %}
 <div class="vp-empty">this folder is empty — drop files or folders anywhere, or use the upload button</div>
 {% </vp_example> %}
+
+In Rust: [`Empty`](../../rust/vpkit/struct.Empty.html), from vpkit's [crate](@/guide/rust.md).

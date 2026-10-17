@@ -52,6 +52,7 @@ items = [
   { text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
   { text = "Getting Started", link = "@/guide/getting-started.md" },
   { text = "Utilities and Variables", link = "@/guide/utilities.md" },
+  { text = "Rust", link = "@/guide/rust.md" },
   { text = "Themes", link = "@/themes.md" },
 ]
 

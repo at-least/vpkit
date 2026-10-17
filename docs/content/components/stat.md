@@ -42,3 +42,5 @@ One number in a box, with its title beside it and a hint under it. VitePress has
 - `vp-stat-title`: 13px at 500 in the secondary text, on a paragraph: a grid of stats is one section's figures, not headings of its own. `vp-stat-value`: 22px at 600, in tabular figures, so numbers that change keep their width.
 - `vp-stat-hint`: 13px secondary text under the header, at most 75 characters wide.
 - The grid, and a stat that is a link to the list it counts, are yours.
+
+In Rust: [`Stat`](../../rust/vpkit/struct.Stat.html), from vpkit's [crate](@/guide/rust.md).

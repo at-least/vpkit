@@ -46,3 +46,5 @@ Under a list, a line saying what it shows and the buttons to the pages either si
 {% </vp_example> %}
 
 Give each pager its own `aria-label`, so a page with two lists has two navigation landmarks a screen reader can tell apart.
+
+In Rust: [`Pager`](../../rust/vpkit/struct.Pager.html), from vpkit's [crate](@/guide/rust.md).

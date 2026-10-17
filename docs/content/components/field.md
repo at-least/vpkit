@@ -39,3 +39,5 @@ A form field: its label, its control, a hint and an error line, to go with [`vp-
 {% </vp_example> %}
 
 A label or an error line outside a `vp-field` keeps its own spacing, 0.375rem below the label and 0.5rem above the error; `mb-0` and `mt-0` remove them.
+
+In Rust: [`Field`](../../rust/vpkit/struct.Field.html), [`FieldHint`](../../rust/vpkit/struct.FieldHint.html), [`FieldError`](../../rust/vpkit/struct.FieldError.html), from vpkit's [crate](@/guide/rust.md).

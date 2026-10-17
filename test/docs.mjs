@@ -27,7 +27,7 @@
 // outside that path. Exits 1, listing what fails.
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -53,6 +53,19 @@ for (const name of components) {
   if (!pages.includes(name)) failures.push(`${name}.css has no page: docs/content/components/${name}.md`);
 }
 for (const name of pages.filter((p) => !components.includes(p))) failures.push(`docs/content/components/${name}.md: test/entry.css compiles no ${name}.css`);
+
+// the Rust crate: every component it exports (rust/src/lib.rs, one module
+// per stylesheet) is linked from its stylesheet's page, into the crate's
+// documentation, which test/rust.mjs builds into rust/target/doc and the
+// site serves under /rust/ (docs.yml copies it there; below, the links are
+// followed into it)
+const RUSTDOC = join(ROOT, 'rust/target/doc');
+for (const [, module, items] of readFileSync(join(ROOT, 'rust/src/lib.rs'), 'utf8').matchAll(/^pub use (\w+)::\{?([^};]+)\}?;/gm)) {
+  const page = readFileSync(join(DOCS, 'content/components', `${module}.md`), 'utf8');
+  for (const item of items.split(',').map((i) => i.trim()).filter((i) => /^[A-Z]/.test(i))) {
+    if (!page.includes(`(../../rust/vpkit/struct.${item}.html)`)) failures.push(`docs/content/components/${module}.md: no link to the crate's ${item}`);
+  }
+}
 
 const index = JSON.parse(readFileSync(join(DOCS, 'static/themes.json'), 'utf8'));
 // in the order of the files' names, as the index has them
@@ -86,6 +99,18 @@ const site = join(dir, 'site');
 let frames = 0;
 try {
   execFileSync('zola', ['--root', DOCS, 'build', '--base-url', BASE, '--output-dir', site], { stdio: 'pipe' });
+  // the crate's documentation where docs.yml publishes it, and every link
+  // into it resolving to a file
+  if (!existsSync(join(RUSTDOC, 'vpkit/index.html'))) throw new Error('no rust/target/doc: run node test/rust.mjs first');
+  cpSync(RUSTDOC, join(site, 'rust'), { recursive: true });
+  for (const f of readdirSync(site, { recursive: true }).filter((f) => f.endsWith('index.html') && !f.startsWith('rust/'))) {
+    const at = new URL(`/vpkit/${f.slice(0, -'index.html'.length)}`, ORIGIN);
+    for (const [, href] of readFileSync(join(site, f), 'utf8').matchAll(/href="([^"#]*rust\/[^"#]*)"/g)) {
+      const url = new URL(href, at);
+      if (url.origin !== ORIGIN) continue;
+      if (!existsSync(join(site, url.pathname.slice('/vpkit/'.length)))) failures.push(`/vpkit/${f}: the link ${href} leads to no file`);
+    }
+  }
   const css = readFileSync(join(site, 'example.css'), 'utf8');
   const withExamples = readdirSync(site, { recursive: true })
     .filter((f) => f.endsWith('index.html') && readFileSync(join(site, f), 'utf8').includes('<iframe class="vp-example"'))
