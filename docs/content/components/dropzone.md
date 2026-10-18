@@ -3,7 +3,7 @@ title = "Drop Zone"
 description = "Where to drop files: the target a page shows while files are dragged over it; vpkit's own."
 +++
 
-# Drop Zone
+# Drop Zone <span class="vp-badge vp-badge-tip">vpkit</span> {#drop-zone}
 
 Where to drop files: the target a page shows while files are dragged over it. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

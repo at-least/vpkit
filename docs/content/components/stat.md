@@ -3,7 +3,7 @@ title = "Stat"
 description = "One number in a box, with its title beside it and a hint under it; vpkit's own."
 +++
 
-# Stat
+# Stat <span class="vp-badge vp-badge-tip">vpkit</span> {#stat}
 
 One number in a box, with its title beside it and a hint under it. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

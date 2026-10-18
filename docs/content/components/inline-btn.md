@@ -3,7 +3,7 @@ title = "Inline Button"
 description = "An icon control inside a line of text that leaves the line as tall as it was; vpkit's own."
 +++
 
-# Inline Button
+# Inline Button <span class="vp-badge vp-badge-tip">vpkit</span> {#inline-button}
 
 An icon control inside a line of text, such as the copy button beside an id, that leaves the line as tall as it was. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

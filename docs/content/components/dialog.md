@@ -3,7 +3,7 @@ title = "Dialog"
 description = "A modal on the <dialog> element, vpkit's own: the elevated surface, a title and a row of actions."
 +++
 
-# Dialog
+# Dialog <span class="vp-badge vp-badge-tip">vpkit</span> {#dialog}
 
 VitePress has no dialog. This is vpkit's own, on the `<dialog>` element, which brings the top layer, the focus trap, Escape and the backdrop.
 

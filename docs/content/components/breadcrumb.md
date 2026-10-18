@@ -3,7 +3,7 @@ title = "Breadcrumb"
 description = "vpkit's own breadcrumb, which VitePress has none of: a list of crumbs with a slash between them, the current one bold."
 +++
 
-# Breadcrumb
+# Breadcrumb <span class="vp-badge vp-badge-tip">vpkit</span> {#breadcrumb}
 
 The path to where the page is. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

@@ -13,6 +13,8 @@ VitePress's components as CSS classes, one optional import each, so a site ships
 
 The file is named after the class: `vp-badge` is `vpkit/badge.css`, `vp-icon-btn` is `vpkit/icon-btn.css`; `vp-label` and `vp-field-error` share `vpkit/field.css`. Each page opens with its import.
 
+A <span class="vp-badge vp-badge-tip">vpkit</span> badge beside a page's title marks a component VitePress has no original for: vpkit's own, on VitePress's tokens.
+
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
 
 Inside a `vp-doc` (the markdown's styles, `content.css`) each component keeps its look and its states: the markdown's rules are in `@layer base`, below the components, as VitePress's components win there by Vue's scoping. Where the markdown sets something a component leaves to the page, such as a heading's margins and rule on a card's title, the component sets it for that place.

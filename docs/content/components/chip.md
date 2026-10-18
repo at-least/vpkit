@@ -3,7 +3,7 @@ title = "Chip"
 description = "A removable filter: its key and its value in a pill with a control that removes it; vpkit's own."
 +++
 
-# Chip
+# Chip <span class="vp-badge vp-badge-tip">vpkit</span> {#chip}
 
 A removable filter: its key and its value in a pill, with a control that removes it. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

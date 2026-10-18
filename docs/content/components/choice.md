@@ -3,7 +3,7 @@ title = "Choice"
 description = "A radio or checkbox drawn as a selectable card, vpkit's own, its states read with :has()."
 +++
 
-# Choice
+# Choice <span class="vp-badge vp-badge-tip">vpkit</span> {#choice}
 
 A radio or a checkbox drawn as a selectable card. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

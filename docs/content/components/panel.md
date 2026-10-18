@@ -3,7 +3,7 @@ title = "Panel"
 description = "A box of content on the page, a form, a list of rows, a table, in an outlined surface; vpkit's own."
 +++
 
-# Panel
+# Panel <span class="vp-badge vp-badge-tip">vpkit</span> {#panel}
 
 A box of content on the page: a form, a list of rows, a table. VitePress has none for an app (a [Card](@/components/card.md) is a tile of a grid); this is vpkit's own, on VitePress's tokens.
 

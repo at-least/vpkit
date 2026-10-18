@@ -3,7 +3,7 @@ title = "Description List"
 description = "Terms and their values, a record's details, each term over its value or beside it; vpkit's own."
 +++
 
-# Description List
+# Description List <span class="vp-badge vp-badge-tip">vpkit</span> {#description-list}
 
 Terms and their values: a record's details. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

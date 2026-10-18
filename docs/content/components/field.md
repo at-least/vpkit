@@ -3,7 +3,7 @@ title = "Field"
 description = "A form field: its label, its control, a hint and an error line; vpkit's own, to go with vp-input."
 +++
 
-# Field
+# Field <span class="vp-badge vp-badge-tip">vpkit</span> {#field}
 
 A form field: its label, its control, a hint and an error line, to go with [`vp-input`](@/components/input.md). VitePress has no form fields; these are vpkit's own.
 

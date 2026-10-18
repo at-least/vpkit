@@ -3,7 +3,7 @@ title = "Status"
 description = "The line where a page shows the reply to what was just done, with an error and a success state; vpkit's own."
 +++
 
-# Status
+# Status <span class="vp-badge vp-badge-tip">vpkit</span> {#status}
 
 The line where a page shows the reply to what was just done: a handler's answer, a form's outcome. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

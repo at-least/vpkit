@@ -3,7 +3,7 @@ title = "Copy Line"
 description = "A value to copy, in the code face, with an optional label before it and a copy button after it; vpkit's own."
 +++
 
-# Copy Line
+# Copy Line <span class="vp-badge vp-badge-tip">vpkit</span> {#copy-line}
 
 A value to copy, such as a command, a URL or a key, in the code face, with an optional label before it and a copy button after it. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

@@ -3,7 +3,7 @@ title = "Icon Tile"
 description = "An icon in a bordered square: a row's mark, a login's provider or a file's kind; vpkit's own."
 +++
 
-# Icon Tile
+# Icon Tile <span class="vp-badge vp-badge-tip">vpkit</span> {#icon-tile}
 
 An icon in a bordered square: a row's mark, such as a login's provider or a file's kind. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

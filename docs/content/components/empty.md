@@ -3,7 +3,7 @@ title = "Empty State"
 description = "An empty state, vpkit's own: the box a list shows when it has nothing to list, a title and a line under it."
 +++
 
-# Empty State
+# Empty State <span class="vp-badge vp-badge-tip">vpkit</span> {#empty-state}
 
 The box a list shows when it has nothing to list. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

@@ -3,7 +3,7 @@ title = "File Input"
 description = "The browser's file chooser on <input type=\"file\">, its button drawn as an input's box; vpkit's own."
 +++
 
-# File Input
+# File Input <span class="vp-badge vp-badge-tip">vpkit</span> {#file-input}
 
 The browser's file chooser on `<input type="file">`, its button drawn as an [Input](@/components/input.md)'s box. VitePress has none; this is vpkit's own, on VitePress's input variables.
 

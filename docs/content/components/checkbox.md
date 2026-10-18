@@ -3,7 +3,7 @@ title = "Checkbox"
 description = "A bare checkbox in a row or a cell, with the label around it that is its tap target; vpkit's own."
 +++
 
-# Checkbox
+# Checkbox <span class="vp-badge vp-badge-tip">vpkit</span> {#checkbox}
 
 A bare checkbox in a row or a cell, where a [Choice](@/components/choice.md)'s card would be too much: a table's select column. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

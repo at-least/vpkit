@@ -3,7 +3,7 @@ title = "Pager"
 description = "Under a list, a line saying what it shows and the buttons to the pages either side; vpkit's own."
 +++
 
-# Pager
+# Pager <span class="vp-badge vp-badge-tip">vpkit</span> {#pager}
 
 Under a list, a line saying what it shows and the buttons to the pages either side of it. VitePress has none for an app (its previous and next links belong to the docs layout); this is vpkit's own, on VitePress's tokens.
 

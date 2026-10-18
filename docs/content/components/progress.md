@@ -3,7 +3,7 @@ title = "Progress"
 description = "A progress bar, vpkit's own: a track and a brand fill whose width the page sets."
 +++
 
-# Progress
+# Progress <span class="vp-badge vp-badge-tip">vpkit</span> {#progress}
 
 A progress bar. VitePress has none; this is vpkit's own.
 

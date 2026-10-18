@@ -3,7 +3,7 @@ title = "Dot"
 description = "A small round marker beside a word: a legend's key, or a status's second carrier; vpkit's own."
 +++
 
-# Dot
+# Dot <span class="vp-badge vp-badge-tip">vpkit</span> {#dot}
 
 A small round marker beside a word: a legend's key, or a status's second carrier, never its only one, since the word says it. VitePress has none outside a badge; this is vpkit's own, on VitePress's tokens. Inside a [Badge](@/components/badge.md) the same dot is `vp-badge-dot`.
 

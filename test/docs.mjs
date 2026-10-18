@@ -54,6 +54,20 @@ for (const name of components) {
 }
 for (const name of pages.filter((p) => !components.includes(p))) failures.push(`docs/content/components/${name}.md: test/entry.css compiles no ${name}.css`);
 
+// a component VitePress has no original for (its description says
+// "vpkit's own") carries a vpkit badge after its page's heading, as
+// VitePress writes a badge in a heading, with the heading's id written
+// out so the badge's text stays out of it; a port of an original carries
+// none. The page's <title> and its sidebar entry are the title alone.
+const BADGE = '<span class="vp-badge vp-badge-tip">vpkit</span>';
+for (const name of pages) {
+  const md = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8');
+  const own = /^description = .*vpkit's own/m.test(md);
+  const [h1] = md.match(/^# .*$/m);
+  if (own && !(h1.includes(` ${BADGE} {#`) && /\{#[a-z-]+\}$/.test(h1))) failures.push(`docs/content/components/${name}.md: vpkit's own, but its heading has no vpkit badge and id: ${h1}`);
+  if (!own && h1.includes(BADGE)) failures.push(`docs/content/components/${name}.md: a VitePress original's port, but its heading has the vpkit badge: ${h1}`);
+}
+
 // the Rust crate: every component it exports (rust/src/lib.rs, one module
 // per stylesheet) is linked from its stylesheet's page, into the crate's
 // documentation, which test/rust.mjs builds into rust/target/doc and the

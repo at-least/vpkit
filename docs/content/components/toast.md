@@ -3,7 +3,7 @@ title = "Toast"
 description = "The surface of a short status message, vpkit's own."
 +++
 
-# Toast
+# Toast <span class="vp-badge vp-badge-tip">vpkit</span> {#toast}
 
 The surface of a short status message. VitePress has none; this is vpkit's own.
 

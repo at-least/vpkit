@@ -3,7 +3,7 @@ title = "Thumbnail"
 description = "An image in a frame, a cover or an attachment's preview, alone or as a link; vpkit's own."
 +++
 
-# Thumbnail
+# Thumbnail <span class="vp-badge vp-badge-tip">vpkit</span> {#thumbnail}
 
 An image in a frame: a cover, an attachment's preview, alone or as a link to what it shows. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

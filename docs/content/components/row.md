@@ -3,7 +3,7 @@ title = "Row"
 description = "One dense row of a list inside a panel, ruled off from the next by a hairline; vpkit's own."
 +++
 
-# Row
+# Row <span class="vp-badge vp-badge-tip">vpkit</span> {#row}
 
 One dense row of a list inside a panel, ruled off from the next by a hairline. VitePress has none; this is vpkit's own, on VitePress's tokens.
 

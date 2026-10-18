@@ -3,7 +3,7 @@ title = "Input"
 description = "An input on VitePress's input variables, vpkit's own: inputs, selects and textareas, with aria-invalid states."
 +++
 
-# Input
+# Input <span class="vp-badge vp-badge-tip">vpkit</span> {#input}
 
 VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is vpkit's own, built on those variables.
 

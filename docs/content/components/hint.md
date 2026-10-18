@@ -3,7 +3,7 @@ title = "Hint"
 description = "A small \"i\" beside a word whose tooltip says what it means, shown on hover, keyboard focus or a tap; vpkit's own."
 +++
 
-# Hint
+# Hint <span class="vp-badge vp-badge-tip">vpkit</span> {#hint}
 
 A small "i" beside a word whose tooltip says what it means. It shows while hovered, while focused from the keyboard, or after a tap, where a `title` attribute shows to neither touch nor most assistive technology. VitePress has none; this is vpkit's own, on VitePress's tokens.
 
