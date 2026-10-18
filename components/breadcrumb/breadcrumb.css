@@ -14,7 +14,8 @@
  * breaks a long name inside the word (overflow-wrap: anywhere), so a path
  * never overflows a narrow column, with a slash in the muted text before
  * every item but the first, 0.375rem from what is at each side. The list
- * draws the slash (`li + li::before`), so it is not read out. No axis.
+ * draws the slash (`li + li::before`) with empty alternative text, so it
+ * is not read out (Firefox reads it before 128). No axis.
  * The part:
  *   vp-breadcrumb-item   a crumb, a link or a span: secondary text with
  *                        no underline, body text and underlined when
@@ -42,6 +43,7 @@
 
   :where(.vp-breadcrumb) > li + li::before {
     content: '/';
+    content: '/' / '';
     padding: 0 0.375rem;
     color: var(--vp-c-text-3);
   }

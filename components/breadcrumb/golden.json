@@ -31,7 +31,7 @@
         "text-decoration-line": "none"
       },
       ".vp-breadcrumb > li + li::before": {
-        "content": "\"/\"",
+        "content": "\"/\" / \"\"",
         "color": "rgb(146, 146, 149)",
         "padding-left": "6px",
         "padding-right": "6px"
@@ -71,7 +71,7 @@
         "text-decoration-line": "none"
       },
       ".vp-breadcrumb > li + li::before": {
-        "content": "\"/\"",
+        "content": "\"/\" / \"\"",
         "color": "rgb(106, 106, 113)",
         "padding-left": "6px",
         "padding-right": "6px"

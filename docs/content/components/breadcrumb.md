@@ -15,7 +15,7 @@ The path to where the page is. VitePress has none; this is vpkit's own, on ViteP
 
 - `vp-breadcrumb`: the list, a wrapping row with a slash before every item but the first. A long name breaks inside the word, so the path never overflows a narrow column.
 - `vp-breadcrumb-item`: a crumb, a link or a span. Secondary text with no underline; `text-1` and underlined on hover. The current one (`aria-current="page"`) is `text-1` and bold, and stays so when hovered.
-- The `<nav>` with its label, and the `<ol>` of `<li>`s, are the markup assistive technology reads a breadcrumb from; the list draws the slashes, so they are not read out.
+- The `<nav>` with its label, and the `<ol>` of `<li>`s, are the markup assistive technology reads a breadcrumb from; the list draws the slashes with empty alternative text, so they are not read out (Firefox reads them before version 128).
 
 A current crumb that is not a link is a `<span>`; one that is a link keeps the pointer. A focused crumb draws base.css's ring.
 

@@ -1525,6 +1525,7 @@ pre, code, kbd, samp {
   }
   :where(.vp-breadcrumb) > li + li::before {
     content: '/';
+    content: '/' / '';
     padding: 0 0.375rem;
     color: var(--vp-c-text-3);
   }
