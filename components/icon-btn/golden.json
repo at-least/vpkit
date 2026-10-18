@@ -1,0 +1,404 @@
+{
+  "icon-btn <button>": {
+    "light": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.5s, 0.25s"
+      },
+      ".vp-icon-btn :hover": {
+        "background-color": "rgba(142, 150, 170, 0.14)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.25s, 0.25s"
+      },
+      ".vp-icon-btn > svg": {
+        "offset-top": "12px",
+        "offset-left": "12px",
+        "flex-shrink": "0"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.5s, 0.25s"
+      },
+      ".vp-icon-btn :hover": {
+        "background-color": "rgba(101, 117, 133, 0.16)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.25s, 0.25s"
+      },
+      ".vp-icon-btn > svg": {
+        "offset-top": "12px",
+        "offset-left": "12px",
+        "flex-shrink": "0"
+      }
+    }
+  },
+  "icon-btn <a>": {
+    "light": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.5s, 0.25s"
+      },
+      ".vp-icon-btn :hover": {
+        "background-color": "rgba(142, 150, 170, 0.14)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.25s, 0.25s"
+      },
+      ".vp-icon-btn > svg": {
+        "offset-top": "12px",
+        "offset-left": "12px",
+        "flex-shrink": "0"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.5s, 0.25s"
+      },
+      ".vp-icon-btn :hover": {
+        "background-color": "rgba(101, 117, 133, 0.16)",
+        "transition-property": "color, background-color",
+        "transition-duration": "0.25s, 0.25s"
+      },
+      ".vp-icon-btn > svg": {
+        "offset-top": "12px",
+        "offset-left": "12px",
+        "flex-shrink": "0"
+      }
+    }
+  },
+  "icon-btn examples": {
+    "light": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(103, 103, 108)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-top-color": "rgb(103, 103, 108)",
+        "border-right-color": "rgb(103, 103, 108)",
+        "border-bottom-color": "rgb(103, 103, 108)",
+        "border-left-color": "rgb(103, 103, 108)"
+      },
+      ".vp-icon-btn > svg": {
+        "width": "20px",
+        "height": "20px",
+        "fill": "none",
+        "stroke": "rgb(103, 103, 108)",
+        "offset-top": "12px",
+        "offset-left": "12px"
+      },
+      "a.vp-icon-btn > svg": {
+        "fill": "rgb(103, 103, 108)",
+        "stroke": "none"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(152, 152, 159)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-top-color": "rgb(152, 152, 159)",
+        "border-right-color": "rgb(152, 152, 159)",
+        "border-bottom-color": "rgb(152, 152, 159)",
+        "border-left-color": "rgb(152, 152, 159)"
+      },
+      ".vp-icon-btn > svg": {
+        "width": "20px",
+        "height": "20px",
+        "fill": "none",
+        "stroke": "rgb(152, 152, 159)",
+        "offset-top": "12px",
+        "offset-left": "12px"
+      },
+      "a.vp-icon-btn > svg": {
+        "fill": "rgb(152, 152, 159)",
+        "stroke": "none"
+      }
+    }
+  },
+  "icon-btn sizes": {
+    "light": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-icon-btn[data-size=\"sm\"]": {
+        "width": "36px",
+        "height": "36px"
+      },
+      ".vp-icon-btn > svg": {
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn[data-size=\"sm\"] > svg": {
+        "width": "20px",
+        "height": "20px",
+        "offset-top": "8px",
+        "offset-left": "8px"
+      },
+      ".vp-btn": {
+        "height": "44px"
+      },
+      ".vp-btn[data-size=\"sm\"]": {
+        "height": "36px"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-icon-btn[data-size=\"sm\"]": {
+        "width": "36px",
+        "height": "36px"
+      },
+      ".vp-icon-btn > svg": {
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn[data-size=\"sm\"] > svg": {
+        "width": "20px",
+        "height": "20px",
+        "offset-top": "8px",
+        "offset-left": "8px"
+      },
+      ".vp-btn": {
+        "height": "44px"
+      },
+      ".vp-btn[data-size=\"sm\"]": {
+        "height": "36px"
+      }
+    }
+  },
+  "icon-btn appearance light": {
+    "light": {
+      ".vp-icon-btn-light": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(103, 103, 108)"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn-light": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(152, 152, 159)"
+      }
+    }
+  },
+  "icon-btn appearance dark": {
+    "light": {
+      ".vp-icon-btn-light": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(103, 103, 108)"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn-light": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(152, 152, 159)"
+      }
+    }
+  },
+  "icon-btn appearance auto": {
+    "light": {
+      ".vp-icon-btn-light": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(103, 103, 108)"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn-light": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(152, 152, 159)"
+      }
+    }
+  },
+  "icon-btn appearance without data-appearance": {
+    "light": {
+      ".vp-icon-btn-light": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(103, 103, 108)"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn-light": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn-dark": {
+        "display": "block",
+        "width": "20px",
+        "height": "20px"
+      },
+      ".vp-icon-btn-auto": {
+        "display": "none",
+        "width": "20px",
+        "height": "0px"
+      },
+      ".vp-icon-btn": {
+        "width": "44px",
+        "height": "44px",
+        "color": "rgb(152, 152, 159)"
+      }
+    }
+  },
+  "icon-btn focused": {
+    "light": {
+      ".vp-icon-btn :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "2px"
+      }
+    },
+    "dark": {
+      ".vp-icon-btn :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "2px"
+      }
+    }
+  }
+}

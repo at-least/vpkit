@@ -1,0 +1,108 @@
+/* vpkit — icon button, `vp-icon-btn`, from VitePress's VPSocialLink (the
+ * navbar's social icons): its colors and motion, on vpkit's control
+ * height, with a hover ground. An optional import:
+ * `@import "vpkit/components/icon-btn/icon-btn.css";`
+ *
+ *   <button class="vp-icon-btn" type="button" aria-label="Close"><svg aria-hidden="true" viewBox="0 0 24 24" …>…</svg></button>
+ *   <a class="vp-icon-btn" href="/search" aria-label="Search"><svg …>…</svg></a>
+ *
+ * On <a href> or <button>, which bring the pointer (base.css gives an
+ * enabled button one). A square that centers an inline SVG, 1.25rem (the
+ * crate's `vpkit::icon`, or the page's own), which takes the text color
+ * unless it sets its own fill: VPSocialLink fills every SVG with
+ * currentColor, which turns a stroke icon (fill="none") solid; here an SVG
+ * that sets fill keeps it. Secondary text, body text hovered, VPSocialLink's
+ * 0.5s and 0.25s fades. The label is the page's (aria-label): the button
+ * shows only the icon. The axes are attributes:
+ *   data-size="sm"              2.25rem square (the default 2.75rem,
+ *                               --vp-control-height: a touch target's
+ *                               44px, where VPSocialLink is 36px), beside
+ *                               a small button or input
+ *   data-variant="appearance"   a switch over the page's appearance,
+ *                               three ways: of its three parts,
+ *                               `vp-icon-btn-light`, `vp-icon-btn-dark`
+ *                               and `vp-icon-btn-auto`, it shows the one
+ *                               the root's data-appearance ("light",
+ *                               "dark", "auto") names, and without the
+ *                               attribute the light or the dark one as
+ *                               `.dark` says, as vp-toggle's appearance
+ *                               switch follows `.dark`
+ *
+ *   <button class="vp-icon-btn" data-variant="appearance" type="button" aria-label="Appearance">
+ *     <svg class="vp-icon-btn-light" aria-hidden="true" viewBox="0 0 24 24" …>…</svg>
+ *     <svg class="vp-icon-btn-dark" …>…</svg>
+ *     <svg class="vp-icon-btn-auto" …>…</svg>
+ *   </button>
+ *
+ * vpkit's additions: the radius token and the gray wash on hover, since an
+ * icon that only darkens reads as decoration rather than a control (a
+ * ghost vp-btn has the same colors); the square on the control height,
+ * where VPSocialLink's is 2.25rem; the icon as the direct child, where
+ * VPSocialLink wraps it in a span. The hover applies only on a device
+ * that can hover; VPSocialLink's also stuck to a tapped link. The focus
+ * ring is base.css's. The page's script cycles the appearance, writes
+ * data-appearance on <html> beside `.dark`, and stores the choice; vpkit
+ * ships none. data-appearance is the one state here no ARIA attribute
+ * says, a convention the page writes as it writes `.dark`.
+ *
+ * The block sets every --vp-icon-btn-* local from the contract and a
+ * variant overrides the locals and nothing else. The icon's size sits
+ * behind :where(), so a size utility on it wins. This is the components
+ * layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-icon-btn {
+    --vp-icon-btn-size: var(--vp-control-height);
+    --vp-icon-btn-text: var(--vp-c-text-2);
+    --vp-icon-btn-bg: transparent;
+    --vp-icon-btn-hover-text: var(--vp-c-text-1);
+    --vp-icon-btn-hover-bg: var(--vp-c-gray-soft);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--vp-icon-btn-size);
+    height: var(--vp-icon-btn-size);
+    border-radius: var(--vp-radius);
+    color: var(--vp-icon-btn-text);
+    background-color: var(--vp-icon-btn-bg);
+    text-decoration: none;
+    transition: color var(--vp-duration-slow), background-color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-icon-btn-hover-text);
+        background-color: var(--vp-icon-btn-hover-bg);
+        transition: color var(--vp-duration), background-color var(--vp-duration);
+      }
+    }
+  }
+
+  .vp-icon-btn[data-size="sm"] {
+    --vp-icon-btn-size: var(--vp-control-height-sm);
+  }
+
+  :where(.vp-icon-btn) > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  :where(.vp-icon-btn) svg:not([fill]) {
+    fill: currentColor;
+  }
+
+  /* the appearance switch: its three parts hidden, then the one the root's
+     data-appearance names, or without it the one `.dark` says */
+  .vp-icon-btn[data-variant="appearance"] > :is(.vp-icon-btn-light, .vp-icon-btn-dark, .vp-icon-btn-auto) {
+    display: none;
+  }
+
+  :root[data-appearance="light"] .vp-icon-btn[data-variant="appearance"] > .vp-icon-btn-light,
+  :root[data-appearance="dark"] .vp-icon-btn[data-variant="appearance"] > .vp-icon-btn-dark,
+  :root[data-appearance="auto"] .vp-icon-btn[data-variant="appearance"] > .vp-icon-btn-auto,
+  :root:not([data-appearance]):not(.dark) .vp-icon-btn[data-variant="appearance"] > .vp-icon-btn-light,
+  :root:not([data-appearance]).dark .vp-icon-btn[data-variant="appearance"] > .vp-icon-btn-dark {
+    display: block;
+  }
+}
