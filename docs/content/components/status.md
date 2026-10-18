@@ -3,19 +3,15 @@ title = "Status"
 description = "The line where a page shows the reply to what was just done, with an error and a success state; vpkit's own."
 +++
 
-# Status <span class="vp-badge vp-badge-tip">vpkit</span> {#status}
+# Status <span class="vp-badge" data-variant="tip">vpkit</span> {#status}
 
 The line where a page shows the reply to what was just done: a handler's answer, a form's outcome. VitePress has none; this is vpkit's own, on VitePress's tokens.
 
 ```css
-@import "vpkit/status.css";
+@import "vpkit/components/status/status.css";
 ```
 
-{% <vp_example title="Replies"> %}
-<div class="vp-status">Sent: the code is valid for 10 minutes.</div>
-<div class="vp-status" data-state="error">That code has expired.</div>
-<div class="vp-status" data-state="success">Saved.</div>
-{% </vp_example> %}
+{{ <vp_example file="status/replies" title="Replies" /> }}
 
 - `vp-status`: secondary text, 0.875rem.
 - `data-state="error"` turns it danger, `data-state="success"` success: the page's script sets the state with the reply.
