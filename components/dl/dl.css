@@ -1,0 +1,69 @@
+/* vpkit — description list, `vp-dl`: terms and their values, a record's
+ * details, vpkit's own, on the contract (VitePress has none). An optional
+ * import: `@import "vpkit/components/dl/dl.css";`
+ *
+ *   <dl class="vp-dl sm:grid-cols-2">
+ *     <div><dt>Ordered</dt><dd>2026-10-18</dd></div>
+ *     <div><dt>Total</dt><dd>NT$1,280</dd></div>
+ *   </dl>
+ *
+ * `vp-dl` alone: each term over its value, a pair in a <div>, the pairs a
+ * grid 0.75rem apart and 1.5rem between columns; one column, more as the
+ * page sets them (`sm:grid-cols-2`). The term is 0.75rem at 1.25rem and
+ * weight 500 in secondary text; the value 0.875rem at 1.5rem in body
+ * text, breaking a long word (an address) rather than overflow, so a value
+ * that must stay on one line takes `truncate`. The rules for the terms,
+ * the values and the pairs sit behind :where(), so a utility on a <dt> or
+ * a <dd> wins. The variant is an attribute:
+ *   data-variant="inline"   each term beside its value, <dt> and <dd>
+ *                           straight in the list: two columns, the terms
+ *                           as wide as the widest, 0.25rem between rows
+ *                           and 0.75rem between the columns, on one
+ *                           baseline
+ *
+ *   <dl class="vp-dl" data-variant="inline">
+ *     <dt>Release</dt><dd>2.4.1</dd>
+ *     <dt>OS</dt><dd>iOS 18.1</dd>
+ *   </dl>
+ *
+ * The block sets its grid as --vp-dl-* locals (the columns, the gaps, the
+ * alignment) and the variant overrides the locals and nothing else. This
+ * is the components layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-dl {
+    --vp-dl-columns: none;
+    --vp-dl-align: normal;
+    --vp-dl-gap: 0.75rem 1.5rem;
+
+    display: grid;
+    grid-template-columns: var(--vp-dl-columns);
+    align-items: var(--vp-dl-align);
+    gap: var(--vp-dl-gap);
+  }
+
+  .vp-dl[data-variant="inline"] {
+    --vp-dl-columns: max-content minmax(0, 1fr);
+    --vp-dl-align: baseline;
+    --vp-dl-gap: 0.25rem 0.75rem;
+  }
+
+  :where(.vp-dl) > div {
+    min-width: 0;
+  }
+
+  :where(.vp-dl) dt {
+    line-height: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  :where(.vp-dl) dd {
+    margin: 0;
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+    overflow-wrap: anywhere;
+  }
+}
