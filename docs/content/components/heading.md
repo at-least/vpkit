@@ -8,15 +8,10 @@ description = "An app page's titles: VitePress's doc heading scale as classes, w
 An app page's titles: the page's title and the line under it, a section's title, and the small title of a group of things. The first and the third are VitePress's doc headings (`.vp-doc h1` and `.vp-doc h3`) as classes, for headings outside the markdown; the description and the group title are vpkit's own.
 
 ```css
-@import "vpkit/heading.css";
+@import "vpkit/components/heading/heading.css";
 ```
 
-{% <vp_example title="A page's headings"> %}
-<h1 class="vp-page-title">Releases</h1>
-<p class="vp-page-desc">Every version this project has shipped, newest first.</p>
-<h2 class="vp-section-title mt-8">Retention</h2>
-<h3 class="vp-group-title mt-4">API keys</h3>
-{% </vp_example> %}
+{{ <vp_example file="heading/basic" title="A page's headings" /> }}
 
 - `vp-page-title`: weight 600, 1.75rem with -0.02em of letter spacing, 2rem from 48rem wide.
 - `vp-page-desc`: the line under a page's title, 0.9375rem at 1.75 in secondary text, 65 characters wide at most.

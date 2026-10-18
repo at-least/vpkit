@@ -1,0 +1,83 @@
+/* vpkit — heading: an app page's titles, VitePress's doc heading scale
+ * (vp-doc.css) as classes for headings outside the markdown, with a page's
+ * description and a group's small title, vpkit's own. An optional import:
+ * `@import "vpkit/components/heading/heading.css";`
+ *
+ *   <h1 class="vp-page-title">Releases</h1>
+ *   <p class="vp-page-desc">Every version this project has shipped.</p>
+ *   <h2 class="vp-section-title">Retention</h2>
+ *   <h3 class="vp-group-title">API keys</h3>
+ *
+ * Four blocks, no attributes:
+ *   vp-page-title     `.vp-doc h1`'s type: 600, 1.75rem at 2.5rem with
+ *                     -0.02em of letter spacing, 2rem at 1.25 from 48rem
+ *                     wide
+ *   vp-page-desc      vpkit's: the line under a page's title, 0.9375rem at
+ *                     1.75 in secondary text, 65 characters wide at most
+ *   vp-section-title  `.vp-doc h3`'s type: 600, 1.25rem at 1.4 with
+ *                     -0.01em
+ *   vp-group-title    vpkit's: the small title of a group of things (a
+ *                     panel's header, a list of settings, a section of a
+ *                     record), 0.8125rem at weight 500 in secondary text,
+ *                     on the line height around it
+ * They go on the heading element the page's outline needs: vp-section-title
+ * on an <h2> and vp-group-title on an <h3>, or one level up where the
+ * page has fewer. The markdown's margins, its rule above an h2 and its
+ * padding are not ported: a heading's place is the page's (`mt-8`). Inside
+ * a vp-doc (prose.css), whose rules for headings and paragraphs would add
+ * them, each keeps its own box. */
+
+@layer components {
+  .vp-page-title {
+    letter-spacing: -0.02em;
+    line-height: 1.4285714;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+  }
+
+  @media (min-width: 48rem) {
+    .vp-page-title {
+      line-height: 1.25;
+      font-size: 2rem;
+    }
+  }
+
+  .vp-page-desc {
+    max-width: 65ch;
+    line-height: 1.75;
+    font-size: 0.9375rem;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-section-title {
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-group-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  /* inside a vp-doc (prose.css), whose rules for headings and paragraphs
+     give margins, a rule above an h2, its padding, letter spacing and line
+     height: none of it */
+  .vp-doc .vp-page-title,
+  .vp-doc .vp-page-desc,
+  .vp-doc .vp-section-title,
+  .vp-doc .vp-group-title {
+    margin: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .vp-doc .vp-group-title {
+    letter-spacing: normal;
+    line-height: inherit;
+  }
+}

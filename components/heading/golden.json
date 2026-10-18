@@ -1,0 +1,158 @@
+{
+  "heading section title": {
+    "light": {
+      ".vp-section-title": {
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-section-title": {
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "heading page description": {
+    "light": {
+      ".vp-page-desc": {
+        "max-width": "542.249px",
+        "font-size": "15px",
+        "line-height": "26.25px",
+        "color": "rgb(103, 103, 108)",
+        "height": "52.5px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-page-desc": {
+        "max-width": "542.249px",
+        "font-size": "15px",
+        "line-height": "26.25px",
+        "color": "rgb(152, 152, 159)",
+        "height": "52.5px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "heading group title": {
+    "light": {
+      ".vp-group-title": {
+        "font-size": "13px",
+        "line-height": "19.5px",
+        "letter-spacing": "normal",
+        "font-weight": "500",
+        "color": "rgb(103, 103, 108)",
+        "height": "19.5px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-group-title": {
+        "font-size": "13px",
+        "line-height": "19.5px",
+        "letter-spacing": "normal",
+        "font-weight": "500",
+        "color": "rgb(152, 152, 159)",
+        "height": "19.5px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "heading example": {
+    "light": {
+      ".vp-page-title": {
+        "font-size": "32px",
+        "line-height": "40px",
+        "letter-spacing": "-0.64px",
+        "font-weight": "600",
+        "color": "rgb(60, 60, 67)",
+        "height": "40px",
+        "offset-top": "0px"
+      },
+      ".vp-page-desc": {
+        "max-width": "542.249px",
+        "font-size": "15px",
+        "line-height": "26.25px",
+        "color": "rgb(103, 103, 108)",
+        "height": "26.25px",
+        "offset-top": "40px"
+      },
+      ".vp-section-title": {
+        "font-size": "20px",
+        "line-height": "28px",
+        "letter-spacing": "-0.2px",
+        "font-weight": "600",
+        "color": "rgb(60, 60, 67)",
+        "height": "28px",
+        "margin-top": "32px",
+        "offset-top": "98.25px"
+      },
+      ".vp-group-title": {
+        "font-size": "13px",
+        "line-height": "19.5px",
+        "letter-spacing": "normal",
+        "font-weight": "500",
+        "color": "rgb(103, 103, 108)",
+        "height": "19.5px",
+        "margin-top": "16px",
+        "offset-top": "142.25px"
+      }
+    },
+    "dark": {
+      ".vp-page-title": {
+        "font-size": "32px",
+        "line-height": "40px",
+        "letter-spacing": "-0.64px",
+        "font-weight": "600",
+        "color": "rgb(223, 223, 214)",
+        "height": "40px",
+        "offset-top": "0px"
+      },
+      ".vp-page-desc": {
+        "max-width": "542.249px",
+        "font-size": "15px",
+        "line-height": "26.25px",
+        "color": "rgb(152, 152, 159)",
+        "height": "26.25px",
+        "offset-top": "40px"
+      },
+      ".vp-section-title": {
+        "font-size": "20px",
+        "line-height": "28px",
+        "letter-spacing": "-0.2px",
+        "font-weight": "600",
+        "color": "rgb(223, 223, 214)",
+        "height": "28px",
+        "margin-top": "32px",
+        "offset-top": "98.25px"
+      },
+      ".vp-group-title": {
+        "font-size": "13px",
+        "line-height": "19.5px",
+        "letter-spacing": "normal",
+        "font-weight": "500",
+        "color": "rgb(152, 152, 159)",
+        "height": "19.5px",
+        "margin-top": "16px",
+        "offset-top": "142.25px"
+      }
+    }
+  }
+}
