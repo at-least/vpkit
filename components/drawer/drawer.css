@@ -28,10 +28,8 @@
  * (overscroll-behavior: contain), under --vp-shadow-1 in dark mode, the
  * one `.dark` rule a state read allows (VitePress's light sidebar names a
  * shadow nothing defines, so it paints none, and so does the drawer). The
- * scrim is VPBackdrop: --vp-backdrop-bg-color, with tokens.css's value as
- * the fallback, and the fade's durations with theirs, where ::backdrop
- * inherits nothing from its dialog (before Chrome 122 and Safari 17.4, as
- * dialog.css says).
+ * scrim is VPBackdrop: --vp-backdrop-bg-color, fading over the duration
+ * tokens.
  *
  * The slide is VitePress's. Opening, the panel comes in from the left
  * over --vp-duration-slow on VitePress's curve as it fades in over
@@ -133,19 +131,17 @@
   }
 
   /* the scrim needs no display or overlay transition of its own: it is
-     drawn as long as its dialog is in the top layer. The fallbacks are
-     for a ::backdrop that inherits nothing from its dialog (before Chrome
-     122 and Safari 17.4): the page still dims, and the fade keeps its
-     durations */
+     drawn as long as its dialog is in the top layer; ::backdrop inherits
+     the tokens from its dialog on every browser the kit runs on */
   .vp-drawer::backdrop {
-    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
+    background-color: var(--vp-backdrop-bg-color);
     opacity: 0;
-    transition: opacity var(--vp-duration, 0.25s);
+    transition: opacity var(--vp-duration);
   }
 
   .vp-drawer[open]::backdrop {
     opacity: 1;
-    transition: opacity var(--vp-duration-slow, 0.5s);
+    transition: opacity var(--vp-duration-slow);
   }
 
   @starting-style {
