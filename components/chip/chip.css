@@ -1,0 +1,88 @@
+/* vpkit — chip, `vp-chip`: a removable filter, its key and its value in a
+ * pill with a control that removes it; vpkit's own, on the contract
+ * (VitePress has no chip). An optional import:
+ * `@import "vpkit/components/chip/chip.css";`
+ *
+ *   <span class="vp-chip">
+ *     <span class="vp-chip-key">env</span>
+ *     <span class="vp-chip-value">production</span>
+ *     <a class="vp-chip-remove" href="?" aria-label="Remove the env filter"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></a>
+ *   </span>
+ *
+ * A 12px pill (the pill radius token) 0.625rem across and 0.125rem tall on
+ * the soft ground, where the theme contract holds secondary text (as
+ * vp-empty's box), its parts in a row 0.375rem apart. No axis. The parts:
+ *   vp-chip-key      the key, in the secondary text
+ *   vp-chip-value    the value, at weight 600 in the body text
+ *   vp-chip-remove   the control that removes the filter, a link or a
+ *                    button around an icon (the crate's icon::X, Lucide's
+ *                    x, 1rem here), secondary text, body text when hovered
+ *                    on a device that can hover, in --vp-duration. Its
+ *                    0.3125rem of padding is a hit area larger than the
+ *                    icon, cancelled by as much negative margin, so the
+ *                    chip keeps its size; on a coarse pointer the hit
+ *                    area grows by 0.4375rem each side, cancelled the same
+ *                    way (a hit area, not a control height)
+ * A chip that opens the list it names is a link as a whole
+ * (`<a class="vp-chip">`), with no remove control inside it: a control
+ * inside a link is no valid HTML. The pill sets its own text-decoration
+ * and weight, which the markdown's rule for links would otherwise give
+ * it, so inside a vp-doc (prose.css) a link chip and the remove control
+ * keep their look. The element supplies the pointer, a link's or a
+ * button's. Name the control for a screen reader with aria-label: the
+ * icon says nothing. The focus ring is base.css's. The crate's `Chip`
+ * writes this markup. This is the components layer, so a utility on the
+ * element overrides it. */
+
+@layer components {
+  .vp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: var(--vp-radius-full);
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: inherit;
+    color: var(--vp-c-text-2);
+    text-decoration: none;
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-chip-key {
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-chip-value {
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-chip-remove {
+    display: inline-flex;
+    margin: -0.3125rem;
+    padding: 0.3125rem;
+    color: var(--vp-c-text-2);
+    text-decoration: none;
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-c-text-1);
+      }
+    }
+  }
+
+  :where(.vp-chip-remove) > svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* a larger hit area on a coarse pointer, the margin cancelling it so
+     the chip keeps its size */
+  @media (pointer: coarse) {
+    .vp-chip-remove {
+      margin: -0.4375rem;
+      padding: 0.4375rem;
+    }
+  }
+}
