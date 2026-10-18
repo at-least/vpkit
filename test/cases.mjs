@@ -2596,6 +2596,45 @@ cases.push({
   ],
 });
 
+// Carbon ads: VitePress's VPCarbonAds against vp-carbon-ads, holding the
+// markup Carbon's classic script writes (its image link, text and credit)
+// and a second ad as a refresh adds one; the text and the credit hovered;
+// on a touch screen; then inside a vp-doc, where vpkit's addition keeps the
+// markdown's underline off the ad's links, against itself outside one
+const CARBON_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='100' viewBox='0 0 130 100'%3E%3Crect width='130' height='100' fill='%23888'/%3E%3C/svg%3E";
+const carbonAd = (cls) =>
+  `<div style="width:16rem"><div data-t="box" class="${cls}"><div data-t="ad" id="carbonads"><span><span class="carbon-wrap">` +
+  `<a class="carbon-img" href="#"><img data-t="img" src="${CARBON_IMG}" alt="" width="130" height="100"></a>` +
+  `<a data-t="text" class="carbon-text" href="#">Build a better docs site, faster, with the new release.</a></span>` +
+  `<a data-t="by" class="carbon-poweredby" href="#">ads via Carbon</a></span></div><div data-t="second">A refreshed ad</div></div></div>`;
+const CARBON_CHECKS = [
+  { target: 'box', props: ['display', 'justify-content', 'align-items', ...PADDING, ...RADIUS, 'min-height', 'text-align', 'line-height', 'font-size', 'font-weight', 'background-color', 'height'] },
+  { target: 'img', props: [...MARGIN, ...RADIUS, 'offset-left'] },
+  { target: 'text', props: ['display', ...MARGIN, ...PADDING, 'color', 'text-decoration-line', ...TRANSITION, 'height'] },
+  { target: 'text', state: ['hover'], props: ['color'] },
+  { target: 'by', props: ['display', ...PADDING, 'font-size', 'font-weight', 'color', 'text-transform', 'text-decoration-line', ...TRANSITION, 'height'] },
+  { target: 'by', state: ['hover'], props: ['color'] },
+  { target: 'ad', props: ['display'] },
+  { target: 'second', props: ['display'] },
+];
+cases.push({
+  name: 'carbon ads',
+  upstreamFiles: ['components/VPCarbonAds.vue'],
+  upstream: carbonAd('VPCarbonAds'),
+  vpkit: carbonAd('vp-carbon-ads'),
+  checks: CARBON_CHECKS,
+});
+touch('carbon ads', carbonAd('vp-carbon-ads'), [
+  { target: 'text', ...AT_REST, props: ['color'] },
+  { target: 'by', ...AT_REST, props: ['color'] },
+]);
+cases.push({
+  name: 'carbon ads in a doc',
+  reference: `<div>${carbonAd('vp-carbon-ads')}</div>`,
+  vpkit: inDoc(carbonAd('vp-carbon-ads')),
+  checks: CARBON_CHECKS.filter((c) => !c.state),
+});
+
 // breadcrumb: own-drive's folder path (its nav, a crumb that is a link,
 // the current folder's crumb, and the slash between crumbs) against
 // vp-breadcrumb: the list, its items at rest and hovered, and the slash the
