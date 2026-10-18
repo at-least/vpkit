@@ -84,6 +84,7 @@ items = [
   { text = "Heading", link = "@/components/heading.md" },
   { text = "Highlight", link = "@/components/mark.md" },
   { text = "Hint", link = "@/components/hint.md" },
+  { text = "Icon", link = "@/components/icon.md" },
   { text = "Icon Button", link = "@/components/icon-btn.md" },
   { text = "Input", link = "@/components/input.md" },
   { text = "Key", link = "@/components/kbd.md" },

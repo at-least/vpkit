@@ -83,6 +83,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Heading](@/components/heading.md) | `vp-page-title`, `vp-page-desc`, `vp-section-title`, `vp-group-title` | VitePress's doc headings, and vpkit's own: a page's description, a group's title |
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Hint](@/components/hint.md) | `vp-hint` | none, vpkit's own: a word's meaning in a tooltip |
+| [Icon](@/components/icon.md) | `vp-icon` | VitePress's `VPIcon` |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
 | [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |

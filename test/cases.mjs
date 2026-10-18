@@ -1666,6 +1666,38 @@ touch('icon button', `<a data-t="btn" class="vp-icon-btn" href="#" aria-label="L
   { target: 'btn', ...AT_REST, props: ['color', 'background-color'] },
 ]);
 
+// icon: VPIcon's form for an icon given as markup (its span and the SVG in
+// it) against vp-icon, in a line of 1.25rem text in the brand color: the
+// box takes the text's size and sits on its line, the SVG fills it in the
+// text's color; then vpkit's difference, an SVG that sets its own fill
+// keeping it, against the same SVG alone, as vp-icon-btn's case; and a
+// size utility on the SVG winning. No case inside a vp-doc: content.css has
+// no rule for a span or an SVG outside a code block or a link
+const ICON_SVG = (attrs = '') => `<svg data-t="svg"${attrs} viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>`;
+const iconLine = (span) => `<p style="font-size:1.25rem;color:var(--vp-c-brand-1)">Saved ${span} just now</p>`;
+cases.push({
+  name: 'icon',
+  upstreamFiles: ['components/VPIcon.vue'],
+  upstream: iconLine(`<span data-t="i" class="VPIcon">${ICON_SVG()}</span>`),
+  vpkit: iconLine(`<span data-t="i" class="vp-icon">${ICON_SVG()}</span>`),
+  checks: [
+    { target: 'i', props: ['display', 'width', 'height', 'vertical-align', 'offset-top', 'offset-left'] },
+    { target: 'svg', props: ['display', 'width', 'height', 'fill', 'offset-top'] },
+  ],
+});
+cases.push({
+  name: 'icon with a stroke svg',
+  reference: ICON_SVG(' fill="none" stroke="currentColor"'),
+  vpkit: `<span class="vp-icon">${ICON_SVG(' fill="none" stroke="currentColor"')}</span>`,
+  checks: [{ target: 'svg', props: ['fill'] }],
+});
+cases.push({
+  name: 'icon, an svg with a size of its own',
+  reference: iconLine(`<span class="vp-icon">${ICON_SVG(' style="width:1rem;height:1rem"')}</span>`),
+  vpkit: iconLine(`<span class="vp-icon">${ICON_SVG(` class="${OWN_DRIVE_ICON_CHIP}"`)}</span>`),
+  checks: [{ target: 'svg', props: ['width', 'height', 'fill'] }],
+});
+
 // alert details: VitePress's details block (.custom-block.details on a
 // <details>, inside .vp-doc as its docs render it) against vp-alert-details,
 // open and closed

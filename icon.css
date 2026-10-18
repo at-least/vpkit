@@ -1,0 +1,33 @@
+/* vpkit — icon, ported from VitePress's VPIcon: an SVG of the page's, at
+ * the text's size and in its color. An optional import:
+ * `@import "vpkit/icon.css";` (`vp-icon-btn`, the icon button, is a block
+ * of its own, in icon-btn.css)
+ *
+ *   <span class="vp-icon"><svg aria-hidden="true" viewBox="0 0 24 24">…</svg></span>
+ *
+ * An inline-block 1em square, so the text's font size is its size, the SVG
+ * filling it, painted in currentColor, so the text's color is its color,
+ * as VPIcon draws an icon given as markup. vpkit's difference, as
+ * `vp-icon-btn`'s: VitePress fills every SVG with currentColor, which turns
+ * a stroke icon (fill="none") solid; here an SVG that sets its fill keeps
+ * it. The rules for the SVG sit behind :where() (rule 6), so a size or fill
+ * utility on it wins. Decorative: the text beside it names it, or the page
+ * gives it a name. Not ported: VPIcon's other form, an icon given by name,
+ * which is the page's icon set (vpkit's is icons.css's `vpi-*`). */
+
+@layer components {
+  .vp-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+  }
+
+  :where(.vp-icon) svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  :where(.vp-icon) svg:not([fill]) {
+    fill: currentColor;
+  }
+}
