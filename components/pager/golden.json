@@ -1,0 +1,222 @@
+{
+  "pager": {
+    "light": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-summary": {
+        "font-size": "14px",
+        "color": "rgb(103, 103, 108)",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "line-height": "21px",
+        "offset-left": "0px",
+        "offset-top": "11.5px",
+        "height": "21px"
+      },
+      ".vp-pager-actions": {
+        "display": "flex",
+        "column-gap": "8px",
+        "margin-left": "1007.86px",
+        "offset-left": "1109.390625px",
+        "offset-top": "0px"
+      },
+      ".vp-pager-actions > :first-child": {
+        "offset-left": "0px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "92.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    },
+    "dark": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-summary": {
+        "font-size": "14px",
+        "color": "rgb(152, 152, 159)",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "line-height": "21px",
+        "offset-left": "0px",
+        "offset-top": "11.5px",
+        "height": "21px"
+      },
+      ".vp-pager-actions": {
+        "display": "flex",
+        "column-gap": "8px",
+        "margin-left": "1007.86px",
+        "offset-left": "1109.390625px",
+        "offset-top": "0px"
+      },
+      ".vp-pager-actions > :first-child": {
+        "offset-left": "0px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "92.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    }
+  },
+  "pager first page": {
+    "light": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-summary": {
+        "font-size": "14px",
+        "color": "rgb(103, 103, 108)",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "line-height": "21px",
+        "offset-left": "0px",
+        "offset-top": "11.5px",
+        "height": "21px"
+      },
+      ".vp-pager-actions > :first-child": {
+        "offset-left": "0px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "0.5"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "92.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    },
+    "dark": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-summary": {
+        "font-size": "14px",
+        "color": "rgb(152, 152, 159)",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "line-height": "21px",
+        "offset-left": "0px",
+        "offset-top": "11.5px",
+        "height": "21px"
+      },
+      ".vp-pager-actions > :first-child": {
+        "offset-left": "0px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "0.5"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "92.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    }
+  },
+  "pager without a summary": {
+    "light": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-actions": {
+        "display": "flex",
+        "column-gap": "8px",
+        "margin-left": "302.391px",
+        "offset-left": "302.390625px",
+        "offset-top": "0px"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "99.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    },
+    "dark": {
+      ".vp-pager": {
+        "display": "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "column-gap": "12px",
+        "padding-top": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "padding-left": "0px",
+        "height": "44px"
+      },
+      ".vp-pager-actions": {
+        "display": "flex",
+        "column-gap": "8px",
+        "margin-left": "302.391px",
+        "offset-left": "302.390625px",
+        "offset-top": "0px"
+      },
+      ".vp-pager-actions > :last-child": {
+        "offset-left": "99.03125px",
+        "offset-top": "0px",
+        "height": "44px",
+        "opacity": "1"
+      }
+    }
+  }
+}

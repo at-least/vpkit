@@ -1,0 +1,56 @@
+/* vpkit — pager, `vp-pager`: under a list, a line saying what it shows and
+ * the buttons to the pages either side, vpkit's own, on the contract
+ * (VitePress has none for an app: its previous and next links are the
+ * docs layout's). An optional import:
+ * `@import "vpkit/components/pager/pager.css";`
+ *
+ *   <nav class="vp-pager" aria-label="Pages">
+ *     <p class="vp-pager-summary">51–100 of 230</p>
+ *     <div class="vp-pager-actions">
+ *       <a class="vp-btn" href="?page=1">Newer</a>
+ *       <a class="vp-btn" href="?page=3">Older</a>
+ *     </div>
+ *   </nav>
+ *
+ * `vp-pager` is a flex row, its two ends apart and centered on the cross
+ * axis, 0.75rem between them; its distance from the list it pages is the
+ * page's (`pt-5`). The parts:
+ *   vp-pager-summary   the line saying what the list shows, 0.875rem of
+ *                      secondary text
+ *   vp-pager-actions   a row of vp-btns 0.5rem apart, a disabled one where
+ *                      there is no page that way; it keeps the row's far
+ *                      end (margin-inline-start: auto), so a pager with no
+ *                      summary, a cursor's that counts nothing, has its
+ *                      buttons where every pager has them
+ * Give each pager its own aria-label, so a page with two lists has two
+ * landmarks a screen reader can tell apart. Inside a vp-doc (prose.css),
+ * whose rule for a paragraph gives the summary margins and a 28px line, it
+ * keeps none and the page's line height. The crate's `Pager` writes this
+ * markup. */
+
+@layer components {
+  .vp-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .vp-pager-summary {
+    font-size: 0.875rem;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-pager-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  /* inside a vp-doc (prose.css), whose rule for a paragraph gives the
+     summary margins and a 28px line: none, the page's line height */
+  .vp-doc .vp-pager-summary {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
