@@ -3,7 +3,8 @@
 // its ::before paints) and VPNavBarTitle (the site's name): at a desktop's
 // width and a phone's. vpkit's own, golden, each named: the rule as a
 // border, the row centering its items; and the example, a bar with its
-// name, its links and the appearance switch.
+// name, its links and the appearance switch. vpkit against vpkit: the
+// title inside a vp-doc against itself alone.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,5 +64,17 @@ cases.push({
     { target: '.vp-topbar-title', props: ['height', 'offset-top', 'color'] },
     { target: '.vp-nav-link', props: ['height', 'offset-top', 'color'] },
     { target: '.vp-toggle', props: ['height', 'offset-top', 'offset-left'] },
+  ],
+});
+
+// inside a vp-doc (prose.css), whose rule for a link underlines, recolors
+// and weights any <a>: the title keeps its look, at rest and hovered
+cases.push({
+  name: 'topbar title in a doc',
+  html: `<div class="vp-doc">${BAR}</div>`,
+  reference: `<div>${BAR}</div>`,
+  checks: [
+    { target: '.vp-topbar-title', props: ['color', 'font-weight', 'text-decoration-line', ...TRANSITION] },
+    { target: '.vp-topbar-title', state: ['hover'], props: ['color', 'text-decoration-line'] },
   ],
 });

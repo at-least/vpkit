@@ -21,9 +21,10 @@
  *                     --vp-layout-max-width less 4rem; a bar may hold
  *                     more than one
  *   vp-topbar-title   the site's name: a flex row the bar's height, 1rem
- *                     at weight 600 in body text; a <span> in it
- *                     truncates with an ellipsis when the bar runs out of
- *                     room
+ *                     at weight 600 in body text, no underline (set, so
+ *                     the markdown's rule for a link, prose.css, draws
+ *                     none inside a vp-doc); a <span> in it truncates
+ *                     with an ellipsis when the bar runs out of room
  *
  * Where the bar sits is the page's (sticky or fixed at the top, with a
  * z-index), as is what fills the row: vp-nav-link for its links,
@@ -70,6 +71,7 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--vp-c-text-1);
+    text-decoration: none;
     transition: opacity var(--vp-duration);
   }
 
