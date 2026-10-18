@@ -67,9 +67,11 @@
  * block (markdown-only content).
  *
  * The rules for what is inside sit behind :where(.vp-alert) and match
- * bare elements only, so a component inside (a vp-btn, a vp-link, a
- * vp-code, a vp-card) keeps its own look, hovered too, with no rule of
- * its own against the alert's. The block sets every --vp-alert-* local
+ * bare elements only (the paragraph rules the block's own title too), so
+ * a component inside (a vp-btn, a vp-link, a vp-code, a vp-card, a
+ * vp-empty) keeps its own look, hovered too, its paragraph parts their
+ * own margins and line, inside a vp-doc too, with no rule of its own
+ * against the alert's. The block sets every --vp-alert-* local
  * from the contract and a variant overrides the locals and nothing else;
  * since every alert sets its own, a nested alert keeps its own colors,
  * its links and code included. This is the components layer, so a utility
@@ -104,7 +106,11 @@
     font-weight: 600;
   }
 
-  :where(.vp-alert) p + p {
+  /* the paragraph rules, here and below, match a bare paragraph (no vp-
+     class) or the block's own title, as the link and code rules match
+     bare ones: a component's part that is a paragraph (a card's details,
+     an empty state's description) keeps its own margins and line */
+  :where(.vp-alert) p + p:where(:not([class*="vp-"]), .vp-alert-title) {
     margin: 0.5rem 0;
   }
 
@@ -116,7 +122,7 @@
     user-select: none;
   }
 
-  :where(details.vp-alert) > summary + p {
+  :where(details.vp-alert) > summary + p:where(:not([class*="vp-"]), .vp-alert-title) {
     margin: 0.5rem 0;
   }
 
@@ -175,19 +181,22 @@
   }
 
   /* inside a vp-doc (prose.css): the block takes the markdown's margin and
-     its paragraphs the custom block's margins and line, as VitePress's
-     vp-doc.css restates them for its custom block; its links and code
-     need no restatement, prose.css being in @layer base, below these */
+     its paragraphs (bare ones and its title) the custom block's margins
+     and line, as VitePress's vp-doc.css restates them for its custom
+     block; a nested component's paragraph part keeps its own in-doc rule,
+     which this one, a level more specific, would otherwise outrank. Its
+     links and code need no restatement, prose.css being in @layer base,
+     below these */
   .vp-doc .vp-alert {
     margin: 1rem 0;
   }
 
-  .vp-doc .vp-alert p {
+  .vp-doc .vp-alert p:where(:not([class*="vp-"]), .vp-alert-title) {
     margin: 0.5rem 0;
     line-height: 1.7142857;
   }
 
-  .vp-doc .vp-alert p:first-child {
+  .vp-doc .vp-alert p:where(:not([class*="vp-"]), .vp-alert-title):first-child {
     margin: 0;
   }
 

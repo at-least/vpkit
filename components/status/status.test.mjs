@@ -1,7 +1,8 @@
 // vp-status: vpkit's own, so golden: the line's type and color at rest and
 // in its error and success states (the example's three replies), a slot
 // holding a fragment whose blocks keep the document's ink, an empty slot.
-// vpkit against vpkit: inside a vp-doc against itself outside one.
+// vpkit against vpkit: inside a vp-doc against itself outside one, and a
+// component inside the slot against itself alone.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -47,5 +48,22 @@ cases.push({
     html: inDoc(html),
     reference: `<div>${html}</div>`,
     checks: [{ target: '.vp-status', props: STATUS }],
+  });
+}
+
+// a component inside keeps its own color: a vp-empty, whose description is
+// a paragraph in secondary text, against itself alone (the ink rule is for
+// bare blocks; the title has a color of its own either way)
+{
+  const empty = '<div class="vp-empty"><p class="vp-empty-title">No orders</p><p class="vp-empty-desc">Nothing matched.</p></div>';
+  cases.push({
+    name: 'status holding an empty state',
+    html: `<div class="vp-status">${empty}</div>`,
+    reference: `<div>${empty}</div>`,
+    checks: [
+      { target: '.vp-empty', props: ['color', 'background-color'] },
+      { target: '.vp-empty-title', props: ['color'] },
+      { target: '.vp-empty-desc', props: ['color'] },
+    ],
   });
 }

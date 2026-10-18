@@ -178,10 +178,13 @@ cases.push({
 });
 
 // a component inside an alert keeps its own look, at rest and hovered, not
-// dimmed: the alert's rules for links and code are for bare ones. Inside a
-// vp-doc too, where the markdown's rules for any <a> and <code> are in
-// play. A card's heading inside a <p> would be parsed out of it: block
-// wrappers
+// dimmed, and a part of it that is a paragraph its own margins and line:
+// the alert's rules for links, code and paragraphs are for bare ones.
+// Inside a vp-doc too, where the markdown's rules for any <a>, <code> and
+// <p> are in play, and the alert's own in-doc paragraph rule would outrank
+// a part's. A card's heading inside a <p> would be parsed out of it: block
+// wrappers. An entry's fourth element holds checks for the in-doc case
+// alone
 const X = '[data-t="x"]';
 const LOOK = ['color', 'text-decoration-line', 'font-weight'];
 const hovered = (target) => ({ target, state: ['hover'], props: ['color', 'opacity'] });
@@ -212,7 +215,7 @@ const INSIDE = [
     { target: X, props: LOOK },
     hovered(X),
     { target: TITLE_T, props: LOOK },
-    { target: '[data-t="details"]', props: ['color', 'font-weight'] },
+    { target: '[data-t="details"]', props: ['color', 'font-weight', ...MARGIN, 'line-height'] },
   ]],
   ['a dropdown item', '<div class="vp-dropdown" role="menu"><a data-t="x" class="vp-dropdown-item" role="menuitem" href="#">Profile</a></div>', [
     { target: X, props: LOOK },
@@ -237,10 +240,21 @@ const INSIDE = [
     { target: X, props: ['color', 'text-decoration-line'] },
     hovered(X),
   ]],
+  // an empty state's lines are paragraphs, the second after the first:
+  // their margins stay the box's gap, the description's color secondary.
+  // Its line height is its own only in a doc (.vp-doc .vp-empty-desc);
+  // elsewhere it inherits the alert's, so it is compared in the doc alone
+  ['an empty state', '<div data-t="x" class="vp-empty"><p data-t="title" class="vp-empty-title">No issues</p><p data-t="details" class="vp-empty-desc">Nothing matched these filters.</p></div>', [
+    { target: X, props: ['color', 'background-color', 'row-gap'] },
+    { target: TITLE_T, props: ['color', 'font-weight', ...MARGIN] },
+    { target: '[data-t="details"]', props: ['color', 'font-weight', ...MARGIN] },
+  ], [
+    { target: '[data-t="details"]', props: ['line-height'] },
+  ]],
 ];
-for (const [what, markup, checks] of INSIDE) {
+for (const [what, markup, checks, inDocToo = []] of INSIDE) {
   cases.push({ name: `alert with ${what} inside`, reference: `<div>${markup}</div>`, html: `<div class="vp-alert" data-variant="tip">${markup}</div>`, checks });
-  cases.push({ name: `alert with ${what} inside, in a doc`, reference: `<div>${markup}</div>`, html: inDoc(`<div class="vp-alert" data-variant="tip">${markup}</div>`), checks });
+  cases.push({ name: `alert with ${what} inside, in a doc`, reference: `<div>${markup}</div>`, html: inDoc(`<div class="vp-alert" data-variant="tip">${markup}</div>`), checks: [...checks, ...inDocToo] });
 }
 
 // on a touch screen a hovered link looks as it does at rest

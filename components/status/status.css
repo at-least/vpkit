@@ -12,11 +12,13 @@
  *   data-state="success"   the text in the success color
  * A reply that is a fragment keeps the document's ink in its blocks (a
  * paragraph, a list, a table, a heading), so a slot may hold a line or a
- * whole section; that rule sits behind :where(), so a component inside
- * keeps its own color. Placement is the page's: an empty slot has no
- * height, and its margin is the page's to drop (`empty:mt-0`); a live
- * region is kept rendered rather than hidden, so that a screen reader
- * announces the reply that fills it.
+ * whole section; that rule sits behind :where() and matches bare elements
+ * only (no vp- class), so a component inside (a vp-empty, whose
+ * description is a paragraph in secondary text) keeps its own color.
+ * Placement is the page's: an empty slot has no height, and its margin is
+ * the page's to drop (`empty:mt-0`); a live region is kept rendered
+ * rather than hidden, so that a screen reader announces the reply that
+ * fills it.
  *
  * The block sets its one local, --vp-status-text, from the contract and a
  * state overrides it and nothing else. This is the components layer, so a
@@ -39,8 +41,10 @@
     --vp-status-text: var(--vp-c-success);
   }
 
-  /* a fragment's blocks keep the document's ink */
-  :where(.vp-status) :is(p, ul, ol, dl, table, h2, h3, h4) {
+  /* a fragment's blocks keep the document's ink: bare ones (no vp- class),
+     so a component inside (a vp-empty, whose description is a paragraph
+     in secondary text) keeps its own color */
+  :where(.vp-status) :is(p, ul, ol, dl, table, h2, h3, h4):where(:not([class*="vp-"])) {
     color: var(--vp-c-text-1);
   }
 }
