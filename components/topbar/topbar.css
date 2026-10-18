@@ -1,0 +1,80 @@
+/* vpkit — top bar, `vp-topbar`, from VitePress's VPNavBar (the bar: its
+ * ground, its padding, its bottom rule, the centered row inside it) and
+ * VPNavBarTitle (the site's name in it). An optional import:
+ * `@import "vpkit/components/topbar/topbar.css";`
+ *
+ *   <header class="vp-topbar sticky top-0 z-10">
+ *     <div class="vp-topbar-row">
+ *       <a class="vp-topbar-title" href="/"><span>Site</span></a>
+ *       <nav aria-label="Main">
+ *         <a class="vp-nav-link" href="/guide">Guide</a>
+ *       </nav>
+ *     </div>
+ *   </header>
+ *
+ * `vp-topbar` is the bar: the page's color, a 1px rule in the gutter
+ * color along its bottom, 1.5rem of padding at the left and 0.5rem at the
+ * right (2rem each from 768px, VitePress's own), nothing wrapping. The
+ * parts:
+ *   vp-topbar-row     the row in it: a flex row as tall as the bar
+ *                     (--vp-nav-height), its ends apart, centered at
+ *                     --vp-layout-max-width less 4rem; a bar may hold
+ *                     more than one
+ *   vp-topbar-title   the site's name: a flex row the bar's height, 1rem
+ *                     at weight 600 in body text; a <span> in it
+ *                     truncates with an ellipsis when the bar runs out of
+ *                     room
+ *
+ * Where the bar sits is the page's (sticky or fixed at the top, with a
+ * z-index), as is what fills the row: vp-nav-link for its links,
+ * vp-icon-btn and vp-toggle for its controls. Differences from VitePress:
+ * the ground is the bar's own, where VPNavBar paints it on a ::before (its
+ * sidebar column paints its own); the rule is a border, where VPNavBar
+ * draws it with an element; the row centers its items (vpkit's addition,
+ * since a control in an app's bar is shorter than the row, where
+ * VitePress's are all the bar's height); the title has no width, where
+ * VPNavBarTitle's fills the column VPNavBar reserves for it; and the bar
+ * has no backdrop filter, VitePress's --vp-nav-backdrop-filter (none by
+ * default) being no token of the contract: a frosted bar is a translucent
+ * ground and a blur utility on the element. Not ported: the home page's
+ * transparent state, the sidebar column's offset, the local nav's. */
+
+@layer components {
+  .vp-topbar {
+    padding: 0 0.5rem 0 1.5rem;
+    border-bottom: 1px solid var(--vp-c-gutter);
+    white-space: nowrap;
+    background-color: var(--vp-c-bg);
+    transition: background-color var(--vp-duration);
+  }
+
+  @media (min-width: 48rem) {
+    .vp-topbar {
+      padding: 0 2rem;
+    }
+  }
+
+  .vp-topbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: calc(var(--vp-layout-max-width) - 4rem);
+    height: var(--vp-nav-height);
+  }
+
+  .vp-topbar-title {
+    display: flex;
+    align-items: center;
+    height: var(--vp-nav-height);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+    transition: opacity var(--vp-duration);
+  }
+
+  :where(.vp-topbar-title) > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

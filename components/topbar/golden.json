@@ -1,0 +1,106 @@
+{
+  "topbar": {
+    "light": {
+      ".vp-topbar": {
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-bottom-color": "rgb(226, 226, 227)"
+      },
+      ".vp-topbar-row": {
+        "align-items": "center"
+      }
+    },
+    "dark": {
+      ".vp-topbar": {
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-bottom-color": "rgb(0, 0, 0)"
+      },
+      ".vp-topbar-row": {
+        "align-items": "center"
+      }
+    }
+  },
+  "topbar at 375px": {
+    "light": {
+      ".vp-topbar": {
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-bottom-color": "rgb(226, 226, 227)"
+      },
+      ".vp-topbar-row": {
+        "align-items": "center"
+      }
+    },
+    "dark": {
+      ".vp-topbar": {
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-bottom-color": "rgb(0, 0, 0)"
+      },
+      ".vp-topbar-row": {
+        "align-items": "center"
+      }
+    }
+  },
+  "topbar example": {
+    "light": {
+      ".vp-topbar": {
+        "height": "65px",
+        "padding-left": "32px",
+        "padding-right": "32px",
+        "background-color": "rgb(255, 255, 255)",
+        "border-bottom-color": "rgb(226, 226, 227)"
+      },
+      ".vp-topbar-row": {
+        "height": "64px",
+        "width": "1216px",
+        "offset-left": "32px"
+      },
+      ".vp-topbar-title": {
+        "height": "64px",
+        "offset-top": "0px",
+        "color": "rgb(60, 60, 67)"
+      },
+      ".vp-nav-link": {
+        "height": "64px",
+        "offset-top": "0px",
+        "color": "rgb(52, 81, 178)"
+      },
+      ".vp-toggle": {
+        "height": "22px",
+        "offset-top": "21px",
+        "offset-left": "165.953125px"
+      }
+    },
+    "dark": {
+      ".vp-topbar": {
+        "height": "65px",
+        "padding-left": "32px",
+        "padding-right": "32px",
+        "background-color": "rgb(27, 27, 31)",
+        "border-bottom-color": "rgb(0, 0, 0)"
+      },
+      ".vp-topbar-row": {
+        "height": "64px",
+        "width": "1216px",
+        "offset-left": "32px"
+      },
+      ".vp-topbar-title": {
+        "height": "64px",
+        "offset-top": "0px",
+        "color": "rgb(223, 223, 214)"
+      },
+      ".vp-nav-link": {
+        "height": "64px",
+        "offset-top": "0px",
+        "color": "rgb(168, 177, 255)"
+      },
+      ".vp-toggle": {
+        "height": "22px",
+        "offset-top": "21px",
+        "offset-left": "165.953125px"
+      }
+    }
+  }
+}
