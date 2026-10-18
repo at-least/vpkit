@@ -1,7 +1,7 @@
 // vp-input: vpkit's own, so golden: the box, its colors at rest, hovered,
 // focused and invalid, the placeholder, the focus ring, the small size, a
-// select and a textarea in the same box, and a touch screen's hover at
-// rest.
+// select and a textarea in the same box. vpkit against vpkit: a select
+// against the input, and a touch screen's hover at rest.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,7 +29,7 @@ cases.push({ name: 'select', html: '<select data-t class="vp-input"><option>7 da
 cases.push({ name: 'textarea one row', html: '<textarea data-t class="vp-input" rows="1"></textarea>', checks: STATES });
 cases.push({ name: 'textarea three rows', html: '<textarea data-t class="vp-input" rows="3"></textarea>', checks: [{ target: '[data-t]', props: ['height', 'min-height', 'padding-top', 'padding-bottom'] }] });
 
-// the example page: the three controls side by side
+// the example page: the three controls, one under another
 cases.push({
   name: 'input examples',
   html: ex('controls'),

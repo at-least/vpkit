@@ -14,7 +14,7 @@
 //   vpkit's own: a component VitePress has no original for, or a named
 //   departure from one (the check says why). UPDATE_GOLDEN=1 rewrites them.
 // Lengths match within 1/32px (the minified build prints numbers to six
-// digits). vpkit is compiled minified, as the apps ship it, from an entry
+// digits). vpkit is compiled minified, as totality ships it, from an entry
 // that imports every component; the docs theme's components compile with
 // docs-theme/vars.css, VitePress's own palette. Each side loads its own
 // fonts.css (vpkit's; VitePress's, which also names Inter in its base

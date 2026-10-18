@@ -13,8 +13,8 @@
  * weight 500 in secondary text; the value 0.875rem at 1.5rem in body
  * text, breaking a long word (an address) rather than overflow, so a value
  * that must stay on one line takes `truncate`. The rules for the terms,
- * the values and the pairs sit behind :where(), so a utility on a <dt> or
- * a <dd> wins. The variant is an attribute:
+ * the values and the pairs sit behind :where(), adding no specificity; a
+ * utility on a <dt> or a <dd> wins by its layer. The variant is an attribute:
  *   data-variant="inline"   each term beside its value, <dt> and <dd>
  *                           straight in the list: two columns, the terms
  *                           as wide as the widest, 0.25rem between rows

@@ -1,7 +1,7 @@
 /* vpkit — dot, `vp-dot`: a small round marker beside a word, a legend's
  * key or a status's second carrier (the word says it; the dot never
- * alone); vpkit's own, on the contract (VitePress has none outside a
- * badge: vp-badge-dot is the same dot inside a badge). An optional import:
+ * alone); vpkit's own, on the contract (VitePress has none; vp-badge-dot
+ * is the same dot inside a badge). An optional import:
  * `@import "vpkit/components/dot/dot.css";`
  *
  *   <span class="vp-dot" data-variant="success"></span> 99% and up

@@ -1,6 +1,7 @@
 // base.css's reduced-motion rule reaches every transition and animation in
 // vpkit's stylesheets, so a component carries no reduced-motion rule of
-// its own. Its selector list, `*, ::before, ::after, ::backdrop`, matches
+// its own unless its original does (the spinner) or the neutralized state
+// would mislead (the indeterminate progress bar). Its selector list, `*, ::before, ::after, ::backdrop`, matches
 // every element and the pseudo-elements it names, and no other: a
 // transition on a pseudo-element it doesn't name (a ::placeholder, a
 // ::marker) would run on under prefers-reduced-motion. So every

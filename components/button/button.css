@@ -30,15 +30,16 @@
  *
  * The button is a flex row, so an icon sits beside its label 0.5rem apart:
  * an <svg> straight inside with no size of its own is 1rem (1.25rem in a
- * large button) and doesn't shrink, behind :where() so a size utility on
- * it wins. The pill is the radius token; the line height is the type's,
+ * large button) and doesn't shrink, behind :where(), adding no
+ * specificity; a size utility on it wins by its layer. The pill is the radius token; the line height is the type's,
  * the height the control token's: VPButton sized its box by a line height
  * of 38px. The hover applies only on a device that can hover; VPButton's
  * also stuck to a tapped button. The focus ring is base.css's.
  *
  * The block sets every --vp-btn-* local from the contract and a variant
- * overrides the locals and nothing else; since every button sets its own,
- * none inherits another's. This is the components layer, so a utility on
+ * overrides the locals and nothing else, but for the danger tint, a
+ * background image; since every button sets its own, none inherits
+ * another's. This is the components layer, so a utility on
  * the element overrides it. */
 
 @layer components {

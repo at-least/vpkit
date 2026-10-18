@@ -26,7 +26,8 @@
  * `aria-controls` to the screen's id. One addition: under forced colors
  * (Windows' contrast themes) the browser erases backgrounds, and the bars
  * are backgrounds, so there they take the text color. The rules for the
- * bars sit behind :where(), so a utility on one wins. */
+ * bars sit behind :where(), adding no specificity; a utility on one wins
+ * by its layer. */
 
 @layer components {
   .vp-hamburger {

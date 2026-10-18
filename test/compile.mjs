@@ -1,6 +1,6 @@
 // Compiles a vpkit entry stylesheet through the Tailwind CLI, the way a
 // consumer compiles it, into a temp dir nothing else sees. Minified by
-// default, as consumers ship it; { minify: false } gives the unminified
+// default, as an app may ship it (totality does); { minify: false } gives the unminified
 // build a docs theme should ship: the minifier rounds numbers to six
 // digits, and VitePress's line-height 1.3333333 as 1.33333 makes every h2
 // 1/64px shorter, 0.375px down the markdown page.

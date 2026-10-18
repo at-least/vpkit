@@ -3,7 +3,7 @@
  * colors and typography on body, the placeholder color and the focus ring
  * sit in @layer base, after the preflight, so a utility on the element
  * still wins. The rest is unlayered, so it beats every utility: CJK line
- * breaking, bold at 600, the pointer cursor on buttons, overflow-wrap, no
+ * breaking (which VitePress keeps in its vars.css), bold at 600, the pointer cursor on buttons, overflow-wrap, no
  * autospace in code, and reduced motion.
  *
  * The focus ring is vpkit's, one for everything: `:focus-visible` draws
@@ -12,7 +12,8 @@
  * browser's ring on a button and none on a field (its border shows); an
  * outline follows the box's corners, and forced colors keep it where they
  * erase a box-shadow ring. A component restates it only to inset it
- * (vp-table-scroll); `outline-none` on an element removes it.
+ * (vp-table-scroll) or to draw it on the card around a focused control
+ * (vp-choice); `outline-none` on an element removes it.
  *
  * The reduced-motion rule names ::backdrop beside VitePress's `*, ::before,
  * ::after`: the star matches elements, so VitePress's scrim, an element, is

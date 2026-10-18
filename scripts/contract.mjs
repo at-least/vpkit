@@ -5,7 +5,8 @@
 // the contract names it by the job VitePress's stylesheets give that step:
 // -1 is text, -2 a hovered link, -3 the brand button's ground, -soft the
 // tint; the gray ramp's -3, -2 and -1 are the alt button's rest, hover and
-// active grounds. tip and note are brand's, caution is danger's.
+// active grounds. tip and note are brand's; caution is its own (danger's
+// colors in VitePress's stock).
 
 // contract name → the VitePress name its stock value comes from
 export const FROM = {

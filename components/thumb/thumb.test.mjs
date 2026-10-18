@@ -70,7 +70,7 @@ cases.push({
   ],
 });
 
-// the example: a cover as a link and a preview alone, side by side
+// the example: a cover as a link and a preview alone, one under the other
 cases.push({
   name: 'thumb covers',
   html: ex('covers'),

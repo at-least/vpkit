@@ -7,9 +7,10 @@
  *
  * VitePress's color names are read as the contract's (scripts/contract.mjs:
  * brand-1 is brand, brand-2 brand-hover, tip and note are brand's, caution
- * is danger's), and the variables the markdown reads (--vp-code-*,
- * --vp-custom-block-*, the anchor symbol, the copy icons) are VitePress's,
- * defined on .vp-doc, so nothing outside the contract is needed.
+ * its own, on danger's colors in the stock), and the variables the
+ * markdown reads (--vp-code-*, --vp-custom-block-*, the anchor symbol, the
+ * copy icons) are VitePress's, defined on .vp-doc, so it needs nothing
+ * beyond tokens.css (the contract, the mono font, the bar's height).
  *
  * In `@layer base`, below the components: a vp-btn, a vp-card or any
  * other component inside a vp-doc keeps its own look and its own states

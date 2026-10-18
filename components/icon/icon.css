@@ -14,7 +14,8 @@
  * vpkit's difference, as `vp-icon-btn`'s: VitePress fills every SVG with
  * currentColor, which turns a stroke icon (fill="none") solid; here an SVG
  * that sets its fill keeps it. The rules for the SVG sit behind :where(),
- * so a size or fill utility on it wins. Decorative: the text beside it
+ * adding no specificity; a size or fill utility on it wins by its layer.
+ * Decorative: the text beside it
  * names it (aria-hidden on the SVG), or the page gives it a name. Not
  * ported: VPIcon's other form, an icon given by name, which is the page's
  * icon set. This is the components layer, so a utility on the element

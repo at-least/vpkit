@@ -24,7 +24,7 @@
  *                      buttons where every pager has them
  * Give each pager its own aria-label, so a page with two lists has two
  * landmarks a screen reader can tell apart. Inside a vp-doc (prose.css),
- * whose rule for a paragraph gives the summary margins and a 28px line, it
+ * whose rule for a paragraph gives the summary margins and a 1.75 line, it
  * keeps none and the page's line height. The crate's `Pager` writes this
  * markup. */
 
@@ -48,7 +48,7 @@
   }
 
   /* inside a vp-doc (prose.css), whose rule for a paragraph gives the
-     summary margins and a 28px line: none, the page's line height */
+     summary margins and a 1.75 line: none, the page's line height */
   .vp-doc .vp-pager-summary {
     margin: 0;
     line-height: 1.5;

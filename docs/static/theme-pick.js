@@ -2,8 +2,9 @@
  * color theme the gallery (static/theme-gallery.js) stored for this browser
  * session is linked here, a theme's name for its stylesheet (static/themes/,
  * the repository's themes/, beside this script); no pick, or the stock
- * card's empty name, links nothing, and the page is on tokens.css's colors,
- * VitePress's palette with its contrast fitted. The link is written into
+ * card's empty name, links nothing, and the page is on the docs theme's
+ * colors, docs-theme/vars.css's: VitePress's palette as it is (the app
+ * kit's example frames alone are on tokens.css's, the fitted one). The link is written into
  * the head as the parser reads it, so the page waits for it as for its own
  * stylesheet and first paints in the theme; a link the DOM adds would let
  * the page paint first in the stock colors. data-theme carries the name as

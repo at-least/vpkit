@@ -45,10 +45,11 @@
  * ships none. data-appearance is the one state here no ARIA attribute
  * says, a convention the page writes as it writes `.dark`.
  *
- * The block sets every --vp-icon-btn-* local from the contract and a
- * variant overrides the locals and nothing else. The icon's size sits
- * behind :where(), so a size utility on it wins. This is the components
- * layer, so a utility on the element overrides it. */
+ * The block sets every --vp-icon-btn-* local from the contract and the
+ * size overrides one, --vp-icon-btn-size, and nothing else; the appearance
+ * variant only shows one of its parts. The icon's size sits behind
+ * :where(), adding no specificity; a size utility on it wins by its layer.
+ * This is the components layer, so a utility on the element overrides it. */
 
 @layer components {
   .vp-icon-btn {

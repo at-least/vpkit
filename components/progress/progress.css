@@ -25,8 +25,8 @@
  * motion, where base.css cuts every animation to a millisecond and the
  * bar would rest at the left like a 30% value, it is the whole track's
  * width at 0.6 instead, so it reads as busy, not as a value: the one
- * reduced-motion rule a component keeps, since the neutralized state
- * would mislead. A load bar at the top of the window is the page's
+ * reduced-motion rule a component keeps because the neutralized state
+ * would mislead (the spinner's other one is VitePress's). A load bar at the top of the window is the page's
  * placement (`fixed inset-x-0 top-0 h-0.5`).
  *
  *   <span class="vp-progress" role="progressbar" aria-label="Loading">

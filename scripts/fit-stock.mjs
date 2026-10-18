@@ -1,9 +1,10 @@
 // tokens.css's colors: VitePress's own palette (vars.css at the tag in
 // test/upstream/SOURCE) on the contract's names, with its contrast
-// shortfalls fitted to what test/themes.mjs holds every theme to: a hovered
-// link (brand-hover and the roles' hovers), as text and dimmed to 0.75 in
-// its container, at 4.5:1; the brand button's white label at 4.5:1 at rest,
-// hovered and pressed; a control's border at 3:1 on the page. The fits are
+// shortfalls fitted: a hovered link (brand-hover and the roles' hovers), as
+// text and dimmed to 0.75 in its container, at 4.5:1, as test/themes.mjs
+// holds every theme to; and, beyond the test's minimums (3:1, 1.1), the
+// brand button's white label at 4.5:1 at rest, hovered and pressed, and a
+// control's border at 3:1 on the page. The fits are
 // gen-themes.mjs's steps toward black (light) or white (dark), from the
 // color math the generators and the test share (scripts/color.mjs).
 //
@@ -13,7 +14,8 @@
 // VitePress's -1, -2, -3 and -soft are read as the jobs they do in its
 // stylesheets: -1 is text, -2 a hovered link, -3 the brand button's ground,
 // -soft the tint; the gray ramp's -3, -2 and -1 are the alt button's rest,
-// hover and active grounds. tip and note are brand's, caution is danger's.
+// hover and active grounds. tip and note are brand's; caution is its own
+// (danger's colors in VitePress's stock).
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

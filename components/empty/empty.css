@@ -44,7 +44,7 @@
   }
 
   /* inside a vp-doc (prose.css), whose rule for a paragraph gives
-     margins and a 28px line, which the lines leave to the page: no
+     margins and a 1.75 line, which the lines leave to the page: no
      margins, the page's line height */
   .vp-doc .vp-empty-title,
   .vp-doc .vp-empty-desc {

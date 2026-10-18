@@ -5,15 +5,15 @@
 // contract (hand-written slot maps below), derives monotonic text/border
 // ramps and the neutral ramp, auto-fits accents for WCAG AA (the same
 // ratios test/themes.mjs enforces, by the math it shares with the test,
-// scripts/color.mjs), and emits themes/<name>.css. A -2 (brand, tip,
-// important, warning, danger, caution) is a hovered link's color, as every
-// vpkit and VitePress stylesheet uses it: the -1 stepped toward black in
-// light and toward white in dark until it reads at AA where it is drawn,
-// dimmed to 0.75 in a container as custom-block.css and alert.css dim a
-// hovered link. vars.css describes -2 as the button's hover ground; the
-// brand button's is emitted as its own --vp-button-brand-hover-bg instead,
-// since in dark mode no one color can be both (measured over the 222
-// themes of 2026-10-10).
+// scripts/color.mjs), and emits themes/<name>.css. A -hover (brand,
+// important, warning, danger, caution; a slot map's brand2) is a hovered
+// link's color, VitePress's -2 as every vpkit and VitePress stylesheet uses
+// it: the base color stepped toward black in light and toward white in
+// dark until it reads at AA where it is drawn, dimmed to 0.75 in a
+// container as custom-block.css and alert.css dim a hovered link. vars.css
+// also makes -2 the brand button's hover ground; that one is emitted as
+// its own --vp-c-brand-fill-hover, since in dark mode no one color can be
+// both (measured over the 222 themes of 2026-10-10).
 //
 // The emitted files are the source of truth once committed: rerun after
 // editing the slot maps, rebuild the documentation's theme gallery index
@@ -272,7 +272,7 @@ function buildMode(mode, m, adjusted = new Set()) {
   for (const slot of ['brand1', 'success', 'warning', 'danger', 'important']) {
     set(slot, fitOnTint(m[slot], bg, slot === 'brand1' ? alpha : sAlpha, 4.5, mode), 'accents');
   }
-  // the gray wash (default-soft) over a ground: a hovered menu item, the
+  // the gray wash (gray-soft, VitePress's default-soft) over a ground: a hovered menu item, the
   // info, note and details containers, inline code
   const neutral = mix(m.text1, bg, 0.55);
   // a tint leaves room for a hovered link: at the extreme (black in light,
@@ -391,9 +391,9 @@ export function emitCss(name, desc, note, light, dark) {
 }
 
 // the half a palette does not publish, from the map of the one it does:
-// its page, text-1 and brand-1 moved toward the other half's extremes, its
-// roles as they are (the map's other keys, surfaces, text-2/3, border, a
-// fitted brand-2/3, are not carried)
+// its page and text-1 moved toward the other half's extremes, brand-1 and
+// its roles as they are, brand-2/3 mixed from brand-1 (the map's other
+// keys, surfaces, text-2/3, border, a fitted brand-2/3, are not carried)
 const derivedLight = ({ bg, text1, brand1, success, warning, danger, important, sponsor }) => ({
   bg: mix(bg, white, 0.94), bg_alt: mix(bg, white, 0.9), bg_elv: mix(bg, white, 0.955),
   text1: mix(text1, black, 0.75),

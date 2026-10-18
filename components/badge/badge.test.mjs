@@ -80,5 +80,5 @@ cases.push({
   ],
 });
 
-// the examples' heading and variants
+// the heading example
 cases.push({ name: 'badge in the example heading', html: ex('heading'), checks: [{ target: '.vp-badge', props: [...COLORS, 'height', 'offset-top'] }] });

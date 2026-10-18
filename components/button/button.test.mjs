@@ -26,7 +26,7 @@ const OURS = {
   target: '.vp-btn',
   source: 'golden',
   props: ['display', 'align-items', 'justify-content', 'column-gap', 'min-height', 'height', 'line-height', 'padding-top', 'padding-bottom', ...RADIUS],
-  why: 'one control height (2.75rem; 3rem large) on a flex box with a 0.5rem gap for an icon, the type at 1.5 and the pill radius token, where VPButton is an inline block its 38px line height sizes (46px big) with a 20px radius',
+  why: 'one control height (2.75rem; 3rem large) on a flex box with a 0.5rem gap for an icon, the type at 1.5 and the pill radius token, where VPButton is an inline block its 38px line height sizes (46px big) with a 20px radius (24px big)',
 };
 const UPSTREAM = { files: ['VPButton.vue'] };
 

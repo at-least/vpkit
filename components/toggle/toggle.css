@@ -125,8 +125,9 @@
     transition: opacity var(--vp-duration);
   }
 
-  /* the appearance switch: the knob and the two icons follow .dark, the
-     one state the kit reads from the root */
+  /* the appearance switch: the knob and the two icons follow .dark on the
+     root (vp-icon-btn's appearance switch also reads data-appearance
+     there) */
   .vp-toggle[data-variant="appearance"] .vp-toggle-dark {
     opacity: 0;
   }

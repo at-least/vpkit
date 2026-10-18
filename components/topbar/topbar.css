@@ -34,7 +34,8 @@
  * draws it with an element; the row centers its items (vpkit's addition,
  * since a control in an app's bar is shorter than the row, where
  * VitePress's are all the bar's height); the title has no width, where
- * VPNavBarTitle's fills the column VPNavBar reserves for it; and the bar
+ * VPNavBarTitle's fills the column VPNavBar reserves for it, and shrinks as
+ * that column does (min-width: 0); and the bar
  * has no backdrop filter, VitePress's --vp-nav-backdrop-filter (none by
  * default) being no token of the contract: a frosted bar is a translucent
  * ground and a blur utility on the element. Not ported: the home page's

@@ -66,9 +66,9 @@
  * custom block. Not ported: the rules for tables and blockquotes inside a
  * block (markdown-only content).
  *
- * The rules for what is inside sit behind :where(.vp-alert) and match
- * bare elements only (the paragraph rules the block's own title too), so
- * a component inside (a vp-btn, a vp-link, a vp-code, a vp-card, a
+ * The rules for what is inside match bare elements only (the paragraph
+ * rules the block's own title too) and, but for the in-doc paragraph
+ * rules, sit behind :where(.vp-alert), so a component inside (a vp-btn, a vp-link, a vp-code, a vp-card, a
  * vp-empty) keeps its own look, hovered too, its paragraph parts their
  * own margins and line, inside a vp-doc too, with no rule of its own
  * against the alert's. The block sets every --vp-alert-* local

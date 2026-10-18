@@ -1,5 +1,5 @@
-//! Icons as inline SVG: Lucide's (ISC; LICENSE-Lucide), the set VitePress's
-//! theme draws plus a few an app needs, each a 24-unit square of 2px
+//! Icons as inline SVG: Lucide's (ISC; LICENSE-Lucide), the VitePress icons
+//! an app draws plus a few of its own, each a 24-unit square of 2px
 //! strokes in `currentColor`, so it takes the text's color and, at 1em in
 //! `vp-icon` or sized by the component around it (a button's, an icon
 //! button's), the text's size. Inline, so a page whose
@@ -99,7 +99,8 @@ pub const CHECK: Icon = Icon::new(r#"<path d="M20 6 9 17l-5-5"/>"#);
 /// A magnifier: search.
 pub const SEARCH: Icon =
     Icon::new(r#"<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>"#);
-/// Three lines, left-aligned: a menu (VitePress's hamburger).
+/// Three lines, left-aligned: a menu (VitePress's align-left, its local
+/// nav's Menu icon).
 pub const MENU: Icon = Icon::new(r#"<path d="M15 12H3m14 6H3M21 6H3"/>"#);
 /// Three dots: more.
 pub const MORE_HORIZONTAL: Icon = Icon::new(

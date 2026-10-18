@@ -1,7 +1,7 @@
 /* Built-in theme: catppuccin — Latte and Mocha: pastel, low-noise,
- * dark-first. Accents double as their foreground shades: a few (blue,
- * green, yellow on Latte) are deepened past the published values so
- * they hold AA contrast as links and badge text on the base. */
+ * dark-first. Accents double as their foreground shades: on Latte all five
+ * (blue, green, yellow, red, mauve) are deepened past the published values
+ * so they hold AA contrast as links and badge text on the base. */
 :root {
   --vp-c-bg: light-dark(#eff1f5, #1e1e2e);
   --vp-c-bg-alt: light-dark(#e6e9ef, #181825);

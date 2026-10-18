@@ -11,7 +11,7 @@
 //   frames: vpkit with every component and the utilities the examples use,
 //   and docs/static/example-docs-theme.css, the docs theme's frames' (its
 //   variables, icons and components over the kit). Tailwind scans the
-//   examples alone. Left unminified, as vpkit-zola leaves the stylesheet
+//   examples and the frame's template alone. Left unminified, as vpkit-zola leaves the stylesheet
 //   around them.
 // - docs/static/themes.json, the theme gallery's index: the stock colors of
 //   tokens.css, then each color theme's name, where it comes from (its

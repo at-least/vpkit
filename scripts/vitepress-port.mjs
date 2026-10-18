@@ -389,9 +389,10 @@ export const FILES = {
  *
  * VitePress's color names are read as the contract's (scripts/contract.mjs:
  * brand-1 is brand, brand-2 brand-hover, tip and note are brand's, caution
- * is danger's), and the variables the markdown reads (--vp-code-*,
- * --vp-custom-block-*, the anchor symbol, the copy icons) are VitePress's,
- * defined on .vp-doc, so nothing outside the contract is needed.
+ * its own, on danger's colors in the stock), and the variables the
+ * markdown reads (--vp-code-*, --vp-custom-block-*, the anchor symbol, the
+ * copy icons) are VitePress's, defined on .vp-doc, so it needs nothing
+ * beyond tokens.css (the contract, the mono font, the bar's height).
  *
  * In \`@layer base\`, below the components: a vp-btn, a vp-card or any
  * other component inside a vp-doc keeps its own look and its own states
@@ -422,8 +423,9 @@ export const FILES = {
     header: `/* vpkit's docs theme — VitePress's variables (vars.css at v2.0.0-alpha.20),
  * for its layout: its palette on the contract's names, unfitted, one
  * light-dark() pair each, so a docs site is VitePress exactly where the app
- * kit's defaults are fitted for contrast; then every variable of VitePress's
- * :root, its color names aliased onto the contract (--vp-c-brand-1 is
+ * kit's defaults are fitted for contrast; then every other variable of
+ * VitePress's :root (its font families are tokens.css's), its color names
+ * aliased onto the contract (--vp-c-brand-1 is
  * --vp-c-brand), the brand button's grounds onto the contract's fills, so a
  * color theme, which defines the contract, recolors the layout too; its
  * ramps, the z-indexes and the rest verbatim. Import it after vpkit, before

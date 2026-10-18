@@ -5,7 +5,8 @@
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
  * pick is kept for the browser session (a theme's name, or the stock
- * card's empty one, which links no theme: tokens.css's colors), and
+ * card's empty one, which links no theme: the stock colors, the docs
+ * theme's on the page and tokens.css's in the app kit's frames), and
  * static/theme-pick.js puts it in every page the session opens. */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
@@ -118,8 +119,8 @@ function pick(name) {
   try {
     sessionStorage.setItem(KEY, name);
   } catch {}
-  // the links the page has now (its theme, and any earlier pick still
-  // loading) stay until the pick has loaded, so the page never shows the
+  // the links the page has now (the pick it shows, if any, and any earlier
+  // pick still loading) stay until the pick has loaded, so the page never shows the
   // stock colors in between; a later pick's link is never among them, so
   // an earlier pick's late load cannot take it; the stock card takes them
   // out at once

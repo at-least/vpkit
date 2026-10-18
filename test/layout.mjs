@@ -8,7 +8,8 @@
 // every child component reduced to its root and only the classes this
 // component gives it, so neither side needs another component's rules.
 // Upstream renders that tree with VitePress's vars, fonts (the :root rule),
-// base, utils and icons stylesheets plus the component's <style>, Vue's
+// base, icons and utils stylesheets and the markdown's (custom-block,
+// vp-code-group, vp-doc) plus the component's <style>, Vue's
 // scoping stripped as in the other tests; vpkit renders the same tree with
 // its classes renamed by test/layout-map.mjs, vpkit compiled through
 // Tailwind. Every element's computed style, its ::before and ::after, and its

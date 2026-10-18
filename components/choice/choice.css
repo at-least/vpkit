@@ -21,7 +21,8 @@
  * opacity with a not-allowed cursor and takes no hover, as a disabled
  * vp-btn is drawn; a checked one keeps its checked look, dimmed. The
  * control is 1rem, aligned with the first line, in the brand color
- * (accent-color), behind :where() so a utility on it wins. On a <label>,
+ * (accent-color), behind :where(), adding no specificity; a utility on it
+ * wins by its layer. On a <label>,
  * which brings no pointer, so the card sets one. The hover applies only
  * on a device that can hover. This is the components layer, so a utility
  * on the element overrides it. */

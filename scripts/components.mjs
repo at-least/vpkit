@@ -18,7 +18,7 @@ export function componentDirs(product) {
     .sort();
 }
 
-// every example of a product's components: its component, its id, its markup
+// every example of a product's components: its component, its id, its file
 export function examples(product) {
   return componentDirs(product).flatMap((dir) => {
     const name = dir.slice(dir.lastIndexOf('/') + 1);

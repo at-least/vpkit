@@ -1,7 +1,7 @@
 // The page: base.css's rules on the page itself, which no component holds.
 // Against VitePress's base.css (the runner loads it on every upstream page,
 // so no case names a file): the body it paints (its colors, legibility,
-// font smoothing, no autospace or spacing trim) with the type under it
+// font smoothing, autospace and spacing trim at normal) with the type under it
 // (Tailwind's preflight on tokens.css's font stack; VitePress's own base
 // on its fonts.css), and the placeholder of a bare input and textarea.
 // vpkit's own, so golden: the one focus ring, base.css's `:focus-visible`

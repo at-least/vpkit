@@ -20,9 +20,9 @@
  *                    on a device that can hover, in --vp-duration. Its
  *                    0.3125rem of padding is a hit area larger than the
  *                    icon, cancelled by as much negative margin, so the
- *                    chip keeps its size; on a coarse pointer the hit
- *                    area grows by 0.4375rem each side, cancelled the same
- *                    way (a hit area, not a control height)
+ *                    chip keeps its size; on a coarse pointer the padding
+ *                    is 0.4375rem each side, cancelled the same way (a
+ *                    hit area, not a control height)
  * A chip that opens the list it names is a link as a whole
  * (`<a class="vp-chip">`), with no remove control inside it: a control
  * inside a link is no valid HTML. The pill sets its own text-decoration

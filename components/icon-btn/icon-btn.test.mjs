@@ -4,8 +4,9 @@
 // icon's size and fill. What is vpkit's is golden, each named: the square
 // on the control height (and the small size), the radius and the gray
 // wash hovered with their transitions, the icon centered in the larger
-// square, an SVG that keeps its own fill, the appearance switch, the focus
-// ring.
+// square, the appearance switch, the focus ring. vpkit against vpkit: an
+// SVG that keeps its own fill, a sized icon, the button inside a vp-doc
+// and an alert, and a touch screen's hover at rest.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';

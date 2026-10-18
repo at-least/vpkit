@@ -4,10 +4,10 @@
 // corners, a tab's box, type and colors at rest, hovered and selected,
 // the bar under it. The cases run at the default 1280px, where the
 // original's bar has its rounded top corners and no bleed, as vp-tabs
-// always does. What is vpkit's is against vpkit or golden: a row of links
-// with aria-current, its values WAI-ARIA treats as false, a touch screen,
-// the focus ring (inset, the bar clipping outside a tab), a link tab inside
-// a vp-doc.
+// always does. What is vpkit's: a row of links with aria-current, against
+// the same original; against vpkit or golden: its values (true as a
+// selected tab, those WAI-ARIA treats as false), a touch screen, the focus
+// ring (inset, the bar clipping outside a tab), a link tab inside a vp-doc.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
