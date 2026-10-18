@@ -6,11 +6,13 @@
 // the page at a phone's width; and it must take the page's appearance, and
 // keep it when the navbar's switch changes it. The theme gallery's index
 // (docs/static/themes.json) must hold the stock colors and then every theme
-// of themes/; the site must be on the stock colors, tokens.css's, from a
-// page's first frame until the session picks a theme; a pick must recolor
-// the page and its example frame in both modes, and the next pages the
-// session opens from their first frame; and the stock card must take the
-// page back to the stock colors, on the next pages too. Also held: the
+// of themes/; the site must be on the stock colors from a page's first
+// frame until the session picks a theme (the page and the docs theme's
+// frames on docs-theme/vars.css's, VitePress's palette; the app kit's
+// frames on tokens.css's, the fitted one); a pick must recolor the page
+// and its example frame in both modes, and the next pages the session
+// opens from their first frame; and the stock card must take the page
+// back to the stock colors, on the next pages too. Also held: the
 // theme counts the prose states against the index; a pick's card pressed
 // again on the next visit, an encoded name's too; two picks back to back
 // never through the stock colors; the stock card pressed while a pick loads
@@ -255,7 +257,8 @@ try {
       // the page's with its frames', and its own at its first frame
       await context.addInitScript(() => {
         window.brandHover = (root = document.documentElement) => getComputedStyle(root).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase();
-        window.brandHoverAll = () => [document.documentElement, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument.documentElement)].map((e) => brandHover(e));
+        // each window's value, and whether it is the docs theme's (the page, or a frame on the docs theme's stylesheet)
+        window.brandHoverAll = () => [document, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument)].map((d, i) => ({ value: brandHover(d.documentElement), docs: i === 0 || !!d.querySelector('link[href*="example-docs-theme"]') }));
         requestAnimationFrame(() => { window.firstFrameBrandHover = brandHover(); });
       });
       const page = await context.newPage();
@@ -264,31 +267,43 @@ try {
       const theme = (name) => index.find((t) => t.name === name);
       // a light-dark() pair's computed value is the pair itself; the light side is read off it
       const lightOf = (value) => value.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim();
+      // what a window must show: a theme's brand-hover everywhere, or the
+      // stock's, which is the docs theme's in the page and its frames and
+      // the app kit's in the app kit's frames
+      const wanted = (value, docs) => (typeof value === 'string' ? value : docs ? value.docs : value.app);
+      const name = (value) => (typeof value === 'string' ? value : `${value.docs} (the docs theme) / ${value.app} (the app kit)`);
       // the page and its frames on a theme's brand-hover, within 5s
       const expect = async (what, value, where = '/themes/') => {
         try {
-          await page.waitForFunction((value) => brandHoverAll().every((b) => b.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim() === value), value, { timeout: 5000 });
+          await page.waitForFunction(
+            (value) => brandHoverAll().every((b) => b.value.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim() === (typeof value === 'string' ? value : b.docs ? value.docs : value.app)),
+            value,
+            { timeout: 5000 },
+          );
         } catch (e) {
           if (e.name !== 'TimeoutError') throw e;
-          failures.push(`${where}, ${what}: --vp-c-brand-hover ${(await page.evaluate(() => brandHoverAll())).join(', ')} in the page and its frames, not ${value}`);
+          failures.push(`${where}, ${what}: --vp-c-brand-hover ${(await page.evaluate(() => brandHoverAll().map((b) => b.value))).join(', ')} in the page and its frames, not ${name(value)}`);
         }
       };
       // the page and its frames on a theme's brand-hover at their first frame
       const expectFirst = async (what, value, where = '/themes/') => {
-        const first = await page.evaluate(() => [window, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow)].map((w) => w.firstFrameBrandHover));
-        for (const [i, got] of first.entries()) {
-          if (lightOf(got ?? '') !== value) failures.push(`${where}, ${what}${i ? `, frame ${i}` : ''}: --vp-c-brand-hover ${got} at the first frame, not ${value}`);
+        const first = await page.evaluate(() => [window, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow)].map((w, i) => [w.firstFrameBrandHover, i === 0 || !!w.document.querySelector('link[href*="example-docs-theme"]')]));
+        for (const [i, [got, docs]] of first.entries()) {
+          if (lightOf(got ?? '') !== wanted(value, docs)) failures.push(`${where}, ${what}${i ? `, frame ${i}` : ''}: --vp-c-brand-hover ${got} at the first frame, not ${wanted(value, docs)}`);
         }
       };
       const expectPressed = async (what, name) => {
         const pressed = (await page.locator('.theme-gallery__card[aria-pressed="true"]').evaluateAll((els) => els.map((e) => e.dataset.theme))).join();
         if (pressed !== name) failures.push(`/themes/, ${what}: the pressed cards are [${pressed}], not ${name}`);
       };
-      // the site is on the stock colors until a pick: tokens.css's
-      // brand-hover from the first frame, in the page and in its example
-      // frames, which write the page's theme links into their own heads as
-      // they are parsed; and the stock card pressed
-      const stock = index[0].light['brand-hover'];
+      // the site is on the stock colors until a pick, from the first frame:
+      // the docs theme's brand-hover (docs-theme/vars.css's, VitePress's
+      // palette) in the page and the docs theme's frames, tokens.css's
+      // (themes.json's stock entry) in the app kit's frames, which write
+      // the page's theme links into their own heads as they are parsed; and
+      // the stock card pressed
+      const docsStock = lightOf(readFileSync(join(ROOT, 'docs-theme/vars.css'), 'utf8').match(/--vp-c-brand-hover:\s*([^;]+);/)[1].toLowerCase());
+      const stock = { docs: docsStock, app: index[0].light['brand-hover'] };
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
       await expectFirst('no pick', stock);
@@ -343,7 +358,7 @@ try {
       await page.click('.theme-gallery__card[data-theme="nord"]');
       await page.click('.theme-gallery__card[data-theme="github"]');
       const seen = await page.evaluate(() => window.sampled);
-      if (seen.includes(stock)) failures.push(`/themes/, nord then github picked back to back: the page passed through the stock colors (${seen.join(' > ')})`);
+      if (seen.includes(stock.app) || seen.includes(stock.docs)) failures.push(`/themes/, nord then github picked back to back: the page passed through the stock colors (${seen.join(' > ')})`);
       await expect('github picked after nord', github.light['brand-hover']);
       // the stock card pressed while a pick's stylesheet is still on its way
       // (300ms here) leaves no theme linked
@@ -371,7 +386,7 @@ try {
       const plain = await noScript.newPage();
       await plain.goto(`${BASE}/components/button/`);
       const plainBrandHover = lightOf(await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase()));
-      if (plainBrandHover !== stock) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-hover ${plainBrandHover}, not the stock ${stock}`);
+      if (plainBrandHover !== stock.docs) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-hover ${plainBrandHover}, not the docs theme's stock ${stock.docs}`);
       await noScript.close();
       await context.close();
     };
