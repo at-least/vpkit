@@ -1,0 +1,70 @@
+/* vpkit — panel, `vp-panel`: a box of content on the page, a form, a list
+ * of rows, a table, vpkit's own, on the contract (VitePress has none for
+ * an app: VPFeature, vp-card, is a tile of a grid). An optional import:
+ * `@import "vpkit/components/panel/panel.css";`
+ *
+ *   <section class="vp-panel">
+ *     <p>Releases this project has seen.</p>
+ *   </section>
+ *
+ * The outlined card's surface as a block: the page's ground in a divider
+ * border, the large radius, 1rem of padding, as tall as its content. It
+ * clips what overflows its rounded corners with `overflow: hidden`: a
+ * scroll container, so a float inside is contained and, as a grid or flex
+ * item, a line that doesn't wrap stays in a narrow track, clipped; a
+ * sticky header inside sticks to the panel, not to the page. A layout
+ * utility on it wins (`class="vp-panel flex flex-wrap items-end gap-3"`, a
+ * form row); its width and its place are the page's. The orthogonal
+ * switch is a class, used together with `vp-panel`:
+ *   vp-panel-flush   no padding, for content that carries its own, a list
+ *                    of vp-rows (a vp-table in it keeps its margin and its
+ *                    outer cell borders)
+ * The part:
+ *   vp-panel-header   a flush panel's head row, its title and an action
+ *                     at either end on one baseline (a flex row, a 0.5rem
+ *                     gap), 0.75rem by 1rem of padding over a divider
+ *                     line, in 0.8125rem of secondary text that a quiet
+ *                     vp-link takes; its title is a vp-group-title
+ *
+ *   <section class="vp-panel vp-panel-flush">
+ *     <header class="vp-panel-header">
+ *       <h2 class="vp-group-title">Deploys</h2>
+ *       <a class="vp-link font-medium" data-variant="quiet" href="/releases">Releases</a>
+ *     </header>
+ *     <div class="p-4">…</div>
+ *   </section>
+ *
+ * The padding is a local, --vp-panel-padding, which the flush switch sets
+ * to zero and every panel declares for itself, so a panel nested in a
+ * flush one keeps its own. Not here: vp-card's link card (the brand border
+ * on hover, and the color, weight and underline it keeps against the
+ * markdown's rule for links); a panel is not a link. */
+
+@layer components {
+  .vp-panel {
+    --vp-panel-padding: 1rem;
+
+    display: block;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--vp-radius-lg);
+    padding: var(--vp-panel-padding);
+    overflow: hidden;
+    background-color: var(--vp-c-bg);
+    transition: border-color var(--vp-duration), background-color var(--vp-duration);
+  }
+
+  .vp-panel-flush.vp-panel {
+    --vp-panel-padding: 0;
+  }
+
+  .vp-panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+}
