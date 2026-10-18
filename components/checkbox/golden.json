@@ -1,0 +1,168 @@
+{
+  "checkbox": {
+    "light": {
+      ".vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(52, 81, 178)",
+        "cursor": "pointer"
+      },
+      ".vp-checkbox-label": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "cursor": "pointer",
+        "width": "16px",
+        "height": "16px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      },
+      "td": {
+        "height": "39px"
+      }
+    },
+    "dark": {
+      ".vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(168, 177, 255)",
+        "cursor": "pointer"
+      },
+      ".vp-checkbox-label": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "cursor": "pointer",
+        "width": "16px",
+        "height": "16px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      },
+      "td": {
+        "height": "39px"
+      }
+    }
+  },
+  "checkbox on a touch screen": {
+    "light": {
+      ".vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(52, 81, 178)",
+        "cursor": "pointer"
+      },
+      ".vp-checkbox-label": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "cursor": "pointer",
+        "width": "44px",
+        "height": "44px",
+        "margin-top": "-10px",
+        "margin-right": "-10px",
+        "margin-bottom": "-10px",
+        "margin-left": "-10px"
+      },
+      "td": {
+        "height": "43px"
+      }
+    },
+    "dark": {
+      ".vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(168, 177, 255)",
+        "cursor": "pointer"
+      },
+      ".vp-checkbox-label": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "cursor": "pointer",
+        "width": "44px",
+        "height": "44px",
+        "margin-top": "-10px",
+        "margin-right": "-10px",
+        "margin-bottom": "-10px",
+        "margin-left": "-10px"
+      },
+      "td": {
+        "height": "43px"
+      }
+    }
+  },
+  "checkbox focused": {
+    "light": {
+      ".vp-checkbox :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "2px"
+      }
+    },
+    "dark": {
+      ".vp-checkbox :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "2px"
+      }
+    }
+  },
+  "checkbox column": {
+    "light": {
+      "thead .vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(52, 81, 178)",
+        "cursor": "pointer"
+      },
+      "tbody .vp-checkbox:checked": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(52, 81, 178)",
+        "cursor": "pointer"
+      },
+      "tbody tr:first-child": {
+        "background-color": "rgba(100, 108, 255, 0.14)",
+        "height": "39px"
+      },
+      "tbody tr:last-child": {
+        "background-color": "rgb(246, 246, 247)"
+      }
+    },
+    "dark": {
+      "thead .vp-checkbox": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(168, 177, 255)",
+        "cursor": "pointer"
+      },
+      "tbody .vp-checkbox:checked": {
+        "display": "block",
+        "width": "16px",
+        "height": "16px",
+        "accent-color": "rgb(168, 177, 255)",
+        "cursor": "pointer"
+      },
+      "tbody tr:first-child": {
+        "background-color": "rgba(100, 108, 255, 0.16)",
+        "height": "39px"
+      },
+      "tbody tr:last-child": {
+        "background-color": "rgb(32, 33, 39)"
+      }
+    }
+  }
+}

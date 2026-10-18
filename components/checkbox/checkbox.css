@@ -1,0 +1,44 @@
+/* vpkit — checkbox, `vp-checkbox`: a bare checkbox in a row or a cell,
+ * where vp-choice's card would be too much (a table's select column);
+ * vpkit's own, on the contract (VitePress has no checkbox). An optional
+ * import: `@import "vpkit/components/checkbox/checkbox.css";`
+ *
+ *   <label class="vp-checkbox-label"><input class="vp-checkbox" type="checkbox" aria-label="Select shop"></label>
+ *
+ * `vp-checkbox` is the control, on <input type="checkbox">: 1rem square,
+ * the browser's box in the brand's accent, the pointer cursor; its focus
+ * ring is base.css's. No axis. The part:
+ *   vp-checkbox-label   the label around it that is its tap target,
+ *                       centering it; on a coarse pointer a 2.75rem
+ *                       square, a touch target's 44px (the control
+ *                       height), pulled over the cell's padding by as
+ *                       much negative margin so the row barely grows
+ * The control keeps its 1rem on a touch screen: the hit area is the
+ * label's. Its name is the page's (`aria-label`, or the row's text the
+ * label holds). This is the components layer, so a utility on the element
+ * overrides it. */
+
+@layer components {
+  .vp-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--vp-c-brand);
+    cursor: pointer;
+  }
+
+  .vp-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* a coarse pointer: the label a touch target, over the cell's padding */
+  @media (pointer: coarse) {
+    .vp-checkbox-label {
+      margin: -0.625rem;
+      width: var(--vp-control-height);
+      height: var(--vp-control-height);
+    }
+  }
+}
