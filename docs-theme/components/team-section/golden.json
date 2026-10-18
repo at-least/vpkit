@@ -1,0 +1,56 @@
+{
+  "team-section": {
+    "light": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(226, 226, 227)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(46, 46, 50)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
+  "team-section at 800px": {
+    "light": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(226, 226, 227)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(46, 46, 50)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
+  "team-section at a phone's width": {
+    "light": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(226, 226, 227)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-team-section-title::before": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "rgb(46, 46, 50)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  }
+}
