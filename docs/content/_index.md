@@ -1,14 +1,14 @@
 +++
 title = "vpkit"
-description = "VitePress's look as a Tailwind CSS v4 theme: its variables, utilities, components and color themes."
+description = "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the color contract, the utilities, the components, the Rust crate, the color themes and the docs theme."
 
 [extra]
 layout = "home"
 
 [extra.hero]
 name = "vpkit"
-text = "VitePress's look for Tailwind CSS"
-tagline = "The default theme's variables, components and layout as a Tailwind v4 theme, with 223 color themes. Plain CSS for your Tailwind build."
+text = "VitePress's look for applications"
+tagline = "A Tailwind v4 theme on a 34-color contract, components as classes, a Rust crate for their markup and stylesheets, and 222 color themes. Plain CSS for your Tailwind build."
 image = { src = "/logo.svg", alt = "vpkit" }
 actions = [
   { theme = "brand", text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
@@ -19,28 +19,28 @@ actions = [
 [[extra.features]]
 icon = "🎨"
 title = "VitePress's design"
-details = "The <code>--vp-*</code> variables, breakpoints, dark mode and Inter webfonts of VitePress's default theme, with utilities that resolve to them: <code>text-body</code>, <code>bg-alt</code>, <code>border-divider</code>."
+details = "The color contract, 34 <code>--vp-c-*</code> variables named by their job, each a <code>light-dark()</code> pair, with the breakpoints, dark mode and Inter, and utilities that resolve to them: <code>text-body</code>, <code>bg-soft</code>, <code>text-brand</code>."
 link = "@/guide/utilities.md"
 link_text = "Utilities and variables"
 
 [[extra.features]]
 icon = "🧩"
 title = "Components as classes"
-details = "Fifty-four components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, each held to its original by the tests."
+details = "Forty-five components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, their variants as attributes, one control height and one focus ring, each held to its original by the tests."
 link = "@/components/_index.md"
 link_text = "The components"
 
 [[extra.features]]
+icon = "🦀"
+title = "One crate, one pin"
+details = "hypertext components for the markup, Lucide's icons as inline SVG, and the stylesheets embedded: an app's cargo dependency at a commit pins its markup and its CSS together."
+link = "@/guide/rust.md"
+link_text = "Rust"
+
+[[extra.features]]
 icon = "🌈"
-title = "223 color themes"
+title = "222 color themes"
 details = "Each a whole design for light and dark, held by the tests to every variable the stylesheets use and to WCAG contrast minimums."
 link = "@/themes.md"
 link_text = "Try them"
-
-[[extra.features]]
-icon = "📐"
-title = "The docs layout"
-details = "VitePress's navbar, sidebar, outline, home page and markdown styles as classes, for a docs theme. This site is built with one, vpkit-zola."
-link = "https://github.com/at-least/vpkit-zola"
-link_text = "vpkit-zola"
 +++

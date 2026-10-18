@@ -3,41 +3,27 @@ title = "Field"
 description = "A form field: its label, its control, a hint and an error line; vpkit's own, to go with vp-input."
 +++
 
-# Field <span class="vp-badge vp-badge-tip">vpkit</span> {#field}
+# Field <span class="vp-badge" data-variant="tip">vpkit</span> {#field}
 
 A form field: its label, its control, a hint and an error line, to go with [`vp-input`](@/components/input.md). VitePress has no form fields; these are vpkit's own.
 
 ```css
-@import "vpkit/field.css";
+@import "vpkit/components/field/field.css";
 ```
 
-{% <vp_example title="A field with a hint and an error"> %}
-<div class="vp-field">
-  <label class="vp-label" for="code">Coupon code</label>
-  <input class="vp-input w-full" id="code" aria-invalid="true" aria-describedby="code-hint code-error">
-  <p class="vp-field-hint" id="code-hint">Printed on the back of the card.</p>
-  <p class="vp-field-error" id="code-error">This code has expired.</p>
-</div>
-{% </vp_example> %}
+{{ <vp_example file="field/field" title="A field with a hint and an error" /> }}
 
 - `vp-field`: the box around one field, its parts 0.375rem apart. It may shrink in a row, and its control with it, so at a phone's width a field takes the width there is instead of overflowing. A row or a grid of fields is yours.
-- `vp-label`: `text-1` at weight 500.
+- `vp-label`: body text at weight 500.
 - `vp-field-hint`: 12px secondary text under the control.
 - `vp-field-error`: danger text. Tie the hint and the error to the control with `aria-describedby`, and mark the control `aria-invalid` while there is an error, which turns `vp-input`'s border danger.
 
-{% <vp_example title="Fields side by side"> %}
-<div class="flex flex-wrap items-end gap-3">
-  <div class="vp-field">
-    <label class="vp-label" for="name">Name</label>
-    <input class="vp-input" id="name">
-  </div>
-  <div class="vp-field">
-    <label class="vp-label" for="email">Email</label>
-    <input class="vp-input" id="email" type="email">
-  </div>
-</div>
-{% </vp_example> %}
+{{ <vp_example file="field/row" title="Fields side by side" /> }}
 
-A label or an error line outside a `vp-field` keeps its own spacing, 0.375rem below the label and 0.5rem above the error; `mb-0` and `mt-0` remove them.
+Outside a field, a label keeps 0.375rem below it and an error line 0.5rem above it (`mb-0`, `mt-0` remove them):
 
-In Rust: [`Field`](../../rust/vpkit/struct.Field.html), [`FieldHint`](../../rust/vpkit/struct.FieldHint.html), [`FieldError`](../../rust/vpkit/struct.FieldError.html), from vpkit's [crate](@/guide/rust.md).
+{{ <vp_example file="field/bare" title="A label and an error line on their own" /> }}
+
+## In Rust
+
+The crate's [`Field`](../../rust/vpkit/struct.Field.html) writes the box and the label around the control you give it, with a [`FieldHint`](../../rust/vpkit/struct.FieldHint.html) or a [`FieldError`](../../rust/vpkit/struct.FieldError.html) where there is one; `field_hint_id` and `field_error_id` are their ids, for the control's `aria-describedby`.

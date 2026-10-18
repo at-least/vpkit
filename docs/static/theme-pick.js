@@ -1,38 +1,32 @@
-/* vpkit's documentation, in every page's <head> (config.toml's head), right
- * after the site's own color theme, a static link (themes/vitepress.css:
- * VitePress's own colors, their contrast fitted): the theme the gallery
- * (static/theme-gallery.js) stored for this browser session replaces it,
- * a theme's name for its stylesheet (next to the site's), the stock card's
- * empty name for no theme. The link is written into the head as the parser
- * reads it, so the page waits for it as for its own stylesheet and first
- * paints in the theme; a link the DOM adds would let the page paint first
- * in the site's theme. data-theme carries the name as the gallery compares
- * it; only the URL is encoded (`penumbra+` is a theme). A pick whose
- * stylesheet no longer exists (a theme renamed since the session began, or
- * a value an earlier deploy stored) is forgotten, and the static link
- * takes the dead one's place: the site's theme is said once, in
- * config.toml. No pick, or a browser that denies storage: the static link
- * stays. */
+/* vpkit's documentation, in every page's <head> (config.toml's head): the
+ * color theme the gallery (static/theme-gallery.js) stored for this browser
+ * session is linked here, a theme's name for its stylesheet (static/themes/,
+ * the repository's themes/, beside this script); no pick, or the stock
+ * card's empty name, links nothing, and the page is on tokens.css's colors,
+ * VitePress's palette with its contrast fitted. The link is written into
+ * the head as the parser reads it, so the page waits for it as for its own
+ * stylesheet and first paints in the theme; a link the DOM adds would let
+ * the page paint first in the stock colors. data-theme carries the name as
+ * the gallery compares it; only the URL is encoded (`penumbra+` is a
+ * theme). A pick whose stylesheet no longer exists (a theme renamed since
+ * the session began, or a value an earlier deploy stored) is forgotten and
+ * its link removed. A browser that denies storage: the stock colors. */
 {
   const KEY = 'vpkit-docs-theme';
   let pick = null;
   try {
     pick = sessionStorage.getItem(KEY);
   } catch {}
-  if (pick !== null) {
-    const site = document.head.querySelector('link[data-theme]');
-    site.remove();
-    if (pick) {
-      const href = new URL(`${encodeURIComponent(pick)}.css`, site.href).href;
-      // the written link is parsed after this script ends; its error, which
-      // does not bubble, reaches a capturing listener on the document: the
-      // pick is forgotten and the site's link takes the dead one's place
-      document.addEventListener('error', (e) => {
-        if (e.target.dataset.theme !== pick) return;
-        sessionStorage.removeItem(KEY);
-        e.target.replaceWith(site);
-      }, true);
-      document.write(`<link rel="stylesheet" href="${href}" data-theme="${pick}">`);
-    }
+  if (pick) {
+    const href = new URL(`themes/${encodeURIComponent(pick)}.css`, document.currentScript.src).href;
+    // the written link is parsed after this script ends; its error, which
+    // does not bubble, reaches a capturing listener on the document: the
+    // pick is forgotten and the link goes
+    document.addEventListener('error', (e) => {
+      if (e.target.dataset?.theme !== pick) return;
+      sessionStorage.removeItem(KEY);
+      e.target.remove();
+    }, true);
+    document.write(`<link rel="stylesheet" href="${href}" data-theme="${pick}">`);
   }
 }

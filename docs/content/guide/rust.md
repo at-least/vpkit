@@ -1,19 +1,39 @@
 +++
 title = "Rust"
-description = "vpkit's components as hypertext components: the markup the stylesheets document, for a Rust page."
+description = "vpkit's Rust crate: hypertext components for the markup, Lucide's icons as inline SVG, and the stylesheets embedded, so one commit pins both."
 +++
 
 # Rust
 
-For a page rendered in Rust with [hypertext](https://crates.io/crates/hypertext), `rust/` in vpkit's repository is a crate of hypertext components that write the markup each stylesheet documents. The stylesheets stay the components: import each one you use, as on [Getting Started](@/guide/getting-started.md).
+For a page rendered in Rust with [hypertext](https://crates.io/crates/hypertext), `rust/` in vpkit's repository is a crate of three things: hypertext components that write the markup of the components whose markup is more than one class, Lucide's icons as inline SVG, and, with its `css` feature, every stylesheet of the kit embedded, so an app's dependency on the crate, at a commit, is the one pin for its markup and its CSS.
 
 ## Installation
 
-The crate is not on crates.io: add it from the repository at the commit your stylesheets come from, so the markup and the CSS match.
+The crate is not on crates.io: add it from the repository at a commit.
 
 ```toml
 [dependencies]
 vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+```
+
+## The stylesheets
+
+With the `css` feature, `vpkit::css::FILES` holds every stylesheet by its path in the kit and `vpkit::css::write(dir)` lays them out under a directory, for the Tailwind entry to import ([Getting Started](@/guide/getting-started.md#installation)). The feature belongs in the CSS build, not in the app's own dependency: the `vpkit-css` binary, installed from the repository at the rev the lock file names, writes them with one command.
+
+```sh
+cargo install --git https://github.com/at-least/vpkit --rev <sha> --features css --root target/vpkit-css vpkit
+target/vpkit-css/bin/vpkit-css target/vpkit
+```
+
+## Icons
+
+`vpkit::icon` has Lucide's icons as inline SVG in `currentColor`: `SUN`, `MOON` and `MONITOR` for an appearance switch, `X`, `PLUS`, `MINUS`, `CHECK`, `SEARCH`, `MENU`, `MORE_HORIZONTAL`, the four `CHEVRON_*` and `ARROW_*`, `COPY`, `EXTERNAL_LINK`, `INFO`, `CIRCLE_ALERT`, `TRIANGLE_ALERT`, `CIRCLE_CHECK`. An icon renders where a `Renderable` goes; `.class("vp-icon")` puts a class on its `<svg>`, for a size or a component's part.
+
+```rust
+use hypertext::prelude::*;
+use vpkit::icon::PLUS;
+
+rsx! { <button class="vp-btn" data-variant="brand" type="button">(PLUS)" New file"</button> }
 ```
 
 ## What it has
@@ -30,9 +50,9 @@ A component whose markup is more than one class on one element:
 | [`Pager`](../../rust/vpkit/struct.Pager.html) | `vp-pager` | [Pager](@/components/pager.md) |
 | [`Tabs`](../../rust/vpkit/struct.Tabs.html), [`Tab`](../../rust/vpkit/struct.Tab.html) | `vp-tabs`, as links to pages | [Tabs](@/components/tabs.md) |
 
-Everything else is a class string on your own element, written with the attributes the element needs: a button, an input, a badge, an alert (its `role` is yours).
+Everything else is a class string on your own element, written with the attributes the element needs: a button with its `data-variant`, an input with its `aria-invalid`, a badge, an alert (its `role` is yours).
 
-The crate writes vpkit's classes and nothing else: a utility for the page goes in a component's `class` where it has one, or on an element around it.
+The crate writes vpkit's classes and nothing else: a utility for the page goes in a component's `class` where it has one, or on an element around it. Each component's test renders its example, the markup its page shows, so the two cannot part.
 
 ## Reference
 

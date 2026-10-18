@@ -9,7 +9,7 @@ What `@import "vpkit"` gives a Tailwind project.
 
 ## Dark mode
 
-Put `class="dark"` on `<html>`. The `dark:` variant, every `--vp-*` variable and the color scheme (scrollbars, form controls) follow it.
+Put `class="dark"` on `<html>`. The `dark:` variant, the color scheme and with it every `light-dark()` pair, the scrollbars and the form controls follow it.
 
 ## Breakpoints
 
@@ -23,62 +23,40 @@ VitePress's, replacing Tailwind's defaults:
 | `xl` | 80rem | 1280px |
 | `2xl` | 90rem | 1440px |
 
-They are in rem because VitePress's media queries are ([vuejs/vitepress#5323](https://github.com/vuejs/vitepress/pull/5323)): at a browser font size other than the default, the layout and the components move with the font size, and a utility in rem moves with them.
+They are in rem because VitePress's media queries are ([vuejs/vitepress#5323](https://github.com/vuejs/vitepress/pull/5323)): at a browser font size other than the default, the components move with the font size, and a utility in rem moves with them.
 
 ## Semantic colors
 
-The text colors are `text-body`, `text-secondary` and `text-muted` (VitePress's `text-1`, `text-2` and `text-3`), and the grounds `bg-bg` (the page), `bg-alt`, `bg-soft` and `bg-elv`. The others work with every color utility (`text-`, `bg-`, `border-`, …): `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `warning-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `border-divider`, `text-brand-1`, `bg-danger-soft`.
+The text colors are `text-body`, `text-secondary` and `text-muted`, and the grounds `bg-page`, `bg-alt`, `bg-soft` and `bg-elv`. The rest work with every color utility (`text-`, `bg-`, `border-`, `fill-`, …): the lines `border`, `divider` and `gutter`; `brand`, `brand-hover`, `brand-fill` and `brand-soft`; `gray-fill` and `gray-soft`; `success`, `warning`, `danger` and `important`, each with its `-soft` tint. So `border-divider`, `text-brand`, `bg-danger-soft`, `fill-brand`.
 
-The first names, which doubled the prefix, still work, with every color utility: `text-text-2`, `bg-bg-alt`, `fill-text-2`.
+They resolve to the `--vp-c-*` variables, so they follow dark mode and a color theme as the components do.
 
-They resolve to the `--vp-*` variables, so they follow dark mode and a color theme as the components do.
+{{ <vp_example file="pages/surfaces" title="The surfaces and the text colors" /> }}
 
-{% <vp_example title="The surfaces and the text colors"> %}
-<div class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-  <div class="rounded-lg border border-divider bg-bg p-3">bg</div>
-  <div class="rounded-lg border border-divider bg-alt p-3">bg-alt</div>
-  <div class="rounded-lg border border-divider bg-elv p-3">bg-elv</div>
-  <div class="rounded-lg border border-divider bg-soft p-3">bg-soft</div>
-</div>
-<p class="mt-4 text-body">text-body: the body text</p>
-<p class="text-secondary">text-secondary: secondary text</p>
-<p class="text-muted">text-muted: muted text</p>
-{% </vp_example> %}
-
-{% <vp_example title="The roles, as text on their soft tints" layout="row"> %}
-<span class="rounded-md bg-brand-soft px-3 py-1 text-sm text-brand-1">brand</span>
-<span class="rounded-md bg-default-soft px-3 py-1 text-sm text-body">default</span>
-<span class="rounded-md bg-success-soft px-3 py-1 text-sm text-success-1">success</span>
-<span class="rounded-md bg-warning-soft px-3 py-1 text-sm text-warning-1">warning</span>
-<span class="rounded-md bg-danger-soft px-3 py-1 text-sm text-danger-1">danger</span>
-<span class="rounded-md border border-divider px-3 py-1 text-sm text-sponsor">sponsor</span>
-{% </vp_example> %}
+{{ <vp_example file="pages/roles" title="The roles, as text on their soft tints" layout="row" /> }}
 
 ## Shadows and fonts
 
 `shadow-1` … `shadow-5`, `font-sans`, `font-mono`.
 
-{% <vp_example title="The five shadows" layout="row"> %}
-<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-1">shadow-1</div>
-<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-2">shadow-2</div>
-<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-3">shadow-3</div>
-<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-4">shadow-4</div>
-<div class="rounded-lg bg-elv px-4 py-3 text-sm shadow-5">shadow-5</div>
-{% </vp_example> %}
+{{ <vp_example file="pages/shadows" title="The five shadows" layout="row" /> }}
 
 ## The `--vp-*` variables
 
-The variables from VitePress's `vars.css`: colors, typography, z-indexes, and the per-component ones (nav, sidebar, code, buttons, custom blocks, badges, search). Use them directly in arbitrary values, e.g. `h-(--vp-nav-height)`. A stylesheet loaded later can override any of them: [Themes](@/themes.md#your-own-colors).
+The colors are the contract every color theme defines, 34 colors named by their job, each a `light-dark()` pair: the grounds `--vp-c-bg`, `-bg-alt`, `-bg-elv` and `-bg-soft`; the text `-text-1`, `-text-2` and `-text-3`; the lines `-border`, `-divider` and `-gutter`; `-brand` (text, icons and lines), `-brand-hover` (a hovered link), `-brand-fill`, `-brand-fill-hover` and `-brand-fill-active` (the brand button's grounds, white text on them) and `-brand-soft` (the tint); `-gray-fill`, `-gray-fill-hover`, `-gray-fill-active` (the alt button's grounds) and `-gray-soft` (the wash); and a role's text, hover and tint: `-success`, `-warning`, `-danger`, `-caution`, `-important`, each with `-soft` and all but success with `-hover`. Tip and note read brand; caution is danger unless a page sets it apart. With them the five shadows, `--vp-shadow-1` to `-5`.
+
+The rest is not themed: the font families (`--vp-font-family-base`, `-mono`), the radii (`--vp-radius-sm`, `--vp-radius`, `--vp-radius-lg`, `--vp-radius-full`), the control height (`--vp-control-height`, 2.75rem, a touch target's 44px; `-sm` 2.25rem, `-lg` 3rem), the durations (`--vp-duration-fast`, `--vp-duration`, `--vp-duration-slow`), the focus ring (`--vp-focus-ring`, `--vp-focus-ring-offset`), the bar's height (`--vp-nav-height`), the layout's width (`--vp-layout-max-width`) and the scrim (`--vp-backdrop-bg-color`). Use any of them in arbitrary values, e.g. `h-(--vp-nav-height)`. A stylesheet loaded later can override any of them: [Themes](@/themes.md#your-own-colors).
 
 ## Global rules
 
 `base.css` paints the page ([Getting Started](@/guide/getting-started.md#the-page)) and carries the rules that cannot be utilities:
 
-- the color scheme of the appearance, bold at 600, the pointer cursor on buttons, CJK line breaking
-- focus outlines: a focused field keeps a transparent 2px outline where VitePress has none, nothing on screen and the system's focus color in forced colors, which strip the box-shadow ring `vp-input` draws
+- the one focus ring: `:focus-visible` draws `--vp-focus-ring`, on a button, a link, a field, a scroll box, a dialog; an outline follows the box's corners, and forced colors keep it. `outline-none` on an element removes it; a component restates it only to inset it.
+- bold at 600, the pointer cursor on buttons, CJK line breaking, no autospace in code
 - reduced motion: every transition and animation off, a dialog's scrim (`::backdrop`) included
-- with it, `doc.css`: the external-link icon of rendered markdown; the rest of the markdown's styles are `content.css` ([Getting Started](@/guide/getting-started.md#markdown-and-icons))
+
+{{ <vp_example file="pages/focus" title="The focus ring, on a button, a field and a link: press Tab" layout="row" /> }}
 
 ## Graded containers
 
-A `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors. [Alert](@/components/alert.md#graded-containers) shows them.
+The docs theme's `vars.css` has VitePress's graded containers: a `vp-graded-containers` class anywhere on the page switches warning and caution to GitHub's severity colors, orange and yellow. In an app, which has no `vars.css`, set `--vp-c-caution` and its hover and tint yourself where caution should not read as danger.

@@ -5,9 +5,8 @@
  * stylesheet after the page's own, as a site that imports it does, and the
  * page takes it; static/example.js links it in the example frames too. The
  * pick is kept for the browser session (a theme's name, or the stock
- * card's empty one, which links no theme), and static/theme-pick.js puts
- * it in every page the session opens in place of the site's own theme,
- * `vitepress`, a static link in the head (config.toml). */
+ * card's empty one, which links no theme: tokens.css's colors), and
+ * static/theme-pick.js puts it in every page the session opens. */
 const host = document.getElementById('theme-gallery');
 const themes = await (await fetch(host.dataset.themes)).json();
 
@@ -25,7 +24,7 @@ style.textContent = `
   background-color: var(--vp-c-bg-alt);
   font-size: 14px;
 }
-.theme-gallery__filter:focus { border-color: var(--vp-c-brand-1); outline: none; }
+.theme-gallery__filter:focus { border-color: var(--vp-c-brand); }
 .theme-gallery__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
@@ -45,22 +44,21 @@ style.textContent = `
   transition: border-color 0.25s;
 }
 @media (hover: hover) {
-  .theme-gallery__card:hover { border-color: var(--vp-c-brand-1); }
+  .theme-gallery__card:hover { border-color: var(--vp-c-brand); }
 }
-.theme-gallery__card:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
-.theme-gallery__card[aria-pressed="true"] { border-color: var(--vp-c-brand-1); box-shadow: 0 0 0 1px var(--vp-c-brand-1); }
+.theme-gallery__card[aria-pressed="true"] { border-color: var(--vp-c-brand); box-shadow: 0 0 0 1px var(--vp-c-brand); }
 .theme-gallery__preview { display: grid; grid-template-columns: 1fr 1fr; }
 .theme-gallery__half { display: flex; flex-direction: column; gap: 4px; padding: 8px; background-color: var(--bg); }
 .theme-gallery__half > span { border-radius: 2px; }
 .theme-gallery__bar { height: 8px; margin-bottom: 4px; border: 1px solid var(--divider); background-color: var(--bg-alt); }
 .theme-gallery__heading { width: 60%; height: 6px; background-color: var(--text-1); }
 .theme-gallery__text { width: 85%; height: 4px; background-color: var(--text-2); }
-.theme-gallery__link { width: 45%; height: 4px; background-color: var(--brand-1); }
+.theme-gallery__link { width: 45%; height: 4px; background-color: var(--brand); }
 .theme-gallery__half > .theme-gallery__dots { display: flex; gap: 3px; margin-top: 2px; }
 .theme-gallery__dots > span { width: 6px; height: 6px; border-radius: 50%; }
-.theme-gallery__dots > :nth-child(1) { background-color: var(--success-1); }
-.theme-gallery__dots > :nth-child(2) { background-color: var(--warning-1); }
-.theme-gallery__dots > :nth-child(3) { background-color: var(--danger-1); }
+.theme-gallery__dots > :nth-child(1) { background-color: var(--success); }
+.theme-gallery__dots > :nth-child(2) { background-color: var(--warning); }
+.theme-gallery__dots > :nth-child(3) { background-color: var(--danger); }
 .theme-gallery__name { padding: 8px 12px 0; font-size: 14px; font-weight: 600; }
 .theme-gallery__about {
   display: -webkit-box;

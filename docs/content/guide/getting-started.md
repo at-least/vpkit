@@ -1,32 +1,53 @@
 +++
 title = "Getting Started"
-description = "Add vpkit to a Tailwind CSS v4 build: the import, the page, the parts one by one, the components and the fonts."
+description = "Add vpkit to a Tailwind CSS v4 build: from the Rust crate or from npm, the entry, the page, the parts one by one, the components, the markdown, the fonts, a color theme."
 +++
 
 # Getting Started
 
 ## Installation
 
-vpkit is not on npm: add it from its repository, pinned to a commit with `#<sha>` after the name if you like:
+vpkit is a Rust crate and a package of plain CSS in one repository. An app that renders its pages in Rust with [hypertext](https://crates.io/crates/hypertext) takes the crate, at a commit, and gets the CSS from it, so one pin covers the markup and the stylesheets:
+
+```toml
+[dependencies]
+vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+```
+
+Before the Tailwind build, write the stylesheets out of the crate at that same commit, with its `css` feature (the `vpkit-css` binary, installed from the repository at the rev the lock file names; or `vpkit::css::write("target/vpkit")` from a binary of your own with the feature on):
+
+```sh
+cargo install --git https://github.com/at-least/vpkit --rev <sha> --features css --root target/vpkit-css vpkit
+target/vpkit-css/bin/vpkit-css target/vpkit
+```
+
+Anything else takes the CSS from npm, pinned to a commit with `#<sha>`:
 
 ```sh
 npm install --save-dev github:at-least/vpkit
 ```
 
-Then import it from your Tailwind entry stylesheet, after Tailwind itself:
+## The entry
+
+Import vpkit from your Tailwind entry stylesheet, after Tailwind itself, then the components you use, one file each, and the markdown last:
 
 ```css
 @import "tailwindcss" source(none);
-@source "../src";             /* wherever your class strings live */
-@import "vpkit/fonts.css";  /* optional: the Inter webfonts */
-@import "vpkit";
+@source "../src";                          /* wherever your class strings live */
+@import "../target/vpkit/fonts.css";       /* optional: the Inter webfonts */
+@import "../target/vpkit/index.css";
+@import "../target/vpkit/components/button/button.css";
+@import "../target/vpkit/components/input/input.css";
+@import "../target/vpkit/prose.css";       /* optional: the markdown */
 ```
 
-`@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in.
+From npm the paths are the package's: `@import "vpkit";`, `@import "vpkit/components/button/button.css";`. `@source` stays in your stylesheet: Tailwind resolves it relative to the file it is written in.
 
 ## The page
 
-`base.css` paints the page as VitePress does: the text and background colors on `<body>`, its legibility and font smoothing, and the placeholder color of every input, in Tailwind's base layer, so a utility on the element still wins (`bg-alt` on `<body>`). For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light.
+`base.css` paints the page as VitePress does: the text and background colors on `<body>`, its legibility and font smoothing, and the placeholder color of every input, in Tailwind's base layer, so a utility on the element still wins (`bg-alt` on `<body>`). It also draws the one focus ring: `:focus-visible` on any element takes a 2px outline in the brand color, 2px out, which forced colors keep.
+
+For dark mode, put `class="dark"` on `<html>`, before the first paint, or the page flashes light. Every color is a `light-dark()` pair that the page's color scheme picks, and `tokens.css` sets the scheme from that class, so the pairs, the scrollbars and the form controls turn together. The pairs need Chrome 123, Safari 17.5 or Firefox 120.
 
 ```html
 <html class="dark">
@@ -35,21 +56,20 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 
 ## Taking only some parts
 
-`vpkit` (`index.css`) is four files, each importable on its own:
+`index.css` is three files, each importable on its own:
 
 | file | what it holds |
 | --- | --- |
-| `vpkit/theme.css` | the `dark:` variant, the breakpoints, the semantic utilities |
-| `vpkit/tokens.css` | the `--vp-*` variables (plain CSS, no Tailwind directive) |
-| `vpkit/doc.css` | the external-link rules for rendered markdown |
-| `vpkit/base.css` | the page's colors and typography, the placeholder color, VitePress's global element rules |
+| `theme.css` | the `dark:` variant, the breakpoints, the semantic utilities |
+| `tokens.css` | the `--vp-*` variables: the color contract, the radii, the control height, the durations, the focus ring (plain CSS, no Tailwind directive) |
+| `base.css` | the page's colors and typography, the placeholder color, the focus ring, VitePress's global element rules |
 
-`base.css`'s element rules are unlayered and reset focus outlines (`button:focus { outline: none }`), so a project that draws its own focus rings should leave it out, and paint its page itself:
+A project that paints its page itself takes the first two:
 
 ```css
 @import "tailwindcss" source(none);
-@import "vpkit/tokens.css";
 @import "vpkit/theme.css";
+@import "vpkit/tokens.css";
 ```
 
 ## Components
@@ -57,74 +77,47 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself:
 The components are one import each, so a site ships only the ones it uses:
 
 ```css
-@import "vpkit";
-@import "vpkit/button.css";
-@import "vpkit/input.css";
+@import "vpkit/components/button/button.css";
+@import "vpkit/components/input/input.css";
 ```
 
-[Components](@/components/_index.md) has the whole list.
+[Components](@/components/_index.md) has the whole list. A component's markup is in its page, and in its directory as `examples/*.html`; the Rust crate writes the markup of the components that are more than one class ([Rust](@/guide/rust.md)).
 
-## Markdown and icons
+## Markdown
 
-Two more optional imports, outside `vpkit`, for a page that renders markdown or shows VitePress's icons:
+`prose.css` is VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, code group tabs, and the arrow of an external link, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states; the variables it reads are defined on `.vp-doc`, so it needs nothing but the contract.
 
 ```css
-@import "vpkit/content.css";
-@import "vpkit/icons.css";
+@import "vpkit/prose.css";
 ```
 
-- `content.css`: VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, and code group tabs, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states.
-- `icons.css`: VitePress's icons, `<span class="vpi-search"></span>`, a 1em mask over the text color. They are Lucide's (ISC, `LICENSE-Lucide`). Each is an inline SVG in a `data:` URL, so a page with a Content-Security-Policy allows `img-src data:`, or every icon shows nothing. Under forced colors an icon paints in the system's text color, where the mask's own ground would be erased.
+## Icons
 
-The icons, all twenty-two:
-
-{% <vp_example title="The icons"> %}
-<ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm">
-  <li class="flex items-center gap-2"><span class="vpi-align-left" aria-hidden="true"></span><code>vpi-align-left</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-arrow-down" aria-hidden="true"></span><code>vpi-arrow-down</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-arrow-left" aria-hidden="true"></span><code>vpi-arrow-left</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-arrow-right" aria-hidden="true"></span><code>vpi-arrow-right</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-arrow-up" aria-hidden="true"></span><code>vpi-arrow-up</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-chevron-down" aria-hidden="true"></span><code>vpi-chevron-down</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-chevron-left" aria-hidden="true"></span><code>vpi-chevron-left</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-chevron-right" aria-hidden="true"></span><code>vpi-chevron-right</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-chevron-up" aria-hidden="true"></span><code>vpi-chevron-up</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-corner-down-left" aria-hidden="true"></span><code>vpi-corner-down-left</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-delete" aria-hidden="true"></span><code>vpi-delete</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-heart" aria-hidden="true"></span><code>vpi-heart</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-languages" aria-hidden="true"></span><code>vpi-languages</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-layout-list" aria-hidden="true"></span><code>vpi-layout-list</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-monitor" aria-hidden="true"></span><code>vpi-monitor</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-moon" aria-hidden="true"></span><code>vpi-moon</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-more-horizontal" aria-hidden="true"></span><code>vpi-more-horizontal</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-plus" aria-hidden="true"></span><code>vpi-plus</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-search" aria-hidden="true"></span><code>vpi-search</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-sparkles" aria-hidden="true"></span><code>vpi-sparkles</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-square-pen" aria-hidden="true"></span><code>vpi-square-pen</code></li>
-  <li class="flex items-center gap-2"><span class="vpi-sun" aria-hidden="true"></span><code>vpi-sun</code></li>
-</ul>
-{% </vp_example> %}
-
-The rest of VitePress's page, the navbar, the sidebar, the outline, the home page and the footers, is `layout.css`, for a docs theme: VitePress's markup with its classes renamed, by the scheme in the file's header. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it.
+An icon is an inline SVG in `currentColor`: the crate's `icon` module has Lucide's, the set VitePress draws and a few an app needs (`vpkit::icon::SUN`, `MOON`, `X`, `PLUS`, `SEARCH`, `CHEVRON_DOWN`, …), and any SVG written into the page does the same. [`vp-icon`](@/components/icon.md) sizes one at 1em; a button, an icon button or a chip sizes the SVG inside it. No mask and no `data:` image, so a strict Content-Security-Policy draws them.
 
 ## Fonts
 
-`fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Serve this package's `fonts/` directory next to your built CSS.
+`fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Copy the repository's `fonts/` directory next to your built CSS once (the crate does not embed them).
 
 ## A color theme
 
-A color theme is one more import, after vpkit:
+Without one, the page is VitePress's palette with its contrast shortfalls fitted: a hovered link dimmed in a container, the brand button's white label and a control's border at WCAG AA, where VitePress's own values fall short. A color theme is one more import, after `index.css`:
 
 ```css
-@import "vpkit";
+@import "vpkit/index.css";
 @import "vpkit/themes/nord.css";
 ```
 
-Without one, the page is VitePress's stock palette, `tokens.css`'s, which falls short of WCAG AA in a few places: a hovered link dimmed in a container, the brand button's white label, a control's border. `vitepress` is that palette with those shortfalls fitted, VitePress's look at AA; the apps built on vpkit and this site import it:
+[Themes](@/themes.md) has the 222 of them.
+
+## The docs theme
+
+VitePress's navbar, sidebar, outline, home page and footers are `docs-theme/`: VitePress's markup with its classes renamed, on VitePress's own variables and palette, for a docs theme. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it:
 
 ```css
 @import "vpkit";
-@import "vpkit/themes/vitepress.css";
+@import "vpkit/docs-theme/vars.css";
+@import "vpkit/docs-theme/icons.css";
+@import "vpkit/docs-theme/layout.css";
+@import "vpkit/prose.css";
 ```
-
-[Themes](@/themes.md) has the 223 of them.

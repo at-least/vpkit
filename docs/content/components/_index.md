@@ -1,59 +1,33 @@
 +++
 title = "Components"
-description = "VitePress's components as CSS classes, one optional import each, so a site ships only the ones it uses."
+description = "VitePress's look as CSS classes for an application, one optional import each, so a site ships only the ones it uses; and the docs theme's."
 +++
 
 # Components
 
-VitePress's components as CSS classes, one optional import each, so a site ships only the ones it uses:
+VitePress's look as CSS classes for an application, one optional import each, so a site ships only the ones it uses:
 
 ```css
-@import "vpkit/button.css";
+@import "vpkit/components/button/button.css";
 ```
 
-The file is named after the class: `vp-badge` is `vpkit/badge.css`, `vp-icon-btn` is `vpkit/icon-btn.css`; `vp-label` and `vp-field-error` share `vpkit/field.css`. Each page opens with its import.
+A component is a directory named after its class: `vp-badge` is `components/badge/`, `vp-icon-btn` is `components/icon-btn/`; `vp-label` and `vp-field-error` are `components/field/`'s. Each holds the stylesheet, its examples (`examples/*.html`, the markup these pages show and the crate's tests render) and its proof. Each page opens with its import.
 
-A <span class="vp-badge vp-badge-tip">vpkit</span> badge beside a page's title marks a component VitePress has no original for: vpkit's own, on VitePress's tokens.
+A <span class="vp-badge" data-variant="tip">vpkit</span> badge beside a page's title marks a component VitePress has no original for: vpkit's own, on VitePress's tokens.
 
-They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A modifier works only together with its base class.
+The class says what the element is; what varies is an attribute. A mutually exclusive axis is `data-variant` or `data-size`; an orthogonal switch is a class (`vp-table-sticky`); a state is the attribute the markup carries anyway (`disabled`, `aria-invalid`, `aria-current`, `open`). Every control that shares a row is 2.75rem tall, a touch target's 44px, and every focused element draws base.css's ring.
 
-Inside a `vp-doc` (the markdown's styles, `content.css`) each component keeps its look and its states: the markdown's rules are in `@layer base`, below the components, as VitePress's components win there by Vue's scoping. Where the markdown sets something a component leaves to the page, such as a heading's margins and rule on a card's title, the component sets it for that place.
+They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A variant works only together with its class.
 
-Their hover styles are written with `@variant hover`, so they behave like Tailwind's `hover:`: they apply only on a device that can hover (`@media (hover: hover)`, or however your project defines the `hover` variant). VitePress's apply on touch screens too, where a tapped button or card keeps its hover look until the next tap.
+Inside a `vp-doc` (the markdown's styles, `prose.css`) each component keeps its look and its states: the markdown's rules are in `@layer base`, below the components, as VitePress's components win there by Vue's scoping. Where the markdown sets something a component leaves to the page, such as a heading's margins and rule on a card's title, the component sets it for that place.
+
+Their hover styles apply only on a device that can hover (`@media (hover: hover)`), as Tailwind's `hover:` does. VitePress's apply on touch screens too, where a tapped button or card keeps its hover look until the next tap.
 
 The examples on these pages are live. Each is a page of its own, with Tailwind and vpkit as an app imports them and none of this site's markdown styles, and it follows this site's appearance switch.
 
 ## Together
 
-{% <vp_example title="A subscription form built from the components"> %}
-<div class="grid max-w-md gap-6">
-  <div>
-    <label class="vp-label" for="code">Coupon code</label>
-    <input class="vp-input w-full" id="code" value="SPRING24" aria-invalid="true" aria-describedby="code-error">
-    <p class="vp-field-error" id="code-error">This code has expired.</p>
-  </div>
-  <div class="grid gap-3">
-    <label class="vp-choice">
-      <input type="radio" name="plan" value="monthly" checked>
-      <span>Monthly<br>NT$300 a month</span>
-    </label>
-    <label class="vp-choice">
-      <input type="radio" name="plan" value="yearly">
-      <span>Yearly <span class="vp-badge vp-badge-tip">2 months free</span><br>NT$3,000 a year</span>
-    </label>
-  </div>
-  <div class="flex items-center justify-between gap-4">
-    <span id="receipts">Email me the receipts</span>
-    <button class="vp-toggle" type="button" role="switch" aria-checked="true" aria-labelledby="receipts">
-      <span class="vp-toggle-check"></span>
-    </button>
-  </div>
-  <div class="flex justify-end gap-2">
-    <button class="vp-btn" type="button">Cancel</button>
-    <button class="vp-btn vp-btn-brand" type="button">Subscribe</button>
-  </div>
-</div>
-{% </vp_example> %}
+{{ <vp_example file="pages/together" title="A subscription form built from the components" /> }}
 
 ## The list
 
@@ -61,12 +35,10 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | --- | --- | --- |
 | [Accordion](@/components/accordion.md) | `vp-accordion` | VitePress's nav screen group |
 | [Alert](@/components/alert.md) | `vp-alert` | VitePress's custom blocks |
-| [Avatar](@/components/avatar.md) | `vp-avatar` | the picture of VitePress's `VPTeamMembersItem` |
 | [Badge](@/components/badge.md) | `vp-badge` | VitePress's `VPBadge` |
 | [Breadcrumb](@/components/breadcrumb.md) | `vp-breadcrumb` | none, vpkit's own: a folder path |
 | [Button](@/components/button.md) | `vp-btn` | VitePress's `VPButton` |
 | [Card](@/components/card.md) | `vp-card` | VitePress's `VPFeature` |
-| [Carbon Ads](@/components/carbon-ads.md) | `vp-carbon-ads` | VitePress's `VPCarbonAds` |
 | [Checkbox](@/components/checkbox.md) | `vp-checkbox`, `vp-checkbox-label` | none, vpkit's own: a bare checkbox and its tap target |
 | [Chip](@/components/chip.md) | `vp-chip` | none, vpkit's own: a removable filter, or a link to the list it names |
 | [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
@@ -82,12 +54,10 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [File Input](@/components/file.md) | `vp-file` | none, vpkit's own: the file chooser drawn as an input |
 | [Hamburger](@/components/hamburger.md) | `vp-hamburger` | VitePress's `VPNavBarHamburger` |
 | [Heading](@/components/heading.md) | `vp-page-title`, `vp-page-desc`, `vp-section-title`, `vp-group-title` | VitePress's doc headings, and vpkit's own: a page's description, a group's title |
-| [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Hint](@/components/hint.md) | `vp-hint` | none, vpkit's own: a word's meaning in a tooltip |
 | [Icon](@/components/icon.md) | `vp-icon` | VitePress's `VPIcon` |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
-| [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
-| [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
+| [Input](@/components/input.md) | `vp-input` | none, vpkit's own |
 | [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
 | [Nav Link](@/components/nav-link.md) | `vp-nav-link` | VitePress's `VPNavMenuLink` |
 | [Nav Screen](@/components/screen.md) | `vp-screen` | VitePress's `VPNavScreen` |
@@ -101,17 +71,26 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Site Footer](@/components/site-footer.md) | `vp-site-footer` | VitePress's `VPFooter` |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
-| [Sponsors](@/components/sponsor.md) | `vp-sponsor` | VitePress's `VPSponsors` and its grid |
 | [Status](@/components/status.md) | `vp-status` | none, vpkit's own: the reply to what was just done |
 | [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
-| [Team Header](@/components/team-header.md) | `vp-team-header` | VitePress's `VPTeamPageTitle` |
-| [Team Section](@/components/team-section.md) | `vp-team-section` | VitePress's `VPTeamPageSection` |
-| [Team Member](@/components/team-member.md) | `vp-team-member` | VitePress's `VPTeamMembersItem` |
-| [Team Members](@/components/team-members.md) | `vp-team-members` | VitePress's `VPTeamMembers` |
 | [Thumbnail](@/components/thumb.md) | `vp-thumb` | none, vpkit's own: an image in a frame |
 | [Toast](@/components/toast.md) | `vp-toast` | none, vpkit's own |
 | [Toggle](@/components/toggle.md) | `vp-toggle` | VitePress's `VPSwitch` and `VPSwitchAppearance` |
 | [Top Bar](@/components/topbar.md) | `vp-topbar` | VitePress's `VPNavBar` and `VPNavBarTitle` |
+
+## The docs theme's
+
+VitePress's components for a docs site, in `docs-theme/components/`, on VitePress's own variables (`docs-theme/vars.css`), for a docs theme such as vpkit-zola; the examples on their pages load the docs theme's stylesheet.
+
+| Component | Classes | Original |
+| --- | --- | --- |
+| [Avatar](@/components/avatar.md) | `vp-avatar` | the picture of VitePress's `VPTeamMembersItem` |
+| [Carbon Ads](@/components/carbon-ads.md) | `vp-carbon-ads` | VitePress's `VPCarbonAds` |
+| [Sponsors](@/components/sponsor.md) | `vp-sponsor` | VitePress's `VPSponsors` and its grid |
+| [Team Header](@/components/team-header.md) | `vp-team-header` | VitePress's `VPTeamPageTitle` |
+| [Team Member](@/components/team-member.md) | `vp-team-member` | VitePress's `VPTeamMembersItem` |
+| [Team Members](@/components/team-members.md) | `vp-team-members` | VitePress's `VPTeamMembers` |
+| [Team Section](@/components/team-section.md) | `vp-team-section` | VitePress's `VPTeamPageSection` |
 
 The library's design, the rules every component follows and how each is held to its original, is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).

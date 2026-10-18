@@ -1,0 +1,314 @@
+{
+  "badge success": {
+    "light": {
+      ".vp-badge": {
+        "display": "inline-block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "2px",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "padding-top": "0px",
+        "padding-right": "10px",
+        "padding-bottom": "0px",
+        "padding-left": "10px",
+        "line-height": "22px",
+        "font-size": "12px",
+        "font-weight": "500",
+        "white-space": "nowrap",
+        "transform": "matrix(1, 0, 0, 1, 0, -2)",
+        "height": "23.984375px",
+        "color": "rgb(24, 121, 78)",
+        "background-color": "rgba(16, 185, 129, 0.14)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-badge": {
+        "display": "inline-block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "2px",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "padding-top": "0px",
+        "padding-right": "10px",
+        "padding-bottom": "0px",
+        "padding-left": "10px",
+        "line-height": "22px",
+        "font-size": "12px",
+        "font-weight": "500",
+        "white-space": "nowrap",
+        "transform": "matrix(1, 0, 0, 1, 0, -2)",
+        "height": "23.984375px",
+        "color": "rgb(61, 214, 140)",
+        "background-color": "rgba(16, 185, 129, 0.16)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
+  "badge success small": {
+    "light": {
+      ".vp-badge": {
+        "display": "inline-block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "2px",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "padding-top": "0px",
+        "padding-right": "6px",
+        "padding-bottom": "0px",
+        "padding-left": "6px",
+        "line-height": "18px",
+        "font-size": "10px",
+        "font-weight": "500",
+        "white-space": "nowrap",
+        "transform": "matrix(1, 0, 0, 1, 0, -8)",
+        "height": "20px",
+        "color": "rgb(24, 121, 78)",
+        "background-color": "rgba(16, 185, 129, 0.14)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-badge": {
+        "display": "inline-block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "2px",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "padding-top": "0px",
+        "padding-right": "6px",
+        "padding-bottom": "0px",
+        "padding-left": "6px",
+        "line-height": "18px",
+        "font-size": "10px",
+        "font-weight": "500",
+        "white-space": "nowrap",
+        "transform": "matrix(1, 0, 0, 1, 0, -8)",
+        "height": "20px",
+        "color": "rgb(61, 214, 140)",
+        "background-color": "rgba(16, 185, 129, 0.16)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
+  "badge outline": {
+    "light": {
+      ".vp-badge-outline[data-variant=\"success\"]": {
+        "color": "rgb(24, 121, 78)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgba(16, 185, 129, 0.14)",
+        "border-right-color": "rgba(16, 185, 129, 0.14)",
+        "border-bottom-color": "rgba(16, 185, 129, 0.14)",
+        "border-left-color": "rgba(16, 185, 129, 0.14)",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid"
+      },
+      ".vp-badge-outline[data-variant=\"danger\"]": {
+        "color": "rgb(184, 39, 44)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgba(244, 63, 94, 0.14)",
+        "border-right-color": "rgba(244, 63, 94, 0.14)",
+        "border-bottom-color": "rgba(244, 63, 94, 0.14)",
+        "border-left-color": "rgba(244, 63, 94, 0.14)"
+      },
+      ".vp-badge-outline:not([data-variant])": {
+        "color": "rgb(103, 103, 108)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgba(142, 150, 170, 0.14)",
+        "border-right-color": "rgba(142, 150, 170, 0.14)",
+        "border-bottom-color": "rgba(142, 150, 170, 0.14)",
+        "border-left-color": "rgba(142, 150, 170, 0.14)"
+      },
+      ".vp-badge[data-variant=\"success\"]:not(.vp-badge-outline)": {
+        "color": "rgb(24, 121, 78)",
+        "background-color": "rgba(16, 185, 129, 0.14)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      ".vp-badge-outline[data-variant=\"success\"]": {
+        "color": "rgb(61, 214, 140)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgba(16, 185, 129, 0.16)",
+        "border-right-color": "rgba(16, 185, 129, 0.16)",
+        "border-bottom-color": "rgba(16, 185, 129, 0.16)",
+        "border-left-color": "rgba(16, 185, 129, 0.16)",
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid"
+      },
+      ".vp-badge-outline[data-variant=\"danger\"]": {
+        "color": "rgb(246, 111, 129)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgba(244, 63, 94, 0.16)",
+        "border-right-color": "rgba(244, 63, 94, 0.16)",
+        "border-bottom-color": "rgba(244, 63, 94, 0.16)",
+        "border-left-color": "rgba(244, 63, 94, 0.16)"
+      },
+      ".vp-badge-outline:not([data-variant])": {
+        "color": "rgb(152, 152, 159)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgba(101, 117, 133, 0.16)",
+        "border-right-color": "rgba(101, 117, 133, 0.16)",
+        "border-bottom-color": "rgba(101, 117, 133, 0.16)",
+        "border-left-color": "rgba(101, 117, 133, 0.16)"
+      },
+      ".vp-badge[data-variant=\"success\"]:not(.vp-badge-outline)": {
+        "color": "rgb(61, 214, 140)",
+        "background-color": "rgba(16, 185, 129, 0.16)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
+  "badge with a dot": {
+    "light": {
+      ".vp-badge": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "column-gap": "6px",
+        "height": "23.984375px"
+      },
+      ".vp-badge-dot": {
+        "display": "block",
+        "width": "8px",
+        "height": "8px",
+        "flex-shrink": "0",
+        "border-top-left-radius": "9999px",
+        "border-top-right-radius": "9999px",
+        "border-bottom-right-radius": "9999px",
+        "border-bottom-left-radius": "9999px",
+        "background-color": "rgb(24, 121, 78)",
+        "offset-top": "7.984375px"
+      },
+      ".vp-badge[data-variant=\"danger\"] > .vp-badge-dot": {
+        "background-color": "rgb(184, 39, 44)"
+      }
+    },
+    "dark": {
+      ".vp-badge": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "column-gap": "6px",
+        "height": "23.984375px"
+      },
+      ".vp-badge-dot": {
+        "display": "block",
+        "width": "8px",
+        "height": "8px",
+        "flex-shrink": "0",
+        "border-top-left-radius": "9999px",
+        "border-top-right-radius": "9999px",
+        "border-bottom-right-radius": "9999px",
+        "border-bottom-left-radius": "9999px",
+        "background-color": "rgb(61, 214, 140)",
+        "offset-top": "7.984375px"
+      },
+      ".vp-badge[data-variant=\"danger\"] > .vp-badge-dot": {
+        "background-color": "rgb(246, 111, 129)"
+      }
+    }
+  },
+  "badge in the example heading": {
+    "light": {
+      ".vp-badge": {
+        "color": "rgb(52, 81, 178)",
+        "background-color": "rgba(100, 108, 255, 0.14)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)",
+        "height": "23.984375px",
+        "offset-top": "7px"
+      }
+    },
+    "dark": {
+      ".vp-badge": {
+        "color": "rgb(168, 177, 255)",
+        "background-color": "rgba(100, 108, 255, 0.16)",
+        "border-top-color": "rgba(0, 0, 0, 0)",
+        "border-right-color": "rgba(0, 0, 0, 0)",
+        "border-bottom-color": "rgba(0, 0, 0, 0)",
+        "border-left-color": "rgba(0, 0, 0, 0)",
+        "height": "23.984375px",
+        "offset-top": "7px"
+      }
+    }
+  }
+}

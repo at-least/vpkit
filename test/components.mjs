@@ -29,6 +29,7 @@ import { basename, dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
+import { componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unwrapDeep } from '../scripts/vitepress-port.mjs';
@@ -38,15 +39,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 
-// the component directories of a product: each holds <name>.css
-function componentDirs(product) {
-  const base = join(ROOT, product, 'components');
-  if (!existsSync(base)) return [];
-  return readdirSync(base, { withFileTypes: true })
-    .filter((e) => e.isDirectory() && existsSync(join(base, e.name, `${e.name}.css`)))
-    .map((e) => join(base, e.name))
-    .sort();
-}
 const PRODUCTS = { app: componentDirs(''), docs: componentDirs('docs-theme') };
 
 // the entry a product's tests compile: Tailwind, the examples and tests

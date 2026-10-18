@@ -1,11 +1,11 @@
 +++
 title = "Themes"
-description = "vpkit's 223 color themes, each a whole design for light and dark held to contrast minimums: pick one and this page takes it; what a theme sets, where they come from, and your own colors."
+description = "vpkit's 222 color themes, each a whole design for light and dark held to contrast minimums: pick one and this page takes it; what a theme sets, where they come from, and your own colors."
 +++
 
 # Themes
 
-vpkit's 223 color themes, each a whole design for light and dark, held by the tests to WCAG contrast minimums ([Tests](https://github.com/at-least/vpkit/blob/main/test/README.md#color-themes)): it sets every `--vp-c-*` color the stylesheets use and the brand button's hover color `--vp-button-brand-hover-bg` for light (`:root`) and dark (`.dark`), and the five `--vp-shadow-*` once, at `:root`. Import one after vpkit, or link it after your compiled stylesheet:
+vpkit's 222 color themes, each a whole design for light and dark, held by the tests to WCAG contrast minimums ([Tests](https://github.com/at-least/vpkit/blob/main/test/README.md#color-themes)): one `:root` block that sets the contract, the 34 `--vp-c-*` colors, each a `light-dark()` pair, light first, and the five `--vp-shadow-*`. Import one after vpkit, or link it after your compiled stylesheet:
 
 ```css
 @import "vpkit";
@@ -14,73 +14,27 @@ vpkit's 223 color themes, each a whole design for light and dark, held by the te
 
 A theme only sets variables, so the components and your utilities follow it.
 
-Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session. This site is on `vitepress`, as the apps built on vpkit are; the stock card takes it off, to `tokens.css`'s colors.
+Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session. Without a pick the site is on the stock colors, `tokens.css`'s: VitePress's palette with its contrast shortfalls fitted, which the apps built on vpkit run on; the stock card takes a pick off.
 
-{% <vp_example title="The components, in the theme picked below"> %}
-<div class="grid gap-5">
-  <div class="flex flex-wrap items-center gap-3">
-    <a class="vp-btn vp-btn-brand" href="#">Get Started</a>
-    <button class="vp-btn" type="button">Cancel</button>
-    <button class="vp-btn vp-btn-danger" type="button">Delete</button>
-    <span class="vp-badge vp-badge-tip">tip</span>
-    <span class="vp-badge vp-badge-warning">warning</span>
-    <span class="vp-badge vp-badge-danger">danger</span>
-    <span class="vp-badge vp-badge-success">success</span>
-  </div>
-  <div class="vp-alert vp-alert-tip">
-    <p class="vp-alert-title">TIP</p>
-    <p>An alert, with a <a href="#">link</a> and <code>code</code>.</p>
-  </div>
-  <div class="vp-alert vp-alert-warning">
-    <p class="vp-alert-title">WARNING</p>
-    <p>Every color here is the theme's, in light and in dark.</p>
-  </div>
-  <div class="grid gap-4 sm:grid-cols-2">
-    <div>
-      <label class="vp-label" for="file">File name</label>
-      <input class="vp-input w-full" id="file" value="notes.txt">
-      <p class="mt-3 flex items-center gap-3 text-sm">
-        <button class="vp-toggle" type="button" role="switch" aria-checked="true" aria-labelledby="shared">
-          <span class="vp-toggle-check"></span>
-        </button>
-        <span id="shared">Shared</span>
-        <a class="vp-link ms-auto" href="#">Details</a>
-      </p>
-    </div>
-    <a class="vp-card" href="#">
-      <h2 class="vp-card-title">A card</h2>
-      <p class="vp-card-details">Its border turns brand on hover.</p>
-    </a>
-  </div>
-  <div class="flex items-center gap-3 text-sm">
-    <span class="vp-progress flex-1" role="progressbar" aria-label="Storage used"
-          aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-      <span class="vp-progress-bar" style="width: 60%"></span>
-    </span>
-    <span class="text-secondary">6 of 10 GB</span>
-  </div>
-</div>
-{% </vp_example> %}
+{{ <vp_example file="pages/theme" title="The components, in the theme picked below" /> }}
 
 ## Your own colors
 
-The variables' rules are unlayered, so a stylesheet loaded later can override any of them for both modes, with a theme or without:
+The variables' rules are unlayered, so a stylesheet loaded later can override any of them, for both modes in one line, with a theme or without:
 
 ```css
-:root { --vp-c-brand-1: #0969da; }
-.dark { --vp-c-brand-1: #4493f8; }
+:root { --vp-c-brand: light-dark(#0969da, #4493f8); }
 ```
 
-Every variable a theme must set, and what each is for (a `-2` is a hovered link's color, the brand button's hover ground `--vp-button-brand-hover-bg`), is the token contract in [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md#the-token-contract).
-
+Every variable a theme must set, and what each is for, is on [Utilities and Variables](@/guide/utilities.md#the-vp-variables); the contrast each must reach is the token contract in [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).
 
 ## Switching at runtime
 
-A theme sets `:root` and `.dark`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`.
+A theme sets `:root`, so one applies per page. To switch themes at runtime, scope copies of their rules under an attribute of your own, such as `[data-theme="nord"]`, and set the attribute on `<html>`.
 
 ## The themes
 
-- 25 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, 20 more are mapped by hand from their published palettes, and `vitepress` is VitePress's own palette with its contrast shortfalls fitted ([Getting Started](@/guide/getting-started.md#a-color-theme)): the apps built on vpkit import it, and this site is on it.
+- 24 are curated: `github`, `catppuccin`, `nord` and `rose-pine` are hand-tuned, and 20 more are mapped by hand from their published palettes.
 - 198 are mapped automatically from the Helix editor's palettes (`helix/`), each read as Helix reads it, its `inherits` followed, with accents adjusted where the published colors fall short of WCAG AA. A palette's declared background (`ui.background`) decides whether it is the light or the dark half.
 
 {{ <vp_theme_gallery /> }}

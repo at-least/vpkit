@@ -23,17 +23,15 @@ dark_theme = "github-dark"
 
 [extra]
 logo = "/logo.svg"
-# the favicon; the site's color theme, vitepress, a stylesheet like any
-# (there with JavaScript off, fetched beside the page's own); and the
-# script that swaps it for the theme the gallery stored for this session
-# (static/theme-pick.js), which must be in the head to be there at the
-# first paint. Pages caches it for ten minutes (no cachebust here, unlike
-# the scripts the templates link): bump ?v= with any change to what it
-# stores or reads, or a cached old script meets the new pages
+# the favicon, and the script that links the color theme the gallery stored
+# for this session (static/theme-pick.js), which must be in the head to be
+# there at the first paint; without a pick the page is on tokens.css's
+# colors. Pages caches it for ten minutes (no cachebust here, unlike the
+# scripts the templates link): bump ?v= with any change to what it stores
+# or reads, or a cached old script meets the new pages
 head = [
   { tag = "link", attrs = { rel = "icon", type = "image/svg+xml", href = "/logo.svg" } },
-  { tag = "link", attrs = { rel = "stylesheet", href = "/themes/vitepress.css", data-theme = "vitepress" } },
-  { tag = "script", attrs = { src = "/theme-pick.js?v=2" } },
+  { tag = "script", attrs = { src = "/theme-pick.js?v=3" } },
 ]
 social_links = [{ icon = "github", link = "https://github.com/at-least/vpkit" }]
 edit_link = { pattern = "https://github.com/at-least/vpkit/edit/main/docs/content/:path", text = "Edit this page on GitHub" }
@@ -56,18 +54,19 @@ items = [
   { text = "Themes", link = "@/themes.md" },
 ]
 
+# one sidebar for the whole site: the guide's group, then the app kit's
+# components in one list, alphabetical, its heading the overview, then the
+# docs theme's; on every page but the home and the 404
 [[extra.sidebar]]
 text = "Components"
 link = "@/components/_index.md"
 items = [
   { text = "Accordion", link = "@/components/accordion.md" },
   { text = "Alert", link = "@/components/alert.md" },
-  { text = "Avatar", link = "@/components/avatar.md" },
   { text = "Badge", link = "@/components/badge.md" },
   { text = "Breadcrumb", link = "@/components/breadcrumb.md" },
   { text = "Button", link = "@/components/button.md" },
   { text = "Card", link = "@/components/card.md" },
-  { text = "Carbon Ads", link = "@/components/carbon-ads.md" },
   { text = "Checkbox", link = "@/components/checkbox.md" },
   { text = "Chip", link = "@/components/chip.md" },
   { text = "Choice", link = "@/components/choice.md" },
@@ -83,12 +82,10 @@ items = [
   { text = "File Input", link = "@/components/file.md" },
   { text = "Hamburger", link = "@/components/hamburger.md" },
   { text = "Heading", link = "@/components/heading.md" },
-  { text = "Highlight", link = "@/components/mark.md" },
   { text = "Hint", link = "@/components/hint.md" },
   { text = "Icon", link = "@/components/icon.md" },
   { text = "Icon Button", link = "@/components/icon-btn.md" },
   { text = "Input", link = "@/components/input.md" },
-  { text = "Key", link = "@/components/kbd.md" },
   { text = "Link", link = "@/components/link.md" },
   { text = "Nav Link", link = "@/components/nav-link.md" },
   { text = "Nav Screen", link = "@/components/screen.md" },
@@ -102,16 +99,23 @@ items = [
   { text = "Site Footer", link = "@/components/site-footer.md" },
   { text = "Skip Link", link = "@/components/skip.md" },
   { text = "Spinner", link = "@/components/spinner.md" },
-  { text = "Sponsors", link = "@/components/sponsor.md" },
   { text = "Status", link = "@/components/status.md" },
   { text = "Table", link = "@/components/table.md" },
   { text = "Tabs", link = "@/components/tabs.md" },
-  { text = "Team Header", link = "@/components/team-header.md" },
-  { text = "Team Section", link = "@/components/team-section.md" },
-  { text = "Team Member", link = "@/components/team-member.md" },
-  { text = "Team Members", link = "@/components/team-members.md" },
   { text = "Thumbnail", link = "@/components/thumb.md" },
   { text = "Toast", link = "@/components/toast.md" },
   { text = "Toggle", link = "@/components/toggle.md" },
   { text = "Top Bar", link = "@/components/topbar.md" },
+]
+
+[[extra.sidebar]]
+text = "Docs theme"
+items = [
+  { text = "Avatar", link = "@/components/avatar.md" },
+  { text = "Carbon Ads", link = "@/components/carbon-ads.md" },
+  { text = "Sponsors", link = "@/components/sponsor.md" },
+  { text = "Team Header", link = "@/components/team-header.md" },
+  { text = "Team Member", link = "@/components/team-member.md" },
+  { text = "Team Members", link = "@/components/team-members.md" },
+  { text = "Team Section", link = "@/components/team-section.md" },
 ]

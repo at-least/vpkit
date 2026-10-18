@@ -1,0 +1,27 @@
+<div class="grid max-w-md gap-6">
+  <div class="vp-field">
+    <label class="vp-label" for="code">Coupon code</label>
+    <input class="vp-input w-full" id="code" value="SPRING24" aria-invalid="true" aria-describedby="code-error">
+    <p class="vp-field-error" id="code-error">This code has expired.</p>
+  </div>
+  <div class="grid gap-3">
+    <label class="vp-choice">
+      <input type="radio" name="plan" value="monthly" checked>
+      <span>Monthly<br>NT$300 a month</span>
+    </label>
+    <label class="vp-choice">
+      <input type="radio" name="plan" value="yearly">
+      <span>Yearly <span class="vp-badge" data-variant="tip">2 months free</span><br>NT$3,000 a year</span>
+    </label>
+  </div>
+  <div class="flex items-center justify-between gap-4">
+    <span id="receipts">Email me the receipts</span>
+    <button class="vp-toggle" type="button" role="switch" aria-checked="true" aria-labelledby="receipts">
+      <span class="vp-toggle-check"></span>
+    </button>
+  </div>
+  <div class="flex justify-end gap-2">
+    <button class="vp-btn" type="button">Cancel</button>
+    <button class="vp-btn" data-variant="brand" type="button">Subscribe</button>
+  </div>
+</div>

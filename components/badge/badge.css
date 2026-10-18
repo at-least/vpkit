@@ -1,0 +1,154 @@
+/* vpkit — badge, `vp-badge`, from VitePress's VPBadge. An optional import:
+ * `@import "vpkit/components/badge/badge.css";`
+ *
+ *   <h2>Search <span class="vp-badge" data-variant="tip">new</span></h2>
+ *
+ * `vp-badge` alone is VPBadge's info type (gray). The axes are attributes:
+ *   data-variant="note" | "tip" | "important" | "caution" | "warning" |
+ *     "danger"          the other types: a role's text on its tint (note
+ *                       and tip the brand's, caution the danger's)
+ *   data-variant="success"   vpkit's, built as VitePress builds the others
+ *   data-size="sm"           the small size
+ * A class, `vp-badge-outline`, with any variant: the badge on the page's
+ * color with the variant's tint as its border, for a badge on a soft
+ * surface (a card, a banded table row), where the translucent tint over
+ * the surface leaves the text short of 4.5:1 and the page's color under
+ * it keeps the contrast the theme contract holds the text to. A part,
+ * `vp-badge-dot`: a dot before the word, in the word's color, a status's
+ * second carrier, never its only one; the badge holding one is a row,
+ * centered, 0.375rem between the two; under forced colors, which erase a
+ * background, the dot paints in the system's text color.
+ *
+ * The block sets its locals from the contract, a variant overrides them
+ * (its tint in --vp-badge-tint too, which the outline moves to the border).
+ * VPBadge's own rules for a badge in a .vp-doc heading (h1 to h6, the
+ * markdown's) and in the doc footer (the docs theme's vp-doc-footer, where
+ * it is hidden) are here too, as VitePress keeps them with the badge; they
+ * set the properties themselves, so they win over the small size as
+ * VitePress's do. */
+
+@layer components {
+  .vp-badge {
+    --vp-badge-padding: 0.625rem;
+    --vp-badge-line-height: 1.8333333;
+    --vp-badge-font-size: 0.75rem;
+    --vp-badge-shift: -0.125rem;
+
+    --vp-badge-border: transparent;
+    --vp-badge-text: var(--vp-c-text-2);
+    --vp-badge-bg: var(--vp-c-gray-soft);
+    --vp-badge-tint: var(--vp-c-gray-soft);
+
+    display: inline-block;
+    margin-left: 0.125rem;
+    border: 1px solid var(--vp-badge-border);
+    border-radius: var(--vp-radius-lg);
+    padding: 0 var(--vp-badge-padding);
+    line-height: var(--vp-badge-line-height);
+    font-size: var(--vp-badge-font-size);
+    font-weight: 500;
+    white-space: nowrap;
+    transform: translateY(var(--vp-badge-shift));
+    color: var(--vp-badge-text);
+    background-color: var(--vp-badge-bg);
+  }
+
+  .vp-badge:is([data-variant="note"], [data-variant="tip"]) {
+    --vp-badge-text: var(--vp-c-brand);
+    --vp-badge-bg: var(--vp-c-brand-soft);
+    --vp-badge-tint: var(--vp-c-brand-soft);
+  }
+
+  .vp-badge[data-variant="important"] {
+    --vp-badge-text: var(--vp-c-important);
+    --vp-badge-bg: var(--vp-c-important-soft);
+    --vp-badge-tint: var(--vp-c-important-soft);
+  }
+
+  .vp-badge[data-variant="caution"] {
+    --vp-badge-text: var(--vp-c-caution);
+    --vp-badge-bg: var(--vp-c-caution-soft);
+    --vp-badge-tint: var(--vp-c-caution-soft);
+  }
+
+  .vp-badge[data-variant="warning"] {
+    --vp-badge-text: var(--vp-c-warning);
+    --vp-badge-bg: var(--vp-c-warning-soft);
+    --vp-badge-tint: var(--vp-c-warning-soft);
+  }
+
+  .vp-badge[data-variant="danger"] {
+    --vp-badge-text: var(--vp-c-danger);
+    --vp-badge-bg: var(--vp-c-danger-soft);
+    --vp-badge-tint: var(--vp-c-danger-soft);
+  }
+
+  .vp-badge[data-variant="success"] {
+    --vp-badge-text: var(--vp-c-success);
+    --vp-badge-bg: var(--vp-c-success-soft);
+    --vp-badge-tint: var(--vp-c-success-soft);
+  }
+
+  .vp-badge[data-size="sm"] {
+    --vp-badge-padding: 0.375rem;
+    --vp-badge-line-height: 1.8;
+    --vp-badge-font-size: 0.625rem;
+    --vp-badge-shift: -0.5rem;
+  }
+
+  /* the outline: the page's color under the text, the variant's tint on
+     the border; after the variants, so it wins at the same specificity */
+  .vp-badge-outline.vp-badge {
+    --vp-badge-border: var(--vp-badge-tint);
+    --vp-badge-bg: var(--vp-c-bg);
+  }
+
+  /* VPBadge.vue: in the doc footer and in a doc's headings */
+  .vp-doc-footer .vp-badge {
+    display: none;
+  }
+
+  .vp-doc h1 > .vp-badge,
+  .vp-doc h2 > .vp-badge {
+    margin: 0 0 0 0.125rem;
+    vertical-align: middle;
+  }
+
+  .vp-doc h2 > .vp-badge {
+    padding: 0 0.5rem;
+  }
+
+  .vp-doc h3 > .vp-badge {
+    vertical-align: middle;
+  }
+
+  .vp-doc h4 > .vp-badge,
+  .vp-doc h5 > .vp-badge,
+  .vp-doc h6 > .vp-badge {
+    vertical-align: middle;
+    line-height: 1.5;
+  }
+
+  /* the dot: a row around it, and the dot in the word's color */
+  .vp-badge:has(> .vp-badge-dot) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .vp-badge-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: var(--vp-radius-full);
+    background-color: currentColor;
+  }
+
+  @media (forced-colors: active) {
+    .vp-badge-dot {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

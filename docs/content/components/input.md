@@ -1,47 +1,25 @@
 +++
 title = "Input"
-description = "An input on VitePress's input variables, vpkit's own: inputs, selects and textareas, with aria-invalid states."
+description = "A text input, a select and a textarea in one box at the control height; vpkit's own, on VitePress's tokens."
 +++
 
-# Input <span class="vp-badge vp-badge-tip">vpkit</span> {#input}
+# Input <span class="vp-badge" data-variant="tip">vpkit</span> {#input}
 
-VitePress defines input variables (`--vp-input-border-color`, `--vp-input-bg-color`) but no input component. This is vpkit's own, built on those variables.
+The box of the three text-like controls, vpkit's own: VitePress has the tokens and no input.
 
 ```css
-@import "vpkit/input.css";
+@import "vpkit/components/input/input.css";
 ```
 
-{% <vp_example title="An input, an invalid input, a select and a textarea" layout="row"> %}
-<input class="vp-input w-full" placeholder="Coupon code">
-<input class="vp-input" aria-invalid="true">
-<select class="vp-input w-full"><option>7 days</option><option>30 days</option></select>
-<textarea class="vp-input w-full" rows="4"></textarea>
-{% </vp_example> %}
+{{ <vp_example file="input/controls" title="An input, a select and a textarea" layout="stack" /> }}
 
-- 44px tall with 16px text (iOS zooms into anything smaller), the input border on the input background, a brand border on hover and focus.
-- Focus draws a brand ring as a box-shadow, since `base.css` removes focus outlines.
-- `aria-invalid="true"` turns the border danger and `"false"` success, even on hover and focus.
-- The width is yours: add `w-full` or any width utility.
+- 2.75rem tall, the control height, with 16px text (iOS zooms into anything smaller), the border color on the alternate ground; a brand border hovered and focused, and base.css's ring focused.
+- `aria-invalid="true"` turns the border danger, `"false"` success, over hover and focus.
+- Width is the page's: add `w-full`, or a width utility.
+- `data-size="sm"`: 2.25rem tall with 14px text, beside a small button.
 
-{% <vp_example title="The invalid and valid states" layout="row"> %}
-<input class="vp-input" aria-invalid="true" value="SPRING24">
-<input class="vp-input" aria-invalid="false" value="SPRING26">
-{% </vp_example> %}
+{{ <vp_example file="input/states" title="Invalid, valid, and small" layout="stack" /> }}
 
-## Select
+A `<select>` takes the class as it is, with the browser's arrow; where its text sits is the browser's (Chromium sets it 4px further in than an input's). A `<textarea>` is freed to follow `rows`, never less than the control height, padded so a one-row textarea is the input's box with its line where the input's text is; its rows and its resize handle are the markup's. The placeholder is muted text.
 
-On a `<select>` it is the same box, and the browser draws the arrow. Where the text sits is the browser's: Chromium sets it further in than an input's, and a little lower, as it centers the text on a line height of its own. `ps-2` on the select aligns the start edges in Chromium.
-
-{% <vp_example title="A select under an input, aligned with ps-2" layout="stack"> %}
-<input class="vp-input" value="30 days">
-<select class="vp-input ps-2"><option>30 days</option><option>7 days</option></select>
-{% </vp_example> %}
-
-## Textarea
-
-On a `<textarea>` the height follows `rows`, never less than the input's, padded so that a one-row textarea is the input's box with its text on the same pixels. `rows` and the resize handle are the markup's.
-
-{% <vp_example title="A one-row textarea beside an input" layout="row"> %}
-<input class="vp-input" value="One line">
-<textarea class="vp-input" rows="1">One line</textarea>
-{% </vp_example> %}
+A field around the control, with its label, hint and error line, is [Field](@/components/field.md).
