@@ -1,0 +1,54 @@
+/* vpkit — empty state, `vp-empty`: the box a list shows when it has
+ * nothing to list, vpkit's own, on the contract (VitePress has none). An
+ * optional import: `@import "vpkit/components/empty/empty.css";`
+ *
+ *   <div class="vp-empty">
+ *     <p class="vp-empty-title">No issues</p>
+ *     <p class="vp-empty-desc">Nothing matched these filters in the last 7 days.</p>
+ *   </div>
+ *
+ * `vp-empty` is the box: the soft ground vp-card has (bg-soft, on which
+ * the contract holds secondary text to its contrast), 0.75rem round, 3rem
+ * of padding above and below and 1.5rem at the sides, its lines centered
+ * and 0.375rem apart, in secondary text. The parts:
+ *   vp-empty-title   the bold line, in body text
+ *   vp-empty-desc    the 0.875rem line under it, at most 52 characters
+ *                    wide so a long explanation wraps
+ * A title alone, or a line of text with neither class, is fine. Inside a
+ * vp-doc (prose.css), whose rule for a paragraph would space the lines as
+ * the markdown's, each keeps its place. The crate's `Empty` writes this
+ * markup. */
+
+@layer components {
+  .vp-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border-radius: var(--vp-radius-lg);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-empty-title {
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-empty-desc {
+    max-width: 52ch;
+    font-size: 0.875rem;
+  }
+
+  /* inside a vp-doc (prose.css), whose rule for a paragraph gives
+     margins and a 28px line, which the lines leave to the page: no
+     margins, the page's line height */
+  .vp-doc .vp-empty-title,
+  .vp-doc .vp-empty-desc {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
