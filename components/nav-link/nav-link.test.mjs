@@ -2,12 +2,13 @@
 // VPNavMenuLink.vue): the bar's link (VPNavBarMenuLink) and the screen's
 // (VPNavScreenMenuLink), at rest, hovered and current (`.active` there,
 // aria-current="page" here). vpkit against vpkit: a <button> against the
-// <a>, and a touch screen's hover at rest. vpkit's own, golden: the
-// examples, and vp-nav-lane fitting, overflowing and on a touch screen.
+// <a>, a touch screen's hover at rest, and each link inside a vp-doc
+// against itself alone. vpkit's own, golden: the examples, vp-nav-lane
+// fitting, overflowing and on a touch screen, and a lane's link focused.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ex = (id) => example(HERE, id);
@@ -20,6 +21,7 @@ const UPSTREAM = { files: ['components/VPNavMenuLink.vue'] };
 const LINK = ['display', 'align-items', 'min-height', ...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', 'line-height', 'font-size', 'font-weight', 'color', 'text-decoration-line', ...TRANSITION, 'height'];
 const upstreamLink = (cls, attrs = '') => `<a class="VPLink link VPNavMenuLink ${cls}" href="#"${attrs}><span>Guide</span></a>`;
 const vpkitLink = (variant, attrs = '') => `<a class="vp-nav-link"${variant} href="#"${attrs}><span>Guide</span></a>`;
+const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // in the bar and in the screen: at rest and hovered, then current
 for (const [place, cls, variant] of [['bar', 'VPNavBarMenuLink', ''], ['screen', 'VPNavScreenMenuLink', ' data-variant="screen"']]) {
@@ -102,3 +104,26 @@ cases.push({
   html: lane('width:40rem'),
   checks: [{ target: '.vp-nav-link', props: ['min-height', ...PADDING, 'height'] }],
 });
+
+// a lane's link focused: base.css's ring, inset 2px, since the lane, a
+// scroll box, clips outside its links
+cases.push({
+  name: 'nav-link lane link focused',
+  html: lane('width:40rem'),
+  checks: [{ target: '.vp-nav-link', state: ['focus-visible'], props: OUTLINE }],
+});
+
+// inside a vp-doc (prose.css), whose rule for a link underlines, recolors
+// and weights any <a>: the bar's link, the screen's and a lane's keep
+// their look, at rest, hovered and current
+const DOC_LOOK = ['color', 'font-weight', 'text-decoration-line', ...TRANSITION];
+const DOC_CHECKS = [
+  { target: '.vp-nav-link:not([aria-current])', props: DOC_LOOK },
+  { target: '.vp-nav-link:not([aria-current])', state: ['hover'], props: ['color', 'text-decoration-line'] },
+  { target: '.vp-nav-link[aria-current="page"]', props: DOC_LOOK },
+];
+for (const [place, variant] of [['', ''], [' screen', ' data-variant="screen"']]) {
+  const html = vpkitLink(variant, ' aria-current="page"') + vpkitLink(variant);
+  cases.push({ name: `nav-link${place} in a doc`, html: inDoc(html), reference: `<div>${html}</div>`, checks: DOC_CHECKS });
+}
+cases.push({ name: 'nav-link lane in a doc', html: inDoc(lane('width:40rem')), reference: `<div>${lane('width:40rem')}</div>`, checks: DOC_CHECKS });

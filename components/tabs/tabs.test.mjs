@@ -6,7 +6,8 @@
 // original's bar has its rounded top corners and no bleed, as vp-tabs
 // always does. What is vpkit's is against vpkit or golden: a row of links
 // with aria-current, its values WAI-ARIA treats as false, a touch screen,
-// the focus ring, a link tab inside a vp-doc.
+// the focus ring (inset, the bar clipping outside a tab), a link tab inside
+// a vp-doc.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -91,7 +92,8 @@ for (const value of ['false', '', 'undefined']) {
   });
 }
 
-// the focus ring: base.css's outline on a tab
+// the focus ring: base.css's outline on a tab, inset 2px, since the bar, a
+// scroll box, clips outside a tab as tall as it
 cases.push({
   name: 'tabs tab focused',
   html: ex('tablist'),

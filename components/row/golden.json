@@ -381,6 +381,24 @@
       }
     }
   },
+  "row as a link focused": {
+    "light": {
+      "[data-t=\"row\"] :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "-2px"
+      }
+    },
+    "dark": {
+      "[data-t=\"row\"] :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "-2px"
+      }
+    }
+  },
   "row muted": {
     "light": {
       ".vp-row[data-state=\"muted\"]": {

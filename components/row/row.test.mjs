@@ -1,12 +1,13 @@
 // vp-row: vpkit's own, so golden: three rows in a flush panel (the
 // example's board), a row's title and description, a row that is a link
-// at rest and hovered, a muted row. vpkit against vpkit: the parts inside
+// at rest, hovered and focused (its ring inset, the panel clipping outside
+// it), a muted row. vpkit against vpkit: the parts inside
 // a vp-doc against themselves outside one, as <span> and as <p>, a link
 // row in a vp-doc, and a touch screen's hover at rest.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, TRANSITION, example } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, TRANSITION, example } from '../../test/harness.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ex = (id) => example(HERE, id);
@@ -107,6 +108,14 @@ cases.push({
   html: LINK_ROW,
   reference: LINK_ROW,
   checks: [{ target: '[data-t="row"]', state: ['hover'], refState: [], props: ['background-color'] }],
+});
+
+// a link row focused: base.css's ring, inset 2px, since the panel clips
+// outside the row (overflow: hidden, for its corners)
+cases.push({
+  name: 'row as a link focused',
+  html: LINK_ROW,
+  checks: [{ target: '[data-t="row"]', state: ['focus-visible'], props: OUTLINE }],
 });
 
 // a muted row, dimmed beside one that is not

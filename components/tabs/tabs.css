@@ -32,10 +32,12 @@
  * enabled button one). A tab sets `text-decoration: none`, so the
  * markdown's rule for links (prose.css) doesn't underline a link tab
  * inside a vp-doc. The hover applies only on a device that can hover;
- * VitePress's also stuck to a tapped tab. The focus ring is base.css's.
- * Not ported: the bar's bleed to the screen's edges under 40rem (-1.5rem
- * each side, square corners), which is the markdown column's. This is the
- * components layer, so a utility on the element overrides it. */
+ * VitePress's also stuck to a tapped tab. The focus ring is base.css's,
+ * inset 2px: the bar, a scroll box, clips outside its edges, and a tab is
+ * as tall as the bar. Not ported: the bar's bleed to the screen's edges
+ * under 40rem (-1.5rem each side, square corners), which is the markdown
+ * column's. This is the components layer, so a utility on the element
+ * overrides it. */
 
 @layer components {
   .vp-tabs {
@@ -67,6 +69,12 @@
         color: var(--vp-c-text-1);
       }
     }
+  }
+
+  /* the focus ring inset: the bar is a scroll box, which clips the ring
+     2px outside a tab as tall as the bar */
+  .vp-tabs-tab:focus-visible {
+    outline-offset: -2px;
   }
 
   /* the bar under a tab, lit while it is selected */

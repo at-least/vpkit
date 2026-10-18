@@ -19,7 +19,9 @@
  * badge, a name and a line of secondary text, a form, a list item. A row
  * that is a link (`a.vp-row`) is a block in the text's color and weight
  * with no underline, inside a vp-doc too, on the gray wash while hovered,
- * on a device that can hover, as a dropdown item is. The parts:
+ * on a device that can hover, as a dropdown item is; its focus ring,
+ * base.css's, is inset 2px, since the panel clips outside its rows
+ * (overflow: hidden, for its corners). The parts:
  *   vp-row-title   the row's name, 0.9375rem at 1.5rem and weight 500 in
  *                  body text
  *   vp-row-desc    the line under it, 0.8125rem at 1.25rem in secondary
@@ -55,6 +57,12 @@
         background-color: var(--vp-c-gray-soft);
       }
     }
+  }
+
+  /* its focus ring inset: the panel clips outside its rows (overflow:
+     hidden, for its corners), where the ring 2px out would be */
+  a.vp-row:focus-visible {
+    outline-offset: -2px;
   }
 
   .vp-row-title {

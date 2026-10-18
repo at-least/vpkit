@@ -5,7 +5,7 @@
         "outline-width": "2px",
         "outline-style": "solid",
         "outline-color": "rgb(52, 81, 178)",
-        "outline-offset": "2px"
+        "outline-offset": "-2px"
       }
     },
     "dark": {
@@ -13,7 +13,7 @@
         "outline-width": "2px",
         "outline-style": "solid",
         "outline-color": "rgb(168, 177, 255)",
-        "outline-offset": "2px"
+        "outline-offset": "-2px"
       }
     }
   }
