@@ -1,0 +1,108 @@
+/* vpkit — card, `vp-card`, from VitePress's VPFeature (the home page's
+ * feature boxes). An optional import:
+ * `@import "vpkit/components/card/card.css";`
+ *
+ *   <a class="vp-card" href="/guide">
+ *     <h2 class="vp-card-title">Fast</h2>
+ *     <p class="vp-card-details">Instant server start.</p>
+ *   </a>
+ *
+ * One element where VPFeature has two (the surface and the padded box
+ * inside it): the soft surface in a border of its own color, 0.75rem
+ * round, 1.5rem of padding, a flex column in which the details take the
+ * free height, and VPFeature's `height: 100%`, for a grid of equal boxes
+ * (`h-auto` removes it). On <a href> it is a link card and takes the
+ * brand border when hovered, on a device that can hover (VPFeature's
+ * hover also sticks to a tapped card); it inherits the text's color and
+ * weight and has no underline, at rest and hovered, set on the card so
+ * the markdown's rules for a link don't recolor, embolden or underline
+ * one inside a vp-doc. On any other element it is a box, with no hover.
+ * The parts: `vp-card-title`, the bold (600) title, 1rem on a 1.5 line;
+ * `vp-card-details`, the secondary text under it, 0.875rem at weight 500,
+ * which takes the free height. Inside a vp-doc (prose.css) the title
+ * keeps a title's box (no heading margins, rule, padding or letter
+ * spacing) and the details no margins. Not ported: the feature icon and
+ * the link text under the details.
+ *
+ * The variant is an attribute:
+ *   data-variant="outline"   vpkit's: the card on the page's color in a
+ *                            divider border, where VPFeature's is the
+ *                            soft fill in a border of the same color.
+ *                            The ground is the page's and opaque, as
+ *                            vp-badge-outline's is, so the box is the
+ *                            same on any surface; a link card still takes
+ *                            the brand border when hovered; the padding
+ *                            and the layout are the card's. A box of
+ *                            content, a form, rows or a table, is
+ *                            vp-panel.
+ *
+ * The block sets its --vp-card-* locals from the contract and the variant
+ * overrides the locals and nothing else; the hover sets the border from a
+ * local of its own, which the variant leaves alone. This is the
+ * components layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-card {
+    --vp-card-border: var(--vp-c-bg-soft);
+    --vp-card-bg: var(--vp-c-bg-soft);
+    --vp-card-hover-border: var(--vp-c-brand);
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--vp-card-border);
+    border-radius: var(--vp-radius-lg);
+    padding: 1.5rem;
+    height: 100%;
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+    background-color: var(--vp-card-bg);
+    transition: border-color var(--vp-duration), background-color var(--vp-duration);
+  }
+
+  /* a link card: the brand border hovered, the text's color kept over the
+     markdown's rule for a hovered link */
+  a.vp-card {
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--vp-card-hover-border);
+        color: inherit;
+      }
+    }
+  }
+
+  .vp-card[data-variant="outline"] {
+    --vp-card-border: var(--vp-c-divider);
+    --vp-card-bg: var(--vp-c-bg);
+  }
+
+  .vp-card-title {
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .vp-card-details {
+    flex-grow: 1;
+    padding-top: 0.5rem;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  /* inside a vp-doc (prose.css), whose rules for a heading and a paragraph
+     set what the title and the details leave to the page: the title a
+     title's box (no heading margins, rule, padding or letter spacing),
+     the details no margins */
+  .vp-doc .vp-card-title {
+    margin: 0;
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+  }
+
+  .vp-doc .vp-card-details {
+    margin: 0;
+  }
+}

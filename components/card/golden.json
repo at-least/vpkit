@@ -1,0 +1,162 @@
+{
+  "card outline": {
+    "light": {
+      "div.vp-card": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(226, 226, 227)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)",
+        "padding-top": "24px",
+        "padding-right": "24px",
+        "padding-bottom": "24px",
+        "padding-left": "24px",
+        "display": "flex",
+        "flex-direction": "column",
+        "height": "106px"
+      },
+      "a.vp-card": {
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(226, 226, 227)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)",
+        "text-decoration-line": "none",
+        "font-weight": "400"
+      },
+      "a.vp-card :hover": {
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(52, 81, 178)",
+        "border-right-color": "rgb(52, 81, 178)",
+        "border-bottom-color": "rgb(52, 81, 178)",
+        "border-left-color": "rgb(52, 81, 178)"
+      }
+    },
+    "dark": {
+      "div.vp-card": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px",
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgb(46, 46, 50)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)",
+        "padding-top": "24px",
+        "padding-right": "24px",
+        "padding-bottom": "24px",
+        "padding-left": "24px",
+        "display": "flex",
+        "flex-direction": "column",
+        "height": "106px"
+      },
+      "a.vp-card": {
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgb(46, 46, 50)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)",
+        "text-decoration-line": "none",
+        "font-weight": "400"
+      },
+      "a.vp-card :hover": {
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(27, 27, 31)",
+        "border-top-color": "rgb(168, 177, 255)",
+        "border-right-color": "rgb(168, 177, 255)",
+        "border-bottom-color": "rgb(168, 177, 255)",
+        "border-left-color": "rgb(168, 177, 255)"
+      }
+    }
+  },
+  "card grid example": {
+    "light": {
+      ".vp-card:nth-child(1)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "0px"
+      },
+      ".vp-card:nth-child(2)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "432px"
+      },
+      ".vp-card:nth-child(3)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "864px",
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(246, 246, 247)",
+        "border-right-color": "rgb(246, 246, 247)",
+        "border-bottom-color": "rgb(246, 246, 247)",
+        "border-left-color": "rgb(246, 246, 247)"
+      },
+      "div.vp-card :hover": {
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(246, 246, 247)",
+        "border-right-color": "rgb(246, 246, 247)",
+        "border-bottom-color": "rgb(246, 246, 247)",
+        "border-left-color": "rgb(246, 246, 247)"
+      }
+    },
+    "dark": {
+      ".vp-card:nth-child(1)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "0px"
+      },
+      ".vp-card:nth-child(2)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "432px"
+      },
+      ".vp-card:nth-child(3)": {
+        "height": "130px",
+        "width": "416px",
+        "offset-left": "864px",
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(32, 33, 39)",
+        "border-top-color": "rgb(32, 33, 39)",
+        "border-right-color": "rgb(32, 33, 39)",
+        "border-bottom-color": "rgb(32, 33, 39)",
+        "border-left-color": "rgb(32, 33, 39)"
+      },
+      "div.vp-card :hover": {
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(32, 33, 39)",
+        "border-top-color": "rgb(32, 33, 39)",
+        "border-right-color": "rgb(32, 33, 39)",
+        "border-bottom-color": "rgb(32, 33, 39)",
+        "border-left-color": "rgb(32, 33, 39)"
+      }
+    }
+  }
+}
