@@ -105,6 +105,7 @@ items = [
   { text = "Table", link = "@/components/table.md" },
   { text = "Tabs", link = "@/components/tabs.md" },
   { text = "Team Header", link = "@/components/team-header.md" },
+  { text = "Team Section", link = "@/components/team-section.md" },
   { text = "Thumbnail", link = "@/components/thumb.md" },
   { text = "Toast", link = "@/components/toast.md" },
   { text = "Toggle", link = "@/components/toggle.md" },

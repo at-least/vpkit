@@ -2338,6 +2338,49 @@ cases.push({
   checks: TEAM_HEADER_CHECKS,
 });
 
+// team section: VitePress's VPTeamPageSection (the block, its title with
+// the line behind it and the heading on it, its lead and its members)
+// against vp-team-section, at the three widths its padding changes at;
+// vpkit's addition written into the original's line inline: a 1px border
+// where VitePress paints 1px of background, measured on vpkit's title's
+// ::before. The original's wrapper is read for its box and color only: the
+// harness drops Vue's scoping, so VPFeature's `.title` reaches it with a
+// weight it never has on VitePress's page. Then inside a vp-doc, whose rule
+// for an h2 draws a line above it, against itself outside one
+const TEAM_SECTION_LEAD = 'The companies that lend their people to the work, and the people they lend.';
+const teamSection = (vp) =>
+  vp
+    ? `<section data-t="box" class="vp-team-section"><div data-t="title" class="vp-team-section-title"><h2 data-t="text">Partners</h2></div>` +
+      `<p data-t="lead" class="vp-team-section-lead">${TEAM_SECTION_LEAD}</p><div data-t="members" class="vp-team-section-members"><div style="height:3rem"></div></div></section>`
+    : `<section data-t="box" class="VPTeamPageSection"><div data-t="title" class="title">` +
+      `<div data-t="line" class="title-line" style="height:0;border-top:1px solid var(--vp-c-divider);background-color:transparent"></div><h2 data-t="text" class="title-text">Partners</h2></div>` +
+      `<p data-t="lead" class="lead">${TEAM_SECTION_LEAD}</p><div data-t="members" class="members"><div style="height:3rem"></div></div></section>`;
+const TEAM_SECTION_CHECKS = [
+  { target: 'box', props: [...PADDING, 'height'] },
+  { target: 'title', props: ['position', ...MARGIN, 'max-width', 'text-align', 'color', 'height', 'width'] },
+  { target: 'title', pseudo: '::before', refTarget: 'line', refPseudo: null, props: ['position', 'top', 'left', 'width', 'border-top-width', 'border-top-style', 'border-top-color', 'background-color'] },
+  { target: 'text', props: ['position', 'display', ...MARGIN, 'border-top-width', ...PADDING, 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'color', 'background-color', 'height', 'offset-top', 'offset-left'] },
+  { target: 'lead', props: [...MARGIN, 'max-width', ...PADDING, 'text-align', 'line-height', 'font-size', 'font-weight', 'color', 'height', 'offset-top', 'offset-left', 'width'] },
+  { target: 'members', props: [...PADDING, 'height', 'offset-top'] },
+];
+for (const [name, width] of [['team section', undefined], ['team section at 800px', 800], ["team section at a phone's width", 375]]) {
+  cases.push({
+    name,
+    width,
+    upstreamFiles: ['components/VPTeamPageSection.vue'],
+    upstream: teamSection(false),
+    vpkit: teamSection(true),
+    checks: TEAM_SECTION_CHECKS,
+  });
+}
+cases.push({
+  name: 'team section in a doc',
+  reference: `<div>${teamSection(true)}</div>`,
+  vpkit: inDoc(teamSection(true)),
+  // both sides vpkit's: the line is the title's ::before on each
+  checks: TEAM_SECTION_CHECKS.map(({ refTarget, refPseudo, ...check }) => check),
+});
+
 // breadcrumb: own-drive's folder path (its nav, a crumb that is a link,
 // the current folder's crumb, and the slash between crumbs) against
 // vp-breadcrumb: the list, its items at rest and hovered, and the slash the

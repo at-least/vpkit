@@ -1,0 +1,86 @@
+/* vpkit — team section, ported from VitePress's VPTeamPageSection: a team
+ * page's section, its title centered on a rule, a lead, then its members.
+ * An optional import: `@import "vpkit/team-section.css";`
+ *
+ *   <section class="vp-team-section">
+ *     <div class="vp-team-section-title"><h2>Partners</h2></div>
+ *     <p class="vp-team-section-lead">The companies that lend their people to the work.</p>
+ *     <div class="vp-team-section-members">…</div>
+ *   </section>
+ *
+ * The block 2rem of padding at each side (3rem from 48rem wide, 4rem from
+ * 60rem). `vp-team-section-title` centers its heading on a 1px divider
+ * line drawn across it 1rem down, at most 72rem wide and centered, in
+ * text-2; the heading on it, any element, 1.25rem at 1.6, weight 500, on
+ * the page's ground with 1.5rem at each side, so the line stops short of
+ * its text (the rule for it sits behind :where(), rule 6). The lead 0.75rem
+ * under, 1rem at 1.5, weight 500, text-2, centered, at most 30rem wide;
+ * `vp-team-section-members` 2.5rem under it. One element fewer than
+ * VitePress: the line is the title's ::before, a border, where VitePress
+ * paints 1px of background on an element of its own (vpkit's: forced
+ * colors erase a background, and keep a border, as vp-divider-label's
+ * rules). Inside a vp-doc (content.css) the heading keeps the markdown's
+ * rule for an h2 out, its line and margins, as VitePress resets them. */
+
+@layer components {
+  .vp-team-section {
+    padding: 0 2rem;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-section {
+      padding: 0 3rem;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .vp-team-section {
+      padding: 0 4rem;
+    }
+  }
+
+  .vp-team-section-title {
+    position: relative;
+    margin: 0 auto;
+    max-width: 72rem;
+    text-align: center;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-team-section-title::before {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  :where(.vp-team-section-title) > * {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    border-top: none;
+    padding: 0 1.5rem;
+    letter-spacing: 0;
+    line-height: 1.6;
+    font-size: 1.25rem;
+    font-weight: 500;
+    background-color: var(--vp-c-bg);
+  }
+
+  .vp-team-section-lead {
+    margin: 0 auto;
+    max-width: 30rem;
+    padding-top: 0.75rem;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-team-section-members {
+    padding-top: 2.5rem;
+  }
+}

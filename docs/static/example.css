@@ -2632,6 +2632,59 @@ button:focus-visible {
       font-size: 1.25rem;
     }
   }
+  .vp-team-section {
+    padding: 0 2rem;
+  }
+  @media (min-width: 48rem) {
+    .vp-team-section {
+      padding: 0 3rem;
+    }
+  }
+  @media (min-width: 60rem) {
+    .vp-team-section {
+      padding: 0 4rem;
+    }
+  }
+  .vp-team-section-title {
+    position: relative;
+    margin: 0 auto;
+    max-width: 72rem;
+    text-align: center;
+    color: var(--vp-c-text-2);
+  }
+  .vp-team-section-title::before {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+  :where(.vp-team-section-title) > * {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    border-top: none;
+    padding: 0 1.5rem;
+    letter-spacing: 0;
+    line-height: 1.6;
+    font-size: 1.25rem;
+    font-weight: 500;
+    background-color: var(--vp-c-bg);
+  }
+  .vp-team-section-lead {
+    margin: 0 auto;
+    max-width: 30rem;
+    padding-top: 0.75rem;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+  .vp-team-section-members {
+    padding-top: 2.5rem;
+  }
   .vp-breadcrumb {
     display: flex;
     flex-wrap: wrap;
