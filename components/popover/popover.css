@@ -14,12 +14,16 @@
  * in --vp-duration-slow: VPMenu's surface. No axis and no parts. On a
  * `[popover]` it replaces the border, padding and colors the browser
  * gives one (the text color is set for that, where VPMenu inherits the
- * page's); where it sits, how wide it is (`fixed`, `w-80`), and showing
- * and hiding it are the page's, as for vp-toast. Not ported: VPMenu's
- * menu parts, its minimum width and its height capped to the viewport
- * under the navbar, which are vp-dropdown's. A title inside is a
- * vp-group-title (heading.css); a list of choices is a vp-dropdown. This
- * is the components layer, so a utility on the element overrides it. */
+ * page's) and resets the browser's `inset: 0`, which would hold a box the
+ * page places by its right and bottom at the top-left corner (left and
+ * top win); where it sits, how wide it is (`fixed right-4 bottom-14
+ * w-80`; centered is `inset-0 m-auto`, since Tailwind's preflight zeroes
+ * the auto margins the browser centers one by), and showing and hiding
+ * it are the page's, as for vp-toast. Not ported: VPMenu's menu parts,
+ * its minimum width and its height capped to the viewport under the
+ * navbar, which are vp-dropdown's. A title inside is a vp-group-title
+ * (heading.css); a list of choices is a vp-dropdown. This is the
+ * components layer, so a utility on the element overrides it. */
 
 @layer components {
   .vp-popover {
@@ -30,5 +34,14 @@
     background-color: var(--vp-c-bg-elv);
     box-shadow: var(--vp-shadow-3);
     transition: background-color var(--vp-duration-slow);
+  }
+
+  /* on a [popover]: the browser's `inset: 0` goes, as its border, padding
+     and colors do above, so the page's right and bottom place the box
+     (left and top would win over them); the auto margins the browser
+     centers one by, Tailwind's preflight zeroes already, so centered is
+     the page's `inset-0 m-auto` */
+  .vp-popover:where([popover]) {
+    inset: auto;
   }
 }

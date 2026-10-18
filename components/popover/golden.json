@@ -1,4 +1,36 @@
 {
+  "popover on a [popover], shown": {
+    "light": {
+      ".vp-popover": {
+        "position": "fixed",
+        "top": "590px",
+        "right": "16px",
+        "bottom": "56px",
+        "left": "944px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "width": "320px",
+        "height": "74px"
+      }
+    },
+    "dark": {
+      ".vp-popover": {
+        "position": "fixed",
+        "top": "590px",
+        "right": "16px",
+        "bottom": "56px",
+        "left": "944px",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "width": "320px",
+        "height": "74px"
+      }
+    }
+  },
   "popover example": {
     "light": {
       ".vp-popover": {

@@ -4,12 +4,13 @@
 // class must override. VPMenu's menu parts, its minimum width and its
 // height capped to the viewport, are vp-dropdown's and neutralised inline
 // on the upstream side; the popover's placement is neutralised on
-// vpkit's, so the two are the same box. Golden: the example, an upload
+// vpkit's, so the two are the same box. Golden: a [popover] shown where
+// the page puts it (the browser's inset reset), and the example, an upload
 // tray on an <aside> of the page's width.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ex = (id) => example(HERE, id);
@@ -29,6 +30,17 @@ for (const [name, tag] of [['popover', 'div'], ['popover on a [popover]', 'div p
     checks: [{ target: '.vp-popover', refTarget: '.VPMenu', props: SURFACE }],
   });
 }
+
+// a [popover] shown where the page puts it: the browser's `inset: 0` is
+// reset, so a fixed box with a right and a bottom sits at that corner (its
+// left and top the used values at the pinned 1280×720), with no margin
+// (Tailwind's preflight zeroes the browser's auto ones)
+cases.push({
+  name: 'popover on a [popover], shown',
+  width: 1280,
+  html: `<div class="vp-popover" popover="manual" id="tray" style="position:fixed;right:1rem;bottom:3.5rem;width:20rem">${BODY}</div><script>document.getElementById('tray').showPopover()</script>`,
+  checks: [{ target: '.vp-popover', props: ['position', 'top', 'right', 'bottom', 'left', ...MARGIN, 'width', 'height'] }],
+});
 
 // the example: the surface on an <aside> the page sizes
 cases.push({
