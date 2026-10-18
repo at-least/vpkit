@@ -1,4 +1,4 @@
-/* Built-in theme: bogster — auto-mapped from the vendored Helix palette <bogster>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: bogster — auto-mapped from the vendored Helix palette <bogster>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f2, #161c23);
   --vp-c-bg-alt: light-dark(#e8e8e9, #2b2f35);

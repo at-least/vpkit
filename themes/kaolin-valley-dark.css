@@ -1,4 +1,4 @@
-/* Built-in theme: kaolin-valley-dark — auto-mapped from the vendored Helix palette <kaolin-valley-dark>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: kaolin-valley-dark — auto-mapped from the vendored Helix palette <kaolin-valley-dark>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #262221);
   --vp-c-bg-alt: light-dark(#e9e9e9, #372f32);

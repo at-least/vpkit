@@ -1,4 +1,4 @@
-/* Built-in theme: hex-poison — auto-mapped from the vendored Helix palette <hex_poison>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: hex-poison — auto-mapped from the vendored Helix palette <hex_poison>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f1, #1e1f1b);
   --vp-c-bg-alt: light-dark(#e8e9e8, #242620);

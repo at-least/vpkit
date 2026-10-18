@@ -1,4 +1,4 @@
-/* Built-in theme: nord-light — auto-mapped from the vendored Helix palette <nord_light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: nord-light — auto-mapped from the vendored Helix palette <nord_light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#eceff4, #181818);
   --vp-c-bg-alt: light-dark(#e1e4e9, #212122);

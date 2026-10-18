@@ -1,4 +1,4 @@
-/* Built-in theme: pop-dark — auto-mapped from the vendored Helix palette <pop-dark>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: pop-dark — auto-mapped from the vendored Helix palette <pop-dark>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f3f3f3, #3e3b39);
   --vp-c-bg-alt: light-dark(#ecebeb, #4e4b4a);

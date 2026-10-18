@@ -1,4 +1,4 @@
-/* Built-in theme: catppuccin-mocha — auto-mapped from the vendored Helix palette <catppuccin_mocha>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: catppuccin-mocha — auto-mapped from the vendored Helix palette <catppuccin_mocha>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #1e1e2e);
   --vp-c-bg-alt: light-dark(#e8e8ea, #303042);

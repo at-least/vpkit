@@ -1,4 +1,4 @@
-/* Built-in theme: naysayer — auto-mapped from the vendored Helix palette <naysayer>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: naysayer — auto-mapped from the vendored Helix palette <naysayer>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f0f2f2, #062329);
   --vp-c-bg-alt: light-dark(#e6e9ea, #1a3234);

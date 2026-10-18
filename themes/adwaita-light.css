@@ -1,4 +1,4 @@
-/* Built-in theme: adwaita-light — auto-mapped from the vendored Helix palette <adwaita-light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: adwaita-light — auto-mapped from the vendored Helix palette <adwaita-light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#ffffff, #1a1a1a);
   --vp-c-bg-alt: light-dark(#f0f0f0, #242424);

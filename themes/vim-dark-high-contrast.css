@@ -1,4 +1,4 @@
-/* Built-in theme: vim-dark-high-contrast — auto-mapped from the vendored Helix palette <vim_dark_high_contrast>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: vim-dark-high-contrast — auto-mapped from the vendored Helix palette <vim_dark_high_contrast>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f0f0f0, #000000);
   --vp-c-bg-alt: light-dark(#e6e6e6, #131415);

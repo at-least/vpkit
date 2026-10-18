@@ -1,4 +1,4 @@
-/* Built-in theme: material-oceanic — auto-mapped from the vendored Helix palette <material_oceanic>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: material-oceanic — auto-mapped from the vendored Helix palette <material_oceanic>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f3f3, #25363b);
   --vp-c-bg-alt: light-dark(#e9ebeb, #334449);

@@ -1,4 +1,4 @@
-/* Built-in theme: github-dark-tritanopia — auto-mapped from the vendored Helix palette <github_dark_tritanopia>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: github-dark-tritanopia — auto-mapped from the vendored Helix palette <github_dark_tritanopia>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f0f1f1, #0d1117);
   --vp-c-bg-alt: light-dark(#e7e7e8, #1a1e24);

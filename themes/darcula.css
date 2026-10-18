@@ -1,4 +1,4 @@
-/* Built-in theme: darcula — JetBrains' default: warm greys, muted accents. Dark half from the darcula palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short. */
+/* Built-in theme: darcula — JetBrains' default: warm greys, muted accents. Dark half from the darcula palette; the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #181818);
   --vp-c-bg-alt: light-dark(#e8e8e8, #282828);

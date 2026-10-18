@@ -1,4 +1,4 @@
-/* Built-in theme: starlight — auto-mapped from the vendored Helix palette <starlight>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: starlight — auto-mapped from the vendored Helix palette <starlight>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #242424);
   --vp-c-bg-alt: light-dark(#e9e9e9, #3a3a3a);

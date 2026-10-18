@@ -1,4 +1,4 @@
-/* Built-in theme: hazyland — auto-mapped from the vendored Helix palette <hazyland>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: hazyland — auto-mapped from the vendored Helix palette <hazyland>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #171219);
   --vp-c-bg-alt: light-dark(#e8e7e8, #2c2730);

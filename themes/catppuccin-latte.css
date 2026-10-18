@@ -1,4 +1,4 @@
-/* Built-in theme: catppuccin-latte — auto-mapped from the vendored Helix palette <catppuccin_latte>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: catppuccin-latte — auto-mapped from the vendored Helix palette <catppuccin_latte>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#eff1f5, #181818);
   --vp-c-bg-alt: light-dark(#e5e7ed, #212222);

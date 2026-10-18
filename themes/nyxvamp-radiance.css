@@ -1,4 +1,4 @@
-/* Built-in theme: nyxvamp-radiance — auto-mapped from the vendored Helix palette <nyxvamp-radiance>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: nyxvamp-radiance — auto-mapped from the vendored Helix palette <nyxvamp-radiance>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f7f7ff, #19191a);
   --vp-c-bg-alt: light-dark(#eaeaf2, #232324);

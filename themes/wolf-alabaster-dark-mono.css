@@ -1,4 +1,4 @@
-/* Built-in theme: wolf-alabaster-dark-mono — auto-mapped from the vendored Helix palette <wolf-alabaster-dark-mono>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: wolf-alabaster-dark-mono — auto-mapped from the vendored Helix palette <wolf-alabaster-dark-mono>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #0e1415);
   --vp-c-bg-alt: light-dark(#e7e8e8, #212728);

@@ -1,4 +1,4 @@
-/* Built-in theme: monokai-pro-ristretto — auto-mapped from the vendored Helix palette <monokai_pro_ristretto>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: monokai-pro-ristretto — auto-mapped from the vendored Helix palette <monokai_pro_ristretto>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #2c2525);
   --vp-c-bg-alt: light-dark(#eae9e9, #41393a);

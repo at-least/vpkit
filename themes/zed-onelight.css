@@ -1,4 +1,4 @@
-/* Built-in theme: zed-onelight — auto-mapped from the vendored Helix palette <zed_onelight>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: zed-onelight — auto-mapped from the vendored Helix palette <zed_onelight>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#fafafa, #191919);
   --vp-c-bg-alt: light-dark(#eeeeef, #232323);

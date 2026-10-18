@@ -1,4 +1,4 @@
-/* Built-in theme: serika-light — auto-mapped from the vendored Helix palette <serika-light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: serika-light — auto-mapped from the vendored Helix palette <serika-light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#d1d0c5, #151514);
   --vp-c-bg-alt: light-dark(#c7c7bc, #1d1d1c);

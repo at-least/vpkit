@@ -1,4 +1,4 @@
-/* Built-in theme: spacebones-light — auto-mapped from the vendored Helix palette <spacebones_light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: spacebones-light — auto-mapped from the vendored Helix palette <spacebones_light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#fbf8ef, #191918);
   --vp-c-bg-alt: light-dark(#f2eee7, #232321);

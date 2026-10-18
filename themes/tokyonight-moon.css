@@ -1,4 +1,4 @@
-/* Built-in theme: tokyonight-moon — auto-mapped from the vendored Helix palette <tokyonight_moon>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: tokyonight-moon — auto-mapped from the vendored Helix palette <tokyonight_moon>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f3, #222436);
   --vp-c-bg-alt: light-dark(#e9e9eb, #333649);

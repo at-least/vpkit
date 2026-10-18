@@ -1,4 +1,4 @@
-/* Built-in theme: flatwhite — auto-mapped from the vendored Helix palette <flatwhite>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: flatwhite — auto-mapped from the vendored Helix palette <flatwhite>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f7f3ee, #191818);
   --vp-c-bg-alt: light-dark(#eeeae5, #232221);

@@ -1,4 +1,4 @@
-/* Built-in theme: ayu-light — auto-mapped from the vendored Helix palette <ayu_light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: ayu-light — auto-mapped from the vendored Helix palette <ayu_light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#fafafa, #191919);
   --vp-c-bg-alt: light-dark(#f1f1f1, #232323);

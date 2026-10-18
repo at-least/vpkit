@@ -1,4 +1,4 @@
-/* Built-in theme: onedarker-vibrant — auto-mapped from the vendored Helix palette <onedarker_vibrant>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: onedarker-vibrant — auto-mapped from the vendored Helix palette <onedarker_vibrant>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #16181a);
   --vp-c-bg-alt: light-dark(#e8e8e8, #292b2e);

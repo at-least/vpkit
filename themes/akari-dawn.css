@@ -1,4 +1,4 @@
-/* Built-in theme: akari-dawn — auto-mapped from the vendored Helix palette <akari-dawn>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: akari-dawn — auto-mapped from the vendored Helix palette <akari-dawn>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#e4ded6, #171615);
   --vp-c-bg-alt: light-dark(#d8d2ca, #201f1e);

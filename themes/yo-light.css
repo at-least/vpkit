@@ -1,4 +1,4 @@
-/* Built-in theme: yo-light — auto-mapped from the vendored Helix palette <yo_light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: yo-light — auto-mapped from the vendored Helix palette <yo_light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f9f9f9, #191919);
   --vp-c-bg-alt: light-dark(#f0f0f0, #232323);

@@ -1,4 +1,4 @@
-/* Built-in theme: kanagawa-lotus — auto-mapped from the vendored Helix palette <kanagawa-lotus>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: kanagawa-lotus — auto-mapped from the vendored Helix palette <kanagawa-lotus>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#fdfcfb, #191919);
   --vp-c-bg-alt: light-dark(#efeeee, #232323);

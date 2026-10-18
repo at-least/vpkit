@@ -1,4 +1,4 @@
-/* Built-in theme: new-moon — auto-mapped from the vendored Helix palette <new_moon>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: new-moon — auto-mapped from the vendored Helix palette <new_moon>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #2d2d2d);
   --vp-c-bg-alt: light-dark(#eaeaea, #3e3e3e);

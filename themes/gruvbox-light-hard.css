@@ -1,4 +1,4 @@
-/* Built-in theme: gruvbox-light-hard — auto-mapped from the vendored Helix palette <gruvbox_light_hard>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: gruvbox-light-hard — auto-mapped from the vendored Helix palette <gruvbox_light_hard>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f9f5d7, #191816);
   --vp-c-bg-alt: light-dark(#eeeacd, #23221e);

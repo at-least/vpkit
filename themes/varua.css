@@ -1,4 +1,4 @@
-/* Built-in theme: varua — auto-mapped from the vendored Helix palette <varua>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: varua — auto-mapped from the vendored Helix palette <varua>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #282828);
   --vp-c-bg-alt: light-dark(#eaeaea, #3a3732);

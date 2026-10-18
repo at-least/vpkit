@@ -1,4 +1,4 @@
-/* Built-in theme: monokai-soda — auto-mapped from the vendored Helix palette <monokai_soda>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: monokai-soda — auto-mapped from the vendored Helix palette <monokai_soda>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #191919);
   --vp-c-bg-alt: light-dark(#e8e8e8, #2e2c22);

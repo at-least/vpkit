@@ -1,4 +1,4 @@
-/* Built-in theme: catppuccin-frappe — auto-mapped from the vendored Helix palette <catppuccin_frappe>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: catppuccin-frappe — auto-mapped from the vendored Helix palette <catppuccin_frappe>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f3f3f4, #303446);
   --vp-c-bg-alt: light-dark(#eaebec, #3f4458);

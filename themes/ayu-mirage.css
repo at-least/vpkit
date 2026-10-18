@@ -1,4 +1,4 @@
-/* Built-in theme: ayu-mirage — auto-mapped from the vendored Helix palette <ayu_mirage>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: ayu-mirage — auto-mapped from the vendored Helix palette <ayu_mirage>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f3, #1f2430);
   --vp-c-bg-alt: light-dark(#e9e9ea, #30353f);

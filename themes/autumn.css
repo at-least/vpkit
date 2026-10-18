@@ -1,4 +1,4 @@
-/* Built-in theme: autumn — auto-mapped from the vendored Helix palette <autumn>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: autumn — auto-mapped from the vendored Helix palette <autumn>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #232323);
   --vp-c-bg-alt: light-dark(#e9e9e9, #39392f);

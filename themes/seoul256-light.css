@@ -1,4 +1,4 @@
-/* Built-in theme: seoul256-light — auto-mapped from the vendored Helix palette <seoul256-light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: seoul256-light — auto-mapped from the vendored Helix palette <seoul256-light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#dadada, #161616);
   --vp-c-bg-alt: light-dark(#cececf, #1f1f1f);

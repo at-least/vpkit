@@ -1,4 +1,4 @@
-/* Built-in theme: kinda-nvim — auto-mapped from the vendored Helix palette <kinda_nvim>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: kinda-nvim — auto-mapped from the vendored Helix palette <kinda_nvim>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f0f1f0, #00120c);
   --vp-c-bg-alt: light-dark(#e6e7e7, #12231e);

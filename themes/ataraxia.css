@@ -1,4 +1,4 @@
-/* Built-in theme: ataraxia — auto-mapped from the vendored Helix palette <ataraxia>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: ataraxia — auto-mapped from the vendored Helix palette <ataraxia>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f0f2, #1c0c28);
   --vp-c-bg-alt: light-dark(#e8e7ea, #19203d);

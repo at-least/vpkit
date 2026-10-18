@@ -1,4 +1,4 @@
-/* Built-in theme: andromeda — auto-mapped from the vendored Helix palette <andromeda>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: andromeda — auto-mapped from the vendored Helix palette <andromeda>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #23262e);
   --vp-c-bg-alt: light-dark(#e9e9ea, #35373f);

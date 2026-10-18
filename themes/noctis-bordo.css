@@ -1,4 +1,4 @@
-/* Built-in theme: noctis-bordo — auto-mapped from the vendored Helix palette <noctis_bordo>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: noctis-bordo — auto-mapped from the vendored Helix palette <noctis_bordo>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f3f2f2, #322a2d);
   --vp-c-bg-alt: light-dark(#eaeaea, #463f41);

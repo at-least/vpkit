@@ -1,4 +1,4 @@
-/* Built-in theme: boo-berry — auto-mapped from the vendored Helix palette <boo_berry>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: boo-berry — auto-mapped from the vendored Helix palette <boo_berry>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f3f2f4, #3a2a4d);
   --vp-c-bg-alt: light-dark(#ebeaed, #48385c);

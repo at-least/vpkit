@@ -1,4 +1,4 @@
-/* Built-in theme: earl-grey — auto-mapped from the vendored Helix palette <earl_grey>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: earl-grey — auto-mapped from the vendored Helix palette <earl_grey>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f1f1, #101010);
   --vp-c-bg-alt: light-dark(#e7e7e7, #1f1f1f);

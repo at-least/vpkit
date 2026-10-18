@@ -1,4 +1,4 @@
-/* Built-in theme: ashokai-evermoor — auto-mapped from the vendored Helix palette <ashokai_evermoor>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: ashokai-evermoor — auto-mapped from the vendored Helix palette <ashokai_evermoor>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f1f2f2, #1d2a26);
   --vp-c-bg-alt: light-dark(#e8eae9, #333f3b);

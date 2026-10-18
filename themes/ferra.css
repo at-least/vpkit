@@ -1,4 +1,4 @@
-/* Built-in theme: ferra — auto-mapped from the vendored Helix palette <ferra>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: ferra — auto-mapped from the vendored Helix palette <ferra>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #2b292d);
   --vp-c-bg-alt: light-dark(#eaeaea, #40393a);

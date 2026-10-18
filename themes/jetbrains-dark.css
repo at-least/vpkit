@@ -1,4 +1,4 @@
-/* Built-in theme: jetbrains-dark — auto-mapped from the vendored Helix palette <jetbrains_dark>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: jetbrains-dark — auto-mapped from the vendored Helix palette <jetbrains_dark>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #1e1f22);
   --vp-c-bg-alt: light-dark(#e8e9e9, #303134);

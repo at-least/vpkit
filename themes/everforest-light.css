@@ -1,4 +1,4 @@
-/* Built-in theme: everforest-light — auto-mapped from the vendored Helix palette <everforest_light>. The scheme publishes no dark mode, so the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: everforest-light — auto-mapped from the vendored Helix palette <everforest_light>. A Helix palette is one mode, this one light: the dark half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#fdf6e3, #191917);
   --vp-c-bg-alt: light-dark(#f3eedc, #232220);

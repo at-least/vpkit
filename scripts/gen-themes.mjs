@@ -416,7 +416,7 @@ function curated() {
     const dark = buildMode('dark', dm, adjusted);
     // the light half: the palette's own, or derived from dm as the dark build fitted it
     const [lightMap, note] = spec.light === 'derived'
-      ? [derivedLight(dm), `Dark half from the ${spec.name} palette; the scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short.`]
+      ? [derivedLight(dm), `Dark half from the ${spec.name} palette; the light half is derived from the same hues. Accents auto-adjusted for WCAG AA where the published colors fell short.`]
       : [resolve(spec.light), "Both halves from the published palettes (vendored in vpkit's helix/). Accents auto-adjusted for WCAG AA where the published colors fell short."];
     const light = buildMode('light', lightMap, adjusted);
 
@@ -608,7 +608,7 @@ function auto() {
     const own = buildMode(mode, { ...slots });
     const derived = buildMode(other, (other === 'light' ? derivedLight : derivedDark)(slots));
     const [light, dark] = mode === 'dark' ? [derived, own] : [own, derived];
-    const note = `The scheme publishes no ${other} mode, so the ${other} half is derived from the same hues. Accents auto-fitted for WCAG AA.`;
+    const note = `A Helix palette is one mode, this one ${mode}: the ${other} half is derived from the same hues. Accents auto-fitted for WCAG AA.`;
     const desc = `auto-mapped from the vendored Helix palette <${stem}>`;
     writeFileSync(join(ROOT, 'themes', `${name}.css`), emitCss(name, desc, note, light, dark));
     regenerated.add(name);

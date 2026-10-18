@@ -1,4 +1,4 @@
-/* Built-in theme: monokai-pro — auto-mapped from the vendored Helix palette <monokai_pro>. The scheme publishes no light mode, so the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
+/* Built-in theme: monokai-pro — auto-mapped from the vendored Helix palette <monokai_pro>. A Helix palette is one mode, this one dark: the light half is derived from the same hues. Accents auto-fitted for WCAG AA. */
 :root {
   --vp-c-bg: light-dark(#f2f2f2, #2d2a2e);
   --vp-c-bg-alt: light-dark(#eaeaea, #423f42);
