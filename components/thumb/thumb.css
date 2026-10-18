@@ -1,0 +1,53 @@
+/* vpkit — thumbnail, `vp-thumb`: an image in a frame, a cover or an
+ * attachment's preview, alone or as a link to what it shows; vpkit's own,
+ * on the contract (VitePress has no thumbnail). An optional import:
+ * `@import "vpkit/components/thumb/thumb.css";`
+ *
+ *   <a class="vp-thumb w-32" href="/intro/42"><img class="aspect-square w-full object-contain" src="/covers/42.jpg" alt="Album"></a>
+ *   <div class="vp-thumb w-32"><img class="aspect-square w-full object-contain" src="/files/7.png" alt=""></div>
+ *
+ * A block that clips its image to the radius token, in a divider border,
+ * on the page's color (where an image with transparency, or one contained
+ * in a square, shows). No axis and no parts. A state: a thumbnail that is
+ * a link (`a.vp-thumb`) takes the brand border while hovered, on a device
+ * that can hover, as a link card does; it has the text's color and no
+ * underline, inside a vp-doc too, where its image keeps no margin of the
+ * markdown's. The focus ring on a link is base.css's. The image's size
+ * and fit are the page's (`w-full aspect-square object-contain`,
+ * `max-h-40`), as is the frame's width.
+ *
+ * The block sets its --vp-thumb-* locals from the contract, and the hover
+ * reads its own. This is the components layer, so a utility on the
+ * element overrides it. */
+
+@layer components {
+  .vp-thumb {
+    --vp-thumb-border: var(--vp-c-divider);
+    --vp-thumb-hover-border: var(--vp-c-brand);
+    --vp-thumb-bg: var(--vp-c-bg);
+
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--vp-thumb-border);
+    border-radius: var(--vp-radius);
+    color: inherit;
+    text-decoration: none;
+    background-color: var(--vp-thumb-bg);
+    transition: border-color var(--vp-duration);
+  }
+
+  /* a link: the brand border hovered */
+  a.vp-thumb {
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--vp-thumb-hover-border);
+      }
+    }
+  }
+
+  /* inside a vp-doc (prose.css), whose rule for an image gives it margins:
+     none */
+  :where(.vp-thumb) > img {
+    margin: 0;
+  }
+}
