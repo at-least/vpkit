@@ -1,0 +1,211 @@
+/* vpkit's docs theme — sponsors, `vp-sponsor`, from VitePress's VPSponsors
+ * and VPSponsorsGrid (vp-sponsor.css): a box of sponsors' logos in tiers,
+ * each tier a heading over a grid of logo tiles. An optional import:
+ * `@import "vpkit/docs-theme/components/sponsor/sponsor.css";`
+ *
+ *   <div class="vp-sponsor">
+ *     <section class="vp-sponsor-section">
+ *       <h3 class="vp-sponsor-tier">Gold</h3>
+ *       <ul class="vp-sponsor-grid" data-vp-grid="3">
+ *         <li class="vp-sponsor-grid-item">
+ *           <a class="vp-sponsor-grid-link" href="https://example.com" rel="sponsored noopener">
+ *             <article class="vp-sponsor-grid-box"><img class="vp-sponsor-grid-image" src="/logos/example.svg" alt="Example"></article>
+ *           </a>
+ *         </li>
+ *         <li class="vp-sponsor-grid-item"></li>
+ *       </ul>
+ *     </section>
+ *   </div>
+ *
+ * The box's axis is an attribute:
+ *   data-variant="aside"    the box as a sidebar shows it: smaller tiers,
+ *                           a smaller radius
+ * The parts: `vp-sponsor-section`, a tier and its grid; `vp-sponsor-tier`,
+ * the tier's heading; `vp-sponsor-grid`, on the <ul>, a wrapping row of
+ * tiles, whose size is an attribute (medium without one: 7rem tiles, logos
+ * at most 7.5rem by 2.25rem):
+ *   data-size="xmini"    4rem tiles, logos at most 4rem by 1.375rem
+ *   data-size="mini"     4.5rem tiles, logos at most 6rem by 1.5rem
+ *   data-size="small"    6rem tiles, logos at most 6rem by 1.5rem
+ *   data-size="big"      11.5rem tiles, logos at most 12rem by 3.5rem
+ * and `vp-sponsor-grid-item`, `vp-sponsor-grid-link`, `vp-sponsor-grid-box`
+ * and `vp-sponsor-grid-image`: a tile, its link, the box that centers the
+ * logo, and the logo. `data-vp-grid`, "2" to "6", sets how many tiles
+ * share a row (each a full row without it), as VitePress's script writes
+ * it. An empty tile (`:empty`: nothing in it, not even a space) fills out
+ * the last row.
+ *
+ * VitePress's: the box 1rem round (0.75rem aside) and clipped; a section
+ * 0.25rem under the one before; a tier a band on bg-soft 0.25rem above its
+ * grid, weight 600, text-2, 0.0625rem apart, centered, 0.875rem at 1.5
+ * (0.75rem aside); the tiles 0.25rem apart; a tile on bg-soft,
+ * default-soft hovered (white in dark mode), its logo centered, gray
+ * (inverted in dark mode too), in its own colors hovered; the empty tile
+ * keeps its ground hovered, where VitePress's script writes a div with
+ * `empty`. vpkit's: the hover applies only on a device that can hover,
+ * where VitePress's sticks to a tapped tile; the hovered tile's ground is
+ * a light-dark() local and the logo's inversion the one dark rule, since
+ * a filter is no color; the tier's padding and size, the box's radius, a
+ * tile's height and a logo's bounds are locals the variant and the sizes
+ * override. Not ported: VitePress's script that counts the columns for
+ * the window's width and adds the empty tiles: the page writes
+ * `data-vp-grid` and the empty items. Inside a vp-doc (prose.css) the
+ * grid keeps none of the markdown's bullets or margins, a logo no margin,
+ * a link no underline, as VitePress resets them. */
+
+@layer components {
+  .vp-sponsor {
+    --vp-sponsor-radius: 1rem;
+    --vp-sponsor-tier-padding: 0.8125rem 0 0.6875rem;
+    --vp-sponsor-tier-size: 0.875rem;
+
+    border-radius: var(--vp-sponsor-radius);
+    overflow: hidden;
+  }
+
+  .vp-sponsor[data-variant="aside"] {
+    --vp-sponsor-radius: var(--vp-radius-lg);
+    --vp-sponsor-tier-padding: 0.5625rem 0 0.4375rem;
+    --vp-sponsor-tier-size: 0.75rem;
+  }
+
+  .vp-sponsor-section + .vp-sponsor-section {
+    margin-top: 0.25rem;
+  }
+
+  .vp-sponsor-tier {
+    margin: 0 0 0.25rem;
+    padding: var(--vp-sponsor-tier-padding);
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.0625rem;
+    line-height: 1.5;
+    font-size: var(--vp-sponsor-tier-size);
+    font-weight: 600;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-sponsor-grid {
+    --vp-sponsor-grid-height: 7rem;
+    --vp-sponsor-grid-image-width: 7.5rem;
+    --vp-sponsor-grid-image-height: 2.25rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .vp-sponsor-grid[data-size="xmini"] {
+    --vp-sponsor-grid-height: 4rem;
+    --vp-sponsor-grid-image-width: 4rem;
+    --vp-sponsor-grid-image-height: 1.375rem;
+  }
+
+  .vp-sponsor-grid[data-size="mini"] {
+    --vp-sponsor-grid-height: 4.5rem;
+    --vp-sponsor-grid-image-width: 6rem;
+    --vp-sponsor-grid-image-height: 1.5rem;
+  }
+
+  .vp-sponsor-grid[data-size="small"] {
+    --vp-sponsor-grid-height: 6rem;
+    --vp-sponsor-grid-image-width: 6rem;
+    --vp-sponsor-grid-image-height: 1.5rem;
+  }
+
+  .vp-sponsor-grid[data-size="big"] {
+    --vp-sponsor-grid-height: 11.5rem;
+    --vp-sponsor-grid-image-width: 12rem;
+    --vp-sponsor-grid-image-height: 3.5rem;
+  }
+
+  .vp-sponsor-grid + .vp-sponsor-tier {
+    margin-top: 0.25rem;
+  }
+
+  /* the columns, as VitePress's script writes them */
+  .vp-sponsor-grid[data-vp-grid='2'] > .vp-sponsor-grid-item {
+    width: calc((100% - 0.25rem) / 2);
+  }
+
+  .vp-sponsor-grid[data-vp-grid='3'] > .vp-sponsor-grid-item {
+    width: calc((100% - 0.25rem * 2) / 3);
+  }
+
+  .vp-sponsor-grid[data-vp-grid='4'] > .vp-sponsor-grid-item {
+    width: calc((100% - 0.25rem * 3) / 4);
+  }
+
+  .vp-sponsor-grid[data-vp-grid='5'] > .vp-sponsor-grid-item {
+    width: calc((100% - 0.25rem * 4) / 5);
+  }
+
+  .vp-sponsor-grid[data-vp-grid='6'] > .vp-sponsor-grid-item {
+    width: calc((100% - 0.25rem * 5) / 6);
+  }
+
+  /* in dark mode the logo is inverted as well as grayed, so a dark logo
+     reads on the dark tile: a filter is no color, so no light-dark() pair
+     carries it. Before the tile's hover below, which clears it at the
+     same specificity */
+  :root.dark .vp-sponsor-grid-image {
+    filter: grayscale(1) invert(1);
+  }
+
+  .vp-sponsor-grid-item {
+    --vp-sponsor-grid-item-hover-bg: light-dark(var(--vp-c-default-soft), var(--vp-c-white));
+
+    flex-shrink: 0;
+    width: 100%;
+    background-color: var(--vp-c-bg-soft);
+    transition: background-color var(--vp-duration);
+
+    @media (hover: hover) {
+      /* the empty tile keeps its ground */
+      &:not(:empty):hover {
+        background-color: var(--vp-sponsor-grid-item-hover-bg);
+      }
+
+      &:hover .vp-sponsor-grid-image {
+        filter: grayscale(0) invert(0);
+      }
+    }
+  }
+
+  .vp-sponsor-grid-link {
+    display: flex;
+    height: var(--vp-sponsor-grid-height);
+  }
+
+  .vp-sponsor-grid-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .vp-sponsor-grid-image {
+    max-width: var(--vp-sponsor-grid-image-width);
+    max-height: var(--vp-sponsor-grid-image-height);
+    filter: grayscale(1);
+    transition: filter var(--vp-duration);
+  }
+
+  /* inside a vp-doc (prose.css), whose rules for a list give it bullets
+     and margins, for an image margins, and for a link an underline: none */
+  .vp-doc .vp-sponsor-grid,
+  .vp-doc .vp-sponsor-grid-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .vp-doc .vp-sponsor-grid-image {
+    margin: 0;
+  }
+
+  .vp-doc .vp-sponsor-grid-link {
+    text-decoration: none;
+  }
+}
