@@ -2451,6 +2451,59 @@ cases.push({
   checks: MEMBER_CHECKS.filter((c) => !c.refTarget).map((c) => (c.target === 'img' ? { ...c, props: [...c.props, ...MARGIN, 'box-shadow', 'offset-left'] } : c)),
 });
 
+// team members: VitePress's VPTeamMembers (its block and its list of items)
+// against vp-team-members, the items placeholders of a card's height: four
+// members wide, one and two, which cap the grid's width, the small grid
+// with five, one, two and three, and four at a phone's width; the column's
+// minimum, 16rem below 23.4375rem wide and 18rem from it, in a box
+// narrower than one column, where it shows; then inside a vp-doc, whose
+// list rules give bullets, an indent and space between items, against
+// itself outside one. VitePress writes the count as a class; vpkit reads it
+// off the list
+const membersList = (vp, n, size = 'medium') => {
+  const items = Array.from({ length: n }, (_, i) => `<li data-t="i${i + 1}"${vp ? '' : ' class="item"'}><div style="height:4rem"></div></li>`).join('');
+  return vp
+    ? `<ul data-t="grid" class="vp-team-members${size === 'small' ? ' vp-team-members-small' : ''}">${items}</ul>`
+    : `<div class="VPTeamMembers ${size} count-${n}"><ul data-t="grid" class="container">${items}</ul></div>`;
+};
+const MEMBERS_GRID = ['display', 'grid-template-columns', 'column-gap', 'row-gap', ...MARGIN, 'max-width', 'width', 'height'];
+const membersChecks = (n) => [
+  { target: 'grid', props: MEMBERS_GRID },
+  ...[...new Set([1, 2, n])].filter((i) => i <= n).map((i) => ({ target: `i${i}`, props: ['offset-left', 'offset-top', 'width'] })),
+];
+for (const [name, n, size, width] of [
+  ['team members', 4, 'medium'],
+  ['team members with one', 1, 'medium'],
+  ['team members with two', 2, 'medium'],
+  ['team members, small', 5, 'small'],
+  ['team members, small, with one', 1, 'small'],
+  ['team members, small, with two', 2, 'small'],
+  ['team members, small, with three', 3, 'small'],
+  ["team members at a phone's width", 4, 'medium', 375],
+]) {
+  cases.push({ name, width, upstreamFiles: ['components/VPTeamMembers.vue'], upstream: membersList(false, n, size), vpkit: membersList(true, n, size), checks: membersChecks(n) });
+}
+for (const width of [360, 400]) {
+  cases.push({
+    name: `team members in a 15rem box at ${width}px`,
+    width,
+    upstreamFiles: ['components/VPTeamMembers.vue'],
+    upstream: `<div style="width:15rem">${membersList(false, 2)}</div>`,
+    vpkit: `<div style="width:15rem">${membersList(true, 2)}</div>`,
+    checks: [{ target: 'grid', props: ['grid-template-columns', 'height'] }],
+  });
+}
+cases.push({
+  name: 'team members in a doc',
+  reference: `<div>${membersList(true, 3)}</div>`,
+  vpkit: inDoc(membersList(true, 3)),
+  checks: [
+    { target: 'grid', props: ['list-style-type', ...PADDING, ...MARGIN, 'width', 'height'] },
+    { target: 'i2', props: [...MARGIN, ...PADDING, 'offset-left', 'offset-top'] },
+    { target: 'i3', props: [...MARGIN, 'offset-top'] },
+  ],
+});
+
 cases.push({
   name: 'team section in a doc',
   reference: `<div>${teamSection(true)}</div>`,

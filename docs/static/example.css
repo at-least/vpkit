@@ -2811,6 +2811,45 @@ button:focus-visible {
     margin-right: 0.5rem;
     font-size: 1rem;
   }
+  .vp-team-members {
+    --vp-team-members-column: 16rem;
+    --vp-team-members-one: 23rem;
+    --vp-team-members-two: calc(23rem * 2 + 1.5rem);
+    --vp-team-members-three: 72rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--vp-team-members-column), 1fr));
+    gap: 1.5rem;
+    margin: 0 auto;
+    max-width: 72rem;
+  }
+  @media (min-width: 23.4375rem) {
+    .vp-team-members {
+      --vp-team-members-column: 18rem;
+    }
+  }
+  .vp-team-members-small.vp-team-members {
+    --vp-team-members-column: 14rem;
+    --vp-team-members-one: 17.25rem;
+    --vp-team-members-two: calc(17.25rem * 2 + 1.5rem);
+    --vp-team-members-three: calc(17.25rem * 3 + 1.5rem * 2);
+  }
+  .vp-team-members:has(> :last-child:nth-child(1)) {
+    max-width: var(--vp-team-members-one);
+  }
+  .vp-team-members:has(> :last-child:nth-child(2)) {
+    max-width: var(--vp-team-members-two);
+  }
+  .vp-team-members:has(> :last-child:nth-child(3)) {
+    max-width: var(--vp-team-members-three);
+  }
+  .vp-doc .vp-team-members {
+    list-style: none;
+    padding: 0;
+  }
+  .vp-doc .vp-team-members > li {
+    margin: 0;
+    padding: 0;
+  }
   .vp-breadcrumb {
     display: flex;
     flex-wrap: wrap;

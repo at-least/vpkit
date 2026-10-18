@@ -1,0 +1,75 @@
+/* vpkit — team members, ported from VitePress's VPTeamMembers: a team
+ * page's grid of member cards. An optional import:
+ * `@import "vpkit/team-members.css";` (each card is `vp-team-member`)
+ *
+ *   <ul class="vp-team-members">
+ *     <li><article class="vp-team-member">…</article></li>
+ *     <li><article class="vp-team-member">…</article></li>
+ *   </ul>
+ *
+ * A modifier, used together with `vp-team-members`:
+ *
+ *   vp-team-members-small    the grid of small cards (vp-team-member-small)
+ *
+ * As many columns as fit, each at least 16rem wide (18rem from 23.4375rem
+ * wide, 14rem in the small grid), 1.5rem apart, the grid at most 72rem
+ * wide and centered. With one or two members, or three in the small grid,
+ * it is at most as wide as their cards at VitePress's width (23rem each,
+ * 17.25rem small) and centered, read off the list (`:has()`), where
+ * VitePress writes count-N classes. One element where VitePress has two
+ * (its block and its list). The column sizes and widths are locals the
+ * modifier overrides (rule 5). Inside a vp-doc (content.css) the list keeps
+ * none of the markdown's bullets, indent or space between items. Not
+ * ported: VitePress's sizing in a doc page's column (a margin above, and a
+ * lone member half the column wide), the page's. */
+
+@layer components {
+  .vp-team-members {
+    --vp-team-members-column: 16rem;
+    --vp-team-members-one: 23rem;
+    --vp-team-members-two: calc(23rem * 2 + 1.5rem);
+    --vp-team-members-three: 72rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--vp-team-members-column), 1fr));
+    gap: 1.5rem;
+    margin: 0 auto;
+    max-width: 72rem;
+  }
+
+  @media (min-width: 23.4375rem) {
+    .vp-team-members {
+      --vp-team-members-column: 18rem;
+    }
+  }
+
+  .vp-team-members-small.vp-team-members {
+    --vp-team-members-column: 14rem;
+    --vp-team-members-one: 17.25rem;
+    --vp-team-members-two: calc(17.25rem * 2 + 1.5rem);
+    --vp-team-members-three: calc(17.25rem * 3 + 1.5rem * 2);
+  }
+
+  .vp-team-members:has(> :last-child:nth-child(1)) {
+    max-width: var(--vp-team-members-one);
+  }
+
+  .vp-team-members:has(> :last-child:nth-child(2)) {
+    max-width: var(--vp-team-members-two);
+  }
+
+  .vp-team-members:has(> :last-child:nth-child(3)) {
+    max-width: var(--vp-team-members-three);
+  }
+
+  /* inside a vp-doc (content.css), whose rules for a list give it bullets
+     and an indent, and space above every item but the first: none */
+  .vp-doc .vp-team-members {
+    list-style: none;
+    padding: 0;
+  }
+
+  .vp-doc .vp-team-members > li {
+    margin: 0;
+    padding: 0;
+  }
+}

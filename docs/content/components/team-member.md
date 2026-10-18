@@ -5,7 +5,7 @@ description = "A person's card on a team page, their picture, name, role, links 
 
 # Team Member
 
-A person's card on a team page: their picture, name and role, a line about them, their links and a link to sponsor them. VitePress's team member card (`VPTeamMembersItem`) as a class.
+A person's card on a team page: their picture, name and role, a line about them, their links and a link to sponsor them. VitePress's team member card (`VPTeamMembersItem`) as a class; [Team Members](@/components/team-members.md) lays them out in a grid.
 
 ```css
 @import "vpkit/team-member.css";
