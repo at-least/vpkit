@@ -1,0 +1,73 @@
+/* vpkit — dialog, `vp-dialog`: vpkit's own, on the <dialog> element, which
+ * brings the top layer, the focus trap, Escape and ::backdrop (VitePress
+ * has no dialog). An optional import:
+ * `@import "vpkit/components/dialog/dialog.css";`
+ *
+ *   <dialog class="vp-dialog" id="rename" aria-labelledby="rename-title">
+ *     <h2 class="vp-dialog-title" id="rename-title">Rename</h2>
+ *     <p>…</p>
+ *     <div class="vp-dialog-actions">
+ *       <button class="vp-btn" type="button">Cancel</button>
+ *       <button class="vp-btn" data-variant="brand" type="submit">Rename</button>
+ *     </div>
+ *   </dialog>
+ *
+ * The elevated surface in a divider border, the large radius token,
+ * --vp-shadow-4, 26rem wide and at most 92vw; the backdrop is
+ * --vp-backdrop-bg-color. No axis. The parts:
+ *   vp-dialog-title     the 1.05rem semibold title
+ *   vp-dialog-actions   the row of buttons at the end, 0.5rem apart,
+ *                       pushed to the right
+ * Open it with showModal(): the browser centers a modal dialog with
+ * `margin: auto`, which Tailwind's preflight takes from every element, so
+ * the dialog sets it back. The width is the dialog's own, where the
+ * components leave size to the page, because a dialog without one shrinks
+ * to its content; `w-[32rem]` or any width utility replaces it. A modal
+ * dialog makes everything outside it inert, a popover in the top layer
+ * included. The crate's `Dialog` writes this markup, the title's id the
+ * dialog's with `-title` after it. Inside a vp-doc (prose.css), whose
+ * rules for a heading set what the title leaves to the page, the title
+ * keeps no rule, padding or letter spacing and takes the dialog's line.
+ * This is the components layer, so a utility on the element overrides
+ * it. */
+
+@layer components {
+  .vp-dialog {
+    margin: auto;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--vp-radius-lg);
+    padding: 1.15rem 1.25rem;
+    width: 26rem;
+    max-width: 92vw;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-4);
+  }
+
+  /* ::backdrop inherits from its dialog only since Chrome 122 and Safari
+     17.4; before them --vp-backdrop-bg-color doesn't reach it, and the
+     fallback, tokens.css's value, still dims the page */
+  .vp-dialog::backdrop {
+    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
+  }
+
+  .vp-dialog-title {
+    margin: 0 0 0.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .vp-doc .vp-dialog-title {
+    border-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+    line-height: inherit;
+  }
+
+  .vp-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
