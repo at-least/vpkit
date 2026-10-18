@@ -69,13 +69,17 @@
   --color-default-3: var(--vp-c-default-3);
   --color-default-soft: var(--vp-c-default-soft);
 
-  /* success and danger: only the text tone and the soft tint, the ones
-     the apps use. Every variable mapped here is one a color theme must
-     define (test/themes.mjs holds the themes to each var() this package
-     references), and the themes define no -3 of these, nor success-2
-     (danger-2 they do, as the danger alert's link hover). */
+  /* success, warning and danger: only the text tone and the soft tint,
+     the ones the apps use. Every variable mapped here is one a color theme
+     must define (test/themes.mjs holds the themes to each var() this
+     package references), and the themes define no -3 of these, nor
+     success-2 (warning-2 and danger-2 they do, as the alerts' link
+     hovers). */
   --color-success-1: var(--vp-c-success-1);
   --color-success-soft: var(--vp-c-success-soft);
+
+  --color-warning-1: var(--vp-c-warning-1);
+  --color-warning-soft: var(--vp-c-warning-soft);
 
   --color-danger-1: var(--vp-c-danger-1);
   --color-danger-soft: var(--vp-c-danger-soft);

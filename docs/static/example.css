@@ -384,6 +384,9 @@
   .bg-success-soft {
     background-color: var(--vp-c-success-soft);
   }
+  .bg-warning-soft {
+    background-color: var(--vp-c-warning-soft);
+  }
   .object-contain {
     object-fit: contain;
   }
@@ -463,6 +466,9 @@
   }
   .text-success-1 {
     color: var(--vp-c-success-1);
+  }
+  .text-warning-1 {
+    color: var(--vp-c-warning-1);
   }
   .shadow-1 {
     --tw-shadow: var(--vp-shadow-1);

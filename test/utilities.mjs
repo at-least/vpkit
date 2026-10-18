@@ -50,6 +50,13 @@ const want = {
   'bg-bg-elv': 'background-color:var(--vp-c-bg-elv)',
   'fill-text-2': 'fill:var(--vp-c-text-2)',
   'border-bg-soft': 'border-color:var(--vp-c-bg-soft)',
+  // the three kinds the apps write in color, the tone and the soft tint
+  'text-success-1': 'color:var(--vp-c-success-1)',
+  'text-warning-1': 'color:var(--vp-c-warning-1)',
+  'text-danger-1': 'color:var(--vp-c-danger-1)',
+  'bg-success-soft': 'background-color:var(--vp-c-success-soft)',
+  'bg-warning-soft': 'background-color:var(--vp-c-warning-soft)',
+  'bg-danger-soft': 'background-color:var(--vp-c-danger-soft)',
   // Tailwind's font sizes, untouched by the text colors' namespace
   'text-sm': 'font-size:var(--text-sm)',
   'text-2xl': 'font-size:var(--text-2xl)',

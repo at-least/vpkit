@@ -27,7 +27,7 @@ They are in rem because VitePress's media queries are ([vuejs/vitepress#5323](ht
 
 ## Semantic colors
 
-The text colors are `text-body`, `text-secondary` and `text-muted` (VitePress's `text-1`, `text-2` and `text-3`), and the grounds `bg-bg` (the page), `bg-alt`, `bg-soft` and `bg-elv`. The others work with every color utility (`text-`, `bg-`, `border-`, …): `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `border-divider`, `text-brand-1`, `bg-danger-soft`.
+The text colors are `text-body`, `text-secondary` and `text-muted` (VitePress's `text-1`, `text-2` and `text-3`), and the grounds `bg-bg` (the page), `bg-alt`, `bg-soft` and `bg-elv`. The others work with every color utility (`text-`, `bg-`, `border-`, …): `border`, `divider`, `gutter`, `brand-1`/`2`/`3`/`soft`, `default-1`/`2`/`3`/`soft`, `success-1`/`soft`, `warning-1`/`soft`, `danger-1`/`soft`, `sponsor`. So `border-divider`, `text-brand-1`, `bg-danger-soft`.
 
 The first names, which doubled the prefix, still work, with every color utility: `text-text-2`, `bg-bg-alt`, `fill-text-2`.
 
@@ -49,6 +49,7 @@ They resolve to the `--vp-*` variables, so they follow dark mode and a color the
 <span class="rounded-md bg-brand-soft px-3 py-1 text-sm text-brand-1">brand</span>
 <span class="rounded-md bg-default-soft px-3 py-1 text-sm text-body">default</span>
 <span class="rounded-md bg-success-soft px-3 py-1 text-sm text-success-1">success</span>
+<span class="rounded-md bg-warning-soft px-3 py-1 text-sm text-warning-1">warning</span>
 <span class="rounded-md bg-danger-soft px-3 py-1 text-sm text-danger-1">danger</span>
 <span class="rounded-md border border-divider px-3 py-1 text-sm text-sponsor">sponsor</span>
 {% </vp_example> %}
