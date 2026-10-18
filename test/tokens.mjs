@@ -1,38 +1,74 @@
-// The theme against its source: tokens.css holds every custom property of
-// VitePress's vars.css and fonts.css (fonts.css after vars.css, as
-// VitePress's index.ts imports them), in the same scope (selector and
-// enclosing @media), with the same value; a token's fallback written into
-// a stylesheet is tokens.css's value; and theme.css's breakpoints are the
-// lengths of upstream's `min-width` media queries, unit included (a
-// utility in another unit would part from layout.css and the components
-// at a browser font size other than the default).
+// The variables against their source. docs-theme/vars.css holds every
+// variable of VitePress's vars.css (test/upstream/, verbatim at the tag in
+// SOURCE): on each side, light and dark, each resolves through its var()
+// chain to what it resolves to upstream (the contract names it aliases
+// VitePress's onto resolve to VitePress's palette; the font families are
+// tokens.css's, fonts.css's after vars.css as VitePress's index.ts imports
+// them); the graded containers' colors too; the sidebar's z-index and the
+// hidden navbar's heights in the same scopes. A token's fallback written
+// into a stylesheet is the token's value, so the copy can't go stale. And
+// theme.css's breakpoints are the lengths of upstream's `min-width` media
+// queries, unit included.
 //
 //   node test/tokens.mjs
 //
-// Both sides are read from source (test/upstream/, verbatim at the tag in
-// SOURCE). A difference is a failure unless `known` lists it with its
-// reason; a `known` entry that matches nothing fails too, so none
-// outlives its cause. Exits 1, listing every difference.
+// Exits 1, listing every difference.
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ALIAS, UNMAPPED } from '../scripts/contract.mjs';
+import { modeValues, parseBlocks, resolve } from '../scripts/css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
+const squash = (value) => value.replace(/\s+/g, ' ').trim();
 
-// Intentional differences from upstream, by the key `scope :: property`
-const known = [
-  {
-    key: /graded-containers/,
-    reason:
-      "the graded containers' palette is literal and on `:root:has()`, not `:root:where(:has())` with var(--vp-c-orange-*): the opt-in beats any color theme's warning and caution (tokens.css says why); the literals are held to upstream's orange and yellow of the same mode below",
-  },
-];
+const failures = [];
+let compared = 0;
 
-// every `--x: value` declaration, keyed by its scope: the selectors and
-// at-rules around it, outermost first. Later declarations of a key win,
-// as in the cascade
+const vars = read('test/upstream/vars.css');
+const fonts = read('test/upstream/fonts.css');
+const docs = read('docs-theme/vars.css');
+const tokens = read('tokens.css');
+
+// :root and .dark: every VitePress variable, resolved, on each side
+const upLight = new Map([...modeValues(vars, ':root'), ...modeValues(fonts, ':root')]);
+const upDark = new Map([...upLight, ...modeValues(vars, '.dark')]);
+const ours = (mode) => new Map([...modeValues(tokens, ':root', mode), ...modeValues(docs, ':root', mode)]);
+for (const [mode, up] of [['light', upLight], ['dark', upDark]]) {
+  const have = ours(mode);
+  for (const [name, value] of up) {
+    compared++;
+    const want = squash(resolve(up, value));
+    const got = have.has(name) ? squash(resolve(have, have.get(name))) : undefined;
+    if (want !== got) failures.push(`${mode} ${name}: upstream ${want}, docs theme ${got}`);
+  }
+}
+
+// the graded containers: each color VitePress grades, on the contract's
+// name, resolves to the same orange or yellow on each side
+const upGraded = parseBlocks(vars).find((b) => b.selector.includes('.vp-graded-containers'));
+const ourGraded = parseBlocks(docs).find((b) => b.selector === ':root:has(.vp-graded-containers)');
+if (!upGraded || !ourGraded) failures.push('a graded containers block is missing');
+else {
+  for (const [mode, up] of [['light', upLight], ['dark', upDark]]) {
+    const upAll = new Map([...up, ...upGraded.declarations]);
+    const ourAll = new Map([...ours(mode), ...ourGraded.declarations]);
+    for (const [name] of upGraded.declarations) {
+      const color = name.match(/^--vp-c-(.+)$/)?.[1];
+      if (UNMAPPED.includes(color)) continue;
+      compared++;
+      const want = squash(resolve(upAll, upAll.get(name)));
+      const got = squash(resolve(ourAll, ourAll.get(`--vp-c-${ALIAS[color]}`) ?? '(none)'));
+      if (want !== got) failures.push(`graded ${mode} ${name} as --vp-c-${ALIAS[color]}: upstream ${want}, docs theme ${got}`);
+    }
+  }
+}
+
+// the other scopes, by text: the sidebar's z-index from 60rem, the hidden
+// navbar's heights (VitePress's .VPSidebar is the layout's .vp-sidebar),
+// the CJK font families (tokens.css's)
 function collect(css, into = new Map()) {
   const src = css.replace(/\/\*[\s\S]*?\*\//g, '');
   const stack = [];
@@ -48,60 +84,43 @@ function collect(css, into = new Map()) {
     else if (next === close) stack.pop();
     else if (text.startsWith('--')) {
       const colon = text.indexOf(':');
-      into.set(`${stack.join(' > ')} :: ${text.slice(0, colon).trim()}`, text.slice(colon + 1).replace(/\s+/g, ' ').trim());
+      into.set(`${stack.join(' > ')} :: ${text.slice(0, colon).trim()}`, squash(text.slice(colon + 1)));
     }
     i = next + 1;
   }
   return into;
 }
-
-const upstream = collect(read('test/upstream/fonts.css'), collect(read('test/upstream/vars.css')));
-const vpkit = collect(read('tokens.css'));
-
-const failures = [];
-const hits = new Map(known.map((k) => [k, 0]));
-let compared = 0;
-function differ(line) {
-  const entry = known.find((k) => k.key.test(line));
-  if (entry) hits.set(entry, hits.get(entry) + 1);
-  else failures.push(line);
-}
-for (const [key, value] of upstream) {
+const upScoped = collect(vars);
+const ourScoped = collect(tokens, collect(docs));
+for (const [key, value] of upScoped) {
+  const [scope] = key.split(' :: ');
+  if ([':root', '.dark'].includes(scope) || scope.includes('.vp-graded-containers')) continue;
   compared++;
-  if (!vpkit.has(key)) differ(`missing  ${key} = ${value}`);
-  else if (vpkit.get(key) !== value) differ(`differs  ${key}\n    upstream: ${value}\n    vpkit:    ${vpkit.get(key)}`);
-}
-for (const [key, value] of vpkit) if (!upstream.has(key)) differ(`added    ${key} = ${value}`);
-
-// the graded palette: each literal is upstream's orange (warning) or
-// yellow (caution) of that mode
-const ramp = { warning: 'orange', caution: 'yellow' };
-for (const [scope, mode] of [[':root:has(.vp-graded-containers)', ':root'], [':root.dark:has(.vp-graded-containers)', '.dark']]) {
-  for (const role of Object.keys(ramp)) {
-    for (const step of ['1', '2', '3', 'soft']) {
-      compared++;
-      const got = vpkit.get(`${scope} :: --vp-c-${role}-${step}`);
-      const want = upstream.get(`${mode} :: --vp-c-${ramp[role]}-${step}`);
-      if (got !== want) failures.push(`graded   ${scope} --vp-c-${role}-${step}: ${got}, upstream's ${mode} --vp-c-${ramp[role]}-${step} is ${want}`);
-    }
-  }
+  const ourKey = key.replace('.VPSidebar', '.vp-sidebar');
+  if (ourScoped.get(ourKey) !== value) failures.push(`${key}: upstream ${value}, ours ${ourScoped.get(ourKey)}`);
 }
 
 // a token's fallback written into a stylesheet, `var(--vp-x, value)` (a
-// ::backdrop's, which inherits nothing in older engines), is tokens.css's
-// value of that token, so the copy can't go stale; the tokens VitePress
-// leaves to the page (its layout top, doc top, vh and extra scroll
-// margin, undefined upstream too) have no value to hold a fallback to
+// ::backdrop's, which inherits nothing in older engines), is the token's
+// value, so the copy can't go stale; the tokens VitePress leaves to the
+// page have no value to hold a fallback to
 const UNDEFINED = ['--vp-layout-top-height', '--vp-doc-top-height', '--vp-vh', '--vp-extra-scroll-margin'];
+const defined = new Map([...modeValues(tokens, ':root'), ...modeValues(docs, ':root')]);
+function cssFiles(dir) {
+  if (!existsSync(join(ROOT, dir))) return [];
+  return readdirSync(join(ROOT, dir), { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile() && e.name.endsWith('.css'))
+    .map((e) => join(e.parentPath, e.name).slice(ROOT.length + 1));
+}
 let fallbacks = 0;
-for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.css')).sort()) {
+for (const file of ['prose.css', 'base.css', ...cssFiles('components'), ...cssFiles('docs-theme')].sort()) {
   for (const m of read(file).matchAll(/var\((--vp-[a-z0-9-]+),\s*((?:[^()]|\([^()]*\))+)\)/g)) {
     if (UNDEFINED.includes(m[1])) continue;
     compared++;
     fallbacks++;
-    const want = vpkit.get(`:root :: ${m[1]}`);
-    const got = m[2].replace(/\s+/g, ' ').trim();
-    if (got !== want) failures.push(`fallback ${file}: var(${m[1]}, ${got}), tokens.css's :root value is ${want}`);
+    const want = defined.get(m[1]);
+    const got = squash(m[2]);
+    if (got !== want) failures.push(`fallback ${file}: var(${m[1]}, ${got}), the token's value is ${want}`);
   }
 }
 
@@ -121,13 +140,9 @@ for (const [name, value] of breakpoints) {
 }
 if (breakpoints.length !== 5) failures.push(`theme.css defines ${breakpoints.length} breakpoints, not 5`);
 
-for (const [entry, n] of hits) {
-  if (n) console.log(`KNOWN ${n}× ${entry.key}: ${entry.reason}`);
-  else failures.push(`known difference no longer occurs, remove it: ${entry.key}`);
-}
 for (const f of failures) console.log(`FAIL  ${f}`);
 console.log(
-  `tokens.css against vars.css and fonts.css, the graded palette, ${fallbacks} fallbacks and ${breakpoints.length} breakpoints: ` +
-    `${compared} checks, ${failures.length} failed, ${[...hits.values()].reduce((a, b) => a + b, 0)} known`,
+  `docs-theme/vars.css and tokens.css against vars.css and fonts.css, the graded palette, ${fallbacks} fallbacks and ${breakpoints.length} breakpoints: ` +
+    `${compared} checks, ${failures.length} failed`,
 );
 process.exit(failures.length ? 1 : 0);

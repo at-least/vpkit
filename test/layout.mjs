@@ -447,7 +447,7 @@ async function familyTrees(browser, c, html) {
 // a family's VitePress styles, scoped as Vue scopes them, in the bundle's
 // order (FILES, as layout.css has them)
 function familyCss(c, scopeOf) {
-  const order = FILES['layout.css'].components.filter((n) => c.family.includes(n));
+  const order = FILES['docs-theme/layout.css'].components.filter((n) => c.family.includes(n));
   if (order.length !== c.family.length) throw new Error(`${c.name}: every member must be in layout.css`);
   return order
     .filter((n) => styleOf(n))

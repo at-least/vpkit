@@ -29,6 +29,7 @@ import { basename, dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
+import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
@@ -90,18 +91,6 @@ function upstreamCss(files) {
 // and the originals must render on the same colors to be compared on
 // anything but the fits. The docs theme's cases need none: docs-theme/
 // vars.css is VitePress's palette verbatim
-const ONTO = {
-  bg: 'c-bg', 'bg-alt': 'c-bg-alt', 'bg-elv': 'c-bg-elv', 'bg-soft': 'c-bg-soft',
-  'text-1': 'c-text-1', 'text-2': 'c-text-2', 'text-3': 'c-text-3',
-  border: 'c-border', divider: 'c-divider', gutter: 'c-gutter',
-  brand: 'c-brand-1', 'brand-hover': 'c-brand-2', 'brand-fill': 'c-brand-3', 'brand-fill-hover': 'button-brand-hover-bg', 'brand-fill-active': 'button-brand-active-bg', 'brand-soft': 'c-brand-soft',
-  'gray-fill': 'c-default-3', 'gray-fill-hover': 'c-default-2', 'gray-fill-active': 'c-default-1', 'gray-soft': 'c-default-soft',
-  success: 'c-success-1', 'success-soft': 'c-success-soft',
-  warning: 'c-warning-1', 'warning-hover': 'c-warning-2', 'warning-soft': 'c-warning-soft',
-  danger: 'c-danger-1', 'danger-hover': 'c-danger-2', 'danger-soft': 'c-danger-soft',
-  caution: 'c-caution-1', 'caution-hover': 'c-caution-2', 'caution-soft': 'c-caution-soft',
-  important: 'c-important-1', 'important-hover': 'c-important-2', 'important-soft': 'c-important-soft',
-};
 function fittedPalette() {
   const tokens = readFileSync(join(ROOT, 'tokens.css'), 'utf8');
   return ['light', 'dark']

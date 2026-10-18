@@ -3,24 +3,104 @@
  * vp-doc.css (v2.0.0-alpha.20) verbatim, in the order its theme imports
  * them (without-fonts.ts), which decides the ties between them: a link in
  * a container is weight 500 by vp-doc.css, a code block in one takes the
- * code block's color. An optional import:
- * `@import "vpkit/content.css";`
+ * code block's color. An optional import: `@import "vpkit/prose.css";`
+ *
+ * VitePress's color names are read as the contract's (scripts/contract.mjs:
+ * brand-1 is brand, brand-2 brand-hover, tip and note are brand's, caution
+ * is danger's), and the variables the markdown reads (--vp-code-*,
+ * --vp-custom-block-*, the anchor symbol, the copy icons) are VitePress's,
+ * defined on .vp-doc, so nothing outside the contract is needed.
  *
  * In `@layer base`, below the components: a vp-btn, a vp-card or any
  * other component inside a vp-doc keeps its own look and its own states
  * (VitePress's components win there by Vue's scoping, which the port
- * drops), and a utility still wins as it does everywhere.
+ * drops), and a utility still wins as it does everywhere. A layer of the
+ * markdown's own would have to be declared before Tailwind's order in
+ * every entry, or it would sort after the utilities.
  *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
  * with `.header-anchor` links, `div.custom-block` containers and GitHub
  * alerts, `div[class*='language-']` code blocks with their copy button,
  * language label, highlighted, diff and focused lines and line numbers,
- * `.vp-code-group` tabs. Its classes are VitePress's own, not renamed.
- * The code's colors are not here: they come with the highlighter (Shiki's
- * two themes, vp-code.css, in VitePress). Written by
+ * `.vp-code-group` tabs, and the arrow of an external link
+ * (`.vp-external-link-icon`, anywhere). Its classes are VitePress's own,
+ * not renamed. The code's colors are not here: they come with the
+ * highlighter (Shiki's two themes, vp-code.css, in VitePress). Written by
  * scripts/vitepress-port.mjs. */
 
 @layer base {
+  /* the markdown's variables, VitePress's (vars.css's Code, Custom Block and
+     Header Anchor groups, icons.css's copy icons), on the contract's names,
+     defined where the markdown is */
+  .vp-doc {
+    --vp-header-anchor-symbol: '#';
+    --vp-code-line-height: 1.7;
+    --vp-code-font-size: 0.875em;
+    --vp-code-color: var(--vp-c-brand);
+    --vp-code-link-color: var(--vp-c-brand);
+    --vp-code-link-hover-color: var(--vp-c-brand-hover);
+    --vp-code-bg: var(--vp-c-gray-soft);
+    --vp-code-block-color: var(--vp-c-text-2);
+    --vp-code-block-bg: var(--vp-c-bg-alt);
+    --vp-code-block-divider-color: var(--vp-c-gutter);
+    --vp-code-lang-color: var(--vp-c-text-2);
+    --vp-code-line-highlight-color: var(--vp-c-gray-soft);
+    --vp-code-line-number-color: var(--vp-c-text-2);
+    --vp-code-line-diff-add-color: var(--vp-c-success-soft);
+    --vp-code-line-diff-add-symbol-color: var(--vp-c-success);
+    --vp-code-line-diff-remove-color: var(--vp-c-danger-soft);
+    --vp-code-line-diff-remove-symbol-color: var(--vp-c-danger);
+    --vp-code-line-warning-color: var(--vp-c-warning-soft);
+    --vp-code-line-error-color: var(--vp-c-danger-soft);
+    --vp-code-copy-code-border-color: var(--vp-c-divider);
+    --vp-code-copy-code-bg: var(--vp-c-bg-soft);
+    --vp-code-copy-code-hover-border-color: var(--vp-c-divider);
+    --vp-code-copy-code-hover-bg: var(--vp-c-bg);
+    --vp-code-copy-code-active-text: var(--vp-c-text-2);
+    --vp-code-tab-divider: var(--vp-code-block-divider-color);
+    --vp-code-tab-text-color: var(--vp-c-text-2);
+    --vp-code-tab-bg: var(--vp-code-block-bg);
+    --vp-code-tab-hover-text-color: var(--vp-c-text-1);
+    --vp-code-tab-active-text-color: var(--vp-c-text-1);
+    --vp-code-tab-active-bar-color: var(--vp-c-brand);
+    --vp-custom-block-font-size: 0.875rem;
+    --vp-custom-block-code-font-size: 0.8125rem;
+    --vp-custom-block-info-border: transparent;
+    --vp-custom-block-info-text: var(--vp-c-text-1);
+    --vp-custom-block-info-bg: var(--vp-c-gray-soft);
+    --vp-custom-block-info-code-bg: var(--vp-c-gray-soft);
+    --vp-custom-block-note-border: transparent;
+    --vp-custom-block-note-text: var(--vp-c-text-1);
+    --vp-custom-block-note-bg: var(--vp-c-gray-soft);
+    --vp-custom-block-note-code-bg: var(--vp-c-gray-soft);
+    --vp-custom-block-tip-border: transparent;
+    --vp-custom-block-tip-text: var(--vp-c-text-1);
+    --vp-custom-block-tip-bg: var(--vp-c-brand-soft);
+    --vp-custom-block-tip-code-bg: var(--vp-c-brand-soft);
+    --vp-custom-block-important-border: transparent;
+    --vp-custom-block-important-text: var(--vp-c-text-1);
+    --vp-custom-block-important-bg: var(--vp-c-important-soft);
+    --vp-custom-block-important-code-bg: var(--vp-c-important-soft);
+    --vp-custom-block-caution-border: transparent;
+    --vp-custom-block-caution-text: var(--vp-c-text-1);
+    --vp-custom-block-caution-bg: var(--vp-c-caution-soft);
+    --vp-custom-block-caution-code-bg: var(--vp-c-caution-soft);
+    --vp-custom-block-warning-border: transparent;
+    --vp-custom-block-warning-text: var(--vp-c-text-1);
+    --vp-custom-block-warning-bg: var(--vp-c-warning-soft);
+    --vp-custom-block-warning-code-bg: var(--vp-c-warning-soft);
+    --vp-custom-block-danger-border: transparent;
+    --vp-custom-block-danger-text: var(--vp-c-text-1);
+    --vp-custom-block-danger-bg: var(--vp-c-danger-soft);
+    --vp-custom-block-danger-code-bg: var(--vp-c-danger-soft);
+    --vp-custom-block-details-border: var(--vp-custom-block-info-border);
+    --vp-custom-block-details-text: var(--vp-custom-block-info-text);
+    --vp-custom-block-details-bg: var(--vp-custom-block-info-bg);
+    --vp-custom-block-details-code-bg: var(--vp-custom-block-info-code-bg);
+    --vp-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/g%3E%3C/svg%3E");
+    --vp-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14l2 2l4-4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
   /* custom-block.css: containers and GitHub alerts */
   .custom-block {
     border: 1px solid transparent;
@@ -44,12 +124,12 @@
 
   .custom-block.info a,
   .custom-block.info code {
-    color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand);
   }
 
   .custom-block.info a:hover,
   .custom-block.info a:hover > code {
-    color: var(--vp-c-brand-2);
+    color: var(--vp-c-brand-hover);
   }
 
   .custom-block.info code {
@@ -64,12 +144,12 @@
 
   .custom-block.note a,
   .custom-block.note code {
-    color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand);
   }
 
   .custom-block.note a:hover,
   .custom-block.note a:hover > code {
-    color: var(--vp-c-brand-2);
+    color: var(--vp-c-brand-hover);
   }
 
   .custom-block.note code {
@@ -84,12 +164,12 @@
 
   .custom-block.tip a,
   .custom-block.tip code {
-    color: var(--vp-c-tip-1);
+    color: var(--vp-c-brand);
   }
 
   .custom-block.tip a:hover,
   .custom-block.tip a:hover > code {
-    color: var(--vp-c-tip-2);
+    color: var(--vp-c-brand-hover);
   }
 
   .custom-block.tip code {
@@ -104,12 +184,12 @@
 
   .custom-block.important a,
   .custom-block.important code {
-    color: var(--vp-c-important-1);
+    color: var(--vp-c-important);
   }
 
   .custom-block.important a:hover,
   .custom-block.important a:hover > code {
-    color: var(--vp-c-important-2);
+    color: var(--vp-c-important-hover);
   }
 
   .custom-block.important code {
@@ -124,12 +204,12 @@
 
   .custom-block.warning a,
   .custom-block.warning code {
-    color: var(--vp-c-warning-1);
+    color: var(--vp-c-warning);
   }
 
   .custom-block.warning a:hover,
   .custom-block.warning a:hover > code {
-    color: var(--vp-c-warning-2);
+    color: var(--vp-c-warning-hover);
   }
 
   .custom-block.warning code {
@@ -144,12 +224,12 @@
 
   .custom-block.danger a,
   .custom-block.danger code {
-    color: var(--vp-c-danger-1);
+    color: var(--vp-c-danger);
   }
 
   .custom-block.danger a:hover,
   .custom-block.danger a:hover > code {
-    color: var(--vp-c-danger-2);
+    color: var(--vp-c-danger-hover);
   }
 
   .custom-block.danger code {
@@ -164,12 +244,12 @@
 
   .custom-block.caution a,
   .custom-block.caution code {
-    color: var(--vp-c-caution-1);
+    color: var(--vp-c-caution);
   }
 
   .custom-block.caution a:hover,
   .custom-block.caution a:hover > code {
-    color: var(--vp-c-caution-2);
+    color: var(--vp-c-caution-hover);
   }
 
   .custom-block.caution code {
@@ -183,12 +263,12 @@
   }
 
   .custom-block.details a {
-    color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand);
   }
 
   .custom-block.details a:hover,
   .custom-block.details a:hover > code {
-    color: var(--vp-c-brand-2);
+    color: var(--vp-c-brand-hover);
   }
 
   .custom-block.details code {
@@ -470,7 +550,7 @@
 
   .vp-doc a {
     font-weight: 500;
-    color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand);
     text-decoration: underline;
     text-underline-offset: 0.125rem;
     transition:
@@ -479,7 +559,7 @@
   }
 
   .vp-doc a:hover {
-    color: var(--vp-c-brand-2);
+    color: var(--vp-c-brand-hover);
   }
 
   .vp-doc strong {
@@ -528,7 +608,7 @@
   .vp-doc .task-list-item-checkbox {
     margin: 0 0.25rem 0.125rem -1.25rem;
     vertical-align: middle;
-    accent-color: var(--vp-c-brand-1);
+    accent-color: var(--vp-c-brand);
   }
 
   /**

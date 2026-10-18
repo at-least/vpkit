@@ -18,6 +18,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { black, composite, fitAll, hexs, mix, white } from './color.mjs';
+import { FROM } from './contract.mjs';
 import { modeValues, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -37,19 +38,6 @@ const root = modeValues(vars, ':root');
 const stock = { light: root, dark: new Map([...root, ...modeValues(vars, '.dark')]) };
 
 // the contract's names, in tokens.css's order, each from VitePress's name
-const FROM = {
-  bg: 'bg', 'bg-alt': 'bg-alt', 'bg-elv': 'bg-elv', 'bg-soft': 'bg-soft',
-  'text-1': 'text-1', 'text-2': 'text-2', 'text-3': 'text-3',
-  border: 'border', divider: 'divider', gutter: 'gutter',
-  brand: 'brand-1', 'brand-hover': 'brand-2', 'brand-fill': 'brand-3', 'brand-fill-hover': 'brand-2', 'brand-fill-active': 'brand-1', 'brand-soft': 'brand-soft',
-  'gray-fill': 'default-3', 'gray-fill-hover': 'default-2', 'gray-fill-active': 'default-1', 'gray-soft': 'default-soft',
-  success: 'success-1', 'success-soft': 'success-soft',
-  warning: 'warning-1', 'warning-hover': 'warning-2', 'warning-soft': 'warning-soft',
-  danger: 'danger-1', 'danger-hover': 'danger-2', 'danger-soft': 'danger-soft',
-  caution: 'caution-1', 'caution-hover': 'caution-2', 'caution-soft': 'caution-soft',
-  important: 'important-1', 'important-hover': 'important-2', 'important-soft': 'important-soft',
-};
-
 const fitted = {};
 for (const mode of ['light', 'dark']) {
   const get = (name) => resolve(stock[mode], stock[mode].get(`--vp-c-${name}`));

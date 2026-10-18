@@ -1,4 +1,4 @@
-/* vpkit — the page layout, ported from VitePress's components
+/* vpkit's docs theme — the page layout, ported from VitePress's components
  * (v2.0.0-alpha.20): the skeleton (Layout, VPContent, VPDoc, VPSkipLink,
  * VPBackdrop), the navbar (VPNav, VPNavBar and its parts: the title, search,
  * menu with its flyouts, translations, appearance switch, social links,
@@ -8,10 +8,10 @@
  * VPDocAsideOutline, VPDocOutlineItem), the doc footer (VPDocFooter,
  * VPDocFooterLastUpdated), the site footer (VPFooter) and the home page
  * (VPHome: VPHero with VPButton, VPFeatures with VPFeature, VPHomeContent;
- * VPButton and VPFeature as VitePress has them, where button.css and
- * card.css change them for apps), the 404 page's NotFound and the local
- * search's dialog (VPLocalSearchBox). An optional import:
- * `@import "vpkit/layout.css";`
+ * VPButton and VPFeature as VitePress has them, where the app kit's button
+ * and card change them for apps), the 404 page's NotFound and the local
+ * search's dialog (VPLocalSearchBox). Import it after vpkit and
+ * docs-theme/vars.css: `@import "vpkit/docs-theme/layout.css";`
  *
  * Layout components keep VitePress's markup and rename its classes
  * (test/layout-map.mjs): a component's root class becomes its block
@@ -22,7 +22,8 @@
  * class of its own a part (VPDoc's `.aside` → `vp-doc-page__aside`). Build the
  * markup from VitePress's templates (src/client/theme-default) with these
  * names. Written by scripts/vitepress-port.mjs: the declarations are
- * VitePress's, verbatim. */
+ * VitePress's, verbatim, on VitePress's variable names, which
+ * docs-theme/vars.css defines. */
 
 @layer components {
   /* utils.css: hides an element but keeps it for screen readers */

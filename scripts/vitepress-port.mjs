@@ -1,11 +1,17 @@
-// Port VitePress's layout component styles to vpkit's class names.
+// Port VitePress's stylesheets: the docs theme's layout and variables, and
+// the markdown.
 //
-//   node scripts/vitepress-port.mjs VPContent VPDoc …
+//   node scripts/vitepress-port.mjs --write        write the three files
+//   node scripts/vitepress-port.mjs VPContent VPDoc …   print a component's port
 //
-// Prints each component's <style> from test/upstream (verbatim copies of
-// VitePress) with every class renamed by the scheme in test/layout-map.mjs,
-// ready for @layer components. vpkit's layout files were written from this
-// output; rerun it after re-syncing test/upstream to see what changed.
+// A layout component's <style> from test/upstream (verbatim copies of
+// VitePress) has every class renamed by the scheme in test/layout-map.mjs,
+// ready for @layer components; the markdown's stylesheets are verbatim but
+// for VitePress's color names, read as the contract's (scripts/contract.mjs),
+// with the variables they read defined on .vp-doc; the docs theme's
+// variables are vars.css with its palette on the contract's names and its
+// own names aliased onto them. Rerun after re-syncing test/upstream; the
+// tests fail while a file is not this script's output.
 //
 // Vue's scoping is gone in the port: `:deep(x)` is unwrapped, and a selector
 // loses the [data-v-…] attribute Vue adds to its last compound, the same
@@ -17,6 +23,8 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 
 import { LAYOUT, blockOf, componentOfRoot, isGlobal, rootOf } from '../test/layout-map.mjs';
+import { ALIAS, DERIVED, FROM, renameTokens } from './contract.mjs';
+import { modeValues, parseBlocks, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -216,17 +224,122 @@ function portCss(component) {
   return renameCss(css, namer(component, rootStates(component, css)), blockOf(component)).trim();
 }
 
-// vpkit's layout files, written whole by `--write`: the header, VitePress's
+// VitePress's vars.css, its :root and .dark merged, each value on one side
+function upstreamVars() {
+  const css = readFileSync(join(ROOT, 'test/upstream/vars.css'), 'utf8');
+  const light = modeValues(css, ':root');
+  return { css, light, dark: new Map([...light, ...modeValues(css, '.dark')]) };
+}
+
+// the markdown's own variables, defined on .vp-doc: vars.css's Code, Custom
+// Block and Header Anchor groups, on the contract's names, and icons.css's
+// two copy icons
+function proseLocals() {
+  const { light, dark } = upstreamVars();
+  const lines = [];
+  for (const [name, value] of light) {
+    if (!/^--vp-(code-|custom-block-|header-anchor-symbol)/.test(name)) continue;
+    const other = dark.get(name);
+    if (other !== value) throw new Error(`${name} differs in .dark; the markdown's locals are one block`);
+    lines.push(`    ${name}: ${renameTokens(value).replace(/\s+/g, ' ')};`);
+  }
+  const icons = modeValues(readFileSync(join(ROOT, 'test/upstream/icons.css'), 'utf8'), ':root');
+  for (const name of ['--vp-icon-copy', '--vp-icon-copied']) {
+    if (!icons.has(name)) throw new Error(`icons.css defines no ${name}`);
+    lines.push(`    ${name}: ${icons.get(name)};`);
+  }
+  return `  /* the markdown's variables, VitePress's (vars.css's Code, Custom Block and
+     Header Anchor groups, icons.css's copy icons), on the contract's names,
+     defined where the markdown is */
+  .vp-doc {
+${lines.join('\n')}
+  }`;
+}
+
+// docs-theme/vars.css: VitePress's palette on the contract's names
+// (light-dark pairs of its own values, unfitted), then every variable of
+// its :root, VitePress's color names aliased onto the contract, the brand
+// button's grounds onto the contract's fills, a value that differs in .dark
+// a pair; then its other scopes. The font families are tokens.css's
+function docsVars() {
+  const { css, light, dark } = upstreamVars();
+  const out = [];
+  out.push("  /* VitePress's palette on the contract's names, unfitted: the docs theme is VitePress exactly */");
+  let group = null;
+  for (const [name, from] of Object.entries(FROM)) {
+    const g = name.split('-')[0];
+    if (group && g !== group) out.push('');
+    group = g;
+    out.push(`  --vp-c-${name}: light-dark(${resolve(light, light.get(`--vp-c-${from}`))}, ${resolve(dark, dark.get(`--vp-c-${from}`))});`);
+  }
+  out.push('', "  /* VitePress's own names, its color names aliases onto the contract */");
+  for (const [name, value] of light) {
+    if (name.startsWith('--vp-font-family')) continue;
+    const color = name.match(/^--vp-c-(.+)$/)?.[1];
+    const derived = name.match(/^--vp-(.+)$/)[1];
+    let line;
+    if (color !== undefined && color in ALIAS) {
+      if (ALIAS[color] === color) continue;
+      line = `${name}: var(--vp-c-${ALIAS[color]});`;
+    } else if (derived in DERIVED) {
+      line = `${name}: var(--vp-c-${DERIVED[derived]});`;
+    } else {
+      const other = dark.get(name);
+      line = `${name}: ${other !== value ? `light-dark(${value}, ${other})` : value};`;
+    }
+    out.push(`  ${line.replace(/\s+/g, ' ')}`);
+  }
+  for (const name of dark.keys()) if (!light.has(name)) throw new Error(`vars.css defines ${name} in .dark only`);
+  // the graded containers: GitHub's severity colors (warning orange, caution
+  // yellow) on the contract's names, at :root:has() (0,2,0) so the opt-in
+  // beats a color theme's :root, where VitePress has :root:where(:has())
+  const graded = parseBlocks(css).find((b) => b.selector.includes('.vp-graded-containers'));
+  if (!graded) throw new Error('vars.css has no graded containers block');
+  const gradedLines = graded.declarations
+    .map(([name, value]) => {
+      const color = name.match(/^--vp-c-(.+)$/)?.[1];
+      return color in ALIAS ? `  --vp-c-${ALIAS[color]}: ${value};` : null;
+    })
+    .filter(Boolean);
+  // the sidebar's z-index from 60rem, and the hidden navbar's heights, as
+  // VitePress has them (its .VPSidebar is the layout's .vp-sidebar)
+  const mediaDecl = css.match(/@media \(min-width: 60rem\) \{\s*:root \{\s*([^}]*?)\s*\}\s*\}/)?.[1];
+  if (!mediaDecl) throw new Error('vars.css has no @media :root block');
+  const media = `@media (min-width: 60rem) {\n  :root {\n    ${mediaDecl}\n  }\n}`;
+  const hideNav = [...css.matchAll(/(\.hide-nav[^{]*) \{\s*([^}]*?)\s*\}/g)].map((m) => `${m[1].replace('.VPSidebar', '.vp-sidebar')} {\n  ${m[2]}\n}`);
+  if (hideNav.length !== 2) throw new Error('vars.css has not two .hide-nav blocks');
+  return `:root {
+${out.join('\n')}
+}
+
+/* vp-graded-containers on an element opts a page into GitHub's severity
+   colors: warning orange and caution yellow, where VitePress's default
+   keeps warning yellow and caution red */
+:root:has(.vp-graded-containers) {
+${gradedLines.join('\n')}
+}
+
+${media}
+
+${hideNav.join('\n\n')}
+`;
+}
+
+const indent = (css) => css.split('\n').map((l) => (l ? `  ${l}` : l)).join('\n');
+
+// vpkit's ported files, written whole by `--write`: the header, VitePress's
 // global stylesheets the components rely on (verbatim, first, as VitePress
 // loads them before any component), then each component's port in the
 // order VitePress's bundle has them (vitepress.dev's style.css: a child's
 // styles before its parent's), so rules of two components that tie resolve
-// as there. layout.css is in @layer components; content.css in @layer base,
+// as there. The layout is in @layer components; the markdown in @layer base,
 // below every component, as VitePress's components outrank its vp-doc.css
-// by Vue's scoping, which the port drops
+// by Vue's scoping, which the port drops (a markdown layer of its own would
+// have to be declared before Tailwind's own order, in every entry, or it
+// sorts after the utilities)
 export const FILES = {
-  'layout.css': {
-    header: `/* vpkit — the page layout, ported from VitePress's components
+  'docs-theme/layout.css': {
+    header: `/* vpkit's docs theme — the page layout, ported from VitePress's components
  * (v2.0.0-alpha.20): the skeleton (Layout, VPContent, VPDoc, VPSkipLink,
  * VPBackdrop), the navbar (VPNav, VPNavBar and its parts: the title, search,
  * menu with its flyouts, translations, appearance switch, social links,
@@ -236,10 +349,10 @@ export const FILES = {
  * VPDocAsideOutline, VPDocOutlineItem), the doc footer (VPDocFooter,
  * VPDocFooterLastUpdated), the site footer (VPFooter) and the home page
  * (VPHome: VPHero with VPButton, VPFeatures with VPFeature, VPHomeContent;
- * VPButton and VPFeature as VitePress has them, where button.css and
- * card.css change them for apps), the 404 page's NotFound and the local
- * search's dialog (VPLocalSearchBox). An optional import:
- * \`@import "vpkit/layout.css";\`
+ * VPButton and VPFeature as VitePress has them, where the app kit's button
+ * and card change them for apps), the 404 page's NotFound and the local
+ * search's dialog (VPLocalSearchBox). Import it after vpkit and
+ * docs-theme/vars.css: \`@import "vpkit/docs-theme/layout.css";\`
  *
  * Layout components keep VitePress's markup and rename its classes
  * (test/layout-map.mjs): a component's root class becomes its block
@@ -250,7 +363,8 @@ export const FILES = {
  * class of its own a part (VPDoc's \`.aside\` → \`vp-doc-page__aside\`). Build the
  * markup from VitePress's templates (src/client/theme-default) with these
  * names. Written by scripts/vitepress-port.mjs: the declarations are
- * VitePress's, verbatim. */`,
+ * VitePress's, verbatim, on VitePress's variable names, which
+ * docs-theme/vars.css defines. */`,
     globals: [['utils.css', 'hides an element but keeps it for screen readers']],
     components: [
       'VPBackdrop', 'NotFound', 'VPDocOutlineItem', 'VPDocAsideOutline', 'VPDocAside', 'VPDocFooterLastUpdated', 'VPDocFooter',
@@ -264,29 +378,39 @@ export const FILES = {
       'VPLocalSearchBox',
     ],
   },
-  'content.css': {
+  'prose.css': {
     layer: 'base',
     header: `/* vpkit — markdown content, everything inside \`<div class="vp-doc">\`:
  * VitePress's styles/components/custom-block.css, vp-code-group.css and
  * vp-doc.css (v2.0.0-alpha.20) verbatim, in the order its theme imports
  * them (without-fonts.ts), which decides the ties between them: a link in
  * a container is weight 500 by vp-doc.css, a code block in one takes the
- * code block's color. An optional import:
- * \`@import "vpkit/content.css";\`
+ * code block's color. An optional import: \`@import "vpkit/prose.css";\`
+ *
+ * VitePress's color names are read as the contract's (scripts/contract.mjs:
+ * brand-1 is brand, brand-2 brand-hover, tip and note are brand's, caution
+ * is danger's), and the variables the markdown reads (--vp-code-*,
+ * --vp-custom-block-*, the anchor symbol, the copy icons) are VitePress's,
+ * defined on .vp-doc, so nothing outside the contract is needed.
  *
  * In \`@layer base\`, below the components: a vp-btn, a vp-card or any
  * other component inside a vp-doc keeps its own look and its own states
  * (VitePress's components win there by Vue's scoping, which the port
- * drops), and a utility still wins as it does everywhere.
+ * drops), and a utility still wins as it does everywhere. A layer of the
+ * markdown's own would have to be declared before Tailwind's order in
+ * every entry, or it would sort after the utilities.
  *
  * These style VitePress's markdown output (markdown-it and Shiki): headings
  * with \`.header-anchor\` links, \`div.custom-block\` containers and GitHub
  * alerts, \`div[class*='language-']\` code blocks with their copy button,
  * language label, highlighted, diff and focused lines and line numbers,
- * \`.vp-code-group\` tabs. Its classes are VitePress's own, not renamed.
- * The code's colors are not here: they come with the highlighter (Shiki's
- * two themes, vp-code.css, in VitePress). Written by
+ * \`.vp-code-group\` tabs, and the arrow of an external link
+ * (\`.vp-external-link-icon\`, anywhere). Its classes are VitePress's own,
+ * not renamed. The code's colors are not here: they come with the
+ * highlighter (Shiki's two themes, vp-code.css, in VitePress). Written by
  * scripts/vitepress-port.mjs. */`,
+    locals: proseLocals,
+    rename: renameTokens,
     globals: [
       ['custom-block.css', 'containers and GitHub alerts'],
       ['vp-code-group.css', 'code groups'],
@@ -294,14 +418,27 @@ export const FILES = {
     ],
     components: [],
   },
+  'docs-theme/vars.css': {
+    header: `/* vpkit's docs theme — VitePress's variables (vars.css at v2.0.0-alpha.20),
+ * for its layout: its palette on the contract's names, unfitted, one
+ * light-dark() pair each, so a docs site is VitePress exactly where the app
+ * kit's defaults are fitted for contrast; then every variable of VitePress's
+ * :root, its color names aliased onto the contract (--vp-c-brand-1 is
+ * --vp-c-brand), the brand button's grounds onto the contract's fills, so a
+ * color theme, which defines the contract, recolors the layout too; its
+ * ramps, the z-indexes and the rest verbatim. Import it after vpkit, before
+ * the layout: \`@import "vpkit/docs-theme/vars.css";\`. test/tokens.mjs holds
+ * every variable to vars.css. Written by scripts/vitepress-port.mjs. */`,
+    body: docsVars,
+  },
 };
 
-const indent = (css) => css.split('\n').map((l) => (l ? `  ${l}` : l)).join('\n');
-
 export function fileText(name) {
-  const { header, globals, components, layer = 'components' } = FILES[name];
+  const { header, body, locals, rename = (css) => css, globals = [], components = [], layer = 'components' } = FILES[name];
+  if (body) return `${header}\n\n${body()}`;
   const sections = [
-    ...globals.map(([file, what]) => `  /* ${file}: ${what} */\n${indent(readFileSync(join(ROOT, 'test/upstream', file), 'utf8').trim())}`),
+    ...(locals ? [locals()] : []),
+    ...globals.map(([file, what]) => `  /* ${file}: ${what} */\n${indent(rename(readFileSync(join(ROOT, 'test/upstream', file), 'utf8').trim()))}`),
     ...components.map((c) => `  /* ${c} (${LAYOUT[c].file}) */\n${indent(portCss(c))}`),
   ];
   return `${header}\n\n@layer ${layer} {\n${sections.join('\n\n')}\n}\n`;

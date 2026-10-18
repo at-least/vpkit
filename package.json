@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "node test/gen-themes.mjs && node scripts/fit-stock.mjs --check && node test/themes.mjs && node test/utilities.mjs && node test/components.mjs && node test/motion.mjs && node test/rust.mjs"
+    "test": "node test/gen-themes.mjs && node scripts/fit-stock.mjs --check && node test/themes.mjs && node test/tokens.mjs && node test/utilities.mjs && node test/components.mjs && node test/motion.mjs && node test/layout.mjs && node test/rust.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

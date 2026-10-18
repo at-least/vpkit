@@ -67,10 +67,15 @@ for (const file of appKit) {
 const docsVars = existsSync(join(ROOT, 'docs-theme/vars.css'))
   ? [...modeValues(read('docs-theme/vars.css'), ':root').keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length))
   : [];
+// VitePress's own slip, carried verbatim by the port: VPSidebar.vue sets
+// `box-shadow: var(--vp-c-shadow-3)` on the phone's open sidebar, and
+// nothing defines that name (the shadows are --vp-shadow-*), so it never
+// paints upstream either
+const UPSTREAM_SLIPS = ['shadow-3'];
 for (const file of cssFiles('docs-theme')) {
   for (const name of reads(read(file))) {
     checks++;
-    if (!COLORS.includes(name) && !docsVars.includes(name)) fail(`${file} reads --vp-c-${name}, which neither tokens.css nor docs-theme/vars.css defines`);
+    if (!COLORS.includes(name) && !docsVars.includes(name) && !UPSTREAM_SLIPS.includes(name)) fail(`${file} reads --vp-c-${name}, which neither tokens.css nor docs-theme/vars.css defines`);
   }
 }
 
