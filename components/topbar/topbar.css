@@ -64,8 +64,12 @@
     height: var(--vp-nav-height);
   }
 
+  /* min-width: 0 is VPNavBar's, on the column it reserves for the title:
+     the one piece that shrinks, so its text truncates instead of pushing
+     the row's links out of the bar */
   .vp-topbar-title {
     display: flex;
+    min-width: 0;
     align-items: center;
     height: var(--vp-nav-height);
     font-size: 1rem;

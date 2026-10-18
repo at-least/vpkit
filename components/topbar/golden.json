@@ -102,5 +102,27 @@
         "offset-left": "179px"
       }
     }
+  },
+  "topbar out of room": {
+    "light": {
+      ".vp-topbar-title": {
+        "min-width": "0px",
+        "width": "222px"
+      },
+      ".vp-nav-link": {
+        "offset-left": "222px",
+        "width": "66px"
+      }
+    },
+    "dark": {
+      ".vp-topbar-title": {
+        "min-width": "0px",
+        "width": "222px"
+      },
+      ".vp-nav-link": {
+        "offset-left": "222px",
+        "width": "66px"
+      }
+    }
   }
 }

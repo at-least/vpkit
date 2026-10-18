@@ -2,8 +2,9 @@
 // VPNavBar.vue: the bar, its wrapper's padding, its container, the ground
 // its ::before paints) and VPNavBarTitle (the site's name): at a desktop's
 // width and a phone's. vpkit's own, golden, each named: the rule as a
-// border, the row centering its items; and the example, a bar with its
-// name, its links and the appearance switch. vpkit against vpkit: the
+// border, the row centering its items; the example, a bar with its name,
+// its links and the appearance switch; and a bar out of room, its title
+// truncating. vpkit against vpkit: the
 // title inside a vp-doc against itself alone.
 
 import { dirname } from 'node:path';
@@ -64,6 +65,18 @@ cases.push({
     { target: '.vp-topbar-title', props: ['height', 'offset-top', 'color'] },
     { target: '.vp-nav-link', props: ['height', 'offset-top', 'color'] },
     { target: '.vp-toggle', props: ['height', 'offset-top', 'offset-left'] },
+  ],
+});
+
+// out of room, a long name at 320px with a link beside it: the title, the
+// one piece that shrinks, truncates its text, and the link stays in the bar
+cases.push({
+  name: 'topbar out of room',
+  width: 320,
+  html: '<header class="vp-topbar"><div class="vp-topbar-row"><a class="vp-topbar-title" href="#"><span>A site whose name is longer than its bar</span></a><a class="vp-nav-link" href="#">Guide</a></div></header>',
+  checks: [
+    { target: '.vp-topbar-title', props: ['min-width', 'width'] },
+    { target: '.vp-nav-link', props: ['offset-left', 'width'] },
   ],
 });
 
