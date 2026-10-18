@@ -1,0 +1,146 @@
+{
+  "breadcrumb": {
+    "light": {
+      ".vp-breadcrumb": {
+        "display": "flex",
+        "flex-wrap": "wrap",
+        "align-items": "center",
+        "min-width": "0px",
+        "font-size": "14px",
+        "overflow-wrap": "anywhere",
+        "height": "21px"
+      },
+      ".vp-breadcrumb-item:not([aria-current])": {
+        "color": "rgb(103, 103, 108)",
+        "text-decoration-line": "none",
+        "font-weight": "400",
+        "font-size": "14px"
+      },
+      ".vp-breadcrumb-item:not([aria-current]) :hover": {
+        "color": "rgb(60, 60, 67)",
+        "text-decoration-line": "underline"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"]": {
+        "color": "rgb(60, 60, 67)",
+        "text-decoration-line": "none",
+        "font-weight": "600",
+        "font-size": "14px"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"] :hover": {
+        "color": "rgb(60, 60, 67)",
+        "text-decoration-line": "none"
+      },
+      ".vp-breadcrumb > li + li::before": {
+        "content": "\"/\"",
+        "color": "rgb(146, 146, 149)",
+        "padding-left": "6px",
+        "padding-right": "6px"
+      },
+      ".vp-breadcrumb > li:first-child::before": {
+        "content": "none"
+      }
+    },
+    "dark": {
+      ".vp-breadcrumb": {
+        "display": "flex",
+        "flex-wrap": "wrap",
+        "align-items": "center",
+        "min-width": "0px",
+        "font-size": "14px",
+        "overflow-wrap": "anywhere",
+        "height": "21px"
+      },
+      ".vp-breadcrumb-item:not([aria-current])": {
+        "color": "rgb(152, 152, 159)",
+        "text-decoration-line": "none",
+        "font-weight": "400",
+        "font-size": "14px"
+      },
+      ".vp-breadcrumb-item:not([aria-current]) :hover": {
+        "color": "rgb(223, 223, 214)",
+        "text-decoration-line": "underline"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"]": {
+        "color": "rgb(223, 223, 214)",
+        "text-decoration-line": "none",
+        "font-weight": "600",
+        "font-size": "14px"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"] :hover": {
+        "color": "rgb(223, 223, 214)",
+        "text-decoration-line": "none"
+      },
+      ".vp-breadcrumb > li + li::before": {
+        "content": "\"/\"",
+        "color": "rgb(106, 106, 113)",
+        "padding-left": "6px",
+        "padding-right": "6px"
+      },
+      ".vp-breadcrumb > li:first-child::before": {
+        "content": "none"
+      }
+    }
+  },
+  "breadcrumb with a span and a long name": {
+    "light": {
+      ".vp-breadcrumb-item[aria-current=\"page\"]": {
+        "color": "rgb(60, 60, 67)",
+        "text-decoration-line": "none",
+        "font-weight": "600",
+        "font-size": "14px",
+        "cursor": "auto"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"] :hover": {
+        "color": "rgb(60, 60, 67)",
+        "text-decoration-line": "none"
+      },
+      ".vp-breadcrumb": {
+        "width": "320px",
+        "height": "63px"
+      },
+      ".vp-breadcrumb > li:last-child": {
+        "width": "320px",
+        "height": "42px"
+      }
+    },
+    "dark": {
+      ".vp-breadcrumb-item[aria-current=\"page\"]": {
+        "color": "rgb(223, 223, 214)",
+        "text-decoration-line": "none",
+        "font-weight": "600",
+        "font-size": "14px",
+        "cursor": "auto"
+      },
+      ".vp-breadcrumb-item[aria-current=\"page\"] :hover": {
+        "color": "rgb(223, 223, 214)",
+        "text-decoration-line": "none"
+      },
+      ".vp-breadcrumb": {
+        "width": "320px",
+        "height": "63px"
+      },
+      ".vp-breadcrumb > li:last-child": {
+        "width": "320px",
+        "height": "42px"
+      }
+    }
+  },
+  "breadcrumb item focused": {
+    "light": {
+      ".vp-breadcrumb-item:not([aria-current]) :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "2px"
+      }
+    },
+    "dark": {
+      ".vp-breadcrumb-item:not([aria-current]) :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "2px"
+      }
+    }
+  }
+}
