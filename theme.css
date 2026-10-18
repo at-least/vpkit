@@ -1,17 +1,16 @@
 /* vpkit — the Tailwind CSS v4 wiring: the `dark:` variant on a `.dark`
  * class, VitePress's breakpoints (they replace Tailwind's), and the
- * semantic utilities (`text-body`, `bg-alt`, `border-divider`, …)
- * that resolve to the --vp-* variables in tokens.css. Part of index.css;
- * `@import "vpkit/theme.css"` takes it alone. */
+ * semantic utilities (`text-body`, `bg-soft`, `border-divider`,
+ * `text-brand`, …) that resolve to the --vp-* variables in tokens.css.
+ * Part of index.css; `@import "vpkit/theme.css"` takes it alone. */
 
 /* Class-based dark mode, matching a `.dark` class on <html> (set it
    before first paint, or the page flashes light). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* VitePress's breakpoints (mobile-first), in rem as its media queries
-   are (vuejs/vitepress#5323, before the pinned tag): layout.css and the
-   components switch at these rems, so a utility must too, or a browser
-   font size other than the default shifts `lg:` against them.
+   are: the components switch at these rems, so a utility must too, or a
+   browser font size other than the default shifts `lg:` against them.
    test/tokens.mjs holds them to upstream's media queries. */
 @theme {
   --breakpoint-*: initial;
@@ -22,69 +21,50 @@
   --breakpoint-2xl: 90rem;
 }
 
-/* Semantic tokens mapped onto the --vp-* custom properties below. Because
-   the mapping is `inline`, utilities emit the var() directly and follow the
-   .dark overrides (e.g. `text-body`, `bg-alt`, `border-divider`). */
+/* Semantic names on the --vp-* custom properties. Because the mapping is
+   `inline`, a utility emits the var() directly and follows the appearance
+   and the color theme. A text color reads --text-color-* before --color-*,
+   a ground --background-color-*: the words below make text- and bg-
+   classes only (no bg-secondary, no text-alt). test/utilities.mjs holds
+   each name to its variable. */
 @theme inline {
   --font-sans: var(--vp-font-family-base);
   --font-mono: var(--vp-font-family-mono);
 
-  /* The text colors by the token contract's words for them: text-body,
-     text-secondary and text-muted (VitePress's text-1, -2 and -3). A
-     text- utility reads its color from --text-color-* before --color-*,
-     so these make text- classes and nothing else (no bg-secondary). */
+  /* the text: text-body, text-secondary, text-muted */
   --text-color-body: var(--vp-c-text-1);
   --text-color-secondary: var(--vp-c-text-2);
   --text-color-muted: var(--vp-c-text-3);
 
-  /* The grounds: bg-bg is the page, and the other three take their short
-     names from --background-color-*, which makes bg- classes only. */
-  --color-bg: var(--vp-c-bg);
+  /* the grounds: bg-page, bg-alt, bg-soft, bg-elv */
+  --background-color-page: var(--vp-c-bg);
   --background-color-alt: var(--vp-c-bg-alt);
-  --background-color-elv: var(--vp-c-bg-elv);
   --background-color-soft: var(--vp-c-bg-soft);
+  --background-color-elv: var(--vp-c-bg-elv);
 
-  /* The first names, which doubled the utility's prefix (text-text-2,
-     bg-bg-alt) and work for every color utility (fill-text-2): kept, since
-     the apps' sources carry them and test/recipes.mjs copies the apps'
-     recipes verbatim. test/utilities.mjs holds both. */
-  --color-bg-alt: var(--vp-c-bg-alt);
-  --color-bg-elv: var(--vp-c-bg-elv);
-  --color-bg-soft: var(--vp-c-bg-soft);
-  --color-text-1: var(--vp-c-text-1);
-  --color-text-2: var(--vp-c-text-2);
-  --color-text-3: var(--vp-c-text-3);
-
+  /* the lines, for every color utility: border-divider, bg-divider */
   --color-border: var(--vp-c-border);
   --color-divider: var(--vp-c-divider);
   --color-gutter: var(--vp-c-gutter);
 
-  --color-brand-1: var(--vp-c-brand-1);
-  --color-brand-2: var(--vp-c-brand-2);
-  --color-brand-3: var(--vp-c-brand-3);
+  /* the brand and the gray: text-brand, border-brand, bg-brand-soft,
+     bg-gray-soft, fill-brand */
+  --color-brand: var(--vp-c-brand);
+  --color-brand-hover: var(--vp-c-brand-hover);
+  --color-brand-fill: var(--vp-c-brand-fill);
   --color-brand-soft: var(--vp-c-brand-soft);
+  --color-gray-fill: var(--vp-c-gray-fill);
+  --color-gray-soft: var(--vp-c-gray-soft);
 
-  --color-default-1: var(--vp-c-default-1);
-  --color-default-2: var(--vp-c-default-2);
-  --color-default-3: var(--vp-c-default-3);
-  --color-default-soft: var(--vp-c-default-soft);
-
-  /* success, warning and danger: only the text tone and the soft tint,
-     the ones the apps use. Every variable mapped here is one a color theme
-     must define (test/themes.mjs holds the themes to each var() this
-     package references), and the themes define no -3 of these, nor
-     success-2 (warning-2 and danger-2 they do, as the alerts' link
-     hovers). */
-  --color-success-1: var(--vp-c-success-1);
+  /* the roles: the text tone and the soft tint, text-danger, bg-danger-soft */
+  --color-success: var(--vp-c-success);
   --color-success-soft: var(--vp-c-success-soft);
-
-  --color-warning-1: var(--vp-c-warning-1);
+  --color-warning: var(--vp-c-warning);
   --color-warning-soft: var(--vp-c-warning-soft);
-
-  --color-danger-1: var(--vp-c-danger-1);
+  --color-danger: var(--vp-c-danger);
   --color-danger-soft: var(--vp-c-danger-soft);
-
-  --color-sponsor: var(--vp-c-sponsor);
+  --color-important: var(--vp-c-important);
+  --color-important-soft: var(--vp-c-important-soft);
 
   --shadow-1: var(--vp-shadow-1);
   --shadow-2: var(--vp-shadow-2);

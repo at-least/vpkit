@@ -302,6 +302,8 @@ function buildMode(mode, m, adjusted = new Set()) {
   const brand3 = m.brand3 ?? mix(m.brand1, black, 0.22);
   m.button_hover = fit(buttonHover, white, 3.0, 'light'); // always darken toward black
   m.brand3 = fit(brand3, white, 3.0, 'light');
+  // the pressed ground: a quarter toward black from the rest ground
+  m.button_active = fit(mix(m.brand3, black, 0.25), white, 3.0, 'light');
   // brand-2, a hovered link: on the page, the elevated surface and inline
   // code as text, and dimmed in the gray containers and on their code
   const gray = grayOn(bg);
@@ -312,33 +314,31 @@ function buildMode(mode, m, adjusted = new Set()) {
     const tint = composite(base, a, bg);
     return fitAll(base, mode, { dimmed: [tint, composite(base, a, tint)] });
   };
-  const tipA = room(m.brand1, alpha);
   const roleA = Object.fromEntries(['important', 'warning', 'danger'].map((r) => [r, room(m[r], sAlpha)]));
+  // the alt button's grounds: active, hover, rest (the lightest in light
+  // mode is the rest ground)
   const dflt = mode === 'light'
     ? [mix(neutral, bg, 0.25), mix(neutral, bg, 0.45), mix(neutral, bg, 0.65)]
     : [mix(neutral, bg, 0.05), mix(neutral, bg, 0.28), mix(neutral, bg, 0.48)];
   const danger2 = hover(m.danger, roleA.danger);
   return {
-    neutral_inverse: mode === 'light' ? white : black,
     bg, bg_alt: bgAlt, bg_elv: bgElv, bg_soft: bgAlt,
     text1: m.text1, text2: m.text2, text3: m.text3,
     border: m.border, divider: m.border, gutter: m.border,
-    brand1: m.brand1, brand2: m.brand2, brand3: m.brand3, button_hover: m.button_hover,
+    brand: m.brand1, brand_hover: m.brand2, brand_fill: m.brand3,
+    brand_fill_hover: m.button_hover, brand_fill_active: m.button_active,
     brand_soft: rgba(m.brand1, alpha),
-    default1: dflt[0], default2: dflt[1], default3: dflt[2],
-    default_soft: rgba(neutral, dsAlpha),
-    tip1: m.brand1, tip2: hover(m.brand1, tipA), tip_soft: rgba(m.brand1, tipA),
-    note1: m.brand1, note_soft: rgba(m.brand1, alpha),
-    success1: m.success, success_soft: rgba(m.success, sAlpha),
-    important1: m.important, important2: hover(m.important, roleA.important),
-    important_soft: rgba(m.important, roleA.important),
-    warning1: m.warning, warning2: hover(m.warning, roleA.warning),
+    gray_fill: dflt[2], gray_fill_hover: dflt[1], gray_fill_active: dflt[0],
+    gray_soft: rgba(neutral, dsAlpha),
+    success: m.success, success_soft: rgba(m.success, sAlpha),
+    warning: m.warning, warning_hover: hover(m.warning, roleA.warning),
     warning_soft: rgba(m.warning, roleA.warning),
-    danger1: m.danger, danger2,
+    danger: m.danger, danger_hover: danger2,
     danger_soft: rgba(m.danger, roleA.danger),
-    caution1: m.danger, caution2: danger2,
+    caution: m.danger, caution_hover: danger2,
     caution_soft: rgba(m.danger, roleA.danger),
-    sponsor: m.sponsor,
+    important: m.important, important_hover: hover(m.important, roleA.important),
+    important_soft: rgba(m.important, roleA.important),
   };
 }
 
@@ -347,29 +347,35 @@ function rgba(c, a) {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-const TOKENS = [
-  ['neutral_inverse', '--vp-c-neutral-inverse'], ['bg', '--vp-c-bg'], ['bg_alt', '--vp-c-bg-alt'],
-  ['bg_elv', '--vp-c-bg-elv'], ['bg_soft', '--vp-c-bg-soft'],
+// the contract (tokens.css), slot by slot, in its order; a blank line
+// between the groups
+export const TOKENS = [
+  ['bg', '--vp-c-bg'], ['bg_alt', '--vp-c-bg-alt'], ['bg_elv', '--vp-c-bg-elv'], ['bg_soft', '--vp-c-bg-soft'],
   ['text1', '--vp-c-text-1'], ['text2', '--vp-c-text-2'], ['text3', '--vp-c-text-3'],
   ['border', '--vp-c-border'], ['divider', '--vp-c-divider'], ['gutter', '--vp-c-gutter'],
-  ['brand1', '--vp-c-brand-1'], ['brand2', '--vp-c-brand-2'], ['brand3', '--vp-c-brand-3'],
+  ['brand', '--vp-c-brand'], ['brand_hover', '--vp-c-brand-hover'], ['brand_fill', '--vp-c-brand-fill'],
+  ['brand_fill_hover', '--vp-c-brand-fill-hover'], ['brand_fill_active', '--vp-c-brand-fill-active'],
   ['brand_soft', '--vp-c-brand-soft'],
-  ['default1', '--vp-c-default-1'], ['default2', '--vp-c-default-2'], ['default3', '--vp-c-default-3'],
-  ['default_soft', '--vp-c-default-soft'],
-  ['tip1', '--vp-c-tip-1'], ['tip2', '--vp-c-tip-2'], ['tip_soft', '--vp-c-tip-soft'],
-  ['note1', '--vp-c-note-1'], ['note_soft', '--vp-c-note-soft'],
-  ['success1', '--vp-c-success-1'], ['success_soft', '--vp-c-success-soft'],
-  ['important1', '--vp-c-important-1'], ['important2', '--vp-c-important-2'],
-  ['important_soft', '--vp-c-important-soft'],
-  ['warning1', '--vp-c-warning-1'], ['warning2', '--vp-c-warning-2'], ['warning_soft', '--vp-c-warning-soft'],
-  ['danger1', '--vp-c-danger-1'], ['danger2', '--vp-c-danger-2'], ['danger_soft', '--vp-c-danger-soft'],
-  ['caution1', '--vp-c-caution-1'], ['caution2', '--vp-c-caution-2'], ['caution_soft', '--vp-c-caution-soft'],
-  ['sponsor', '--vp-c-sponsor'],
-  ['button_hover', '--vp-button-brand-hover-bg'],
+  ['gray_fill', '--vp-c-gray-fill'], ['gray_fill_hover', '--vp-c-gray-fill-hover'],
+  ['gray_fill_active', '--vp-c-gray-fill-active'], ['gray_soft', '--vp-c-gray-soft'],
+  ['success', '--vp-c-success'], ['success_soft', '--vp-c-success-soft'],
+  ['warning', '--vp-c-warning'], ['warning_hover', '--vp-c-warning-hover'], ['warning_soft', '--vp-c-warning-soft'],
+  ['danger', '--vp-c-danger'], ['danger_hover', '--vp-c-danger-hover'], ['danger_soft', '--vp-c-danger-soft'],
+  ['caution', '--vp-c-caution'], ['caution_hover', '--vp-c-caution-hover'], ['caution_soft', '--vp-c-caution-soft'],
+  ['important', '--vp-c-important'], ['important_hover', '--vp-c-important-hover'], ['important_soft', '--vp-c-important-soft'],
 ];
 
-function emitCss(name, desc, note, light, dark) {
-  const block = (vals) => TOKENS.map(([k, css]) => `  ${css}: ${vals[k]};`).join('\n');
+// a theme's one block: every token a light-dark() pair, the shadows from
+// the light text color
+export function emitBlock(light, dark) {
+  let out = ':root {\n';
+  let group = null;
+  for (const [k, css] of TOKENS) {
+    const g = css.replace(/^--vp-c-/, '').split('-')[0];
+    if (group && g !== group) out += '\n';
+    group = g;
+    out += `  ${css}: light-dark(${light[k]}, ${dark[k]});\n`;
+  }
   const shadows = [
     `0 1px 2px ${rgba(light.text1, 0.05)}, 0 1px 2px ${rgba(light.text1, 0.07)}`,
     `0 3px 12px ${rgba(light.text1, 0.09)}, 0 1px 4px ${rgba(light.text1, 0.09)}`,
@@ -377,17 +383,11 @@ function emitCss(name, desc, note, light, dark) {
     `0 14px 44px ${rgba(light.text1, 0.14)}, 0 3px 9px ${rgba(light.text1, 0.14)}`,
     `0 18px 56px ${rgba(light.text1, 0.18)}, 0 4px 12px ${rgba(light.text1, 0.18)}`,
   ].map((s, i) => `  --vp-shadow-${i + 1}: ${s};`).join('\n');
-  return `/* Built-in theme: ${name} — ${desc}. ${note} */
-:root {
-${block(light)}
-
-${shadows}
+  return `${out}\n${shadows}\n}\n`;
 }
 
-.dark {
-${block(dark)}
-}
-`;
+export function emitCss(name, desc, note, light, dark) {
+  return `/* Built-in theme: ${name} — ${desc}. ${note} */\n${emitBlock(light, dark)}`;
 }
 
 // the half a palette does not publish, from the map of the one it does:

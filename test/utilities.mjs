@@ -1,11 +1,11 @@
-// The semantic color utilities: each name compiles to the --vp-* variable it
+// The semantic utilities: each name compiles to the --vp-* variable it
 // stands for. The text colors are text-body, text-secondary and text-muted
 // (--text-color-*, which Tailwind reads for a text- utility before
-// --color-*, so they make text- classes and nothing else) and the grounds
-// bg-alt, bg-soft and bg-elv (--background-color-*, bg- classes only); the
-// first names, text-text-1 and bg-bg-alt and the rest, still compile for
-// every color utility, since the apps' sources and test/recipes.mjs
-// (verbatim) carry them.
+// --color-*, so they make text- classes and nothing else), the grounds
+// bg-page, bg-alt, bg-soft and bg-elv (--background-color-*, bg- classes
+// only), and the lines, the brand, the gray and the roles are --color-*,
+// for every color utility (border-divider, text-brand, bg-danger-soft,
+// fill-brand).
 //
 //   node test/utilities.mjs
 //
@@ -36,33 +36,46 @@ const want = {
   'text-muted': 'color:var(--vp-c-text-3)',
   'hover:text-secondary': 'color:var(--vp-c-text-2)',
   'placeholder:text-muted': 'color:var(--vp-c-text-3)',
-  'bg-bg': 'background-color:var(--vp-c-bg)',
+  'bg-page': 'background-color:var(--vp-c-bg)',
   'bg-alt': 'background-color:var(--vp-c-bg-alt)',
   'bg-soft': 'background-color:var(--vp-c-bg-soft)',
   'bg-elv': 'background-color:var(--vp-c-bg-elv)',
   'hover:bg-soft': 'background-color:var(--vp-c-bg-soft)',
-  // the first names
-  'text-text-1': 'color:var(--vp-c-text-1)',
-  'text-text-2': 'color:var(--vp-c-text-2)',
-  'text-text-3': 'color:var(--vp-c-text-3)',
-  'bg-bg-alt': 'background-color:var(--vp-c-bg-alt)',
-  'bg-bg-soft': 'background-color:var(--vp-c-bg-soft)',
-  'bg-bg-elv': 'background-color:var(--vp-c-bg-elv)',
-  'fill-text-2': 'fill:var(--vp-c-text-2)',
-  'border-bg-soft': 'border-color:var(--vp-c-bg-soft)',
-  // the three kinds the apps write in color, the tone and the soft tint
-  'text-success-1': 'color:var(--vp-c-success-1)',
-  'text-warning-1': 'color:var(--vp-c-warning-1)',
-  'text-danger-1': 'color:var(--vp-c-danger-1)',
+  // the lines, for any color utility
+  'border-border': 'border-color:var(--vp-c-border)',
+  'border-divider': 'border-color:var(--vp-c-divider)',
+  'border-gutter': 'border-color:var(--vp-c-gutter)',
+  'bg-divider': 'background-color:var(--vp-c-divider)',
+  // the brand and the gray
+  'text-brand': 'color:var(--vp-c-brand)',
+  'text-brand-hover': 'color:var(--vp-c-brand-hover)',
+  'border-brand': 'border-color:var(--vp-c-brand)',
+  'fill-brand': 'fill:var(--vp-c-brand)',
+  'bg-brand-fill': 'background-color:var(--vp-c-brand-fill)',
+  'bg-brand-soft': 'background-color:var(--vp-c-brand-soft)',
+  'bg-gray-soft': 'background-color:var(--vp-c-gray-soft)',
+  'border-gray-fill': 'border-color:var(--vp-c-gray-fill)',
+  // the roles: the tone and the soft tint
+  'text-success': 'color:var(--vp-c-success)',
+  'text-warning': 'color:var(--vp-c-warning)',
+  'text-danger': 'color:var(--vp-c-danger)',
+  'text-important': 'color:var(--vp-c-important)',
   'bg-success-soft': 'background-color:var(--vp-c-success-soft)',
   'bg-warning-soft': 'background-color:var(--vp-c-warning-soft)',
   'bg-danger-soft': 'background-color:var(--vp-c-danger-soft)',
+  'bg-important-soft': 'background-color:var(--vp-c-important-soft)',
+  // the shadows
+  'shadow-1': 'var(--vp-shadow-1)',
+  'shadow-4': 'var(--vp-shadow-4)',
   // Tailwind's font sizes, untouched by the text colors' namespace
   'text-sm': 'font-size:var(--text-sm)',
   'text-2xl': 'font-size:var(--text-2xl)',
 };
-// the new names make their own utility and no other
-const none = ['bg-body', 'bg-secondary', 'bg-muted', 'border-secondary', 'fill-muted', 'text-alt', 'text-soft', 'text-elv', 'border-alt', 'fill-soft'];
+// the names make their own utility and no other, and the first names are gone
+const none = [
+  'bg-body', 'bg-secondary', 'bg-muted', 'border-secondary', 'fill-muted', 'text-alt', 'text-soft', 'text-elv', 'text-page', 'border-alt', 'fill-soft',
+  'text-text-1', 'bg-bg', 'bg-bg-alt', 'fill-text-2', 'text-brand-1', 'text-danger-1', 'bg-default-soft', 'border-default-1',
+];
 
 let failed = 0;
 for (const [cls, decl] of Object.entries(want)) {
@@ -88,5 +101,5 @@ if (!flat.includes(mix)) {
   failed++;
 }
 const total = Object.keys(want).length + none.length + 1;
-console.log(`semantic color utilities: ${total} checks, ${failed} failed`);
+console.log(`semantic utilities: ${total} checks, ${failed} failed`);
 process.exit(failed ? 1 : 0);

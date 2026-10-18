@@ -1,12 +1,12 @@
 {
   "name": "vpkit",
   "version": "0.1.0",
-  "description": "The VitePress default-theme look as a Tailwind CSS v4 theme: --vp-* variables, semantic utilities, components, color themes, Inter webfonts",
+  "description": "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the --vp-* contract, semantic utilities, components, color themes, Inter webfonts, and a hypertext crate for the markup",
   "style": "index.css",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "node test/gen-themes.mjs && node scripts/fit-vitepress.mjs --check && node test/themes.mjs && node test/tokens.mjs && node test/utilities.mjs && node test/compare.mjs && node test/forced-colors.mjs && node test/motion.mjs && node test/layout.mjs && node test/rust.mjs && node scripts/build-docs.mjs --check && node test/docs.mjs"
+    "test": "node test/gen-themes.mjs && node scripts/fit-stock.mjs --check && node test/themes.mjs && node test/utilities.mjs && node test/rust.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

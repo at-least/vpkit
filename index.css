@@ -1,21 +1,22 @@
-/* vpkit — the VitePress default-theme look as a Tailwind CSS v4 theme.
+/* vpkit — VitePress's look as a Tailwind CSS v4 theme and a kit of
+ * components for applications.
  *
- * Import it after Tailwind (fonts.css and the components are separate,
- * optional imports):
+ * Import it after Tailwind; the components, the markdown (prose.css) and
+ * the fonts (fonts.css) are separate, optional imports:
  *
  *   @import "tailwindcss";
  *   @import "vpkit";
+ *   @import "vpkit/components/button/button.css";
  *
- * It is these four parts, which a project can also take one by one, e.g.
+ * It is these three parts, which a project can also take one by one, e.g.
  * tokens.css and theme.css without base.css's global rules:
  *   theme.css   the dark variant, breakpoints and semantic utilities
- *   tokens.css  the --vp-* variables
- *   doc.css     the external-link rules for rendered markdown
- *   base.css    the page's colors and VitePress's global element rules
+ *   tokens.css  the --vp-* variables: the color contract and the rest
+ *   base.css    the page's colors, the focus ring and VitePress's global
+ *               element rules
  * Everything project-specific (the @source paths, layer order beyond
  * Tailwind's own) belongs in the importing stylesheet. */
 
 @import "./theme.css";
 @import "./tokens.css";
-@import "./doc.css";
 @import "./base.css";

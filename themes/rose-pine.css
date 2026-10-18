@@ -4,107 +4,55 @@
  * soft container backgrounds. A few accents are deepened for AA
  * contrast on Dawn. */
 :root {
-  --vp-c-neutral-inverse: #ffffff;
+  --vp-c-bg: light-dark(#faf4ed, #191724);
+  --vp-c-bg-alt: light-dark(#f2e9e1, #1f1d2e);
+  --vp-c-bg-elv: light-dark(#fffaf3, #26233a);
+  --vp-c-bg-soft: light-dark(#f2e9e1, #1f1d2e);
 
-  --vp-c-bg: #faf4ed;
-  --vp-c-bg-alt: #f2e9e1;
-  --vp-c-bg-elv: #fffaf3;
-  --vp-c-bg-soft: #f2e9e1;
+  --vp-c-text-1: light-dark(#4f4a6e, #e0def4);
+  --vp-c-text-2: light-dark(#625e78, #908caa);
+  --vp-c-text-3: light-dark(#797593, #6e6a86);
 
-  --vp-c-text-1: #4f4a6e;
-  --vp-c-text-2: #625e78;
-  --vp-c-text-3: #797593;
+  --vp-c-border: light-dark(#dfdad9, #26233a);
 
-  --vp-c-border: #dfdad9;
-  --vp-c-divider: #dfdad9;
-  --vp-c-gutter: #dfdad9;
+  --vp-c-divider: light-dark(#dfdad9, #26233a);
 
-  --vp-c-brand-1: #6c5784;
-  --vp-c-brand-2: #3f324d;
-  --vp-c-brand-3: #6b5685;
-  --vp-c-brand-soft: #f1e8e6;
-  --vp-button-brand-hover-bg: #907aa9;
+  --vp-c-gutter: light-dark(#dfdad9, #191724);
 
-  --vp-c-default-1: #cecacd;
-  --vp-c-default-2: #dfdad9;
-  --vp-c-default-3: #e9e2df;
-  --vp-c-default-soft: #dfdad9;
+  --vp-c-brand: light-dark(#6c5784, #c4a7e7);
+  --vp-c-brand-hover: light-dark(#3f324d, #d9c7f0);
+  --vp-c-brand-fill: light-dark(#6b5685, #8d74c8);
+  --vp-c-brand-fill-hover: light-dark(#907aa9, #9b7fd4);
+  --vp-c-brand-fill-active: light-dark(#504064, #6a5796);
+  --vp-c-brand-soft: light-dark(#f1e8e6, #2b2539);
 
-  --vp-c-tip-1: #6c5784;
-  --vp-c-tip-2: #463956;
-  --vp-c-tip-soft: #f1e8e6;
-  --vp-c-note-1: #6c5784;
-  --vp-c-note-soft: #f1e8e6;
-  --vp-c-success-1: #3f6f7a;
-  --vp-c-success-soft: #eaeae5;
-  --vp-c-important-1: #96586d;
-  --vp-c-important-2: #5a3541;
-  --vp-c-important-soft: #fae8e1;
-  --vp-c-warning-1: #8d6328;
-  --vp-c-warning-2: #553b18;
-  --vp-c-warning-soft: #fbead8;
-  --vp-c-danger-1: #9c4f66;
-  --vp-c-danger-2: #5f303e;
-  --vp-c-danger-soft: #f6e4e0;
-  --vp-c-caution-1: #9c4f66;
-  --vp-c-caution-2: #5f303e;
-  --vp-c-caution-soft: #f6e4e0;
+  --vp-c-gray-fill: light-dark(#e9e2df, #26233a);
+  --vp-c-gray-fill-hover: light-dark(#dfdad9, #403d52);
+  --vp-c-gray-fill-active: light-dark(#cecacd, #524f67);
+  --vp-c-gray-soft: light-dark(#dfdad9, #403d52);
 
-  --vp-c-sponsor: #9c4f66;
+  --vp-c-success: light-dark(#3f6f7a, #9ccfd8);
+  --vp-c-success-soft: light-dark(#eaeae5, #252937);
 
-  --vp-shadow-1: 0 1px 2px rgba(87, 82, 121, 0.06), 0 1px 2px rgba(87, 82, 121, 0.08);
-  --vp-shadow-2: 0 3px 12px rgba(87, 82, 121, 0.09), 0 1px 4px rgba(87, 82, 121, 0.09);
-  --vp-shadow-3: 0 12px 32px rgba(87, 82, 121, 0.12), 0 2px 6px rgba(87, 82, 121, 0.1);
-  --vp-shadow-4: 0 14px 44px rgba(87, 82, 121, 0.14), 0 3px 9px rgba(87, 82, 121, 0.14);
-  --vp-shadow-5: 0 18px 56px rgba(87, 82, 121, 0.18), 0 4px 12px rgba(87, 82, 121, 0.18);
-}
+  --vp-c-warning: light-dark(#8d6328, #f6c177);
+  --vp-c-warning-hover: light-dark(#553b18, #f6c177);
+  --vp-c-warning-soft: light-dark(#fbead8, #30282c);
 
-.dark {
-  --vp-c-neutral-inverse: #000000;
+  --vp-c-danger: light-dark(#9c4f66, #eb6f92);
+  --vp-c-danger-hover: light-dark(#5f303e, #f093ad);
+  --vp-c-danger-soft: light-dark(#f6e4e0, #311f30);
 
-  --vp-c-bg: #191724;
-  --vp-c-bg-alt: #1f1d2e;
-  --vp-c-bg-elv: #26233a;
-  --vp-c-bg-soft: #1f1d2e;
+  --vp-c-caution: light-dark(#9c4f66, #eb6f92);
+  --vp-c-caution-hover: light-dark(#5f303e, #f093ad);
+  --vp-c-caution-soft: light-dark(#f6e4e0, #311f30);
 
-  --vp-c-text-1: #e0def4;
-  --vp-c-text-2: #908caa;
-  --vp-c-text-3: #6e6a86;
+  --vp-c-important: light-dark(#96586d, #ebbcba);
+  --vp-c-important-hover: light-dark(#5a3541, #ebbcba);
+  --vp-c-important-soft: light-dark(#fae8e1, #2f2834);
 
-  --vp-c-border: #26233a;
-  --vp-c-divider: #26233a;
-  --vp-c-gutter: #191724;
-
-  --vp-c-brand-1: #c4a7e7;
-  --vp-c-brand-2: #d9c7f0;
-  --vp-c-brand-3: #8d74c8;
-  --vp-c-brand-soft: #2b2539;
-  --vp-button-brand-hover-bg: #9b7fd4;
-
-  --vp-c-default-1: #524f67;
-  --vp-c-default-2: #403d52;
-  --vp-c-default-3: #26233a;
-  --vp-c-default-soft: #403d52;
-
-  --vp-c-tip-1: #c4a7e7;
-  --vp-c-tip-2: #c4a7e7;
-  --vp-c-tip-soft: #2b2539;
-  --vp-c-note-1: #c4a7e7;
-  --vp-c-note-soft: #2b2539;
-  --vp-c-success-1: #9ccfd8;
-  --vp-c-success-soft: #252937;
-  --vp-c-important-1: #ebbcba;
-  --vp-c-important-2: #ebbcba;
-  --vp-c-important-soft: #2f2834;
-  --vp-c-warning-1: #f6c177;
-  --vp-c-warning-2: #f6c177;
-  --vp-c-warning-soft: #30282c;
-  --vp-c-danger-1: #eb6f92;
-  --vp-c-danger-2: #f093ad;
-  --vp-c-danger-soft: #311f30;
-  --vp-c-caution-1: #eb6f92;
-  --vp-c-caution-2: #f093ad;
-  --vp-c-caution-soft: #311f30;
-
-  --vp-c-sponsor: #ebbcba;
+  --vp-shadow-1: 0 1px 2px rgba(79, 74, 110, 0.05), 0 1px 2px rgba(79, 74, 110, 0.07);
+  --vp-shadow-2: 0 3px 12px rgba(79, 74, 110, 0.09), 0 1px 4px rgba(79, 74, 110, 0.09);
+  --vp-shadow-3: 0 12px 32px rgba(79, 74, 110, 0.12), 0 2px 6px rgba(79, 74, 110, 0.1);
+  --vp-shadow-4: 0 14px 44px rgba(79, 74, 110, 0.14), 0 3px 9px rgba(79, 74, 110, 0.14);
+  --vp-shadow-5: 0 18px 56px rgba(79, 74, 110, 0.18), 0 4px 12px rgba(79, 74, 110, 0.18);
 }

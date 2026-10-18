@@ -1,81 +1,77 @@
-// The color-theme contract: every themes/*.css is a complete design.
+// The color-theme contract: every themes/*.css is a complete design, and
+// the stylesheets read only what a theme defines.
 //
 //   node test/themes.mjs
 //
-// The required tokens are derived from the stylesheets themselves: every
-// --vp-c-* that any of vpkit's root stylesheets references (index.css with
-// its parts, the components, the layout, the markdown, the icons), minus
-// the color ramps and the absolutes. Each theme must define all of them in
-// :root and in .dark, plus --vp-shadow-1…5 in :root, and meet the WCAG
-// contrast minimums of the role each token plays (body text, links,
-// buttons, badge text, alert link hovers) in both modes. Exits 1, listing
-// every failure.
+// The contract is tokens.css's: every --vp-c-* it defines (34) and the five
+// shadows. Every stylesheet of the app kit (tokens, theme, base, prose, the
+// components) may read only those; the docs theme (docs-theme/) may read
+// its own vars.css's too. Each theme defines all of them in one :root block,
+// each color a light-dark() pair, and meets the WCAG contrast minimums of
+// the job each token does (body text, links, buttons, badge text, alert link
+// hovers) on both sides. Exits 1, listing every failure.
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 // the luminance and contrast the generators fit with: one implementation
 import { composite, contrast, luminance, white } from '../scripts/color.mjs';
-import { modeValues, parseBlocks, stripComments } from '../scripts/css.mjs';
+import { hasPair, modeValues, parseBlocks, stripComments } from '../scripts/css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const RAMPS = ['gray', 'indigo', 'purple', 'green', 'yellow', 'orange', 'red'];
-// absolute colors, defined once in the base and never themed
-const ABSOLUTES = ['white', 'black'];
-
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
-
-// every stylesheet vpkit ships, the root *.css files: index.css's parts,
-// the components (button.css, …), layout.css, content.css, icons.css.
-// index.css itself only imports; fonts.css references no token
-function baseCss() {
-  return readdirSync(ROOT)
-    .filter((f) => f.endsWith('.css'))
-    .sort()
-    .map(read)
-    .join('\n');
-}
-
-// VitePress's own slip, carried verbatim by the port: VPSidebar.vue sets
-// `box-shadow: var(--vp-c-shadow-3)` on the phone's open sidebar, and
-// nothing defines that name (the shadows are --vp-shadow-*), so it never
-// paints upstream either. Not a token a theme can define.
-const UPSTREAM_SLIPS = ['shadow-3'];
-
-const isRamp = (token) => RAMPS.some((ramp) => token === ramp || token.startsWith(`${ramp}-`));
 
 const failures = [];
 const fail = (message) => failures.push(message);
+let checks = 0;
 
-// every --vp-c-* token the base references, minus ramps and absolutes:
-// derived, not hand-maintained, so it cannot drift from what the
-// structure consumes
-function requiredTokens(css) {
-  const refs = [];
-  for (const part of stripComments(css).split(/[;{}]/)) {
-    const colon = part.indexOf(':');
-    if (colon === -1) continue;
-    const property = part.slice(0, colon).trim();
-    let value = part.slice(colon + 1).trim();
-    for (let start = value.indexOf('var(--vp-c-'); start !== -1; start = value.indexOf('var(--vp-c-')) {
-      value = value.slice(start + 'var(--vp-c-'.length);
-      const end = value.indexOf(')') === -1 ? value.length : value.indexOf(')');
-      const name = value.slice(0, end).trim();
-      value = value.slice(end);
-      // a ramp token may only appear inside a token-layer definition
-      // (`--vp-c-success-1: var(--vp-c-green-1)`), never in a structural
-      // rule, or themes that don't define ramps leak stock colors
-      if (isRamp(name) && !property.startsWith('--vp-c-')) {
-        fail(`ramp token --vp-c-${name} referenced by structural rule \`${property}\` in the base`);
-      }
-      refs.push(name);
-    }
+// the contract: tokens.css's colors and shadows
+const stock = modeValues(read('tokens.css'), ':root');
+const COLORS = [...stock.keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length));
+const SHADOWS = [1, 2, 3, 4, 5].map((i) => `--vp-shadow-${i}`);
+if (COLORS.length < 30) fail(`contract implausibly small: ${COLORS.join(', ')}`);
+for (const token of COLORS) {
+  checks++;
+  if (!hasPair(stock.get(`--vp-c-${token}`))) fail(`tokens.css: --vp-c-${token} is not a light-dark() pair`);
+}
+for (const shadow of SHADOWS) {
+  checks++;
+  if (!stock.has(shadow)) fail(`tokens.css: no ${shadow}`);
+}
+
+// every .css file under a directory, recursively
+function cssFiles(dir) {
+  if (!existsSync(join(ROOT, dir))) return [];
+  return readdirSync(join(ROOT, dir), { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile() && e.name.endsWith('.css'))
+    .map((e) => join(e.parentPath, e.name).slice(ROOT.length + 1))
+    .sort();
+}
+
+// every --vp-c-* a stylesheet reads
+function reads(css) {
+  const names = new Set();
+  for (const m of stripComments(css).matchAll(/var\(--vp-c-([a-z0-9-]+)/g)) names.add(m[1]);
+  return names;
+}
+
+// the app kit reads the contract and nothing else
+const appKit = [...['tokens.css', 'theme.css', 'base.css', 'prose.css', 'fonts.css'].filter((f) => existsSync(join(ROOT, f))), ...cssFiles('components')];
+for (const file of appKit) {
+  for (const name of reads(read(file))) {
+    checks++;
+    if (!COLORS.includes(name)) fail(`${file} reads --vp-c-${name}, which tokens.css does not define`);
   }
-  const tokens = [
-    ...new Set(refs.filter((t) => !isRamp(t) && !ABSOLUTES.includes(t) && !UPSTREAM_SLIPS.includes(t))),
-  ].sort();
-  if (tokens.length < 30) fail(`contract implausibly small: ${tokens.join(', ')}`);
-  return tokens;
+}
+// the docs theme reads the contract and its own variables
+const docsVars = existsSync(join(ROOT, 'docs-theme/vars.css'))
+  ? [...modeValues(read('docs-theme/vars.css'), ':root').keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length))
+  : [];
+for (const file of cssFiles('docs-theme')) {
+  for (const name of reads(read(file))) {
+    checks++;
+    if (!COLORS.includes(name) && !docsVars.includes(name)) fail(`${file} reads --vp-c-${name}, which neither tokens.css nor docs-theme/vars.css defines`);
+  }
 }
 
 // a token as a solid color: a 6-digit hex, or rgba() composited over the
@@ -95,51 +91,37 @@ function color(values, token, backdrop) {
   return composite([r, g, b], a, backdrop);
 }
 
-const base = baseCss();
-const required = requiredTokens(base);
-
-// gradedContainers opts into GitHub-style severity colors; the rule must
-// carry its own literals with :has() specificity so it beats any theme's
-// :root/.dark warning/caution (which load later)
-for (const selector of [':root:has(.vp-graded-containers)', ':root.dark:has(.vp-graded-containers)']) {
-  const block = parseBlocks(base).find((b) => b.selector === selector);
-  if (!block) {
-    fail(`missing \`${selector}\` rule`);
-    continue;
-  }
-  for (const token of ['--vp-c-warning-1', '--vp-c-caution-1']) {
-    const decl = block.declarations.find(([prop]) => prop === token);
-    if (!decl) fail(`\`${selector}\` does not define ${token}`);
-    else if (!decl[1].startsWith('#') && !decl[1].startsWith('rgba(')) {
-      fail(`\`${selector}\` ${token} = ${decl[1]}: expected a literal, not a stock ramp reference`);
-    }
-  }
-}
-
 const names = readdirSync(join(ROOT, 'themes'))
   .filter((f) => f.endsWith('.css'))
   .map((f) => f.slice(0, -4))
   .sort();
 if (!names.length) fail('no themes found');
 
-let checks = 0;
 for (const name of names) {
   const css = read(`themes/${name}.css`);
 
-  // a complete design: the whole contract in both modes, the shadows once
-  const [root, dark] = [modeValues(css, ':root'), modeValues(css, '.dark')];
-  for (const [selector, values] of [[':root', root], ['.dark', dark]]) {
-    const missing = required.filter((token) => !values.has(`--vp-c-${token}`));
+  // a complete design: one :root block, the whole contract as pairs, the shadows
+  for (const block of parseBlocks(css)) {
     checks++;
-    if (missing.length) fail(`theme ${name}, ${selector}: missing tokens ${missing.join(', ')} — a theme must define the whole contract`);
+    if (block.selector !== ':root') fail(`theme ${name}: a \`${block.selector}\` block; a theme is one :root of light-dark() pairs`);
   }
-  for (let i = 1; i <= 5; i++) {
+  const raw = modeValues(css, ':root');
+  const missing = COLORS.filter((token) => !raw.has(`--vp-c-${token}`));
+  checks++;
+  if (missing.length) fail(`theme ${name}: missing tokens ${missing.join(', ')} — a theme must define the whole contract`);
+  for (const token of COLORS) {
+    if (!raw.has(`--vp-c-${token}`)) continue;
     checks++;
-    if (!root.has(`--vp-shadow-${i}`)) fail(`theme ${name}: missing --vp-shadow-${i}`);
+    if (!hasPair(raw.get(`--vp-c-${token}`))) fail(`theme ${name}: --vp-c-${token} = ${raw.get(`--vp-c-${token}`)} is not a light-dark() pair`);
+  }
+  for (const shadow of SHADOWS) {
+    checks++;
+    if (!raw.has(shadow)) fail(`theme ${name}: missing ${shadow}`);
   }
 
-  for (const [selector, values] of [[':root', root], ['.dark', dark]]) {
-    const label = `theme ${name} ${selector}`;
+  for (const mode of ['light', 'dark']) {
+    const values = modeValues(css, ':root', mode);
+    const label = `theme ${name} ${mode}`;
     try {
       const hex = (token) => color(values, token);
       const bg = hex('bg');
@@ -155,16 +137,14 @@ for (const name of names) {
         if (!ok) fail(`${label}: ${message}`);
       };
 
-      // the elevated surface: menus, dialogs, toasts (vp-dropdown,
-      // vp-dialog, vp-toast; VPMenu and the flyouts in layout.css)
+      // the elevated surface: menus, dialogs, toasts
       const elv = hex('bg-elv');
 
       // body text, on the page and on the elevated surface
       minimum('text-1', bg, 7.0);
       minimum('text-1', elv, 7.0);
-      // secondary text also sits on the sidebar / code-block surfaces (and
-      // vp-empty's box, on bg-soft), and on the elevated one (a menu's group
-      // title)
+      // secondary text also sits on the alternate and soft surfaces, and on
+      // the elevated one (a menu's group title)
       minimum('text-2', bg, 4.5);
       minimum('text-2', hex('bg-alt'), 4.5);
       minimum('text-2', hex('bg-soft'), 4.5);
@@ -172,51 +152,39 @@ for (const name of names) {
       // muted text
       minimum('text-3', bg, 3.0);
 
-      // the text ramp is monotonic: primary ≥ secondary ≥ muted (contrast
-      // against the page bg); fitting tokens independently can converge or
-      // invert it, and headings would lose hierarchy against body text
+      // the text ramp is monotonic: body ≥ secondary ≥ muted against the
+      // page; fitting tokens independently can converge or invert it
       const [c1, c2, c3] = ['text-1', 'text-2', 'text-3'].map((t) => contrast(hex(t), bg));
       holds(c1 >= c2, `text-1 (${c1.toFixed(2)}) does not outrank text-2 (${c2.toFixed(2)})`);
       holds(c2 >= c3, `text-2 (${c2.toFixed(2)}) does not outrank text-3 (${c3.toFixed(2)})`);
 
-      // borders and dividers separate from the page bg, or rules and
-      // surfaces vanish
+      // a border separates from the page, or controls vanish
       holds(contrast(hex('border'), bg) >= 1.1, `border ${hex('border')} vanishes on bg ${bg}`);
 
-      // elevated surfaces (dropdowns, popovers) are never darker than the
-      // page bg: the stock look's convention
-      holds(luminance(hex('bg-elv')) >= luminance(bg) - 1e-9, `bg-elv ${hex('bg-elv')} is darker than bg ${bg}`);
+      // the elevated surface is never darker than the page
+      holds(luminance(elv) >= luminance(bg) - 1e-9, `bg-elv ${elv} is darker than bg ${bg}`);
 
-      // container semantics stay distinguishable: distinct hues per role,
-      // and the brand is not the body text color
-      const sems = ['success-1', 'warning-1', 'danger-1'].map(hex);
+      // the roles stay distinguishable, and the brand is not the body text
+      const sems = ['success', 'warning', 'danger'].map(hex);
       holds(new Set(sems).size === sems.length, 'semantic colors collapsed');
-      holds(hex('brand-1') !== hex('text-1'), 'brand-1 equals text-1 — links would be invisible as emphasis');
+      holds(hex('brand') !== hex('text-1'), 'brand equals text-1 — links would be invisible as emphasis');
 
-      // links and inline code, on the page and on the elevated surface, and
-      // a menu's current item hovered (the gray wash over the elevated one)
-      minimum('brand-1', bg, 4.5);
-      minimum('brand-1', elv, 4.5);
-      minimum('brand-1', color(values, 'default-soft', elv), 4.5);
+      // the brand as text: links, icons and inline code on the page and the
+      // elevated surface, and a menu's current item under its hover wash
+      minimum('brand', bg, 4.5);
+      minimum('brand', elv, 4.5);
+      minimum('brand', color(values, 'gray-soft', elv), 4.5);
 
-      // the brand button: white text on its ground at rest (brand-3) and
-      // hovered (--vp-button-brand-hover-bg, which a theme sets itself:
-      // brand-2 is the hovered link's color, and in dark mode no one color
-      // can be both)
-      minimum('brand-3', white, 3.0);
-      const hoverBg = values.get('--vp-button-brand-hover-bg');
-      checks++;
-      if (!hoverBg) fail(`${label}: --vp-button-brand-hover-bg not defined`);
-      else if (!/^#[0-9a-f]{6}$/i.test(hoverBg)) fail(`${label}: --vp-button-brand-hover-bg = ${hoverBg}: expected 6-digit hex`);
-      else {
-        const ratio = contrast(white, hoverBg);
-        if (ratio < 3 - 1e-9) fail(`${label}: --vp-button-brand-hover-bg ${hoverBg} has contrast ${ratio.toFixed(2)} < 3 with white`);
+      // the brand button: white text on its ground at rest, hovered and pressed
+      for (const fill of ['brand-fill', 'brand-fill-hover', 'brand-fill-active']) {
+        checks++;
+        const ratio = contrast(white, hex(fill));
+        if (ratio < 3 - 1e-9) fail(`${label}: --vp-c-${fill} ${hex(fill)} has contrast ${ratio.toFixed(2)} < 3 with white`);
       }
 
-      // a hovered link: a -2, as text. The containers dim a hovered link to
-      // 0.75 (custom-block.css, alert.css), so there it is checked as it
-      // paints, over the container's tint and over the tint of code inside
-      // it (tokens.css's --vp-custom-block-*-bg and -code-bg)
+      // a hovered link, as text, and dimmed to 0.75 in a container
+      // (prose.css's custom blocks and the alert dim a hovered link), on
+      // the container's tint and on the tint of code inside it
       const dimmed = (token, ground) => {
         checks++;
         const painted = composite(hex(token), 0.75, ground);
@@ -225,25 +193,23 @@ for (const name of names) {
           fail(`${label}: --vp-c-${token} ${hex(token)} hovered in a container paints ${ratio.toFixed(2)} < 4.5 against ${ground}`);
         }
       };
-      // brand-2: the page's links (vp-doc.css, layout.css, vp-link), code in
-      // them (--vp-code-link-hover-color), and the info, note and details
-      // containers, whose tint and code tint are the default-soft
-      const codeBg = color(values, 'default-soft', bg);
-      minimum('brand-2', bg, 4.5);
-      minimum('brand-2', elv, 4.5);
-      minimum('brand-2', codeBg, 4.5);
-      dimmed('brand-2', codeBg);
-      dimmed('brand-2', color(values, 'default-soft', codeBg));
+      // brand-hover: the page's links, code in them, and the info, note and
+      // details containers, whose tint and code tint are the gray wash
+      const codeBg = color(values, 'gray-soft', bg);
+      minimum('brand-hover', bg, 4.5);
+      minimum('brand-hover', elv, 4.5);
+      minimum('brand-hover', codeBg, 4.5);
+      dimmed('brand-hover', codeBg);
+      dimmed('brand-hover', color(values, 'gray-soft', codeBg));
 
-      // badge / container foregrounds, against their own soft background
-      // (composited over the page bg when rgba); a role's -2 is the hovered
-      // link in its container, dimmed, on the tint and on code's tint
-      for (const kind of ['tip', 'note', 'success', 'important', 'warning', 'danger', 'caution']) {
+      // a role's text on its own tint, composited over the page; its hover
+      // dimmed on the tint and on code's tint inside it
+      for (const kind of ['success', 'important', 'warning', 'danger', 'caution']) {
         const tint = color(values, `${kind}-soft`, bg);
-        minimum(`${kind}-1`, tint, 4.5);
-        if (required.includes(`${kind}-2`)) {
-          dimmed(`${kind}-2`, tint);
-          dimmed(`${kind}-2`, color(values, `${kind}-soft`, tint));
+        minimum(kind, tint, 4.5);
+        if (COLORS.includes(`${kind}-hover`)) {
+          dimmed(`${kind}-hover`, tint);
+          dimmed(`${kind}-hover`, color(values, `${kind}-soft`, tint));
         }
       }
     } catch (error) {
@@ -254,7 +220,7 @@ for (const name of names) {
 
 for (const f of failures) console.log(`FAIL  ${f}`);
 console.log(
-  `${names.length} themes × :root/.dark against a contract of ${required.length} tokens: ` +
-    `${checks} checks, ${failures.length} failed`,
+  `${names.length} themes × light/dark against a contract of ${COLORS.length} colors and ${SHADOWS.length} shadows, ` +
+    `${appKit.length} app kit stylesheets held to it: ${checks} checks, ${failures.length} failed`,
 );
 process.exit(failures.length ? 1 : 0);

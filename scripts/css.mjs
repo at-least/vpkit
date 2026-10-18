@@ -1,12 +1,13 @@
-// Reading a flat stylesheet, as the theme contract test, the vitepress
-// fitter and the docs index read theme files and the base's token layer:
-// the top-level blocks, and a selector's declarations merged in order,
-// later ones winning as in the cascade. A nested block (tokens.css's
-// @media) is no selector's.
+// Reading a flat stylesheet, as the theme contract test, the stock fitter
+// and the docs index read tokens.css, the theme files and the docs theme's
+// variables: the top-level blocks, and a selector's declarations merged in
+// order, later ones winning as in the cascade, each value read on the light
+// or the dark side of its light-dark() pairs. A nested block (a @media) is
+// no selector's.
 export const stripComments = (css) => css.replace(/\/\*[\s\S]*?(\*\/|$)/g, '');
 
-// top-level `selector { decl; decl; }` blocks; theme files and the token
-// layer of the base are flat, which is all this needs to read
+// top-level `selector { decl; decl; }` blocks; the token files are flat,
+// which is all this needs to read
 export function parseBlocks(css) {
   css = stripComments(css);
   const blocks = [];
@@ -33,16 +34,30 @@ export function parseBlocks(css) {
   return blocks;
 }
 
-// a selector's declarations, name → value, every top-level block of it merged
-export function modeValues(css, selector) {
+// every `light-dark(light, dark)` in a value, each argument a color or a
+// function of one level (rgba(…)), whitespace around them free
+const LIGHT_DARK = /light-dark\(\s*((?:[^()]|\([^()]*\))*?)\s*,\s*((?:[^()]|\([^()]*\))*?)\s*\)/g;
+
+// a value on one side of its light-dark() pairs: `light` or `dark`; a value
+// without a pair is the same on both
+export const side = (value, mode) => value.replace(LIGHT_DARK, (_, light, dark) => (mode === 'dark' ? dark : light));
+
+// whether a value carries a light-dark() pair
+export const hasPair = (value) => {
+  LIGHT_DARK.lastIndex = 0;
+  return LIGHT_DARK.test(value);
+};
+
+// a selector's declarations, name → value, every top-level block of it
+// merged; with a mode, each value on that side of its pairs
+export function modeValues(css, selector, mode) {
   const values = new Map();
   for (const block of parseBlocks(css)) {
     if (block.selector !== selector) continue;
-    for (const [prop, value] of block.declarations) values.set(prop, value);
+    for (const [prop, value] of block.declarations) values.set(prop, mode ? side(value, mode) : value);
   }
   return values;
 }
-
 
 // a value with its var() references resolved in vars, through any chain
 export const resolve = (vars, value) => value.replace(/var\((--[\w-]+)\)/g, (_, name) => resolve(vars, vars.get(name)));
