@@ -1,5 +1,8 @@
 // The documentation (docs/): it builds with zola, it has a page for each
-// component (the app kit's and the docs theme's), and its examples work.
+// component (the app kit's and the docs theme's), each page shows every
+// example file of its component's directory (the markup the crate's tests
+// render, so none is held by a test and shown by no page), and its
+// examples work.
 // Each example frame (docs/templates/vp-example.html) must load its example
 // stylesheet, which must style every class the example's markup uses; it
 // must be as tall as its content, so it never scrolls, and no wider than
@@ -33,7 +36,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-chromium';
-import { componentDirs } from '../scripts/components.mjs';
+import { componentDirs, examples } from '../scripts/components.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS = join(ROOT, 'docs');
@@ -62,6 +65,17 @@ for (const name of pages) {
   const [h1] = md.match(/^# .*$/m);
   if (own && !(h1.includes(` ${BADGE} {#`) && /\{#[a-z-]+\}$/.test(h1))) failures.push(`docs/content/components/${name}.md: vpkit's own, but its heading has no vpkit badge and id: ${h1}`);
   if (!own && h1.includes(BADGE)) failures.push(`docs/content/components/${name}.md: a VitePress original's port, but its heading has the vpkit badge: ${h1}`);
+}
+
+// every example file of a component's directory (components/<name>/
+// examples/<id>.html, the markup the crate's tests render too) is shown by
+// the component's page, as `vp_example file="<name>/<id>"`
+for (const product of ['', 'docs-theme']) {
+  for (const { name, id } of examples(product)) {
+    if (!pages.includes(name)) continue;
+    const md = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8');
+    if (!md.includes(`<vp_example file="${name}/${id}"`)) failures.push(`docs/content/components/${name}.md: components/${name}/examples/${id}.html is shown by no vp_example on the page`);
+  }
 }
 
 // the Rust crate: every component it exports (rust/src/lib.rs, one module

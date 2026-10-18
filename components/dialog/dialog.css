@@ -24,8 +24,8 @@
  * components leave size to the page, because a dialog without one shrinks
  * to its content; `w-[32rem]` or any width utility replaces it. A modal
  * dialog makes everything outside it inert, a popover in the top layer
- * included. The crate's `Dialog` writes this markup, the title's id the
- * dialog's with `-title` after it. Inside a vp-doc (prose.css), whose
+ * included. The crate's `Dialog` writes this markup (with `open` when its
+ * `open` field is set), the title's id the dialog's with `-title` after it. Inside a vp-doc (prose.css), whose
  * rules for a heading set what the title leaves to the page, the title
  * keeps no rule, padding or letter spacing and takes the dialog's line.
  * This is the components layer, so a utility on the element overrides

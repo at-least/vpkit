@@ -11,6 +11,8 @@ A small "i" beside a word whose tooltip says what it means. It shows while hover
 @import "vpkit/components/hint/hint.css";
 ```
 
+{{ <vp_example file="hint/basic" title="A hint" layout="row" min_height="6rem" /> }}
+
 {{ <vp_example file="hint/open" title="A hint, open" layout="row" /> }}
 
 - `vp-hint` on a `<button>`: a small circle in a divider border. Its tooltip is drawn from its `data-hint`, under it, at most 22rem wide, on the elevated ground.
