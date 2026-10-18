@@ -19,8 +19,8 @@
 // editing the slot maps, rebuild the documentation's theme gallery index
 // from them (node scripts/build-docs.mjs), then pass `npm test`. The four
 // hand-tuned themes (github, catppuccin, nord, rose-pine) are NOT
-// regenerated here; edit them directly. Nor is vitepress, which
-// scripts/fit-vitepress.mjs writes from tokens.css.
+// regenerated here; edit them directly. Nor is the stock, tokens.css's
+// colors, which scripts/fit-stock.mjs writes from VitePress's vars.css.
 //
 //   node scripts/gen-themes.mjs
 //
