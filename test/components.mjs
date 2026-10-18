@@ -45,6 +45,8 @@ const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 
 const PRODUCTS = { app: componentDirs(''), docs: componentDirs('docs-theme') };
+// and the page's own suite (test/page: base.css's rules on the body, a bare placeholder, the focus ring), with the app kit's
+PRODUCTS.app.push(join(ROOT, 'test/page'));
 
 // VitePress's stylesheets every upstream page loads, in its order
 const UPSTREAM = ['vars.css', 'base.css', 'icons.css'];
