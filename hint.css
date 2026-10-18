@@ -6,7 +6,7 @@
  * `@import "vpkit/hint.css";`
  *
  *   <button type="button" class="vp-hint" data-hint="Ignored issues stay out of the counts." aria-label="About ignored" aria-expanded="false" aria-describedby="hint-ignored">i</button>
- *   <span class="vp-hint-text" id="hint-ignored">Ignored issues stay out of the counts.</span>
+ *   <span id="hint-ignored" hidden>Ignored issues stay out of the counts.</span>
  *
  * The dot: a 0.875rem circle in a divider border, its "i" 0.625rem in
  * text-2, the button's pointer cursor (base.css; crashcart's help cursor
@@ -17,9 +17,14 @@
  * on a touch screen, which keeps a tapped element hovered), focused from
  * the keyboard, or open, `aria-expanded="true"`, which the page's script
  * toggles on a tap (and drops on a tap elsewhere); vpkit ships no script.
- * The tooltip is drawn, not read: vp-hint-text, a visually hidden copy the
- * dot's aria-describedby names, is what a screen reader reads. Its place
- * beside the word is the page's (`ml-1`). The crate's `Hint` writes both. */
+ * The tooltip is drawn, not read: the copy after the dot, `hidden`, which
+ * the dot's aria-describedby names, is what a screen reader reads, as the
+ * dot's description (a hidden element still describes the control that
+ * names it). It has no box, where a visually hidden copy is positioned
+ * absolutely and, in a scrolling table or lane with no positioned box
+ * between, escapes the scroller and widens the page; and it is read once,
+ * as the description, not again as text of its own. Its place beside the
+ * word is the page's (`ml-1`). The crate's `Hint` writes both. */
 
 @layer components {
   .vp-hint {
@@ -75,17 +80,5 @@
         display: block;
       }
     }
-  }
-
-  .vp-hint-text {
-    position: absolute;
-    margin: -1px;
-    border-width: 0;
-    padding: 0;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
   }
 }

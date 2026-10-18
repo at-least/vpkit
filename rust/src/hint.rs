@@ -1,9 +1,9 @@
 use hypertext::{Buffer, prelude::*};
 
 /// `vp-hint` (`hint.css`): a small "i" button whose tooltip says what a
-/// word means, and the visually hidden copy of the tooltip
-/// (`vp-hint-text`) that the button's `aria-describedby` names, so a
-/// screen reader reads it.
+/// word means, and a `hidden` copy of the tooltip that the button's
+/// `aria-describedby` names, so a screen reader reads it as the button's
+/// description.
 ///
 /// The tooltip shows while the button is hovered, focused from the
 /// keyboard, or open: the page's script toggles `aria-expanded` on a tap,
@@ -23,7 +23,7 @@ use hypertext::{Buffer, prelude::*};
 ///     html.as_inner(),
 ///     concat!(
 ///         r#"<button type="button" class="vp-hint" data-hint="Muted jobs send no alerts." aria-label="About muted" aria-expanded="false" aria-describedby="hint-muted">i</button>"#,
-///         r#"<span class="vp-hint-text" id="hint-muted">Muted jobs send no alerts.</span>"#,
+///         r#"<span id="hint-muted" hidden>Muted jobs send no alerts.</span>"#,
 ///     ),
 /// );
 /// ```
@@ -50,7 +50,7 @@ impl Renderable for Hint<'_> {
         };
         rsx! {
             <button type="button" class="vp-hint" data-hint=(self.hint) aria-label=(self.label) aria-expanded="false" aria-describedby=(id.as_str())>"i"</button>
-            <span class="vp-hint-text" id=(id.as_str())>(self.hint)</span>
+            <span id=(id.as_str()) hidden>(self.hint)</span>
         }
         .render_to(buffer);
     }
@@ -88,7 +88,7 @@ mod tests {
         );
         assert!(
             html.as_inner()
-                .contains(r#"<span class="vp-hint-text" id="hint-e40c292c">a</span>"#)
+                .contains(r#"<span id="hint-e40c292c" hidden>a</span>"#)
         );
     }
 

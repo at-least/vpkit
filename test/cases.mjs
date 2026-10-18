@@ -1087,7 +1087,7 @@ cases.push({
 // where crashcart had the page's, --vp-shadow-2 where it had a literal
 // shadow), hidden at rest and shown hovered, focused from the keyboard and
 // open (aria-expanded="true", which a tap sets), not on a touch screen's
-// hover; and its visually hidden copy against Tailwind's sr-only, inline
+// hover (its copy is a hidden element, with no style to compare)
 const HINT_DOT = 'display:inline-flex;align-items:center;justify-content:center;width:0.875rem;height:0.875rem;border:1px solid var(--vp-c-divider);border-radius:999px;background:none;color:var(--vp-c-text-2);font-size:0.625rem;line-height:1;position:relative;vertical-align:1px';
 const HINT_TIP = (shown) => `display:${shown ? 'block' : 'none'};position:absolute;top:calc(100% + 0.375rem);left:50%;transform:translateX(-50%);width:max-content;max-width:22rem;padding:0.375rem 0.5rem;border:1px solid var(--vp-c-border);border-radius:0.375rem;background:var(--vp-c-bg-elv);box-shadow:var(--vp-shadow-2);color:var(--vp-c-text-1);font-size:0.75rem;font-weight:400;line-height:1.4;text-transform:none;white-space:normal;text-align:left;z-index:30;pointer-events:none`;
 const HINT_TEXT = 'Ignored issues stay out of the counts until they come back.';
@@ -1113,13 +1113,6 @@ cases.push({
   reference: hintRef(false),
   vpkit: hintVpkit(),
   checks: [TIP(['hover'])],
-});
-const SR_ONLY = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0';
-cases.push({
-  name: 'hint text',
-  reference: `<p><span data-t="t" style="${SR_ONLY}">${HINT_TEXT}</span></p>`,
-  vpkit: `<p><span data-t="t" class="vp-hint-text">${HINT_TEXT}</span></p>`,
-  checks: [{ target: 't', props: ['position', 'width', 'height', ...PADDING, ...MARGIN, 'overflow-x', 'overflow-y', 'clip', 'white-space', 'border-top-width'] }],
 });
 
 // labelled divider: totality's line between two ways to sign in (its
