@@ -1,0 +1,26 @@
+{
+  "drawer at 375px": {
+    "light": {
+      ".vp-drawer": {
+        "transform": "none"
+      }
+    },
+    "dark": {
+      ".vp-drawer": {
+        "transform": "none"
+      }
+    }
+  },
+  "drawer at 800px": {
+    "light": {
+      ".vp-drawer": {
+        "transform": "none"
+      }
+    },
+    "dark": {
+      ".vp-drawer": {
+        "transform": "none"
+      }
+    }
+  }
+}

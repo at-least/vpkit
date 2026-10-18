@@ -1,0 +1,156 @@
+/* vpkit — drawer, `vp-drawer`, from VitePress's sidebar as a phone shows
+ * it (VPSidebar.vue under 60rem: the panel that slides in from the left
+ * over VPBackdrop.vue's scrim), on the <dialog> element, which brings the
+ * top layer, the focus trap, Escape and ::backdrop. An optional import:
+ * `@import "vpkit/components/drawer/drawer.css";`
+ *
+ *   <dialog class="vp-drawer" id="menu" aria-label="Menu">
+ *     <nav>
+ *       <a class="vp-nav-link" data-variant="screen" href="/guide" aria-current="page">Guide</a>
+ *       <a class="vp-nav-link" data-variant="screen" href="/reference">Reference</a>
+ *     </nav>
+ *     <form method="dialog"><button class="vp-btn">Close</button></form>
+ *   </dialog>
+ *
+ * Open it with showModal() (with show() it has no top layer, and no
+ * z-index to stand in). No axis and no parts; the open state is the
+ * element's own `[open]`, where VitePress has `.open`, and the scrim its
+ * ::backdrop. The panel is VPSidebar's open one: fixed at the left edge,
+ * from the top of the viewport, or from under a layout top
+ * (--vp-layout-top-height, VitePress's hook for a banner above the
+ * layout, 0px unset, read outside the token contract as prose.css reads
+ * it; a top utility does the same), to the bottom: a component that says
+ * where it is, as vp-skip does, since a drawer is its edge. 4rem narrower
+ * than the viewport and at most 20rem (`w-*` sets another width, with
+ * `max-w-none` above 20rem), on the alternate ground (VPSidebar's
+ * --vp-sidebar-bg-color) under `2rem 2rem 6rem` of padding, scrolling its
+ * content and keeping a scroll from reaching the page
+ * (overscroll-behavior: contain), under --vp-shadow-1 in dark mode, the
+ * one `.dark` rule a state read allows (VitePress's light sidebar names a
+ * shadow nothing defines, so it paints none, and so does the drawer). The
+ * scrim is VPBackdrop: --vp-backdrop-bg-color, with tokens.css's value as
+ * the fallback, and the fade's durations with theirs, where ::backdrop
+ * inherits nothing from its dialog (before Chrome 122 and Safari 17.4, as
+ * dialog.css says).
+ *
+ * The slide is VitePress's. Opening, the panel comes in from the left
+ * over --vp-duration-slow on VitePress's curve as it fades in over
+ * --vp-duration, from the state `@starting-style` gives it, and the scrim
+ * fades in over --vp-duration-slow; closing, the panel slides out over
+ * --vp-duration as it fades over --vp-duration-slow and the scrim fades
+ * over --vp-duration. vpkit's addition: the `display` and `overlay`
+ * transitions (allow-discrete) in the closed rule, which keep the closing
+ * dialog on screen and in the top layer until the slide ends; a closed
+ * dialog is not modal, though, so during the slide out the fading scrim
+ * takes no tap, and one lands on the page beneath (VitePress's scrim, an
+ * element, takes it until Vue removes it). Measured in Chromium, which
+ * the tests run; by the browsers' compatibility data Firefox ends a
+ * `display` transition at once, so there the drawer closes at once, and
+ * Safari has no `overlay`, so there a closing drawer leaves the top layer
+ * at once with its scrim: unverified here. Under prefers-reduced-motion
+ * base.css ends every transition, the scrim's too (its rule names
+ * ::backdrop), and the drawer needs no rule of its own: closed it is
+ * display none and open it is opaque in place, the right resting states.
+ * While open the panel carries no transform, where VitePress's has
+ * translateX(0), the same place: a transform would make the panel the
+ * containing block of a fixed descendant, and a toast shown inside the
+ * open drawer (the page behind it is inert) would sit in its corner
+ * instead of the viewport's.
+ *
+ * What the element brings and VPSidebar has no need of, the drawer sets
+ * back to the aside's: body text (a dialog's text is the browser's
+ * CanvasText), `height: auto` with no max-height and `right: auto` (a
+ * modal dialog is sized to its content and inset on every side). The
+ * browser's dialog border and `margin: auto` are Tailwind's preflight's
+ * to reset, as on every element. Under forced colors, which paint the
+ * panel and the page the same and the scrim as good as clear, the panel's
+ * right edge is a 1px line in the text color (vpkit's; test/forced-
+ * colors.mjs holds it against a bare dialog of its box). Not ported:
+ * VitePress's z-index (the top layer needs none), `visibility`, the
+ * sidebar's desktop rules from 60rem, the scrim's `display: none` from
+ * 80rem, the body scroll lock (as vp-dialog: the page behind an open
+ * drawer still scrolls), the move of focus to the sidebar's nav landmark
+ * (showModal() focuses the first focusable element inside, or an
+ * `autofocus` one), and VitePress's RTL build, which flips the sidebar to
+ * the right edge: vpkit has no RTL build, so the drawer's edge is the
+ * left in either direction. The focus ring is base.css's. This is the
+ * components layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-drawer {
+    position: fixed;
+    top: var(--vp-layout-top-height, 0px);
+    right: auto;
+    bottom: 0;
+    left: 0;
+    padding: 2rem 2rem 6rem;
+    width: calc(100vw - 4rem);
+    max-width: 20rem;
+    height: auto;
+    max-height: none;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-alt);
+    opacity: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition:
+      opacity var(--vp-duration-slow),
+      transform var(--vp-duration) ease,
+      display var(--vp-duration-slow) allow-discrete,
+      overlay var(--vp-duration-slow) allow-discrete;
+    overscroll-behavior: contain;
+  }
+
+  /* no transform while open, where VitePress has translateX(0), the same
+     place: a transform would make the panel the containing block of a
+     fixed descendant (a toast shown inside the open drawer) */
+  .vp-drawer[open] {
+    opacity: 1;
+    transform: none;
+    transition: opacity var(--vp-duration), transform var(--vp-duration-slow) cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  /* what the open panel slides in from: VitePress's closed one */
+  @starting-style {
+    .vp-drawer[open] {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+
+  /* VitePress's dark-only shadow: a state read, not a color of its own */
+  :root.dark .vp-drawer {
+    box-shadow: var(--vp-shadow-1);
+  }
+
+  /* forced colors paint the panel and the page the same color and the
+     scrim's alpha over it, so the edge is a line */
+  @media (forced-colors: active) {
+    .vp-drawer {
+      border-right: 1px solid CanvasText;
+    }
+  }
+
+  /* the scrim needs no display or overlay transition of its own: it is
+     drawn as long as its dialog is in the top layer. The fallbacks are
+     for a ::backdrop that inherits nothing from its dialog (before Chrome
+     122 and Safari 17.4): the page still dims, and the fade keeps its
+     durations */
+  .vp-drawer::backdrop {
+    background-color: var(--vp-backdrop-bg-color, rgba(0, 0, 0, 0.6));
+    opacity: 0;
+    transition: opacity var(--vp-duration, 0.25s);
+  }
+
+  .vp-drawer[open]::backdrop {
+    opacity: 1;
+    transition: opacity var(--vp-duration-slow, 0.5s);
+  }
+
+  @starting-style {
+    .vp-drawer[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
