@@ -1,0 +1,54 @@
+{
+  "icon beside its text": {
+    "light": {
+      ".text-success .vp-icon": {
+        "width": "16px",
+        "height": "16px",
+        "offset-top": "4px",
+        "offset-left": "0px"
+      },
+      ".text-success svg": {
+        "fill": "rgb(24, 121, 78)",
+        "width": "16px",
+        "height": "16px"
+      },
+      ".text-warning .vp-icon": {
+        "width": "20px",
+        "height": "20px",
+        "offset-top": "4px",
+        "offset-left": "0px"
+      },
+      ".text-warning svg": {
+        "fill": "none",
+        "stroke": "rgb(145, 89, 48)",
+        "width": "20px",
+        "height": "20px"
+      }
+    },
+    "dark": {
+      ".text-success .vp-icon": {
+        "width": "16px",
+        "height": "16px",
+        "offset-top": "4px",
+        "offset-left": "0px"
+      },
+      ".text-success svg": {
+        "fill": "rgb(61, 214, 140)",
+        "width": "16px",
+        "height": "16px"
+      },
+      ".text-warning .vp-icon": {
+        "width": "20px",
+        "height": "20px",
+        "offset-top": "4px",
+        "offset-left": "0px"
+      },
+      ".text-warning svg": {
+        "fill": "none",
+        "stroke": "rgb(249, 180, 78)",
+        "width": "20px",
+        "height": "20px"
+      }
+    }
+  }
+}
