@@ -49,8 +49,6 @@ import {
   OWN_DRIVE_UPLOADS,
   TOTALITY_DIVIDER_LABEL,
   TOTALITY_DIVIDER_LINE,
-  OWN_DRIVE_DROP_TARGET,
-  TOTALITY_ROSTER_TILE,
   TOTALITY_COVER_LINK,
 } from './recipes.mjs';
 
@@ -1251,39 +1249,6 @@ for (const [name, width, overflow] of [['nav lane', '40rem', false], ['nav lane,
   });
 }
 
-// drop zone: own-drive's drop target against vp-dropzone, and inside a
-// vp-doc against itself outside one
-const DROP = [...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'font-size', 'font-weight', 'line-height', 'color', 'background-color', 'box-shadow', 'height', 'width'];
-cases.push({
-  name: 'drop zone',
-  reference: `<div style="display:flex"><div data-t="z" class="${OWN_DRIVE_DROP_TARGET}">drop files or folders to upload</div></div>`,
-  vpkit: '<div style="display:flex"><div data-t="z" class="vp-dropzone">drop files or folders to upload</div></div>',
-  checks: [{ target: 'z', props: DROP }],
-});
-cases.push({
-  name: 'drop zone in a doc',
-  reference: '<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>',
-  vpkit: inDoc('<div style="display:flex"><p data-t="z" class="vp-dropzone">drop files to upload</p></div>'),
-  checks: [{ target: 'z', props: [...DROP, ...MARGIN] }],
-});
-
-// icon tile: totality's roster tile, in a row, against vp-icon-tile; an
-// icon with a size utility of its own keeps it
-const TILE_SVG = (cls = '') => `<svg data-t="icon"${cls ? ` class="${cls}"` : ''} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>`;
-const TILE = ['display', 'width', 'height', 'flex-shrink', 'flex-grow', 'align-items', 'justify-content', ...BORDER, ...BORDER_COLOR, ...RADIUS, 'background-color', 'color'];
-cases.push({
-  name: 'icon tile',
-  reference: `<div style="display:flex;align-items:center;gap:0.75rem;width:6rem"><span data-t="tile" class="${TOTALITY_ROSTER_TILE}">${TILE_SVG()}</span><span>Phone number</span></div>`,
-  vpkit: `<div style="display:flex;align-items:center;gap:0.75rem;width:6rem"><span data-t="tile" class="vp-icon-tile">${TILE_SVG()}</span><span>Phone number</span></div>`,
-  checks: [{ target: 'tile', props: TILE }, { target: 'icon', props: ['width', 'height', 'offset-left', 'offset-top'] }],
-});
-cases.push({
-  name: 'icon tile, an icon with a size of its own',
-  reference: `<span class="vp-icon-tile">${TILE_SVG()}</span>`.replace('<svg data-t="icon"', '<svg data-t="icon" style="width:1rem;height:1rem"'),
-  vpkit: `<span class="vp-icon-tile">${TILE_SVG(OWN_DRIVE_ICON_CHIP)}</span>`,
-  checks: [{ target: 'icon', props: ['width', 'height'] }],
-});
-
 // thumbnail: totality's album cover link against vp-thumb, at rest and
 // hovered; on a touch screen; then inside a vp-doc, whose rule for images
 // gives margins, against itself outside one
@@ -1329,14 +1294,13 @@ touch('site footer', '<footer class="vp-site-footer"><p>Made by <a data-t="a" hr
 // touch floor, vpkit's addition: on a coarse pointer the shared controls
 // grow to 44px (crashcart's floor, src/web/styles/app.css at 0b6d7a3, its
 // declarations written inline): a button's height, an icon button's
-// square, a lane's links; a chip's remove control and an inline button a
-// larger hit area its margin cancels, so the line keeps its size
+// square, a lane's links; a chip's remove control a larger hit area its
+// margin cancels, so the line keeps its size
 for (const [name, ref, vpkit, props] of [
   ['button', '<a data-t="x" class="vp-btn" href="#" style="min-height:2.75rem">Save</a>', '<a data-t="x" class="vp-btn" href="#">Save</a>', ['min-height', 'height']],
   ['icon button', '<button data-t="x" class="vp-icon-btn" type="button" aria-label="Like" style="width:2.75rem;height:2.75rem"><span class="vpi-heart"></span></button>', '<button data-t="x" class="vp-icon-btn" type="button" aria-label="Like"><span class="vpi-heart"></span></button>', ['width', 'height']],
   ['lane link', '<nav class="vp-nav-lane"><a data-t="x" class="vp-nav-link" href="#" style="min-height:2.75rem;padding:0.75rem 0.875rem">Issues</a></nav>', '<nav class="vp-nav-lane"><a data-t="x" class="vp-nav-link" href="#">Issues</a></nav>', ['min-height', ...PADDING, 'height']],
   ['chip remove', '<span class="vp-chip"><span class="vp-chip-value">2.4.1</span><button data-t="x" class="vp-chip-remove" type="button" aria-label="Remove" style="margin:-0.4375rem;padding:0.4375rem"></button></span>', '<span class="vp-chip"><span class="vp-chip-value">2.4.1</span><button data-t="x" class="vp-chip-remove" type="button" aria-label="Remove"></button></span>', [...MARGIN, ...PADDING]],
-  ['inline button', '<p>id <button data-t="x" class="vp-inline-btn" type="button" aria-label="Copy" style="margin:-0.4375rem;padding:0.4375rem"></button></p>', '<p>id <button data-t="x" class="vp-inline-btn" type="button" aria-label="Copy"></button></p>', [...MARGIN, ...PADDING]],
 ]) {
   cases.push({ name: `${name}, the touch floor`, touch: true, reference: ref, vpkit, checks: [{ target: 'x', props }] });
 }
@@ -1383,23 +1347,6 @@ cases.push({
   vpkit: '<div class="vp-panel vp-panel-flush"><div data-t="r" class="vp-row" data-state="muted">pg-backup · muted</div></div>',
   checks: [{ target: 'r', props: ['opacity'] }],
 });
-
-// a stat that is a link: crashcart's stat link around a stat (its hover
-// raised the border; vpkit's link surfaces take the brand border, written
-// as a utility), the stat itself the link in vpkit, with the text's color
-// and no underline; on a touch screen
-const STAT_INNER = '<div class="vp-stat-header"><p class="vp-stat-title">Open issues</p><span data-t="v" class="vp-stat-value">42</span></div>';
-cases.push({
-  name: 'stat as a link',
-  reference: `<a data-t="s" href="#" class="vp-stat hover:border-brand-1" style="color:inherit;text-decoration-line:none;transition:border-color 0.25s">${STAT_INNER}</a>`,
-  vpkit: `<a data-t="s" href="#" class="vp-stat">${STAT_INNER}</a>`,
-  checks: [
-    { target: 's', props: ['display', 'color', 'text-decoration-line', ...BORDER_COLOR, ...TRANSITION] },
-    { target: 's', state: ['hover'], props: BORDER_COLOR },
-    { target: 'v', props: ['color', 'text-decoration-line'] },
-  ],
-});
-touch('stat as a link', `<a data-t="s" href="#" class="vp-stat">${STAT_INNER}</a>`, [{ target: 's', ...AT_REST, props: BORDER_COLOR }]);
 
 // quiet link, vpkit's addition: own-drive's file name link and crashcart's
 // why line, whose colors and decoration vp-link-quiet takes, with vp-link's
@@ -2095,8 +2042,6 @@ const IN_ALERT = [
     { target: 'title', props: LOOK },
     { target: 'details', props: ['color', 'font-weight'] },
   ]],
-  // an icon has no text for the alert's link weight to draw
-  ['inline button', `<a data-t="x" class="vp-inline-btn" href="#" aria-label="Open"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>`, [{ target: 'x', props: ['color', 'text-decoration-line'] }, HOVER_COLOR('x')]],
   ['quiet link', '<p>See <a data-t="x" class="vp-link vp-link-quiet" href="#">the runbook</a>.</p>', [{ target: 'x', props: LOOK }, HOVER_COLOR('x')]],
   // a chip that is a link: the pill and its key, whose weight it inherits
   ['chip link', `<a data-t="x" class="vp-chip" href="#"><span data-t="key" class="vp-chip-key">release:</span><span data-t="value" class="vp-chip-value">2.4.1</span></a>`, [
@@ -2636,103 +2581,6 @@ cases.push({
   ],
 });
 
-// copy line: crashcart's copybox (src/web/styles/app.css at 4b4fdd6, its
-// declarations written inline, the first and last line's padding as its
-// :first-child and :last-child rules give them) against vp-copy, three lines
-// stacked in a box; then at a phone's width, where a long value pushes the
-// button onto a line of its own; then the value inside a vp-doc against
-// itself outside one. vpkit's change: the value's overflow-wrap is
-// break-word, where the recipe had anywhere, written inline on the recipe;
-// the rows' geometry is the recipe's either way, and a copy line in a table
-// cell (below) is where the two part
-const COPY_ROW = 'display:flex;flex-wrap:wrap;align-items:baseline;gap:0.75rem;font-family:var(--vp-font-family-mono);font-size:0.8125rem';
-const COPY_LABEL = 'flex-shrink:0;min-width:4.5rem;color:var(--vp-c-text-2);user-select:none';
-const COPY_VALUE = 'flex:1 1 12rem;min-width:0;overflow-wrap:break-word;color:var(--vp-c-text-1)';
-const COPY_BTN = 'flex-shrink:0;align-self:center';
-const copyLine = (n, value, ref, padding) =>
-  ref
-    ? `<div data-t="row${n}" style="${COPY_ROW};padding:${padding}"><span data-t="label${n}" style="${COPY_LABEL}">${['start', 'ok', 'error'][n - 1]}</span>` +
-      `<code data-t="value${n}" style="${COPY_VALUE}">${value}</code><button data-t="btn${n}" class="vp-btn" type="button" style="${COPY_BTN}">Copy</button></div>`
-    : `<div data-t="row${n}" class="vp-copy"><span data-t="label${n}" class="vp-copy-label">${['start', 'ok', 'error'][n - 1]}</span>` +
-      `<code data-t="value${n}" class="vp-copy-value">${value}</code><button data-t="btn${n}" class="vp-btn" type="button">Copy</button></div>`;
-const COPY_VALUES = [
-  "curl -fsS -m 10 'https://crashcart.example/api/check-in/in_progress?token=cmt_7f3a'",
-  "curl -fsS -m 10 'https://crashcart.example/api/check-in/ok?token=cmt_7f3a&amp;duration=142'",
-  "curl -fsS -m 10 'https://crashcart.example/api/check-in/error?token=cmt_7f3a'",
-];
-const COPY_PADDING = ['0 0 0.375rem', '0.375rem 0', '0.375rem 0 0'];
-const copyBox = (ref) => `<div data-t="box" style="width:40rem">${COPY_VALUES.map((v, i) => copyLine(i + 1, v, ref, COPY_PADDING[i])).join('')}</div>`;
-const COPY_ROW_PROPS = ['display', 'flex-wrap', 'align-items', 'row-gap', 'column-gap', ...PADDING, 'font-family', 'font-size', 'height'];
-const COPY_PART_PROPS = {
-  label: ['flex-shrink', 'min-width', 'color', 'user-select', 'offset-left', 'offset-top', 'width'],
-  value: ['flex-grow', 'flex-shrink', 'flex-basis', 'min-width', 'overflow-wrap', 'color', 'font-family', 'font-size', 'offset-left', 'offset-top', 'width', 'height'],
-  btn: ['flex-shrink', 'align-self', 'offset-left', 'offset-top', 'height'],
-};
-const copyChecks = (rows) =>
-  rows.flatMap((n) => [
-    { target: `row${n}`, props: COPY_ROW_PROPS },
-    ...Object.entries(COPY_PART_PROPS).map(([part, props]) => ({ target: `${part}${n}`, props })),
-  ]);
-cases.push({
-  name: 'copy line',
-  reference: copyBox(true),
-  vpkit: copyBox(false),
-  checks: copyChecks([1, 2, 3]),
-});
-cases.push({
-  name: "copy line at a phone's width",
-  width: 375,
-  reference: `<div data-t="box">${copyLine(1, COPY_VALUES[1], true, '0')}</div>`,
-  vpkit: `<div data-t="box">${copyLine(1, COPY_VALUES[1], false)}</div>`,
-  checks: copyChecks([1]),
-});
-// in a table cell: crashcart's release page writes overflow-wrap: normal on
-// the value (and padding: 0 on the row, which a lone row has anyway), so an
-// auto table sizes the column by the command's longest word rather than by
-// one character; vpkit's value does the same with no style of its own
-const copyCell = (ref) =>
-  `<table style="width:20rem"><tr><td data-t="name">The release ships an obfuscated build whose mapping file was never uploaded</td><td data-t="cell">` +
-  `<div data-t="row1" class="vp-copy"${ref ? ' style="padding:0"' : ''}><code data-t="value1" class="vp-copy-value"${ref ? ' style="overflow-wrap:normal"' : ''}>sentry-cli upload-proguard --uuid 3f2a mapping.txt</code>` +
-  `<button data-t="btn1" class="vp-btn" type="button">Copy</button></div></td></tr></table>`;
-cases.push({
-  name: 'copy line in a table cell',
-  reference: copyCell(true),
-  vpkit: copyCell(false),
-  checks: [
-    { target: 'name', props: ['width'] },
-    { target: 'cell', props: ['width', 'height'] },
-    { target: 'value1', props: ['width', 'height', 'offset-top'] },
-    { target: 'btn1', props: ['offset-left', 'offset-top'] },
-  ],
-});
-cases.push({
-  name: 'copy line in a doc',
-  reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
-  vpkit: inDoc(copyLine(1, COPY_VALUES[0], false)),
-  checks: [{ target: 'value1', props: [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color', 'height'] }],
-});
-// inside an alert of each type, and one in a doc, the value against itself
-// outside: the alert's rule for its inline code (`:where(.vp-alert) code`,
-// the chip at 0.875em) must not reach it (crashcart's missing-symbol
-// notice holds a sentry-cli line). Not its height: the row takes the
-// alert's line height (1.7142857), as every line in the alert does
-const COPY_VALUE_LOOK = [...PADDING, ...RADIUS, 'background-color', 'font-size', 'color'];
-for (const type of ['info', 'note', 'tip', 'important', 'warning', 'danger', 'caution']) {
-  const modifier = type === 'info' ? '' : ` vp-alert-${type}`;
-  cases.push({
-    name: `copy line inside an alert, ${type}`,
-    reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
-    vpkit: `<div class="vp-alert${modifier}">${copyLine(1, COPY_VALUES[0], false)}</div>`,
-    checks: [{ target: 'value1', props: COPY_VALUE_LOOK }],
-  });
-}
-cases.push({
-  name: 'copy line inside an alert in a doc',
-  reference: `<div>${copyLine(1, COPY_VALUES[0], false)}</div>`,
-  vpkit: inDoc(`<div class="vp-alert vp-alert-warning">${copyLine(1, COPY_VALUES[0], false)}</div>`),
-  checks: [{ target: 'value1', props: COPY_VALUE_LOOK }],
-});
-
 // file input: crashcart's file-input (src/web/styles/app.css at 4b4fdd6,
 // its rules in a <style>, since the chooser is a pseudo-element no inline
 // style reaches, with vpkit's change written there: the hover keyed on the
@@ -2808,68 +2656,6 @@ cases.push({
   ],
 });
 
-// inline button: crashcart's event id copy control (src/web/pages/event.rs
-// at 181c032: the chip's remove control it borrowed, chip.css at 70353e2,
-// its declarations in a <style> for the hover, the icon at the 1rem its
-// .icon gives it) against vp-inline-btn, in a 12px line of a flex row as
-// the event page lays it out: the control's box at rest and hovered, its
-// icon and the row; then the row against its text alone, which the
-// control leaves as tall as it was; then on a touch screen, and as a link
-// in a doc (the alert's link rule is IN_ALERT's)
-const COPY_SVG = (style) =>
-  `<svg data-t="icon"${style ? ` style="${style}"` : ''} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>`;
-const inlineRow = (control) =>
-  `<div data-t="row" style="display:flex;align-items:center;gap:0.25rem;width:20rem;font-size:0.75rem;line-height:1rem">` +
-  `<span data-t="text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4</span>${control}</div>`;
-const inlineBtn = (ref, tag = 'button') => {
-  const attrs = tag === 'button' ? 'type="button" aria-label="Copy the event id"' : 'href="#" aria-label="Open the event"';
-  return ref
-    ? inlineRow(`<${tag} data-t="btn" class="ref-inline-btn" ${attrs}>${COPY_SVG('width:1rem;height:1rem')}</${tag}>`) +
-        '<style>.ref-inline-btn{display:inline-flex;cursor:pointer;color:var(--vp-c-text-2);padding:0.3125rem;margin:-0.3125rem;transition:color 0.25s;text-decoration:none}.ref-inline-btn:hover{color:var(--vp-c-text-1)}</style>'
-    : inlineRow(`<${tag} data-t="btn" class="vp-inline-btn" ${attrs}>${COPY_SVG('')}</${tag}>`);
-};
-const INLINE_BTN_BOX = ['display', ...PADDING, ...MARGIN, 'color', 'cursor', 'text-decoration-line', ...TRANSITION, 'offset-left', 'offset-top', 'width', 'height'];
-cases.push({
-  name: 'inline button',
-  reference: inlineBtn(true),
-  vpkit: inlineBtn(false),
-  checks: [
-    { target: 'btn', props: INLINE_BTN_BOX },
-    { target: 'btn', state: ['hover'], props: ['color'] },
-    { target: 'icon', props: ['width', 'height'] },
-    { target: 'row', props: ['height'] },
-    { target: 'text', props: ['offset-top', 'width'] },
-  ],
-});
-cases.push({
-  name: 'inline button on a link',
-  reference: inlineBtn(true, 'a'),
-  vpkit: inlineBtn(false, 'a'),
-  checks: [
-    { target: 'btn', props: INLINE_BTN_BOX },
-    { target: 'btn', state: ['hover'], props: ['color'] },
-  ],
-});
-cases.push({
-  name: 'inline button in a line',
-  reference: inlineRow(''),
-  vpkit: inlineBtn(false),
-  checks: [
-    { target: 'row', props: ['height'] },
-    { target: 'text', props: ['offset-top', 'height'] },
-  ],
-});
-touch('inline button', inlineBtn(false), [{ target: 'btn', ...AT_REST, props: ['color'] }]);
-cases.push({
-  name: 'inline button in a doc',
-  reference: `<p>${inlineBtn(false, 'a')}</p>`,
-  vpkit: inDoc(`<p>${inlineBtn(false, 'a')}</p>`),
-  checks: [
-    { target: 'btn', props: ['color', 'text-decoration-line', ...PADDING, ...MARGIN] },
-    { target: 'btn', state: ['hover'], props: ['color'] },
-  ],
-});
-
 // pager: crashcart's pager (src/web/styles/app.css at 4b4fdd6, its
 // declarations written inline) against vp-pager, a summary and two vp-btns,
 // one disabled; then the summary inside a vp-doc against itself outside one
@@ -2919,33 +2705,6 @@ cases.push({
     { target: 'summary', props: PAGER_LINE },
   ],
 });
-
-// stat: crashcart's stat card (src/web/shell.rs's stat_card at 4b4fdd6: a
-// vp-card vp-card-outline block h-auto overflow-hidden with its stat-card
-// padding, and src/web/styles/app.css's stat-card-header, stat-title,
-// stat-value and stat-hint written inline, its title a paragraph as
-// vpkit's is) against vp-stat; then the title and the hint inside a vp-doc
-// against themselves outside one
-const statMarkup = (ref) =>
-  ref
-    ? `<div data-t="box" class="vp-card vp-card-outline block h-auto overflow-hidden" style="padding:1rem 1.25rem;width:16rem">` +
-      `<header data-t="header" style="display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem">` +
-      `<p data-t="title" style="font-size:0.8125rem;font-weight:500;color:var(--vp-c-text-2)">Unhandled errors</p>` +
-      `<span data-t="value" style="font-size:1.375rem;font-weight:600;font-variant-numeric:tabular-nums">1.2k</span></header>` +
-      `<p data-t="hint" style="margin-top:0.25rem;max-width:75ch;font-size:0.8125rem;color:var(--vp-c-text-2)">in the last 7 days</p></div>`
-    : `<div data-t="box" class="vp-stat" style="width:16rem"><header data-t="header" class="vp-stat-header">` +
-      `<p data-t="title" class="vp-stat-title">Unhandled errors</p><span data-t="value" class="vp-stat-value">1.2k</span></header>` +
-      `<p data-t="hint" class="vp-stat-hint">in the last 7 days</p></div>`;
-const STAT_TEXT = ['font-size', 'font-weight', 'color', 'line-height', ...MARGIN, 'offset-left', 'offset-top', 'height'];
-const statChecks = [
-  { target: 'box', props: ['display', ...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'background-color', 'color', 'height'] },
-  { target: 'header', props: ['display', 'align-items', 'justify-content', 'column-gap', 'height'] },
-  { target: 'title', props: [...STAT_TEXT, ...BORDER, ...PADDING, 'letter-spacing'] },
-  { target: 'value', props: [...STAT_TEXT, 'font-variant-numeric'] },
-  { target: 'hint', props: [...STAT_TEXT, 'max-width'] },
-];
-cases.push({ name: 'stat', reference: statMarkup(true), vpkit: statMarkup(false), checks: statChecks });
-cases.push({ name: 'stat in a doc', reference: `<div>${statMarkup(false)}</div>`, vpkit: inDoc(statMarkup(false)), checks: statChecks });
 
 // row: crashcart's board row (src/web/styles/app.css at 4b4fdd6, its
 // declarations written inline, the last row's as its :last-child rule

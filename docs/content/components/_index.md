@@ -70,13 +70,11 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Chip](@/components/chip.md) | `vp-chip` | none, vpkit's own: a removable filter, or a link to the list it names |
 | [Choice](@/components/choice.md) | `vp-choice` | none, vpkit's own: a radio or checkbox drawn as a card |
 | [Code](@/components/code.md) | `vp-code` | VitePress's inline code |
-| [Copy Line](@/components/copy.md) | `vp-copy` | none, vpkit's own: a value to copy, with its button |
 | [Description List](@/components/dl.md) | `vp-dl` | none, vpkit's own: terms and their values |
 | [Dialog](@/components/dialog.md) | `vp-dialog` | none, vpkit's own, on `<dialog>` |
 | [Divider](@/components/divider.md) | `vp-divider` | VitePress's markdown rule, and the navbar's vertical rule |
 | [Dot](@/components/dot.md) | `vp-dot` | none, vpkit's own: a legend's key, a status's second carrier |
 | [Drawer](@/components/drawer.md) | `vp-drawer` | VitePress's sidebar as a phone shows it, over its backdrop |
-| [Drop Zone](@/components/dropzone.md) | `vp-dropzone` | none, vpkit's own: where to drop files |
 | [Dropdown](@/components/dropdown.md) | `vp-dropdown` | VitePress's `VPMenu` |
 | [Empty State](@/components/empty.md) | `vp-empty` | none, vpkit's own |
 | [Field](@/components/field.md) | `vp-field`, `vp-label`, `vp-field-hint`, `vp-field-error` | none, vpkit's own |
@@ -86,8 +84,6 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Highlight](@/components/mark.md) | `vp-mark` | the highlight of VitePress's local search box |
 | [Hint](@/components/hint.md) | `vp-hint` | none, vpkit's own: a word's meaning in a tooltip |
 | [Icon Button](@/components/icon-btn.md) | `vp-icon-btn` | VitePress's `VPSocialLink` |
-| [Icon Tile](@/components/icon-tile.md) | `vp-icon-tile` | none, vpkit's own: a row's mark |
-| [Inline Button](@/components/inline-btn.md) | `vp-inline-btn` | none, vpkit's own: an icon control in a line of text |
 | [Input](@/components/input.md) | `vp-input` | none, vpkit's own, on VitePress's input variables |
 | [Key](@/components/kbd.md) | `vp-kbd` | the key caps of VitePress's local search box |
 | [Link](@/components/link.md) | `vp-link` | VitePress's markdown link |
@@ -103,7 +99,6 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Site Footer](@/components/site-footer.md) | `vp-site-footer` | VitePress's `VPFooter` |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
-| [Stat](@/components/stat.md) | `vp-stat` | none, vpkit's own: a number with its title and hint |
 | [Status](@/components/status.md) | `vp-status` | none, vpkit's own: the reply to what was just done |
 | [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |

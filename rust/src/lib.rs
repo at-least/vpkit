@@ -32,7 +32,6 @@ mod empty;
 mod field;
 mod hint;
 mod pager;
-mod stat;
 mod tabs;
 
 pub use chip::Chip;
@@ -41,7 +40,6 @@ pub use empty::Empty;
 pub use field::{Field, FieldError, FieldHint, field_error_id, field_hint_id};
 pub use hint::Hint;
 pub use pager::Pager;
-pub use stat::Stat;
 pub use tabs::{Tab, Tabs};
 
 #[cfg(test)]

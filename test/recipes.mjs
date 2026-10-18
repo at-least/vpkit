@@ -209,19 +209,6 @@ export const OWN_DRIVE_UPLOADS = 'bg-[color:var(--vp-c-bg-elv)] border border-di
 export const TOTALITY_DIVIDER_LABEL = 'my-6 flex items-center gap-3 text-[0.8125rem] leading-5 text-secondary';
 export const TOTALITY_DIVIDER_LINE = 'h-px flex-1 bg-divider';
 
-// own-drive src/web.rs at 9aff0f4, verbatim as of 2026-10-18: the target
-// its drop overlay centers while files are dragged over the window (the
-// overlay itself, `fixed inset-0 … bg-[color:var(--vp-c-brand-soft)]`, is
-// placement and a wash); the reference for vp-dropzone
-export const OWN_DRIVE_DROP_TARGET =
-  'border-2 border-dashed border-brand-1 rounded-[1rem] py-[3rem] px-[5rem] text-[1.25rem] font-semibold text-brand-1 bg-[color:var(--vp-c-bg-elv)] shadow-4';
-
-// totality crates/store/src/ui.rs at cbcbb503, verbatim as of 2026-10-18: a
-// roster line's tile (`ROSTER_TILE`), a login's mark in a bordered square;
-// the reference for vp-icon-tile
-export const TOTALITY_ROSTER_TILE =
-  'flex size-10 flex-none items-center justify-center rounded-lg border border-divider bg-bg text-secondary [&_svg]:size-5';
-
 // totality crates/store/src/views.rs at cbcbb503, verbatim as of
 // 2026-10-18: an album's cover, a link to its course page around the
 // image; the reference for vp-thumb (its transition, which names every

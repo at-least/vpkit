@@ -36,11 +36,9 @@
 @import "../breadcrumb.css";
 @import "../accordion.css";
 @import "../drawer.css";
-@import "../copy.css";
 @import "../file.css";
 @import "../chip.css";
 @import "../pager.css";
-@import "../stat.css";
 @import "../row.css";
 @import "../heading.css";
 @import "../dl.css";
@@ -51,13 +49,10 @@
 @import "../hint.css";
 @import "../sidenav.css";
 @import "../screen.css";
-@import "../dropzone.css";
-@import "../icon-tile.css";
 @import "../thumb.css";
 @import "../site-footer.css";
 @import "../checkbox.css";
 @import "../panel.css";
-@import "../inline-btn.css";
 /* the markdown (vp-doc), last, as totality's admin imports it: the
    "in a doc" cases measure the components against its rules */
 @import "../content.css";
