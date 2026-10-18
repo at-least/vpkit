@@ -19,9 +19,9 @@ The page puts Carbon's script in the box, and the script writes the ad:
 </div>
 ```
 
-{{ <vp_example file="carbon-ads/ad" title="An ad as Carbon writes it" kit="docs-theme" /> }}
+{{ <vp_example file="carbon-ads/ad" title="An ad in the markup Carbon writes" kit="docs-theme" /> }}
 
 - `vp-carbon-ads`: the box, on the ads' ground, rounded, at least 16rem tall, centering what it holds.
-- The ad is Carbon's markup: its image centered and rounded, its text (`carbon-text`) and its credit (`carbon-poweredby`) under it, each brightened while hovered. Of the ads it holds, only the first shows.
+- The ad is Carbon's markup: its image centered and rounded, its text (`carbon-text`) and its credit (`carbon-poweredby`) under it, each brightened while hovered. Of the ads it holds, only the first shows. Carbon's other classes (`carbon-wrap`, `carbon-img`) style nothing, so the example leaves them out.
 - The colors are the `--vp-carbon-ads-*` variables of the docs theme's `vars.css`, derived from the theme's text, brand and soft ground.
 - Inside a `vp-doc` the ad's links take no underline from the markdown, vpkit's addition: VitePress shows the box only in its aside, outside the markdown.

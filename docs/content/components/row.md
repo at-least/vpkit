@@ -29,7 +29,7 @@ A row on an `<a>` is a block in the text's own color and weight, with no underli
 
 {{ <vp_example file="row/links" title="Top issues" /> }}
 
-Inside a `vp-doc` ([Markdown](@/guide/getting-started.md#markdown-and-icons)), a row that is a list item and a part that is a paragraph keep no margin of the markdown's.
+Inside a `vp-doc` ([Markdown](@/guide/getting-started.md#markdown)), a row that is a list item and a part that is a paragraph keep no margin of the markdown's.
 
 ## Muted
 
