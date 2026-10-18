@@ -1,0 +1,145 @@
+/* vpkit — toggle, `vp-toggle`, from VitePress's VPSwitch (the track with
+ * a sliding knob) and VPSwitchAppearance (the appearance switch, with its
+ * sun and moon). An optional import:
+ * `@import "vpkit/components/toggle/toggle.css";`
+ *
+ *   <button class="vp-toggle" type="button" role="switch" aria-checked="false" aria-label="Notifications">
+ *     <span class="vp-toggle-check"></span>
+ *   </button>
+ *
+ * On a <button role="switch">, which brings the pointer (base.css gives an
+ * enabled button one). `vp-toggle` alone is VPSwitch: the 2.5rem × 1.375rem
+ * track, the control's border color on the gray wash, a brand border
+ * hovered, and the round knob. The parts:
+ *   vp-toggle-check   the knob (VPSwitch's .check), white in light and
+ *                     black in dark (the one literal color: VitePress's
+ *                     neutral-inverse, which the contract has no slot
+ *                     for), under --vp-shadow-1; it slides to the right
+ *                     while the button's aria-checked is "true", vpkit's
+ *                     state (VPSwitch has none of its own: only the
+ *                     appearance switch moves its knob, by `.dark`)
+ *   vp-toggle-icon    the round clip in the knob (VPSwitch's .icon) for an
+ *                     inline SVG straight inside it: 0.75rem where
+ *                     VPSwitch puts its icon, in secondary text in light
+ *                     and body text in dark, as VitePress colors it
+ * The axis is an attribute:
+ *   data-variant="appearance"   VPSwitchAppearance: the knob follows
+ *                               `.dark` on <html> as VitePress's does (so it
+ *                               is right before any script runs), and of
+ *                               the two SVGs in the clip the sun,
+ *                               `vp-toggle-light`, shows in light and the
+ *                               moon, `vp-toggle-dark`, in dark
+ *
+ *   <button class="vp-toggle" data-variant="appearance" type="button" role="switch" aria-checked="false" aria-label="Appearance">
+ *     <span class="vp-toggle-check"><span class="vp-toggle-icon">
+ *       <svg class="vp-toggle-light" aria-hidden="true" viewBox="0 0 24 24" …>…</svg>
+ *       <svg class="vp-toggle-dark" aria-hidden="true" viewBox="0 0 24 24" …>…</svg>
+ *     </span></span>
+ *   </button>
+ *
+ * The icons are inline SVGs (the crate's `vpkit::icon`, SUN and MOON, in
+ * currentColor), not masks, so a page whose CSP refuses data: images
+ * draws them too. A script of the page toggles `.dark` on <html> and keeps
+ * aria-checked in step; vpkit ships none. The hover applies only on a
+ * device that can hover; VPSwitch's also stuck to a tapped switch. The
+ * icon fades in both modes, where VPSwitch fades it under `.dark` alone:
+ * the kit has no `.dark` rule but a state read, which the appearance
+ * switch's three are. The focus ring is base.css's. Under forced colors,
+ * which replace the knob's ground with the track's and drop its shadow, a
+ * transparent outline on the knob becomes a ring in the system's text
+ * color, so on still looks unlike off.
+ *
+ * The block sets every --vp-toggle-* local from the contract (the knob's
+ * pair and the icon's light-dark() of two contract colors the only values
+ * that are not a token as they are). This is the components layer, so a
+ * utility on the element overrides it. */
+
+@layer components {
+  .vp-toggle {
+    --vp-toggle-border: var(--vp-c-border);
+    --vp-toggle-bg: var(--vp-c-gray-soft);
+    --vp-toggle-hover-border: var(--vp-c-brand);
+    --vp-toggle-knob: light-dark(#ffffff, #000000);
+    --vp-toggle-icon: light-dark(var(--vp-c-text-2), var(--vp-c-text-1));
+
+    position: relative;
+    display: block;
+    width: 2.5rem;
+    height: 1.375rem;
+    flex-shrink: 0;
+    border: 1px solid var(--vp-toggle-border);
+    border-radius: 0.6875rem;
+    background-color: var(--vp-toggle-bg);
+    transition: border-color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--vp-toggle-hover-border);
+      }
+    }
+  }
+
+  .vp-toggle-check {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    background-color: var(--vp-toggle-knob);
+    box-shadow: var(--vp-shadow-1);
+    transition: transform var(--vp-duration);
+  }
+
+  /* forced colors: the knob's ground becomes the track's and its shadow
+     goes, so a transparent outline, which they paint in the text color,
+     keeps it visible */
+  @media (forced-colors: active) {
+    .vp-toggle-check {
+      outline: 1px solid transparent;
+      outline-offset: -1px;
+    }
+  }
+
+  /* vpkit's state: the knob at the right while the switch is on */
+  .vp-toggle[aria-checked="true"] .vp-toggle-check {
+    transform: translateX(1.125rem);
+  }
+
+  .vp-toggle-icon {
+    position: relative;
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .vp-toggle-icon > svg {
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    color: var(--vp-toggle-icon);
+    transition: opacity var(--vp-duration);
+  }
+
+  /* the appearance switch: the knob and the two icons follow .dark, the
+     one state the kit reads from the root */
+  .vp-toggle[data-variant="appearance"] .vp-toggle-dark {
+    opacity: 0;
+  }
+
+  :root.dark .vp-toggle[data-variant="appearance"] .vp-toggle-light {
+    opacity: 0;
+  }
+
+  :root.dark .vp-toggle[data-variant="appearance"] .vp-toggle-dark {
+    opacity: 1;
+  }
+
+  :root.dark .vp-toggle[data-variant="appearance"] .vp-toggle-check {
+    transform: translateX(1.125rem);
+  }
+}
