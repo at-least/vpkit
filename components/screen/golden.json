@@ -1,0 +1,100 @@
+{
+  "screen": {
+    "light": {
+      ".vp-screen": {
+        "top": "65px",
+        "padding-top": "0px",
+        "height": "655px"
+      },
+      ".vp-screen-container": {
+        "offset-top": "0px"
+      }
+    },
+    "dark": {
+      ".vp-screen": {
+        "top": "65px",
+        "padding-top": "0px",
+        "height": "655px"
+      },
+      ".vp-screen-container": {
+        "offset-top": "0px"
+      }
+    }
+  },
+  "screen hidden": {
+    "light": {
+      ".vp-screen": {
+        "display": "none"
+      }
+    },
+    "dark": {
+      ".vp-screen": {
+        "display": "none"
+      }
+    }
+  },
+  "screen menu": {
+    "light": {
+      ".vp-screen": {
+        "top": "65px",
+        "height": "655px",
+        "width": "375px",
+        "background-color": "rgb(255, 255, 255)"
+      },
+      ".vp-screen-container": {
+        "width": "288px",
+        "offset-left": "43.5px",
+        "offset-top": "0px"
+      },
+      ".vp-nav-link[aria-current=\"page\"]": {
+        "color": "rgb(52, 81, 178)",
+        "height": "48px",
+        "border-bottom-color": "rgb(226, 226, 227)"
+      },
+      ".vp-accordion-title": {
+        "color": "rgb(60, 60, 67)",
+        "height": "47px"
+      },
+      ".vp-screen-row": {
+        "height": "48px",
+        "offset-top": "192px",
+        "background-color": "rgb(246, 246, 247)"
+      },
+      ".vp-screen-row > .vp-toggle": {
+        "offset-left": "234px",
+        "offset-top": "13px"
+      }
+    },
+    "dark": {
+      ".vp-screen": {
+        "top": "65px",
+        "height": "655px",
+        "width": "375px",
+        "background-color": "rgb(27, 27, 31)"
+      },
+      ".vp-screen-container": {
+        "width": "288px",
+        "offset-left": "43.5px",
+        "offset-top": "0px"
+      },
+      ".vp-nav-link[aria-current=\"page\"]": {
+        "color": "rgb(168, 177, 255)",
+        "height": "48px",
+        "border-bottom-color": "rgb(46, 46, 50)"
+      },
+      ".vp-accordion-title": {
+        "color": "rgb(223, 223, 214)",
+        "height": "47px"
+      },
+      ".vp-screen-row": {
+        "height": "48px",
+        "offset-top": "192px",
+        "background-color": "rgb(32, 33, 39)"
+      },
+      ".vp-screen-row > .vp-toggle": {
+        "offset-left": "234px",
+        "offset-top": "13px"
+      }
+    }
+  }
+}

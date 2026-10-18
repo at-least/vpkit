@@ -1,0 +1,82 @@
+/* vpkit — nav screen, `vp-screen`, from VitePress's VPNavScreen: the menu
+ * a phone's hamburger opens over the page, under the bar. An optional
+ * import: `@import "vpkit/components/screen/screen.css";` (`vp-nav-screen`
+ * is the docs layout's own screen, so the app's is `vp-screen`)
+ *
+ *   <div class="vp-screen lg:hidden" id="nav-screen" hidden>
+ *     <div class="vp-screen-container">
+ *       <nav aria-label="Main">
+ *         <a class="vp-nav-link" data-variant="screen" href="/store" aria-current="page">Store</a>
+ *         <details class="vp-accordion">…</details>
+ *       </nav>
+ *       <div class="vp-screen-row mt-6">
+ *         <p class="vp-screen-label">Appearance</p>
+ *         <button class="vp-toggle" data-variant="appearance" …>…</button>
+ *       </div>
+ *     </div>
+ *   </div>
+ *
+ * `vp-screen` is the screen: fixed from just under the bar (the bar's
+ * height, --vp-nav-height, and its 1px line) to the viewport's foot, full
+ * width, 2rem in at each side, on the page's color, scrolling on its own
+ * without scrolling the page behind it, its ground turning in
+ * --vp-duration. Where VPNavScreen covers the bar and pads down past it,
+ * vpkit's starts under it, so the bar stays above it with no stacking
+ * order to keep. No axis. The parts:
+ *   vp-screen-container   an 18rem column centered, 1.5rem above its
+ *                         content and 6rem under it
+ *   vp-screen-row         VitePress's labelled row in the screen (its
+ *                         appearance row, VPNavScreenAppearance): a flex
+ *                         row on the soft ground with the radius token,
+ *                         0.75rem above and below, 1rem in at the start
+ *                         and 0.875rem at the end, its control at the far
+ *                         end
+ *   vp-screen-label       the row's label: 0.75rem at 2, weight 500,
+ *                         secondary text
+ * A state: open and closed are the `hidden` attribute, which the page's
+ * script toggles with the hamburger's aria-expanded. What is inside is
+ * the page's: vp-nav-link's screen variant for the links, vp-accordion for
+ * a group of them, vp-toggle's appearance variant in the row; the width
+ * it hides at (`lg:hidden`, where the bar shows its links) and the space
+ * between its parts (`mt-6`) are the page's too. Not ported: the fade in,
+ * Vue's. This is the components layer, so a utility on the element
+ * overrides it. */
+
+@layer components {
+  .vp-screen {
+    position: fixed;
+    top: calc(var(--vp-nav-height) + 1px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0 2rem;
+    width: 100%;
+    background-color: var(--vp-c-bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: background-color var(--vp-duration);
+  }
+
+  .vp-screen-container {
+    margin: 0 auto;
+    padding: 1.5rem 0 6rem;
+    max-width: 18rem;
+  }
+
+  .vp-screen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--vp-radius);
+    padding: 0.75rem 0.875rem 0.75rem 1rem;
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-screen-label {
+    margin: 0;
+    line-height: 2;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+}
