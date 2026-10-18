@@ -1,0 +1,237 @@
+/* vpkit — alert, `vp-alert`, from VitePress's custom blocks (`::: tip` and
+ * the others: custom-block.css, with vp-doc.css's rules for a block's links
+ * and paragraphs, which meet it as VitePress renders a container in its
+ * markdown). An optional import:
+ * `@import "vpkit/components/alert/alert.css";`
+ *
+ *   <div class="vp-alert" data-variant="tip">
+ *     <p class="vp-alert-title">TIP</p>
+ *     <p>Body text, with <a href="/guide">links</a> and <code>code</code>.</p>
+ *   </div>
+ *
+ * `vp-alert` alone is the info type: body text on the gray tint, brand
+ * links. The type is an attribute, each the role's text for its links and
+ * code on the role's tint:
+ *   data-variant="note"       the info look under its own title, as
+ *                             VitePress's note is; only its icon is the
+ *                             brand's
+ *   data-variant="tip"        the brand tint, brand links
+ *   data-variant="important"  the important tint
+ *   data-variant="warning"    the warning tint
+ *   data-variant="danger"     the danger tint
+ *   data-variant="caution"    the caution tint (the danger's, unless a
+ *                             theme sets caution apart)
+ * The details block is the element: a <details class="vp-alert">, in the
+ * info look (VitePress's details colors are its info's), whose <summary>
+ * is the title, bold (700), with the pointer, not selectable, 0.5rem
+ * above the body; it opens and closes as the element does, and takes a
+ * variant like any block:
+ *
+ *   <details class="vp-alert">
+ *     <summary>Details</summary>
+ *     <p>Body text.</p>
+ *   </details>
+ *
+ * The parts: `vp-alert-title`, the bold (600) title line, which gives the
+ * block a title's top padding (1rem, where a block without one keeps its
+ * 0.5rem), as a <summary> does; and `vp-alert-icon`, vpkit's addition, an
+ * inline SVG first, then the content in one element:
+ *
+ *   <div class="vp-alert" data-variant="warning" role="status">
+ *     <svg class="vp-alert-icon" aria-hidden="true" viewBox="0 0 24 24" …>…</svg>
+ *     <div>
+ *       <p class="vp-alert-title">Platform mismatch</p>
+ *       <p>Body text.</p>
+ *     </div>
+ *   </div>
+ *
+ * The block is then a row, the icon 1rem square in the type's color (the
+ * info type's the text's), centered on the first line whatever the line
+ * height, and the content filling the rest 0.5rem from it, where its
+ * paragraphs keep their margins; a title first in the content gives the
+ * block the title's top padding, as one without an icon has.
+ *
+ * What is inside, VitePress's: a bare link (no vp- class) in the type's
+ * color at weight 500, underlined 0.125rem below, in the type's hover
+ * color and dimmed to 0.75 when hovered, on a device that can hover
+ * (VitePress's hover also sticks to a tapped link); bare inline code in
+ * the type's color on the type's tint, 0.875em, a 0.25rem radius;
+ * paragraphs 0.5rem apart. The code's size is the markdown's 0.875em, not
+ * the 0.8125rem the block sets for its own code: in VitePress's docs
+ * `.vp-doc :not(pre, h1, …) > code` beats `.custom-block code`, so the
+ * block's never paints; the link's weight and its color transition are
+ * vp-doc.css's for the same reason. Inside a vp-doc (prose.css) the block
+ * takes the markdown's 1rem margins and its paragraphs the custom block's
+ * 0.5rem margins and line, as VitePress's vp-doc.css restates them for its
+ * custom block. Not ported: the rules for tables and blockquotes inside a
+ * block (markdown-only content).
+ *
+ * The rules for what is inside sit behind :where(.vp-alert) and match
+ * bare elements only, so a component inside (a vp-btn, a vp-link, a
+ * vp-code, a vp-card) keeps its own look, hovered too, with no rule of
+ * its own against the alert's. The block sets every --vp-alert-* local
+ * from the contract and a variant overrides the locals and nothing else;
+ * since every alert sets its own, a nested alert keeps its own colors,
+ * its links and code included. This is the components layer, so a utility
+ * on the element overrides it. */
+
+@layer components {
+  .vp-alert {
+    --vp-alert-border: transparent;
+    --vp-alert-text: var(--vp-c-text-1);
+    --vp-alert-bg: var(--vp-c-gray-soft);
+    --vp-alert-link: var(--vp-c-brand);
+    --vp-alert-link-hover: var(--vp-c-brand-hover);
+    --vp-alert-code-bg: var(--vp-c-gray-soft);
+    --vp-alert-icon: var(--vp-alert-text);
+
+    border: 1px solid var(--vp-alert-border);
+    border-radius: var(--vp-radius);
+    padding: 0.5rem 1rem;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    color: var(--vp-alert-text);
+    background-color: var(--vp-alert-bg);
+  }
+
+  /* a titled block, a details block, or an icon block whose content opens
+     with a title: the title's top padding */
+  .vp-alert:has(> .vp-alert-title, > summary, > .vp-alert-icon + * > .vp-alert-title:first-child) {
+    padding-top: 1rem;
+  }
+
+  .vp-alert-title {
+    font-weight: 600;
+  }
+
+  :where(.vp-alert) p + p {
+    margin: 0.5rem 0;
+  }
+
+  /* the details block: its summary is the title */
+  details.vp-alert > summary {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  :where(details.vp-alert) > summary + p {
+    margin: 0.5rem 0;
+  }
+
+  /* vpkit's addition: an icon beside the content */
+  .vp-alert:has(> .vp-alert-icon) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .vp-alert:has(> .vp-alert-icon) > :not(.vp-alert-icon) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* centered on the first line, whatever the block's line height */
+  .vp-alert-icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: calc((1lh - 1rem) / 2);
+    color: var(--vp-alert-icon);
+  }
+
+  /* a bare link, as VitePress renders a container's: the weight (500) and
+     the transition are vp-doc.css's, which comes after custom-block.css
+     at the same specificity in its docs */
+  :where(.vp-alert) a:where(:not([class*="vp-"])) {
+    color: var(--vp-alert-link);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.125rem;
+    transition: color var(--vp-duration), opacity var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-alert-link-hover);
+        opacity: 0.75;
+
+        & > code {
+          color: var(--vp-alert-link-hover);
+        }
+      }
+    }
+  }
+
+  /* bare inline code: the chip VitePress draws around inline code in its
+     docs (vp-doc.css), with the container's colors */
+  :where(.vp-alert) code:where(:not([class*="vp-"])) {
+    border-radius: var(--vp-radius-sm);
+    padding: 0.1875rem 0.375rem;
+    font-size: 0.875em;
+    color: var(--vp-alert-link);
+    background-color: var(--vp-alert-code-bg);
+    transition: color var(--vp-duration), background-color var(--vp-duration-slow);
+  }
+
+  /* inside a vp-doc (prose.css): the block takes the markdown's margin and
+     its paragraphs the custom block's margins and line, as VitePress's
+     vp-doc.css restates them for its custom block; its links and code
+     need no restatement, prose.css being in @layer base, below these */
+  .vp-doc .vp-alert {
+    margin: 1rem 0;
+  }
+
+  .vp-doc .vp-alert p {
+    margin: 0.5rem 0;
+    line-height: 1.7142857;
+  }
+
+  .vp-doc .vp-alert p:first-child {
+    margin: 0;
+  }
+
+  /* the types: VitePress's note is the info look under its own title, so
+     only its icon differs; the others each take a role's tint and text */
+  .vp-alert[data-variant="note"] {
+    --vp-alert-icon: var(--vp-c-brand);
+  }
+
+  .vp-alert[data-variant="tip"] {
+    --vp-alert-bg: var(--vp-c-brand-soft);
+    --vp-alert-code-bg: var(--vp-c-brand-soft);
+    --vp-alert-icon: var(--vp-c-brand);
+  }
+
+  .vp-alert[data-variant="important"] {
+    --vp-alert-bg: var(--vp-c-important-soft);
+    --vp-alert-link: var(--vp-c-important);
+    --vp-alert-link-hover: var(--vp-c-important-hover);
+    --vp-alert-code-bg: var(--vp-c-important-soft);
+    --vp-alert-icon: var(--vp-c-important);
+  }
+
+  .vp-alert[data-variant="warning"] {
+    --vp-alert-bg: var(--vp-c-warning-soft);
+    --vp-alert-link: var(--vp-c-warning);
+    --vp-alert-link-hover: var(--vp-c-warning-hover);
+    --vp-alert-code-bg: var(--vp-c-warning-soft);
+    --vp-alert-icon: var(--vp-c-warning);
+  }
+
+  .vp-alert[data-variant="danger"] {
+    --vp-alert-bg: var(--vp-c-danger-soft);
+    --vp-alert-link: var(--vp-c-danger);
+    --vp-alert-link-hover: var(--vp-c-danger-hover);
+    --vp-alert-code-bg: var(--vp-c-danger-soft);
+    --vp-alert-icon: var(--vp-c-danger);
+  }
+
+  .vp-alert[data-variant="caution"] {
+    --vp-alert-bg: var(--vp-c-caution-soft);
+    --vp-alert-link: var(--vp-c-caution);
+    --vp-alert-link-hover: var(--vp-c-caution-hover);
+    --vp-alert-code-bg: var(--vp-c-caution-soft);
+    --vp-alert-icon: var(--vp-c-caution);
+  }
+}
