@@ -1,0 +1,28 @@
+/* vpkit — inline code, `vp-code`, VitePress's inline code in the markdown
+ * (`.vp-doc :not(pre) > code`, vp-doc.css) as a class, for code outside
+ * the markdown: an order id, a serial, a key. An optional import:
+ * `@import "vpkit/components/code/code.css";`
+ *
+ *   <code class="vp-code">ORD-2026-0142</code>
+ *
+ * 0.875em of brand text on the gray wash, a 0.25rem radius, 0.1875rem
+ * 0.375rem of padding, the color transitioning in --vp-duration and the
+ * ground in --vp-duration-slow, as the markdown's. The face is the page's
+ * code face: Tailwind's preflight sets code in the mono stack, as
+ * VitePress's base does. In a vp-link it takes the link's colors for code
+ * (link.css). Inside an alert a bare <code> takes the alert's tint, where
+ * vp-code keeps its own look; inside a vp-doc, prose.css styles every
+ * code already, and vp-code keeps its look there too. No axis, no parts.
+ * This is the components layer, so a utility on the element overrides
+ * it. */
+
+@layer components {
+  .vp-code {
+    border-radius: var(--vp-radius-sm);
+    padding: 0.1875rem 0.375rem;
+    font-size: 0.875em;
+    color: var(--vp-c-brand);
+    background-color: var(--vp-c-gray-soft);
+    transition: color var(--vp-duration), background-color var(--vp-duration-slow);
+  }
+}
