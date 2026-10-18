@@ -90,7 +90,7 @@ function collect(css, into = new Map()) {
   }
   return into;
 }
-const upScoped = collect(vars);
+const upScoped = collect(fonts, collect(vars));
 const ourScoped = collect(tokens, collect(docs));
 for (const [key, value] of upScoped) {
   const [scope] = key.split(' :: ');
