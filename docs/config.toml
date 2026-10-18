@@ -25,10 +25,12 @@ dark_theme = "github-dark"
 logo = "/logo.svg"
 # the favicon, and the script that links the color theme the gallery stored
 # for this session (static/theme-pick.js), which must be in the head to be
-# there at the first paint; without a pick the page is on tokens.css's
-# colors. Pages caches it for ten minutes (no cachebust here, unlike the
-# scripts the templates link): bump ?v= with any change to what it stores
-# or reads, or a cached old script meets the new pages
+# there at the first paint; without a pick the page is on the docs theme's
+# stock colors, docs-theme/vars.css's (VitePress's palette; the app kit's
+# example frames alone are on tokens.css's). Pages caches it for ten
+# minutes (no cachebust here, unlike the scripts the templates link): bump
+# ?v= with any change to what it stores or reads, or a cached old script
+# meets the new pages
 head = [
   { tag = "link", attrs = { rel = "icon", type = "image/svg+xml", href = "/logo.svg" } },
   { tag = "script", attrs = { src = "/theme-pick.js?v=3" } },

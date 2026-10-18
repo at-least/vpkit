@@ -14,7 +14,7 @@ vpkit's 222 color themes, each a whole design for light and dark, held by the te
 
 A theme only sets variables, so the components and your utilities follow it.
 
-Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session. Without a pick the site is on the stock colors, `tokens.css`'s: VitePress's palette with its contrast shortfalls fitted, which the apps built on vpkit run on; the stock card takes a pick off.
+Pick one below and this page takes it, as a site that imports it would: the page around you, and the components in the example. Switch the appearance in the navbar for the theme's other half. The pick stays on every page of this site for the rest of your browser session. Without a pick the site is on the stock colors: the page around you on the docs theme's, `docs-theme/vars.css`'s, VitePress's palette as it is; the components in the example, an app's page, on the app kit's, `tokens.css`'s, VitePress's palette with its contrast shortfalls fitted, which the apps built on vpkit run on; the stock card takes a pick off.
 
 {{ <vp_example file="pages/theme" title="The components, in the theme picked below" /> }}
 
