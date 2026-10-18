@@ -105,6 +105,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |
 | [Team Header](@/components/team-header.md) | `vp-team-header` | VitePress's `VPTeamPageTitle` |
 | [Team Section](@/components/team-section.md) | `vp-team-section` | VitePress's `VPTeamPageSection` |
+| [Team Member](@/components/team-member.md) | `vp-team-member` | VitePress's `VPTeamMembersItem` |
 | [Thumbnail](@/components/thumb.md) | `vp-thumb` | none, vpkit's own: an image in a frame |
 | [Toast](@/components/toast.md) | `vp-toast` | none, vpkit's own |
 | [Toggle](@/components/toggle.md) | `vp-toggle` | VitePress's `VPSwitch` and `VPSwitchAppearance` |

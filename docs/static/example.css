@@ -2685,6 +2685,132 @@ button:focus-visible {
   .vp-team-section-members {
     padding-top: 2.5rem;
   }
+  .vp-team-member {
+    --vp-team-member-padding: 3rem 2rem;
+    --vp-team-member-data-padding: 1.5rem;
+    --vp-team-member-avatar-size: 6rem;
+    --vp-team-member-name-spacing: 0.0075em;
+    --vp-team-member-name-line-height: 1.4;
+    --vp-team-member-name-size: 1.25rem;
+    --vp-team-member-text-line-height: 1.5;
+    --vp-team-member-text-size: 1rem;
+    --vp-team-member-desc-padding: 1rem;
+    --vp-team-member-desc-width: 18rem;
+    --vp-team-member-links-margin: 0 -1rem -0.75rem;
+    --vp-team-member-links-padding: 1rem 0.75rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .vp-team-member-small.vp-team-member {
+    --vp-team-member-padding: 2rem;
+    --vp-team-member-data-padding: 1.25rem;
+    --vp-team-member-avatar-size: 4rem;
+    --vp-team-member-name-spacing: normal;
+    --vp-team-member-name-line-height: 1.5;
+    --vp-team-member-name-size: 1rem;
+    --vp-team-member-text-line-height: 1.4285714;
+    --vp-team-member-text-size: 0.875rem;
+    --vp-team-member-desc-padding: 0.75rem;
+    --vp-team-member-desc-width: none;
+    --vp-team-member-links-margin: 0 -1rem -1.25rem;
+    --vp-team-member-links-padding: 0.625rem 0 0;
+  }
+  .vp-team-member-profile {
+    flex-grow: 1;
+    padding: var(--vp-team-member-padding);
+    background-color: var(--vp-c-bg-soft);
+  }
+  .vp-team-member-avatar {
+    flex-shrink: 0;
+    margin: 0 auto;
+    border-radius: 50%;
+    width: var(--vp-team-member-avatar-size);
+    height: var(--vp-team-member-avatar-size);
+    object-fit: cover;
+    box-shadow: var(--vp-shadow-3);
+  }
+  .vp-team-member-data {
+    padding-top: var(--vp-team-member-data-padding);
+    text-align: center;
+  }
+  .vp-team-member-name {
+    margin: 0;
+    letter-spacing: var(--vp-team-member-name-spacing);
+    line-height: var(--vp-team-member-name-line-height);
+    font-size: var(--vp-team-member-name-size);
+    font-weight: 600;
+  }
+  .vp-team-member-affiliation {
+    margin: 0;
+    padding-top: 0.25rem;
+    line-height: var(--vp-team-member-text-line-height);
+    font-size: var(--vp-team-member-text-size);
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+  .vp-team-member-org:any-link {
+    text-decoration-line: none;
+    color: var(--vp-c-text-2);
+    transition: color 0.25s;
+  }
+  @media (hover: hover) {
+    .vp-team-member-org:any-link:hover {
+      color: var(--vp-c-brand-1);
+    }
+  }
+  .vp-team-member-desc {
+    margin: 0 auto;
+    max-width: var(--vp-team-member-desc-width);
+    padding-top: var(--vp-team-member-desc-padding);
+    line-height: var(--vp-team-member-text-line-height);
+    font-size: var(--vp-team-member-text-size);
+  }
+  :where(.vp-team-member-desc) a {
+    font-weight: 500;
+    color: var(--vp-c-brand-1);
+    text-decoration-style: dotted;
+    transition: color 0.25s;
+  }
+  .vp-team-member-links {
+    display: flex;
+    justify-content: center;
+    margin: var(--vp-team-member-links-margin);
+    padding: var(--vp-team-member-links-padding);
+    height: 3.5rem;
+  }
+  .vp-team-member-sponsor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    text-decoration-line: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-c-sponsor);
+    background-color: var(--vp-c-bg-soft);
+    transition: color 0.25s, background-color 0.25s;
+  }
+  .vp-team-member-sponsor:focus {
+    outline: none;
+    color: var(--vp-c-white);
+    background-color: var(--vp-c-sponsor);
+  }
+  @media (hover: hover) {
+    .vp-team-member-sponsor:hover {
+      color: var(--vp-c-white);
+      background-color: var(--vp-c-sponsor);
+    }
+  }
+  :where(.vp-team-member-sponsor) > :is([class*='vpi-'], svg) {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
   .vp-breadcrumb {
     display: flex;
     flex-wrap: wrap;

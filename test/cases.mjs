@@ -2373,6 +2373,84 @@ for (const [name, width] of [['team section', undefined], ['team section at 800p
     checks: TEAM_SECTION_CHECKS,
   });
 }
+// team member: VitePress's VPTeamMembersItem, every part (the profile, the
+// picture's round box and its image, the text, the name, the affiliation
+// with a linked org, the description with a link, the links row with a
+// social link, the sponsor link and its icon), against vp-team-member, in
+// a 20rem cell, the medium card and the small one; the org link hovered,
+// the sponsor link hovered and focused; on a touch screen; then inside a
+// vp-doc against itself outside one. The original's styles are loaded for
+// these cases alone (they name .name, .links and the like), with its social
+// links'; the role's span goes without its class, `title`, which the
+// original has no rule for and which VPFeature's `.title` would reach with
+// Vue's scoping dropped. The social link is vp-icon-btn, whose own cases
+// hold its look: here its place in the row
+const memberCard = (vp, size) => {
+  const small = size === 'small';
+  return vp
+    ? `<div style="width:20rem"><article data-t="card" class="vp-team-member${small ? ' vp-team-member-small' : ''}"><div data-t="profile" class="vp-team-member-profile">` +
+        `<img data-t="img" class="vp-team-member-avatar" src="${AVATAR_SRC}" alt=""><div data-t="data" class="vp-team-member-data">` +
+        `<h1 data-t="name" class="vp-team-member-name">Ada Lovelace</h1>` +
+        `<p data-t="aff" class="vp-team-member-affiliation"><span>Engineer</span><span> @ </span><a data-t="org" class="vp-team-member-org" href="#">Analytical Engines</a></p>` +
+        `<p data-t="desc" class="vp-team-member-desc">Writes the compiler and its manual, <a data-t="dlink" href="#">her notes</a> among them.</p>` +
+        `<div data-t="links" class="vp-team-member-links"><a data-t="social" class="vp-icon-btn" href="#" aria-label="GitHub">${SVG}</a></div>` +
+        `</div></div><a data-t="sp" class="vp-team-member-sponsor" href="#"><span data-t="spicon" class="vpi-heart"></span> Sponsor</a></article></div>`
+    : `<div style="width:20rem"><article data-t="card" class="VPTeamMembersItem ${size}"><div data-t="profile" class="profile">` +
+        `<figure data-t="box" class="avatar"><img data-t="img" class="avatar-img" src="${AVATAR_SRC}" alt=""></figure><div data-t="data" class="data">` +
+        `<h1 data-t="name" class="name">Ada Lovelace</h1>` +
+        `<p data-t="aff" class="affiliation"><span>Engineer</span><span class="at"> @ </span><a data-t="org" class="VPLink link no-icon org" href="#">Analytical Engines</a></p>` +
+        `<p data-t="desc" class="desc">Writes the compiler and its manual, <a data-t="dlink" href="#">her notes</a> among them.</p>` +
+        `<div data-t="links" class="links"><div data-t="socials" class="VPSocialLinks"><a data-t="social" class="VPSocialLink no-icon" href="#" aria-label="GitHub"><span>${SVG}</span></a></div></div>` +
+        `</div></div><div class="sp"><a data-t="sp" class="VPLink link no-icon sp-link" href="#"><span data-t="spicon" class="vpi-heart sp-icon"></span> Sponsor</a></div></article></div>`;
+};
+const MEMBER_TEXT = [...MARGIN, 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'color', 'height', 'offset-top'];
+const MEMBER_CHECKS = [
+  { target: 'card', props: ['display', 'flex-direction', 'row-gap', ...RADIUS, 'overflow-x', 'overflow-y', 'width', 'height'] },
+  { target: 'profile', props: ['flex-grow', ...PADDING, 'background-color', 'height'] },
+  { target: 'img', refTarget: 'box', props: ['flex-shrink', ...MARGIN, 'width', 'height', ...RADIUS, 'box-shadow', 'offset-left'] },
+  { target: 'img', props: ['object-fit', ...RADIUS, 'width', 'height'] },
+  { target: 'data', props: [...PADDING, 'text-align', 'height', 'offset-top'] },
+  { target: 'name', props: MEMBER_TEXT },
+  { target: 'aff', props: [...MEMBER_TEXT, ...PADDING] },
+  { target: 'org', props: ['color', 'text-decoration-line', 'font-weight', ...TRANSITION] },
+  { target: 'org', state: ['hover'], props: ['color'] },
+  { target: 'desc', props: [...MEMBER_TEXT, ...PADDING, 'max-width', 'width'] },
+  { target: 'dlink', props: ['color', 'font-weight', 'text-decoration-style', ...TRANSITION] },
+  { target: 'links', props: ['display', 'justify-content', ...MARGIN, ...PADDING, 'height', 'offset-top'] },
+  // VitePress nests its social links in a row of their own, where the
+  // link sits at the row's start: the row's place is the link's
+  { target: 'social', refTarget: 'socials', props: ['offset-left', 'offset-top'] },
+  { target: 'sp', props: ['display', 'justify-content', 'align-items', 'text-align', ...PADDING, 'font-size', 'font-weight', 'color', 'background-color', 'text-decoration-line', ...TRANSITION, 'height'] },
+  { target: 'sp', state: ['hover'], props: ['color', 'background-color'] },
+  { target: 'sp', state: ['focus'], props: ['outline-style', 'color', 'background-color'] },
+  { target: 'spicon', props: ['margin-right', 'font-size', 'width', 'height', 'offset-left'] },
+];
+const MEMBER_FILES = ['components/VPTeamMembersItem.vue', 'components/VPSocialLinks.vue', 'components/VPSocialLink.vue'];
+// the small card's three lines at 1.4285714, which the minified build prints
+// as 1.42857, each 1/64px short: the boxes they stack in take the sum
+const MEMBER_STACKS = ['card', 'profile', 'data', 'links'];
+for (const size of ['medium', 'small']) {
+  cases.push({
+    name: size === 'medium' ? 'team member' : 'team member, small',
+    upstreamFiles: MEMBER_FILES,
+    upstream: memberCard(false, size),
+    vpkit: memberCard(true, size),
+    checks: size === 'small' ? MEMBER_CHECKS.map((c) => (MEMBER_STACKS.includes(c.target) ? { ...c, tolerance: 3 / 64 } : c)) : MEMBER_CHECKS,
+  });
+}
+touch('team member', memberCard(true, 'medium'), [
+  { target: 'sp', ...AT_REST, props: ['color', 'background-color'] },
+  { target: 'org', ...AT_REST, props: ['color'] },
+]);
+cases.push({
+  name: 'team member in a doc',
+  reference: `<div>${memberCard(true, 'medium')}</div>`,
+  vpkit: inDoc(memberCard(true, 'medium')),
+  // the description's link draws the markdown's underline there, dotted,
+  // as VitePress's does: its line is left out
+  checks: MEMBER_CHECKS.filter((c) => !c.refTarget).map((c) => (c.target === 'img' ? { ...c, props: [...c.props, ...MARGIN, 'box-shadow', 'offset-left'] } : c)),
+});
+
 cases.push({
   name: 'team section in a doc',
   reference: `<div>${teamSection(true)}</div>`,
