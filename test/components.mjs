@@ -107,10 +107,11 @@ const FONTS = {
 };
 const ORIGIN = 'http://vpkit.test';
 
-async function open(browser, css, body, { dark, touch, width, reducedMotion }) {
+async function open(browser, css, body, { dark, touch, width, reducedMotion, forcedColors }) {
   const page = await browser.newPage();
   if (width) await page.setViewportSize({ width, height: 720 });
   if (reducedMotion) await page.emulateMedia({ reducedMotion: 'reduce' });
+  if (forcedColors) await page.emulateMedia({ forcedColors: 'active' });
   await page.route(`${ORIGIN}/fonts/*`, (route) => {
     const file = join(ROOT, 'fonts', basename(new URL(route.request().url()).pathname));
     return existsSync(file) ? route.fulfill({ body: readFileSync(file), contentType: 'font/woff2' }) : route.fulfill({ status: 404 });
@@ -135,6 +136,8 @@ async function open(browser, css, body, { dark, touch, width, reducedMotion }) {
   if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);
   const reduced = await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   if (reduced !== Boolean(reducedMotion)) throw new Error(`(prefers-reduced-motion: reduce) is ${reduced} on a page ${reducedMotion ? 'under' : 'without'} reduced motion`);
+  const forced = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
+  if (forced !== Boolean(forcedColors)) throw new Error(`(forced-colors: active) is ${forced} on a page ${forcedColors ? 'under' : 'without'} forced colors`);
   await cdp.send('DOM.enable');
   await cdp.send('CSS.enable');
   return { page, cdp };

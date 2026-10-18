@@ -4,7 +4,8 @@
 // and hovered open, at a phone's width, where VitePress shows it (it is
 // display:none from 768px; vpkit leaves that to the page). vpkit against
 // vpkit: a touch screen's hover at rest. Golden: the example, closed and
-// open side by side.
+// open side by side, and the bars under forced colors (vpkit's addition),
+// closed and open, at rest and hovered.
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -53,6 +54,21 @@ for (const open of [false, true]) {
     html,
     reference: html,
     checks: BARS.map((cls, i) => ({ target: bar(i), on: '.vp-hamburger', state: ['hover'], refState: [], props: ['transform', 'background-color'] })),
+  });
+}
+
+// under forced colors the bars, backgrounds the browser would erase, are
+// the system's text color, closed and open, at rest and hovered
+for (const open of [false, true]) {
+  cases.push({
+    name: `hamburger${open ? ' open' : ''} under forced colors`,
+    forcedColors: true,
+    width: 375,
+    html: vpkitHamburger(open),
+    checks: [
+      ...BARS.map((cls, i) => ({ target: bar(i), props: ['background-color'] })),
+      ...BARS.map((cls, i) => ({ target: bar(i), on: '.vp-hamburger', state: ['hover'], props: ['background-color'] })),
+    ],
   });
 }
 

@@ -14,8 +14,9 @@
 //              against rest): the source `reference`
 //   neither    the checks compare with golden.json beside the test file:
 //              the source `golden`; UPDATE_GOLDEN=1 rewrites it
-//   width, touch, reducedMotion   the viewport, a touch screen, the
-//              preference, on both sides
+//   width, touch, reducedMotion, forcedColors   the viewport, a touch
+//              screen, the preference, Windows' contrast themes (Chromium's
+//              emulation), on both sides
 // A check: target (a selector in vpkit's markup), props, state (the
 // pseudo-classes forced on it, or on `on`), pseudo (the pseudo-element
 // read), refTarget/refState/refPseudo (the reference's, when different),

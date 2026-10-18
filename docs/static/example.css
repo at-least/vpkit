@@ -1833,7 +1833,7 @@ pre, code, kbd, samp {
     }
   }
   @media (forced-colors: active) {
-    :where(.vp-hamburger-box) > span {
+    :where(.vp-hamburger-box) > span, .vp-hamburger[aria-expanded="true"]:hover :where(.vp-hamburger-box) > span {
       forced-color-adjust: none;
       background-color: CanvasText;
     }

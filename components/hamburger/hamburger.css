@@ -80,8 +80,10 @@
     }
   }
 
+  /* with the hovered-open selector too, which outranks the plain one */
   @media (forced-colors: active) {
-    :where(.vp-hamburger-box) > span {
+    :where(.vp-hamburger-box) > span,
+    .vp-hamburger[aria-expanded="true"]:hover :where(.vp-hamburger-box) > span {
       forced-color-adjust: none;
       background-color: CanvasText;
     }
