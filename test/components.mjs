@@ -34,32 +34,13 @@ import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
+import { entry } from './harness.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 
 const PRODUCTS = { app: componentDirs(''), docs: componentDirs('docs-theme') };
-
-// the entry a product's tests compile: Tailwind, the examples and tests
-// scanned for the utilities they use, vpkit, every component, the markdown
-// last (an app compiles it below the components); the docs theme's with its
-// own variables. Written under node_modules/.cache, where Tailwind resolves
-// its own import
-function entry(product) {
-  const cache = join(ROOT, 'node_modules/.cache/vpkit');
-  mkdirSync(cache, { recursive: true });
-  const rel = (p) => relative(cache, p).split(sep).join('/');
-  const lines = ['@import "tailwindcss" source(none);'];
-  for (const dir of ['components', 'docs-theme/components']) if (existsSync(join(ROOT, dir))) lines.push(`@source "${rel(join(ROOT, dir))}";`);
-  lines.push(`@import "${rel(join(ROOT, 'index.css'))}";`);
-  if (product === 'docs') for (const f of ['docs-theme/vars.css', 'docs-theme/icons.css']) if (existsSync(join(ROOT, f))) lines.push(`@import "${rel(join(ROOT, f))}";`);
-  for (const dir of [...PRODUCTS.app, ...(product === 'docs' ? PRODUCTS.docs : [])]) lines.push(`@import "${rel(join(dir, `${basename(dir)}.css`))}";`);
-  if (existsSync(join(ROOT, 'prose.css'))) lines.push(`@import "${rel(join(ROOT, 'prose.css'))}";`);
-  const file = join(cache, `${product}.css`);
-  writeFileSync(file, `${lines.join('\n')}\n`);
-  return relative(ROOT, file);
-}
 
 // VitePress's stylesheets every upstream page loads, in its order
 const UPSTREAM = ['vars.css', 'base.css', 'icons.css'];
@@ -269,6 +250,9 @@ for (const suite of suites) {
   const stale = Object.keys(suite.golden).filter((name) => !names.has(name));
   const ran = suite.cases.filter((c) => !only || only.test(c.name)).map((c) => c.name);
   if (UPDATE) {
+    // a suite none of whose cases ran is left alone (another agent may be
+    // mid-edit on it)
+    if (!ran.length) continue;
     const merged = { ...suite.golden };
     for (const name of ran) {
       const entry = suite.next[name];

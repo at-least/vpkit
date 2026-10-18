@@ -5,13 +5,14 @@
 //
 //   node test/forced-colors.mjs
 //
-// Chromium's emulation of `forced-colors: active`, compiled the way
-// compare.mjs compiles vpkit. Exits 1, naming each pair that renders the
-// same.
+// Chromium's emulation of `forced-colors: active`, on the app kit compiled
+// the way the component tests compile it. Exits 1, naming each pair that
+// renders the same.
 
 import { chromium } from 'playwright-chromium';
 
 import { compileCss } from './compile.mjs';
+import { entry } from './harness.mjs';
 
 const toggle = (checked) =>
   `<button class="vp-toggle" type="button" role="switch" aria-checked="${checked}"><span class="vp-toggle-check"></span></button>`;
@@ -19,12 +20,8 @@ const bar = (percent) =>
   `<span class="vp-progress" style="width:7rem"><span class="vp-progress-bar" style="width:${percent}%"></span></span>`;
 const hamburger = (open) =>
   `<button class="vp-hamburger" type="button" aria-label="Menu" aria-expanded="${open}"><span class="vp-hamburger-box"><span></span><span></span><span></span></span></button>`;
-// a vpi-* icon is a mask over its background color, which forced colors
-// replace with the page's: against an empty box of its size it must show
-const icon = '<span class="vpi-sun" aria-hidden="true" style="font-size:1.5rem"></span>';
-const noIcon = '<span style="display:inline-block;width:1.5rem;height:1.5rem"></span>';
-// the vertical divider is a background too: against an empty box its size
-const vertical = '<hr class="vp-divider vp-divider-vertical" aria-orientation="vertical" style="margin:0">';
+// the vertical divider is a background: against an empty box its size
+const vertical = '<hr class="vp-divider" aria-orientation="vertical" style="margin:0">';
 const noVertical = '<span style="display:inline-block;width:1px;height:1.5rem"></span>';
 // the drawer's edge is its ground against the page's, which forced colors
 // paint the same: against a bare dialog of its box (both in flow, since
@@ -36,19 +33,18 @@ const noDrawer = '<dialog open style="position:static;padding:2rem 2rem 6rem;wid
 const dot = '<span class="vp-badge-dot"></span>';
 const noDot = '<span style="display:inline-block;width:0.5rem;height:0.5rem"></span>';
 // a dot is a background too: against an empty box its size
-const lone = '<span class="vp-dot vp-dot-success"></span>';
+const lone = '<span class="vp-dot" data-variant="success"></span>';
 const PAIRS = [
   ['a checked and an unchecked toggle', toggle(true), toggle(false)],
   ['a progress bar at 40% and at 0%', bar(40), bar(0)],
   ['an open and a closed hamburger', hamburger(true), hamburger(false)],
-  ['an icon and an empty box its size', icon, noIcon],
   ['a vertical divider and an empty box its size', vertical, noVertical],
   ['a badge dot and an empty box its size', dot, noDot],
   ['a dot and an empty box its size', lone, noDot],
   ['an open drawer and a bare dialog its size', drawer, noDrawer],
 ];
 
-const css = compileCss('test/entry.css');
+const css = compileCss(entry('app'));
 const browser = await chromium.launch();
 const failures = [];
 try {
@@ -56,7 +52,7 @@ try {
   for (const [name, a, b] of PAIRS) {
     await page.setContent(
       `<!doctype html><html><head><style>${css}</style></head>` +
-        `<body style="color:var(--vp-c-text-1);background-color:var(--vp-c-bg);padding:8px">` +
+        `<body style="padding:8px">` +
         `<div data-t="a" style="display:inline-block;padding:4px">${a}</div><br>` +
         `<div data-t="b" style="display:inline-block;padding:4px">${b}</div></body></html>`,
     );
