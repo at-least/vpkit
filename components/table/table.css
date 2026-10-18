@@ -1,0 +1,242 @@
+/* vpkit — table, `vp-table`, from VitePress's markdown table (`.vp-doc
+ * table`, in vp-doc.css): banded rows, scrolling sideways on its own. An
+ * optional import: `@import "vpkit/components/table/table.css";`
+ *
+ *   <table class="vp-table">
+ *     <thead><tr><th>Plan</th><th>Price</th></tr></thead>
+ *     <tbody><tr><td>Pro</td><td>$9</td></tr></tbody>
+ *   </table>
+ *
+ * `vp-table` is VitePress's table: a block that scrolls sideways on its
+ * own rather than squeezing its columns, with the markdown's 1.25rem
+ * above and below (VitePress's own, which `my-0` removes), every second
+ * row banded on the soft ground, each cell in a divider border with
+ * 0.5rem by 1rem of padding, the header's cells 0.875rem at weight 600 in
+ * secondary text on the soft ground, a row's ground turning in
+ * --vp-duration-slow. The rules for what is inside sit behind
+ * :where(.vp-table). No axis. vpkit's additions for an app's tables, each
+ * an orthogonal switch (a class), a part or a state:
+ *   vp-table-scroll   a block of its own: a box the table scrolls
+ *                     sideways in, where the table is a plain table
+ *                     filling the box. A box that scrolls takes focus as
+ *                     a region (`tabindex="0"`, a label), base.css's ring
+ *                     drawn 2px inside it
+ *
+ *   <div class="vp-table-scroll" tabindex="0" role="region" aria-label="Files">
+ *     <table class="vp-table">…</table>
+ *   </div>
+ *
+ *   vp-table-sticky   with vp-table: the header row stays in view while
+ *                     the rows scroll under it, under a bar when the page
+ *                     sets --vp-table-sticky-top; the table a plain table
+ *                     (not a box that scrolls, where the header would
+ *                     stick to the table), each cell drawing its bottom
+ *                     and right border, the first column its left and the
+ *                     header its top, since a stuck header loses collapsed
+ *                     borders. It sticks to the nearest box that scrolls:
+ *                     in a vp-table-scroll, the box, which scrolls only
+ *                     sideways, so for a header under the page's bar the
+ *                     box stays visible where the table fits
+ *                     (`lg:overflow-visible`)
+ *   vp-table-hover    with vp-table: a body row takes the gray wash while
+ *                     hovered, on a device that can hover, for rows that
+ *                     open something (the cursor is the page's:
+ *                     `cursor-pointer`)
+ *   vp-table-stack    with vp-table: under 40rem each row is a block of
+ *                     its cells, each cell its label (its data-label,
+ *                     drawn before it) and its value on one line, the
+ *                     header row hidden (a small matrix on a phone)
+ * The states, read from the markup: a body row whose first cell holds a
+ * checked checkbox is selected, on the brand tint, over the hover; a body
+ * row with aria-current (a value that is not "false", "" or a template's
+ * stringified "undefined", as vp-btn reads it) is the keyboard's cursor's,
+ * a 3px brand edge on its first cell. The parts:
+ *   vp-table-sort      a link or button in a th that sorts by its column:
+ *                      the header's type and color, a dotted underline,
+ *                      body text hovered; the current sort, which
+ *                      aria-sort on the th names, body text under a solid
+ *                      line
+ *   vp-table-actions   a cell (or a box in one) of a row's actions, hidden
+ *                      on a device that can hover until the pointer or the
+ *                      keyboard reaches the row, or the row is the
+ *                      cursor's or selected; on a touch screen they always
+ *                      show
+ *
+ *   <th aria-sort="descending"><a class="vp-table-sort" href="?sort=last_seen">Last seen</a></th>
+ *   <td class="vp-table-actions"><button class="vp-btn" data-size="sm" type="button">Rename</button></td>
+ *
+ * This is the components layer, so a utility on the element overrides
+ * it. */
+
+@layer components {
+  .vp-table {
+    display: block;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+  }
+
+  :where(.vp-table) tr {
+    background-color: var(--vp-c-bg);
+    border-top: 1px solid var(--vp-c-divider);
+    transition: background-color var(--vp-duration-slow);
+  }
+
+  :where(.vp-table) tr:nth-child(2n) {
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  :where(.vp-table) :is(th, td) {
+    border: 1px solid var(--vp-c-divider);
+    padding: 0.5rem 1rem;
+  }
+
+  :where(.vp-table) th {
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  :where(.vp-table) td {
+    font-size: 0.875rem;
+  }
+
+  /* a box the table scrolls in: the table a plain table filling it; the
+     focus ring restated 2px inside, where the box's edge shows it */
+  .vp-table-scroll {
+    overflow-x: auto;
+
+    &:focus-visible {
+      outline: var(--vp-focus-ring);
+      outline-offset: -2px;
+    }
+  }
+
+  :where(.vp-table-scroll) > .vp-table {
+    display: table;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* a stuck header: separate borders, each cell its bottom and right, the
+     first column its left, the header its top */
+  .vp-table-sticky.vp-table {
+    --vp-table-sticky-top: 0px;
+
+    display: table;
+    overflow: visible;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  :where(.vp-table-sticky) :is(th, td) {
+    border-width: 0 1px 1px 0;
+  }
+
+  :where(.vp-table-sticky) :is(th, td):first-child {
+    border-left-width: 1px;
+  }
+
+  :where(.vp-table-sticky) thead th {
+    position: sticky;
+    top: var(--vp-table-sticky-top);
+    z-index: 2;
+    border-top-width: 1px;
+  }
+
+  /* rows that open something: the gray wash hovered */
+  :where(.vp-table-hover) tbody tr {
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--vp-c-gray-soft);
+      }
+    }
+  }
+
+  /* the selected row: a checked checkbox in its first cell, over the hover */
+  :where(.vp-table) tbody tr:has(> :first-child input[type="checkbox"]:checked) {
+    background-color: var(--vp-c-brand-soft);
+  }
+
+  /* the cursor's row: aria-current with a value, a brand edge on its first cell */
+  :where(.vp-table) tbody tr[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) > :first-child {
+    box-shadow: inset 3px 0 0 var(--vp-c-brand);
+  }
+
+  /* a row's actions: on a device that can hover, shown when the pointer or
+     the keyboard reaches the row, or the row is the cursor's or selected */
+  @media (hover: hover) {
+    .vp-table-actions {
+      opacity: 0;
+    }
+
+    :where(.vp-table) tr:is(:hover, :focus-within, [aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]), :has(> :first-child input[type="checkbox"]:checked)) .vp-table-actions {
+      opacity: 1;
+    }
+  }
+
+  .vp-table-sort {
+    appearance: none;
+    border-width: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline dotted var(--vp-c-text-2);
+    text-underline-offset: 0.15em;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-c-text-1);
+        text-decoration-color: var(--vp-c-text-1);
+      }
+    }
+  }
+
+  /* the current sort: aria-sort on the th, a solid line in body text */
+  th[aria-sort]:not([aria-sort="none"]) > .vp-table-sort {
+    color: var(--vp-c-text-1);
+    text-decoration-style: solid;
+    text-decoration-color: var(--vp-c-text-1);
+  }
+
+  @media (max-width: 40rem) {
+    .vp-table-stack.vp-table,
+    :where(.vp-table-stack) :is(tbody, tr, td) {
+      display: block;
+    }
+
+    :where(.vp-table-stack) thead {
+      display: none;
+    }
+
+    :where(.vp-table-stack) tr {
+      padding: 0.6rem 0.75rem;
+    }
+
+    :where(.vp-table-stack) td {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 0;
+      padding: 0.2rem 0;
+    }
+
+    :where(.vp-table-stack) td::before {
+      content: attr(data-label);
+      flex: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--vp-c-text-2);
+    }
+
+    :where(.vp-table-stack) td:is(:not([data-label]), [data-label=""])::before {
+      content: none;
+    }
+  }
+}
