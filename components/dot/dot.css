@@ -1,0 +1,60 @@
+/* vpkit — dot, `vp-dot`: a small round marker beside a word, a legend's
+ * key or a status's second carrier (the word says it; the dot never
+ * alone); vpkit's own, on the contract (VitePress has none outside a
+ * badge: vp-badge-dot is the same dot inside a badge). An optional import:
+ * `@import "vpkit/components/dot/dot.css";`
+ *
+ *   <span class="vp-dot" data-variant="success"></span> 99% and up
+ *
+ * 0.5rem round, in --vp-dot-color: the text's color (currentColor) by
+ * default, so a dot in a secondary line is secondary; a color of the
+ * page's own, a chart's series, is that variable
+ * (`style="--vp-dot-color: …"`). It doesn't shrink in a flex row. The
+ * kind is an attribute, each a role's text color, as vp-badge's types:
+ *   data-variant="success"   the success color
+ *   data-variant="warning"   the warning color
+ *   data-variant="danger"    the danger color
+ *   data-variant="tip"       the brand color
+ * No parts. Under forced colors, which erase a background, the dot paints
+ * in the system's text color, as vp-badge-dot does. Its place beside the
+ * word is the page's (a flex row with a gap).
+ *
+ * The block sets its one local, --vp-dot-color, and a variant overrides
+ * it and nothing else. This is the components layer, so a utility on the
+ * element overrides it. */
+
+@layer components {
+  .vp-dot {
+    --vp-dot-color: currentColor;
+
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: var(--vp-radius-full);
+    background-color: var(--vp-dot-color);
+  }
+
+  .vp-dot[data-variant="success"] {
+    --vp-dot-color: var(--vp-c-success);
+  }
+
+  .vp-dot[data-variant="warning"] {
+    --vp-dot-color: var(--vp-c-warning);
+  }
+
+  .vp-dot[data-variant="danger"] {
+    --vp-dot-color: var(--vp-c-danger);
+  }
+
+  .vp-dot[data-variant="tip"] {
+    --vp-dot-color: var(--vp-c-brand);
+  }
+
+  @media (forced-colors: active) {
+    .vp-dot {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}
