@@ -1,0 +1,78 @@
+/* vpkit's docs theme — team header, `vp-team-header`, from VitePress's
+ * VPTeamPageTitle: the title and the lead a team page opens with. An
+ * optional import:
+ * `@import "vpkit/docs-theme/components/team-header/team-header.css";`
+ *
+ *   <header class="vp-team-header">
+ *     <h1 class="vp-team-header-title">Our team</h1>
+ *     <p class="vp-team-header-lead">The people who build it and keep it running.</p>
+ *   </header>
+ *
+ * The block centers its lines on 3rem by 2rem of padding (4rem 3rem 3rem
+ * from 48rem wide, 5rem 4rem 3rem from 60rem). No attributes; the parts:
+ *   vp-team-header-title   the title, 2.25rem at 1.2222222, weight 500
+ *                          (3rem at 1.1666667 with -0.0104167em from
+ *                          48rem wide)
+ *   vp-team-header-lead    the lead, 0.75rem under it, 1rem at 1.5, weight
+ *                          500, text-2, centered and at most 32rem wide
+ *                          (1.25rem at 1.4 with 0.0075em, at most 37rem,
+ *                          from 48rem)
+ * Either part may be left out, as VitePress's slots may.
+ *
+ * All VitePress's: the padding at its three widths, the type, the color
+ * (text-2, the one variable read, the contract's name). Inside a vp-doc
+ * (prose.css, below the components) the title and the lead keep their
+ * look against the markdown's rules for a heading and a paragraph. */
+
+@layer components {
+  .vp-team-header {
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-header {
+      padding: 4rem 3rem 3rem;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .vp-team-header {
+      padding: 5rem 4rem 3rem;
+    }
+  }
+
+  .vp-team-header-title {
+    letter-spacing: 0;
+    line-height: 1.2222222;
+    font-size: 2.25rem;
+    font-weight: 500;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-header-title {
+      letter-spacing: -0.0104167em;
+      line-height: 1.1666667;
+      font-size: 3rem;
+    }
+  }
+
+  .vp-team-header-lead {
+    margin: 0 auto;
+    max-width: 32rem;
+    padding-top: 0.75rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-header-lead {
+      max-width: 37rem;
+      letter-spacing: 0.0075em;
+      line-height: 1.4;
+      font-size: 1.25rem;
+    }
+  }
+}
