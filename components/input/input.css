@@ -1,0 +1,78 @@
+/* vpkit — text input, `vp-input`: vpkit's own, on the contract (VitePress
+ * has no input component). An optional import:
+ * `@import "vpkit/components/input/input.css";`
+ *
+ *   <input class="vp-input w-full" placeholder="Coupon code">
+ *   <input class="vp-input" aria-invalid="true">
+ *   <select class="vp-input w-full"><option>7 days</option></select>
+ *   <textarea class="vp-input w-full" rows="4"></textarea>
+ *
+ * The control height (2.75rem, a touch target) with 16px text (iOS zooms
+ * into anything smaller), the border color on the alternate ground, a
+ * brand border hovered and focused; the focus ring is base.css's. Its
+ * placeholder is muted text. aria-invalid="true" turns the border danger
+ * and "false" success, over hover and focus. Width is the page's: add
+ * w-full. data-size="sm": 2.25rem tall with 14px text, beside a small
+ * button.
+ *
+ * The one class is the box of the three text-like controls. A <select>
+ * takes it as it is, with the browser's arrow (where the text sits is the
+ * browser's: Chromium sets it 4px further in). A <textarea> is freed to
+ * follow `rows`, never less than the control height, and padded 0.5625rem
+ * above and below, the inset of the 24px line in the 42px content box, so
+ * a one-row textarea is the input's box with its line where the input's
+ * text is. Its rows and its resize handle are the markup's. */
+
+@layer components {
+  .vp-input {
+    --vp-input-height: var(--vp-control-height);
+    --vp-input-font-size: 1rem;
+    --vp-input-padding: 0.75rem;
+
+    display: block;
+    height: var(--vp-input-height);
+    border: 1px solid var(--vp-c-border);
+    border-radius: var(--vp-radius);
+    padding: 0 var(--vp-input-padding);
+    font-size: var(--vp-input-font-size);
+    line-height: 1.5;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-alt);
+    transition: border-color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--vp-c-brand);
+      }
+    }
+
+    &::placeholder {
+      color: var(--vp-c-text-3);
+    }
+
+    &:focus {
+      border-color: var(--vp-c-brand);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--vp-c-danger);
+    }
+
+    &[aria-invalid="false"] {
+      border-color: var(--vp-c-success);
+    }
+  }
+
+  .vp-input[data-size="sm"] {
+    --vp-input-height: var(--vp-control-height-sm);
+    --vp-input-font-size: 0.875rem;
+    --vp-input-padding: 0.625rem;
+  }
+
+  /* a textarea grows with its rows from the input's box */
+  textarea.vp-input {
+    height: auto;
+    min-height: var(--vp-input-height);
+    padding-block: 0.5625rem;
+  }
+}

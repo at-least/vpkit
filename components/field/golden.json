@@ -1,0 +1,224 @@
+{
+  "field with a hint and an error": {
+    "light": {
+      ".vp-field": {
+        "display": "grid",
+        "grid-template-columns": "1280px",
+        "row-gap": "6px",
+        "column-gap": "6px",
+        "min-width": "0px"
+      },
+      ".vp-label": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "500",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(60, 60, 67)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      },
+      ".vp-input": {
+        "width": "1280px",
+        "offset-top": "30px"
+      },
+      ".vp-field-hint": {
+        "font-size": "12px",
+        "line-height": "16px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(103, 103, 108)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "offset-top": "80px"
+      },
+      ".vp-field-error": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(184, 39, 44)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "offset-top": "102px"
+      }
+    },
+    "dark": {
+      ".vp-field": {
+        "display": "grid",
+        "grid-template-columns": "1280px",
+        "row-gap": "6px",
+        "column-gap": "6px",
+        "min-width": "0px"
+      },
+      ".vp-label": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "500",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(223, 223, 214)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      },
+      ".vp-input": {
+        "width": "1280px",
+        "offset-top": "30px"
+      },
+      ".vp-field-hint": {
+        "font-size": "12px",
+        "line-height": "16px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(152, 152, 159)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "offset-top": "80px"
+      },
+      ".vp-field-error": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(246, 111, 129)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px",
+        "offset-top": "102px"
+      }
+    }
+  },
+  "label and error outside a field": {
+    "light": {
+      ".vp-label": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "500",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(60, 60, 67)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "6px",
+        "margin-left": "0px"
+      },
+      ".vp-field-error": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(184, 39, 44)",
+        "display": "block",
+        "margin-top": "8px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-label": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "500",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(223, 223, 214)",
+        "display": "block",
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "6px",
+        "margin-left": "0px"
+      },
+      ".vp-field-error": {
+        "font-size": "14px",
+        "line-height": "24px",
+        "font-weight": "400",
+        "font-family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "letter-spacing": "normal",
+        "color": "rgb(246, 111, 129)",
+        "display": "block",
+        "margin-top": "8px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "field in a 9rem box": {
+    "light": {
+      ".vp-input": {
+        "width": "144px"
+      },
+      ".vp-field": {
+        "width": "144px"
+      }
+    },
+    "dark": {
+      ".vp-input": {
+        "width": "144px"
+      },
+      ".vp-field": {
+        "width": "144px"
+      }
+    }
+  },
+  "fields in a row": {
+    "light": {
+      ".vp-field": {
+        "width": "233px",
+        "offset-left": "0px"
+      },
+      ".vp-field + .vp-field": {
+        "offset-left": "245px"
+      },
+      ".vp-btn": {
+        "offset-top": "30px",
+        "height": "44px"
+      },
+      ".vp-input": {
+        "offset-top": "30px",
+        "height": "44px"
+      }
+    },
+    "dark": {
+      ".vp-field": {
+        "width": "233px",
+        "offset-left": "0px"
+      },
+      ".vp-field + .vp-field": {
+        "offset-left": "245px"
+      },
+      ".vp-btn": {
+        "offset-top": "30px",
+        "height": "44px"
+      },
+      ".vp-input": {
+        "offset-top": "30px",
+        "height": "44px"
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+/* vpkit — a form field: its label, its control, a hint and an error line,
+ * vpkit's own, to go with vp-input (VitePress has no form fields). An
+ * optional import: `@import "vpkit/components/field/field.css";`
+ *
+ *   <div class="vp-field">
+ *     <label class="vp-label" for="code">Coupon code</label>
+ *     <input class="vp-input w-full" id="code" aria-invalid="true" aria-describedby="code-hint code-error">
+ *     <p class="vp-field-hint" id="code-hint">Printed on the back of the card.</p>
+ *     <p class="vp-field-error" id="code-error">This code has expired.</p>
+ *   </div>
+ *
+ * `vp-field`: a grid of its parts 0.375rem apart, in one column that may
+ * be narrower than the control's own width, and a box that may shrink in
+ * a row, so the label, the control, the hint and the error stack at one
+ * spacing, a page lays fields out as boxes, and at a phone's width a
+ * control takes the box's width instead of overflowing it. `vp-label`: a
+ * block of 14px body text at weight 500 on a 24px line. `vp-field-hint`:
+ * 12px secondary text on a 16px line. `vp-field-error`: 14px danger text
+ * on a 24px line. Inside a field the parts keep no margins of their own,
+ * the grid's gap spacing them; a label or an error line outside a field
+ * keeps its spacing, 0.375rem below the label and 0.5rem above the error
+ * (`mb-0`, `mt-0` remove them). Tie the hint and the error to the control
+ * with aria-describedby, and mark the control aria-invalid while there is
+ * an error, which turns vp-input's border danger. The crate's `Field`,
+ * `FieldHint` and `FieldError` write this markup. */
+
+@layer components {
+  .vp-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-field-error {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--vp-c-danger);
+  }
+
+  .vp-field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.375rem;
+    min-width: 0;
+  }
+
+  .vp-field-hint {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--vp-c-text-2);
+  }
+
+  /* inside a vp-doc (prose.css), whose rule for a paragraph gives the line
+     a bottom margin: none, the error's top margin kept */
+  .vp-doc .vp-field-error {
+    margin: 0.5rem 0 0;
+  }
+
+  /* inside a field the grid's gap spaces the parts: no margins, after the
+     doc rule above so a field in a vp-doc keeps none either */
+  .vp-field > :is(.vp-label, .vp-field-hint, .vp-field-error) {
+    margin: 0;
+  }
+}

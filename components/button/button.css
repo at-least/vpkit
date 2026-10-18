@@ -1,0 +1,164 @@
+/* vpkit — button, `vp-btn`, from VitePress's VPButton: its colors, type and
+ * motion, on vpkit's control height. An optional import:
+ * `@import "vpkit/components/button/button.css";`
+ *
+ * On <a href> or <button>, which bring the pointer (base.css gives an
+ * enabled button one). `vp-btn` alone is the alt (gray) theme. The axes
+ * are attributes:
+ *   data-variant="brand"    the brand theme, white on the brand fill
+ *   data-variant="danger"   danger text on the danger tint, the same hovered
+ *                           and pressed: the ground is the warning. The tint
+ *                           is laid over the page color inside the button,
+ *                           so on an alert, a card or a dialog the label
+ *                           keeps the contrast the theme contract holds it
+ *                           to. The grounded form only: the contract has no
+ *                           ground for white text in the danger color
+ *   data-variant="ghost"    no border and no ground, secondary text, and
+ *                           hovered or pressed body text on the gray wash
+ *                           (the icon button's colors), for a quiet action
+ *                           beside a brand or an alt one
+ *   data-size="sm" | "lg"   2.25rem and 3rem tall (the default 2.75rem,
+ *                           --vp-control-height: a touch target's 44px,
+ *                           where VPButton's medium is 40px and its big
+ *                           48px); the large one 1rem of text
+ * A state: a button whose aria-current has a value (not "false", "" or a
+ * template's stringified "undefined") takes the brand theme, so a row of
+ * vp-btns shows its current item from the attribute an app writes anyway;
+ * it beats every variant (a current ghost or danger button is brand, the
+ * danger tint cleared). A disabled button is dimmed, with a not-allowed
+ * cursor.
+ *
+ * The button is a flex row, so an icon sits beside its label 0.5rem apart:
+ * an <svg> straight inside with no size of its own is 1rem (1.25rem in a
+ * large button) and doesn't shrink, behind :where() so a size utility on
+ * it wins. The pill is the radius token; the line height is the type's,
+ * the height the control token's: VPButton sized its box by a line height
+ * of 38px. The hover applies only on a device that can hover; VPButton's
+ * also stuck to a tapped button. The focus ring is base.css's.
+ *
+ * The block sets every --vp-btn-* local from the contract and a variant
+ * overrides the locals and nothing else; since every button sets its own,
+ * none inherits another's. This is the components layer, so a utility on
+ * the element overrides it. */
+
+@layer components {
+  .vp-btn {
+    --vp-btn-height: var(--vp-control-height);
+    --vp-btn-padding: 1.25rem;
+    --vp-btn-font-size: 0.875rem;
+
+    --vp-btn-border: transparent;
+    --vp-btn-text: var(--vp-c-text-1);
+    --vp-btn-bg: var(--vp-c-gray-fill);
+    --vp-btn-hover-border: transparent;
+    --vp-btn-hover-text: var(--vp-c-text-1);
+    --vp-btn-hover-bg: var(--vp-c-gray-fill-hover);
+    --vp-btn-active-border: transparent;
+    --vp-btn-active-text: var(--vp-c-text-1);
+    --vp-btn-active-bg: var(--vp-c-gray-fill-active);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: var(--vp-btn-height);
+    border: 1px solid var(--vp-btn-border);
+    border-radius: var(--vp-radius-full);
+    padding: 0 var(--vp-btn-padding);
+    font-size: var(--vp-btn-font-size);
+    line-height: 1.5;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--vp-btn-text);
+    background-color: var(--vp-btn-bg);
+    transition: color var(--vp-duration), border-color var(--vp-duration), background-color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--vp-btn-hover-border);
+        color: var(--vp-btn-hover-text);
+        background-color: var(--vp-btn-hover-bg);
+      }
+    }
+
+    &:active {
+      border-color: var(--vp-btn-active-border);
+      color: var(--vp-btn-active-text);
+      background-color: var(--vp-btn-active-bg);
+      transition: color var(--vp-duration-fast), border-color var(--vp-duration-fast), background-color var(--vp-duration-fast);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  /* the contract fits the brand fills for white text */
+  .vp-btn[data-variant="brand"] {
+    --vp-btn-text: white;
+    --vp-btn-bg: var(--vp-c-brand-fill);
+    --vp-btn-hover-text: white;
+    --vp-btn-hover-bg: var(--vp-c-brand-fill-hover);
+    --vp-btn-active-text: white;
+    --vp-btn-active-bg: var(--vp-c-brand-fill-active);
+  }
+
+  .vp-btn[data-variant="danger"] {
+    --vp-btn-text: var(--vp-c-danger);
+    --vp-btn-bg: var(--vp-c-bg);
+    --vp-btn-hover-text: var(--vp-c-danger);
+    --vp-btn-hover-bg: var(--vp-c-bg);
+    --vp-btn-active-text: var(--vp-c-danger);
+    --vp-btn-active-bg: var(--vp-c-bg);
+
+    background-image: linear-gradient(var(--vp-c-danger-soft), var(--vp-c-danger-soft));
+  }
+
+  .vp-btn[data-variant="ghost"] {
+    --vp-btn-text: var(--vp-c-text-2);
+    --vp-btn-bg: transparent;
+    --vp-btn-hover-text: var(--vp-c-text-1);
+    --vp-btn-hover-bg: var(--vp-c-gray-soft);
+    --vp-btn-active-text: var(--vp-c-text-1);
+    --vp-btn-active-bg: var(--vp-c-gray-soft);
+  }
+
+  /* the current item: the brand theme at one attribute more than a
+     variant, so it wins whatever the order; the danger tint is an image,
+     not a local, so it is cleared here */
+  .vp-btn[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) {
+    --vp-btn-text: white;
+    --vp-btn-bg: var(--vp-c-brand-fill);
+    --vp-btn-hover-text: white;
+    --vp-btn-hover-bg: var(--vp-c-brand-fill-hover);
+    --vp-btn-active-text: white;
+    --vp-btn-active-bg: var(--vp-c-brand-fill-active);
+
+    background-image: none;
+  }
+
+  .vp-btn[data-size="sm"] {
+    --vp-btn-height: var(--vp-control-height-sm);
+    --vp-btn-padding: 1rem;
+  }
+
+  .vp-btn[data-size="lg"] {
+    --vp-btn-height: var(--vp-control-height-lg);
+    --vp-btn-padding: 1.5rem;
+    --vp-btn-font-size: 1rem;
+  }
+
+  :where(.vp-btn) > svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  :where(.vp-btn[data-size="lg"]) > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
