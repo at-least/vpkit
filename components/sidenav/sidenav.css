@@ -1,0 +1,116 @@
+/* vpkit — side navigation, `vp-sidenav`, from VitePress's VPSidebarItem:
+ * groups of links in an app's sidebar, the current page marked. An
+ * optional import: `@import "vpkit/components/sidenav/sidenav.css";`
+ *
+ *   <nav class="vp-sidenav" aria-label="Main" tabindex="-1">
+ *     <div class="vp-sidenav-group">
+ *       <p class="vp-sidenav-title">Accounts</p>
+ *       <ul class="vp-sidenav-items">
+ *         <li><a class="vp-sidenav-link" href="/search">Search</a></li>
+ *         <li><a class="vp-sidenav-link" href="/orders" aria-current="page">Orders</a></li>
+ *       </ul>
+ *     </div>
+ *   </nav>
+ *
+ * `vp-sidenav` is the <nav>, VPSidebar's sidebar nav: a focus target
+ * (`tabindex="-1"`, where a skip link lands) drawn with no ring, as
+ * VPSidebar's is. No axis. The parts:
+ *   vp-sidenav-group   VitePress's top level, 1.5rem below it to the next
+ *   vp-sidenav-title   the top level's text: 0.875rem at 1.7142857, weight
+ *                      700, body text, 0.25rem above and below
+ *   vp-sidenav-items   the group's list, drawn as VitePress draws a nested
+ *                      level: a divider line at its left, the links 1rem in
+ *   vp-sidenav-link    a link: 0.875rem at 1.7142857, weight 500, secondary
+ *                      text, brand when hovered, on a device that can
+ *                      hover (VitePress's also stuck to a tapped link); no
+ *                      underline, inside a vp-doc too
+ * A state: the current page's link, `aria-current="page"` (what VitePress
+ * writes on its link too, beside its `.is-active`), is brand with
+ * VitePress's indicator, a 2px brand bar on the list's line, which fades
+ * in with the color. The link is one block carrying the text's padding and
+ * type, and its ::before is the indicator, where VPSidebarItem wraps a
+ * flex row around a padded paragraph with an indicator element beside it:
+ * the same box. The focus ring on a link is base.css's. Not ported:
+ * collapsible groups (the caret) and deeper levels. The sidebar's box is
+ * the page's: a fixed column beside the page on a wide screen, a vp-drawer
+ * on a phone.
+ *
+ * The block sets its --vp-sidenav-* locals from the contract, and the
+ * current state reads the hover's. This is the components layer, so a
+ * utility on the element overrides it. */
+
+@layer components {
+  /* the nav is a focus target (tabindex="-1", where a skip link lands) and
+     must show no ring there, as VPSidebar's nav shows none: base.css's
+     :focus-visible ring is left off it, the one element the kit draws no
+     ring on at all */
+  .vp-sidenav {
+    --vp-sidenav-text: var(--vp-c-text-2);
+    --vp-sidenav-hover-text: var(--vp-c-brand);
+
+    outline: 0;
+  }
+
+  .vp-sidenav-group {
+    padding-bottom: 1.5rem;
+  }
+
+  .vp-sidenav-title {
+    margin: 0;
+    padding: 0.25rem 0;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--vp-c-text-1);
+  }
+
+  .vp-sidenav-items {
+    margin: 0;
+    border-left: 1px solid var(--vp-c-divider);
+    padding: 0 0 0 1rem;
+    list-style: none;
+  }
+
+  :where(.vp-sidenav-items) > li {
+    margin: 0;
+  }
+
+  .vp-sidenav-link {
+    position: relative;
+    display: block;
+    padding: 0.25rem 0;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--vp-sidenav-text);
+    text-decoration: none;
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-sidenav-hover-text);
+      }
+    }
+  }
+
+  /* the indicator, VPSidebarItem's .indicator: on the list's line */
+  .vp-sidenav-link::before {
+    content: "";
+    position: absolute;
+    top: 0.375rem;
+    bottom: 0.375rem;
+    left: calc(-1rem - 1px);
+    width: 2px;
+    border-radius: 2px;
+    transition: background-color var(--vp-duration);
+  }
+
+  /* the current page's link: VitePress's .is-active, in the hover's color */
+  .vp-sidenav-link[aria-current="page"] {
+    color: var(--vp-sidenav-hover-text);
+  }
+
+  .vp-sidenav-link[aria-current="page"]::before {
+    background-color: var(--vp-sidenav-hover-text);
+  }
+}
