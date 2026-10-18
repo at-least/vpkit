@@ -36,3 +36,4 @@ The page puts Carbon's script in the box, and the script writes the ad:
 - `vp-carbon-ads`: the box, on the ads' ground, rounded, at least 16rem tall, centering what it holds.
 - The ad is Carbon's markup: its image centered and rounded, its text (`carbon-text`) and its credit (`carbon-poweredby`) under it, each brightened while hovered. Of the ads it holds, only the first shows.
 - The colors are the `--vp-carbon-ads-*` variables, derived from the theme's text, brand and soft ground.
+- Inside a `vp-doc` the ad's links take no underline from the markdown, vpkit's addition: VitePress shows the box only in its aside, outside the markdown.
