@@ -1,0 +1,61 @@
+/* vpkit — site footer, `vp-site-footer`, from VitePress's VPFooter: the
+ * line at the foot of a site's pages, a message and its links. An
+ * optional import: `@import "vpkit/components/site-footer/site-footer.css";`
+ * (`vp-footer` is the docs layout's own footer, so the app's is
+ * `vp-site-footer`)
+ *
+ *   <footer class="vp-site-footer">
+ *     <p>Made by <a href="https://example.com">Example Inc.</a></p>
+ *   </footer>
+ *
+ * One element where VitePress has two (the footer and its container): a
+ * gutter line above it, 2rem by 1.5rem of padding (2rem around from 48rem
+ * wide), on the page's color, positioned as VPFooter is; its text
+ * VitePress's message, 0.875rem at 1.7142857, weight 500, secondary text,
+ * centered, each line it holds at most the layout's width
+ * (--vp-layout-max-width) and centered under the next. No axis and no
+ * parts. A bare link inside (one with no vp- class) is underlined
+ * 0.125rem below and turns to body text hovered, on a device that can
+ * hover (VitePress's also stuck to a tapped link); a vp-link inside keeps
+ * its own look. Not ported: VPFooter's place in the stack (its z-index,
+ * which its layout stacks it with: the footer's order is the page's), and
+ * hiding it beside a sidebar (the layout's). This is the components
+ * layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-site-footer {
+    position: relative;
+    border-top: 1px solid var(--vp-c-gutter);
+    padding: 2rem 1.5rem;
+    line-height: 1.7142857;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-bg);
+  }
+
+  @media (min-width: 48rem) {
+    .vp-site-footer {
+      padding: 2rem;
+    }
+  }
+
+  :where(.vp-site-footer) > * {
+    margin: 0 auto;
+    max-width: var(--vp-layout-max-width);
+  }
+
+  /* a bare link: VPFooter's, underlined, body text hovered */
+  :where(.vp-site-footer) a:where(:not([class*="vp-"])) {
+    text-decoration-line: underline;
+    text-underline-offset: 0.125rem;
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-c-text-1);
+      }
+    }
+  }
+}
