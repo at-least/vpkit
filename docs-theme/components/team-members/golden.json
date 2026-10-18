@@ -1,0 +1,32 @@
+{
+  "team members example": {
+    "light": {
+      ".vp-team-members": {
+        "display": "grid",
+        "grid-template-columns": "276px 276px 276px",
+        "column-gap": "24px",
+        "row-gap": "24px",
+        "margin-top": "0px",
+        "margin-right": "202px",
+        "margin-bottom": "0px",
+        "margin-left": "202px",
+        "max-width": "876px",
+        "width": "876px"
+      }
+    },
+    "dark": {
+      ".vp-team-members": {
+        "display": "grid",
+        "grid-template-columns": "276px 276px 276px",
+        "column-gap": "24px",
+        "row-gap": "24px",
+        "margin-top": "0px",
+        "margin-right": "202px",
+        "margin-bottom": "0px",
+        "margin-left": "202px",
+        "max-width": "876px",
+        "width": "876px"
+      }
+    }
+  }
+}
