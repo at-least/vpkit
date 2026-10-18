@@ -1,0 +1,63 @@
+/* vpkit — pre, `vp-pre`, from VitePress's code block (vp-doc.css: the
+ * language container, its <pre> and its <code>): a block of code or raw
+ * text outside the markdown, a payload, a log, a file's text. An optional
+ * import: `@import "vpkit/components/pre/pre.css";`
+ *
+ *   <pre class="vp-pre"><code>{ "level": "error" }</code></pre>
+ *
+ * One element where VitePress has two (the container and its <pre>): the
+ * code block's ground (the alternate ground), the radius token, 1.25rem
+ * of padding above and below, scrolling sideways, and VitePress's own
+ * 1rem above and below it (as vp-table keeps the markdown's margin;
+ * `my-0` removes it). No axis and no parts. The text goes in a <code>,
+ * VitePress's: a block 1.5rem in from either side, as wide as its longest
+ * line (so the side padding holds where the block scrolls), 0.875em on a
+ * 1.7 line in secondary text, tabs 4 wide, the ground and the text each
+ * transitioning in --vp-duration-slow. That rule is `.vp-pre > code`, one
+ * class and one element, as link.css's for code in a link: it wins over
+ * an alert's rule for bare code, which would draw its chip around the
+ * block's text; inside an alert the code is 0.875em of the alert's
+ * 0.875rem, as VitePress's code block in a custom block is, and the block
+ * keeps its 1rem margin, where VitePress's container pulls a code block
+ * to 0.5rem (an alert is a container of the page's, not the markdown's).
+ * Lines that should wrap take `whitespace-pre-wrap`; a block that should
+ * stop growing takes a height and `overflow-y-auto`. Not ported: the
+ * language label, the copy button, line highlights (the highlighter's),
+ * and the block's full bleed on a phone (its negative margins: placement
+ * is the page's), so the radius holds at every width.
+ *
+ * The block sets its locals, the ground and the text, from the contract,
+ * where VitePress reads the markdown's --vp-code-block-* variables (which
+ * prose.css defines on .vp-doc; the block needs none). This is the
+ * components layer, so a utility on the element overrides it. */
+
+@layer components {
+  .vp-pre {
+    --vp-pre-bg: var(--vp-c-bg-alt);
+    --vp-pre-text: var(--vp-c-text-2);
+
+    margin: 1rem 0;
+    border-radius: var(--vp-radius);
+    padding: 1.25rem 0;
+    overflow-x: auto;
+    tab-size: 4;
+    text-align: left;
+    background-color: var(--vp-pre-bg);
+    transition: background-color var(--vp-duration-slow);
+  }
+
+  /* the code: one class and one element, over an alert's rule for bare code */
+  .vp-pre > code {
+    display: block;
+    border-radius: 0;
+    padding: 0 1.5rem;
+    width: fit-content;
+    min-width: 100%;
+    line-height: 1.7;
+    font-size: 0.875em;
+    color: var(--vp-pre-text);
+    background-color: transparent;
+    tab-size: 4;
+    transition: color var(--vp-duration-slow);
+  }
+}

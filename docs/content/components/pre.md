@@ -8,15 +8,10 @@ description = "A block of code or raw text outside the markdown: VitePress's cod
 A block of code or raw text outside the markdown: VitePress's code block as a class, for a payload, a log or a file's text on an app's page.
 
 ```css
-@import "vpkit/pre.css";
+@import "vpkit/components/pre/pre.css";
 ```
 
-{% <vp_example title="A raw payload"> %}
-<pre class="vp-pre my-0"><code>{
-  "level": "error",
-  "message": "panic in send_digest: connection reset by peer, after 3 retries over 40 seconds"
-}</code></pre>
-{% </vp_example> %}
+{{ <vp_example file="pre/payload" title="A raw payload" /> }}
 
 - `vp-pre` on a `<pre>`, the text in a `<code>` inside: the code block's ground, a 0.5rem radius, the code 1.5rem in from either side, scrolling sideways.
 - It keeps VitePress's 1rem margin above and below; `my-0` removes it.

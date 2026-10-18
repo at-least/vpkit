@@ -1,0 +1,66 @@
+{
+  "pre example": {
+    "light": {
+      ".vp-pre": {
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-pre": {
+        "margin-top": "0px",
+        "margin-right": "0px",
+        "margin-bottom": "0px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "pre in an alert": {
+    "light": {
+      ".vp-pre": {
+        "margin-top": "16px",
+        "margin-right": "0px",
+        "margin-bottom": "16px",
+        "margin-left": "0px"
+      }
+    },
+    "dark": {
+      ".vp-pre": {
+        "margin-top": "16px",
+        "margin-right": "0px",
+        "margin-bottom": "16px",
+        "margin-left": "0px"
+      }
+    }
+  },
+  "pre at 375px": {
+    "light": {
+      ".vp-pre": {
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "margin-top": "16px",
+        "margin-right": "0px",
+        "margin-bottom": "16px",
+        "margin-left": "0px",
+        "width": "375px"
+      }
+    },
+    "dark": {
+      ".vp-pre": {
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "margin-top": "16px",
+        "margin-right": "0px",
+        "margin-bottom": "16px",
+        "margin-left": "0px",
+        "width": "375px"
+      }
+    }
+  }
+}
