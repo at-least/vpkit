@@ -1,0 +1,120 @@
+{
+  "spinner in a line of text": {
+    "light": {
+      ".vp-spinner": {
+        "display": "inline-block",
+        "width": "18px",
+        "block-size": "18px",
+        "border-top-color": "rgb(52, 81, 178)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)"
+      }
+    },
+    "dark": {
+      ".vp-spinner": {
+        "display": "inline-block",
+        "width": "18px",
+        "block-size": "18px",
+        "border-top-color": "rgb(168, 177, 255)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)"
+      }
+    }
+  },
+  "spinner examples": {
+    "light": {
+      "span.vp-spinner[role=\"status\"]": {
+        "display": "inline-block",
+        "width": "18px",
+        "block-size": "18px",
+        "border-top-color": "rgb(52, 81, 178)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)"
+      },
+      ".vp-btn > .vp-spinner": {
+        "width": "16px",
+        "block-size": "16px",
+        "border-top-color": "rgb(255, 255, 255)",
+        "border-right-color": "color(srgb 1 1 1 / 0.3)",
+        "border-bottom-color": "color(srgb 1 1 1 / 0.3)",
+        "border-left-color": "color(srgb 1 1 1 / 0.3)"
+      }
+    },
+    "dark": {
+      "span.vp-spinner[role=\"status\"]": {
+        "display": "inline-block",
+        "width": "18px",
+        "block-size": "18px",
+        "border-top-color": "rgb(168, 177, 255)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)"
+      },
+      ".vp-btn > .vp-spinner": {
+        "width": "16px",
+        "block-size": "16px",
+        "border-top-color": "rgb(255, 255, 255)",
+        "border-right-color": "color(srgb 1 1 1 / 0.3)",
+        "border-bottom-color": "color(srgb 1 1 1 / 0.3)",
+        "border-left-color": "color(srgb 1 1 1 / 0.3)"
+      }
+    }
+  },
+  "spinner in each button variant": {
+    "light": {
+      ".vp-btn:not([data-variant]) > .vp-spinner": {
+        "border-top-color": "rgb(60, 60, 67)",
+        "border-right-color": "color(srgb 0.235294 0.235294 0.262745 / 0.3)",
+        "border-bottom-color": "color(srgb 0.235294 0.235294 0.262745 / 0.3)",
+        "border-left-color": "color(srgb 0.235294 0.235294 0.262745 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"brand\"] > .vp-spinner": {
+        "border-top-color": "rgb(255, 255, 255)",
+        "border-right-color": "color(srgb 1 1 1 / 0.3)",
+        "border-bottom-color": "color(srgb 1 1 1 / 0.3)",
+        "border-left-color": "color(srgb 1 1 1 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"danger\"] > .vp-spinner": {
+        "border-top-color": "rgb(184, 39, 44)",
+        "border-right-color": "color(srgb 0.721569 0.152941 0.172549 / 0.3)",
+        "border-bottom-color": "color(srgb 0.721569 0.152941 0.172549 / 0.3)",
+        "border-left-color": "color(srgb 0.721569 0.152941 0.172549 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"ghost\"] > .vp-spinner": {
+        "border-top-color": "rgb(103, 103, 108)",
+        "border-right-color": "color(srgb 0.403922 0.403922 0.423529 / 0.3)",
+        "border-bottom-color": "color(srgb 0.403922 0.403922 0.423529 / 0.3)",
+        "border-left-color": "color(srgb 0.403922 0.403922 0.423529 / 0.3)"
+      }
+    },
+    "dark": {
+      ".vp-btn:not([data-variant]) > .vp-spinner": {
+        "border-top-color": "rgb(223, 223, 214)",
+        "border-right-color": "color(srgb 0.87451 0.87451 0.839216 / 0.3)",
+        "border-bottom-color": "color(srgb 0.87451 0.87451 0.839216 / 0.3)",
+        "border-left-color": "color(srgb 0.87451 0.87451 0.839216 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"brand\"] > .vp-spinner": {
+        "border-top-color": "rgb(255, 255, 255)",
+        "border-right-color": "color(srgb 1 1 1 / 0.3)",
+        "border-bottom-color": "color(srgb 1 1 1 / 0.3)",
+        "border-left-color": "color(srgb 1 1 1 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"danger\"] > .vp-spinner": {
+        "border-top-color": "rgb(246, 111, 129)",
+        "border-right-color": "color(srgb 0.964706 0.435294 0.505882 / 0.3)",
+        "border-bottom-color": "color(srgb 0.964706 0.435294 0.505882 / 0.3)",
+        "border-left-color": "color(srgb 0.964706 0.435294 0.505882 / 0.3)"
+      },
+      ".vp-btn[data-variant=\"ghost\"] > .vp-spinner": {
+        "border-top-color": "rgb(152, 152, 159)",
+        "border-right-color": "color(srgb 0.596078 0.596078 0.623529 / 0.3)",
+        "border-bottom-color": "color(srgb 0.596078 0.596078 0.623529 / 0.3)",
+        "border-left-color": "color(srgb 0.596078 0.596078 0.623529 / 0.3)"
+      }
+    }
+  }
+}
