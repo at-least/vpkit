@@ -21,8 +21,12 @@
  * brand and divider colors would vanish on a brand button. No axis, no
  * parts. The block sets its two colors as --vp-spinner-* locals from the
  * contract, the ring and the head, and the button's rule overrides them.
- * This is the components layer, so a utility on the element overrides
- * it: `size-4` or any size utility resizes it. */
+ * One more addition: under forced colors (Windows' contrast themes), which
+ * paint every border in the system's text color, a transparent one too,
+ * the ring opts out of the forcing and keeps transparent sides under a
+ * head in that color, in a button too, so the turn still shows. This is
+ * the components layer, so a utility on the element overrides it: `size-4`
+ * or any size utility resizes it. */
 
 @layer components {
   .vp-spinner {
@@ -48,6 +52,20 @@
   @media (prefers-reduced-motion: reduce) {
     .vp-spinner {
       animation: none;
+    }
+  }
+
+  /* forced colors paint every border in the system's text color, a
+     transparent one too (measured: the ring and the head then match a full
+     circle), so the ring opts out of the forcing: transparent sides, the
+     head in the system's text color. Not currentColor: opted out, the ring
+     inherits the authored color (a brand button's white, on the forced
+     button face) */
+  @media (forced-colors: active) {
+    .vp-spinner {
+      forced-color-adjust: none;
+      border-color: transparent;
+      border-top-color: CanvasText;
     }
   }
 

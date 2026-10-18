@@ -50,7 +50,9 @@
  * checked checkbox is selected, on the brand tint, over the hover; a body
  * row with aria-current (a value that is not "false", "" or a template's
  * stringified "undefined", as vp-btn reads it) is the keyboard's cursor's,
- * a 3px brand edge on its first cell. The parts:
+ * a 3px brand edge on its first cell; under forced colors (Windows'
+ * contrast themes), which drop the shadow that draws it, a 3px frame inset
+ * on that cell instead, an outline, which they keep. The parts:
  *   vp-table-sort      a link or button in a th that sorts by its column:
  *                      the header's type and color, a dotted underline,
  *                      body text hovered; the current sort, which
@@ -163,6 +165,18 @@
   /* the cursor's row: aria-current with a value, a brand edge on its first cell */
   :where(.vp-table) tbody tr[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) > :first-child {
     box-shadow: inset 3px 0 0 var(--vp-c-brand);
+  }
+
+  /* forced colors drop the shadow: a 3px frame inset on the cell instead,
+     an outline, which they keep and which moves nothing. A frame where the
+     shadow is an edge: a 3px border-left would move the row by 1px in the
+     collapsed model (half its growth) and the stacked cell by its padding
+     (measured); the outline keeps every box in all three layouts */
+  @media (forced-colors: active) {
+    :where(.vp-table) tbody tr[aria-current]:not([aria-current="false"], [aria-current=""], [aria-current="undefined"]) > :first-child {
+      outline: 3px solid CanvasText;
+      outline-offset: -3px;
+    }
   }
 
   /* a row's actions: on a device that can hover, shown when the pointer or
