@@ -1,0 +1,80 @@
+/* vpkit — divider, `vp-divider`, from VitePress's markdown rule (`.vp-doc
+ * hr`, vp-doc.css) and the navbar's rule between two of its clusters
+ * (VPNavBar's `::before` on the cluster after the menu). An optional
+ * import: `@import "vpkit/components/divider/divider.css";`
+ *
+ *   <hr class="vp-divider">
+ *
+ *   <div class="flex items-center">
+ *     <a class="vp-link" href="/docs">Docs</a>
+ *     <hr class="vp-divider" aria-orientation="vertical">
+ *     <a class="vp-link" href="/blog">Blog</a>
+ *   </div>
+ *
+ *   <div class="vp-divider" role="separator">or use your phone</div>
+ *
+ * On an <hr>, `vp-divider` alone is the markdown's rule: a 1px line of the
+ * divider color across its container, 1rem above and below (VitePress's
+ * own spacing, kept as vp-table keeps its margin; `my-0` removes it). The
+ * forms are the markup's own attributes and element:
+ *   aria-orientation="vertical"   the navbar's rule: a 1px by 1.5rem line
+ *                                 of the divider color with 0.5rem at
+ *                                 each side, for a row of items (a flex
+ *                                 row centers it, as the bar's does); the
+ *                                 attribute says so for assistive
+ *                                 technology, and the style follows it
+ *   not an <hr>                   vpkit's labelled divider: an element
+ *                                 holding a short label, `<div
+ *                                 role="separator">`, the rule broken by
+ *                                 the label centered on it, 0.8125rem at
+ *                                 1.25rem in secondary text, a 1px rule
+ *                                 each side 0.75rem from it; the label is
+ *                                 the element's text, the rules are drawn
+ * An <hr> is a separator for assistive technology by itself. In a flex
+ * row an <hr> is a flex item, as VitePress's ::before is. One addition:
+ * under forced colors (Windows' contrast themes) the browser erases
+ * backgrounds, and the vertical rule is one, so there it takes the text
+ * color; the horizontal rule and the labelled divider's rules are
+ * borders, which forced colors keep. */
+
+@layer components {
+  .vp-divider {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  /* the vertical rule: VitePress's line of background, upright */
+  .vp-divider[aria-orientation="vertical"] {
+    margin: 0 0.5rem;
+    border: none;
+    width: 1px;
+    height: 1.5rem;
+    background-color: var(--vp-c-divider);
+  }
+
+  /* the labelled divider: the element's text between two rules */
+  .vp-divider:not(hr) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: none;
+    line-height: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-divider:not(hr)::before,
+  .vp-divider:not(hr)::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  @media (forced-colors: active) {
+    .vp-divider[aria-orientation="vertical"] {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}
