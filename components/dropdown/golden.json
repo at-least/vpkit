@@ -30,20 +30,20 @@
         "overflow-y": "auto",
         "transition-property": "background-color",
         "transition-duration": "0.5s",
-        "width": "128px",
+        "width": "137px",
         "height": "210.921875px"
       },
       ".vp-dropdown-item[aria-current=\"page\"]": {
         "color": "rgb(52, 81, 178)",
         "background-color": "rgba(0, 0, 0, 0)",
         "height": "31.984375px",
-        "width": "102px"
+        "width": "111px"
       },
       ".vp-dropdown-item[aria-checked=\"true\"]": {
         "color": "rgb(52, 81, 178)",
         "background-color": "rgba(0, 0, 0, 0)",
         "height": "31.984375px",
-        "width": "102px"
+        "width": "111px"
       },
       ".vp-dropdown-item[aria-checked=\"false\"]": {
         "color": "rgb(60, 60, 67)",
@@ -111,20 +111,20 @@
         "overflow-y": "auto",
         "transition-property": "background-color",
         "transition-duration": "0.5s",
-        "width": "128px",
+        "width": "137px",
         "height": "210.921875px"
       },
       ".vp-dropdown-item[aria-current=\"page\"]": {
         "color": "rgb(168, 177, 255)",
         "background-color": "rgba(0, 0, 0, 0)",
         "height": "31.984375px",
-        "width": "102px"
+        "width": "111px"
       },
       ".vp-dropdown-item[aria-checked=\"true\"]": {
         "color": "rgb(168, 177, 255)",
         "background-color": "rgba(0, 0, 0, 0)",
         "height": "31.984375px",
-        "width": "102px"
+        "width": "111px"
       },
       ".vp-dropdown-item[aria-checked=\"false\"]": {
         "color": "rgb(223, 223, 214)",

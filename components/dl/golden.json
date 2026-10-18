@@ -385,7 +385,7 @@
         "display": "grid",
         "row-gap": "4px",
         "column-gap": "12px",
-        "grid-template-columns": "52.0156px 255.984px",
+        "grid-template-columns": "57px 251px",
         "align-items": "baseline",
         "height": "80px"
       },
@@ -414,8 +414,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "0px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       },
       ".vp-dl > dt:nth-of-type(2)": {
         "font-size": "12px",
@@ -442,8 +442,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "28px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       },
       ".vp-dl > dt:nth-of-type(3)": {
         "font-size": "12px",
@@ -470,8 +470,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "56px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       }
     },
     "dark": {
@@ -479,7 +479,7 @@
         "display": "grid",
         "row-gap": "4px",
         "column-gap": "12px",
-        "grid-template-columns": "52.0156px 255.984px",
+        "grid-template-columns": "57px 251px",
         "align-items": "baseline",
         "height": "80px"
       },
@@ -508,8 +508,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "0px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       },
       ".vp-dl > dt:nth-of-type(2)": {
         "font-size": "12px",
@@ -536,8 +536,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "28px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       },
       ".vp-dl > dt:nth-of-type(3)": {
         "font-size": "12px",
@@ -564,8 +564,8 @@
         "margin-bottom": "0px",
         "margin-left": "0px",
         "offset-top": "56px",
-        "offset-left": "64.015625px",
-        "width": "255.984px"
+        "offset-left": "69px",
+        "width": "251px"
       }
     }
   }

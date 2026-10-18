@@ -16,7 +16,11 @@
 // Lengths match within 1/32px (the minified build prints numbers to six
 // digits). vpkit is compiled minified, as the apps ship it, from an entry
 // that imports every component; the docs theme's components compile with
-// docs-theme/vars.css, VitePress's own palette.
+// docs-theme/vars.css, VitePress's own palette. Each side loads its own
+// fonts.css (vpkit's; VitePress's, which also names Inter in its base
+// stack), the Inter files served from fonts/, so a width that depends on
+// text is Inter's wherever the test runs, not the machine's fallback
+// font's.
 //
 //   node test/components.mjs
 //   CASES='^button' node test/components.mjs        only the cases it matches
@@ -90,10 +94,29 @@ function same(a, b, prop, tolerance = 1 / 32) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
+// each side's fonts, before its stylesheet: vpkit's fonts.css (its @font-face
+// rules; tokens.css names Inter) and VitePress's (its rules and the :root
+// that names Inter, without its Google Fonts import: the test is offline
+// and the files are the same); both read the files as url("…fonts/…"),
+// which the page's base URL points at the route below
+const FONTS = {
+  vpkit: readFileSync(join(ROOT, 'fonts.css'), 'utf8'),
+  upstream: readFileSync(join(ROOT, 'test/upstream/fonts.css'), 'utf8').replace(/^@import url\('https:\/\/fonts\.googleapis\.com[^\n]*\n/m, ''),
+};
+const ORIGIN = 'http://vpkit.test';
+
 async function open(browser, css, body, { dark, touch, width, reducedMotion }) {
   const page = await browser.newPage();
   if (width) await page.setViewportSize({ width, height: 720 });
   if (reducedMotion) await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.route(`${ORIGIN}/fonts/*`, (route) => {
+    const file = join(ROOT, 'fonts', basename(new URL(route.request().url()).pathname));
+    return existsSync(file) ? route.fulfill({ body: readFileSync(file), contentType: 'font/woff2' }) : route.fulfill({ status: 404 });
+  });
+  // a case's own script (one that opens a dialog) failing would measure
+  // the state it never reached
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
   const cdp = await page.context().newCDPSession(page);
   // Emulation.setEmulatedMedia takes a `hover` feature but Chromium
   // ignores it; touch emulation is what makes (hover: none) match
@@ -101,8 +124,11 @@ async function open(browser, css, body, { dark, touch, width, reducedMotion }) {
   await page.setContent(
     // the page's colors come from each side's base.css; `body` lets a case
     // measure the page itself
-    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><style>${css}</style></head><body>${body}</body></html>`,
+    `<!doctype html><html${dark ? ' class="dark"' : ''}><head><base href="${ORIGIN}/"><style>${css}</style></head><body>${body}</body></html>`,
   );
+  if (errors.length) throw new Error(`the page's script failed: ${errors.join('; ')}`);
+  const inter = await page.evaluate(async () => (await document.fonts.load('1em Inter')).filter((f) => f.status === 'loaded').length);
+  if (!inter) throw new Error('Inter did not load from fonts/');
   const hover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
   if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);
   const reduced = await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -165,8 +191,9 @@ for (const { c } of selected) {
   if (c.upstream && c.reference) throw new Error(`${c.name}: a case has an upstream or a reference, not both`);
 }
 
-const css = { app: compileCss(entry('app')), docs: PRODUCTS.docs.length ? compileCss(entry('docs')) : null };
-const upstreamBase = upstreamCss(UPSTREAM);
+const css = { app: `${FONTS.vpkit}\n${compileCss(entry('app'))}`, docs: PRODUCTS.docs.length ? `${FONTS.vpkit}\n${compileCss(entry('docs'))}` : null };
+// VitePress imports fonts.css after its vars.css, so its Inter stack wins
+const upstreamBase = `${upstreamCss(UPSTREAM)}\n${FONTS.upstream}`;
 const fitted = fittedPalette();
 const key = (check) => `${check.target}${check.pseudo ?? ''}${check.state?.length ? ` :${check.state.join(':')}` : ''}`;
 

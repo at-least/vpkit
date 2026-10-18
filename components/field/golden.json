@@ -188,11 +188,11 @@
   "fields in a row": {
     "light": {
       ".vp-field": {
-        "width": "233px",
+        "width": "274px",
         "offset-left": "0px"
       },
       ".vp-field + .vp-field": {
-        "offset-left": "245px"
+        "offset-left": "286px"
       },
       ".vp-btn": {
         "offset-top": "30px",
@@ -205,11 +205,11 @@
     },
     "dark": {
       ".vp-field": {
-        "width": "233px",
+        "width": "274px",
         "offset-left": "0px"
       },
       ".vp-field + .vp-field": {
-        "offset-left": "245px"
+        "offset-left": "286px"
       },
       ".vp-btn": {
         "offset-top": "30px",

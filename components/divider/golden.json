@@ -59,14 +59,14 @@
     "light": {
       ".vp-divider": {
         "offset-top": "0px",
-        "offset-left": "48.03125px",
+        "offset-left": "49px",
         "height": "24px"
       }
     },
     "dark": {
       ".vp-divider": {
         "offset-top": "0px",
-        "offset-left": "48.03125px",
+        "offset-left": "49px",
         "height": "24px"
       }
     }
@@ -95,10 +95,10 @@
         "background-color": "rgb(226, 226, 227)",
         "display": "block",
         "offset-top": "0px",
-        "offset-left": "39.90625px"
+        "offset-left": "43px"
       },
       ".vp-divider + .vp-link": {
-        "offset-left": "48.90625px"
+        "offset-left": "52px"
       }
     },
     "dark": {
@@ -124,10 +124,10 @@
         "background-color": "rgb(46, 46, 50)",
         "display": "block",
         "offset-top": "0px",
-        "offset-left": "39.90625px"
+        "offset-left": "43px"
       },
       ".vp-divider + .vp-link": {
-        "offset-left": "48.90625px"
+        "offset-left": "52px"
       }
     }
   },

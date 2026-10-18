@@ -100,25 +100,25 @@
   "progress in a row with a label": {
     "light": {
       ".vp-progress": {
-        "width": "1189.39px",
+        "width": "1191px",
         "height": "4.796875px",
         "flex-grow": "1",
         "offset-left": "0px"
       },
       ".vp-progress + span": {
-        "offset-left": "1201.390625px",
+        "offset-left": "1203px",
         "height": "20px"
       }
     },
     "dark": {
       ".vp-progress": {
-        "width": "1189.39px",
+        "width": "1191px",
         "height": "4.796875px",
         "flex-grow": "1",
         "offset-left": "0px"
       },
       ".vp-progress + span": {
-        "offset-left": "1201.390625px",
+        "offset-left": "1203px",
         "height": "20px"
       }
     }

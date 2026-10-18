@@ -27,8 +27,8 @@
       ".vp-pager-actions": {
         "display": "flex",
         "column-gap": "8px",
-        "margin-left": "1007.86px",
-        "offset-left": "1109.390625px",
+        "margin-left": "1000px",
+        "offset-left": "1102px",
         "offset-top": "0px"
       },
       ".vp-pager-actions > :first-child": {
@@ -38,7 +38,7 @@
         "opacity": "1"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "92.03125px",
+        "offset-left": "97px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"
@@ -71,8 +71,8 @@
       ".vp-pager-actions": {
         "display": "flex",
         "column-gap": "8px",
-        "margin-left": "1007.86px",
-        "offset-left": "1109.390625px",
+        "margin-left": "1000px",
+        "offset-left": "1102px",
         "offset-top": "0px"
       },
       ".vp-pager-actions > :first-child": {
@@ -82,7 +82,7 @@
         "opacity": "1"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "92.03125px",
+        "offset-left": "97px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"
@@ -121,7 +121,7 @@
         "opacity": "0.5"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "92.03125px",
+        "offset-left": "97px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"
@@ -158,7 +158,7 @@
         "opacity": "0.5"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "92.03125px",
+        "offset-left": "97px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"
@@ -181,12 +181,12 @@
       ".vp-pager-actions": {
         "display": "flex",
         "column-gap": "8px",
-        "margin-left": "302.391px",
-        "offset-left": "302.390625px",
+        "margin-left": "295px",
+        "offset-left": "295px",
         "offset-top": "0px"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "99.03125px",
+        "offset-left": "104px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"
@@ -207,12 +207,12 @@
       ".vp-pager-actions": {
         "display": "flex",
         "column-gap": "8px",
-        "margin-left": "302.391px",
-        "offset-left": "302.390625px",
+        "margin-left": "295px",
+        "offset-left": "295px",
         "offset-top": "0px"
       },
       ".vp-pager-actions > :last-child": {
-        "offset-left": "99.03125px",
+        "offset-left": "104px",
         "offset-top": "0px",
         "height": "44px",
         "opacity": "1"

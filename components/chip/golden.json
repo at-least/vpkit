@@ -45,7 +45,7 @@
         "text-decoration-line": "none",
         "transition-property": "color",
         "transition-duration": "0.25s",
-        "offset-left": "99.015625px",
+        "offset-left": "104px",
         "height": "26px"
       },
       ".vp-chip-remove :hover": {
@@ -101,7 +101,7 @@
         "text-decoration-line": "none",
         "transition-property": "color",
         "transition-duration": "0.25s",
-        "offset-left": "99.015625px",
+        "offset-left": "104px",
         "height": "26px"
       },
       ".vp-chip-remove :hover": {

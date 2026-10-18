@@ -194,7 +194,7 @@
         "offset-top": "17px"
       },
       ".vp-btn": {
-        "offset-left": "262px",
+        "offset-left": "303px",
         "offset-top": "47px",
         "height": "44px"
       }
@@ -239,7 +239,7 @@
         "offset-top": "17px"
       },
       ".vp-btn": {
-        "offset-left": "262px",
+        "offset-left": "303px",
         "offset-top": "47px",
         "height": "44px"
       }
@@ -312,7 +312,7 @@
         "font-size": "13px",
         "font-weight": "500",
         "text-decoration-line": "none",
-        "offset-left": "311.796875px",
+        "offset-left": "309px",
         "offset-top": "12px"
       },
       ".vp-link :hover": {
@@ -355,7 +355,7 @@
         "font-size": "13px",
         "font-weight": "500",
         "text-decoration-line": "none",
-        "offset-left": "311.796875px",
+        "offset-left": "309px",
         "offset-top": "12px"
       },
       ".vp-link :hover": {

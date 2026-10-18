@@ -89,7 +89,7 @@
         "offset-left": "0px"
       },
       ".vp-nav-link + .vp-nav-link": {
-        "offset-left": "86.359375px"
+        "offset-left": "94px"
       }
     },
     "dark": {
@@ -119,7 +119,7 @@
         "offset-left": "0px"
       },
       ".vp-nav-link + .vp-nav-link": {
-        "offset-left": "86.359375px"
+        "offset-left": "94px"
       }
     }
   },
@@ -151,7 +151,7 @@
         "offset-left": "0px"
       },
       ".vp-nav-link + .vp-nav-link": {
-        "offset-left": "86.359375px"
+        "offset-left": "94px"
       }
     },
     "dark": {
@@ -181,7 +181,7 @@
         "offset-left": "0px"
       },
       ".vp-nav-link + .vp-nav-link": {
-        "offset-left": "86.359375px"
+        "offset-left": "94px"
       }
     }
   },

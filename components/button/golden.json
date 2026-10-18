@@ -526,7 +526,7 @@
       },
       ".vp-btn": {
         "height": "44px",
-        "width": "118.906px"
+        "width": "125px"
       }
     },
     "dark": {
@@ -539,7 +539,7 @@
       },
       ".vp-btn": {
         "height": "44px",
-        "width": "118.906px"
+        "width": "125px"
       }
     }
   },

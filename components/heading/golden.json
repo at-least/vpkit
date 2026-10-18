@@ -20,7 +20,7 @@
   "heading page description": {
     "light": {
       ".vp-page-desc": {
-        "max-width": "542.249px",
+        "max-width": "585px",
         "font-size": "15px",
         "line-height": "26.25px",
         "color": "rgb(103, 103, 108)",
@@ -33,7 +33,7 @@
     },
     "dark": {
       ".vp-page-desc": {
-        "max-width": "542.249px",
+        "max-width": "585px",
         "font-size": "15px",
         "line-height": "26.25px",
         "color": "rgb(152, 152, 159)",
@@ -87,7 +87,7 @@
         "offset-top": "0px"
       },
       ".vp-page-desc": {
-        "max-width": "542.249px",
+        "max-width": "585px",
         "font-size": "15px",
         "line-height": "26.25px",
         "color": "rgb(103, 103, 108)",
@@ -126,7 +126,7 @@
         "offset-top": "0px"
       },
       ".vp-page-desc": {
-        "max-width": "542.249px",
+        "max-width": "585px",
         "font-size": "15px",
         "line-height": "26.25px",
         "color": "rgb(152, 152, 159)",

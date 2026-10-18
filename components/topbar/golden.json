@@ -70,7 +70,7 @@
       ".vp-toggle": {
         "height": "22px",
         "offset-top": "21px",
-        "offset-left": "165.953125px"
+        "offset-left": "179px"
       }
     },
     "dark": {
@@ -99,7 +99,7 @@
       ".vp-toggle": {
         "height": "22px",
         "offset-top": "21px",
-        "offset-left": "165.953125px"
+        "offset-left": "179px"
       }
     }
   }
