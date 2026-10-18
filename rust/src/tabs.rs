@@ -1,6 +1,6 @@
 use hypertext::{Buffer, prelude::*};
 
-/// `vp-tabs` (`tabs.css`) as a row of links to pages: a `<nav>` named by
+/// `vp-tabs` (`components/tabs`) as a row of links to pages: a `<nav>` named by
 /// `label`, its [`Tab`]s inside. A link that opens a page is no tab over a
 /// panel, so the current one says so with `aria-current`, not
 /// `aria-selected`; tabs over panels, with `role="tablist"` and the script
@@ -65,10 +65,10 @@ impl<R: Renderable> Renderable for Tab<'_, R> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::nth_example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_link_markup() {
+    fn renders_the_links_example() {
         let html = rsx! {
             <Tabs label="Status">
                 <Tab href="?status=open" current=true>"Open"</Tab>
@@ -78,7 +78,7 @@ mod tests {
         .render();
         assert_eq!(
             *html.as_inner(),
-            nth_example(include_str!("../../tabs.css"), 1)
+            example(include_str!("../../components/tabs/examples/links.html"))
         );
     }
 

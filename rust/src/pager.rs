@@ -2,7 +2,7 @@ use hypertext::{Buffer, prelude::*};
 
 use crate::Class;
 
-/// `vp-pager` (`pager.css`): under a list, a line saying what it shows and
+/// `vp-pager` (`components/pager`): under a list, a line saying what it shows and
 /// the buttons to the pages either side, a link where there is a page that
 /// way and a disabled button where there is none. `label` names the
 /// `<nav>` landmark, so a page with two lists gives each its own.
@@ -92,10 +92,10 @@ impl Renderable for PageButton<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Pager
                 label="Pages"
@@ -108,7 +108,10 @@ mod tests {
             />
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../pager.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/pager/examples/basic.html"))
+        );
     }
 
     #[test]

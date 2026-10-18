@@ -1,4 +1,4 @@
-// The Rust crate (rust/): formatted, clippy-clean with warnings as errors,
+// The Rust crate (rust/), every feature on: formatted, clippy-clean with warnings as errors,
 // its tests and documentation examples passing, and its documentation
 // building with no warning (a broken intra-doc link, an undocumented public
 // item). The documentation lands in rust/target/doc, where test/docs.mjs
@@ -16,9 +16,9 @@ const env = { ...process.env, CARGO_TARGET_DIR: join(ROOT, 'rust/target'), RUSTD
 
 for (const args of [
   ['fmt', '--manifest-path', MANIFEST, '--check'],
-  ['clippy', '--manifest-path', MANIFEST, '--all-targets', '--', '-D', 'warnings'],
-  ['test', '--manifest-path', MANIFEST],
-  ['doc', '--manifest-path', MANIFEST, '--no-deps'],
+  ['clippy', '--manifest-path', MANIFEST, '--all-targets', '--all-features', '--', '-D', 'warnings'],
+  ['test', '--manifest-path', MANIFEST, '--all-features'],
+  ['doc', '--manifest-path', MANIFEST, '--no-deps', '--all-features'],
 ]) {
   execFileSync('cargo', args, { env, stdio: 'inherit' });
 }

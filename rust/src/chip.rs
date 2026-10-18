@@ -1,15 +1,13 @@
-use hypertext::{Buffer, Raw, prelude::*};
+use hypertext::{Buffer, prelude::*};
 
 use crate::Class;
+use crate::icon::X;
 
-/// Lucide's x (ISC; LICENSE-Lucide), the remove control's icon: an inline
-/// SVG, so a page whose Content-Security-Policy refuses `data:` images
-/// draws it too. `vp-chip-remove` sizes it at 1rem.
-const X: &str = r#"<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>"#;
-
-/// `vp-chip` (`chip.css`): a key and its value in a pill. A filter the
-/// page applies has a control that removes it (`remove_href`); a value
-/// that opens a list filtered by it is a link as a whole (`href`).
+/// `vp-chip` (`components/chip`): a key and its value in a pill. A filter
+/// the page applies has a control that removes it (`remove_href`, an
+/// [`icon::X`](crate::icon::X) inside, which `vp-chip-remove` sizes at
+/// 1rem); a value that opens a list filtered by it is a link as a whole
+/// (`href`).
 ///
 /// ```
 /// use hypertext::prelude::*;
@@ -65,7 +63,7 @@ impl Renderable for Chip<'_> {
                 <span class=(Class("vp-chip", self.class))>
                     (parts)
                     @if let Some(remove) = self.remove_href {
-                        <a class="vp-chip-remove" href=(remove) aria-label=(self.remove_label)>(Raw::<_>::dangerously_create(X))</a>
+                        <a class="vp-chip-remove" href=(remove) aria-label=(self.remove_label)>(X)</a>
                     }
                 </span>
             }
@@ -77,15 +75,18 @@ impl Renderable for Chip<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Chip key="env" value="production" remove_href=(Some("?")) remove_label="Remove the env filter" .. />
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../chip.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/chip/examples/basic.html"))
+        );
     }
 
     #[test]

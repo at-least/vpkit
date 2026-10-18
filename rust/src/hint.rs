@@ -1,6 +1,6 @@
 use hypertext::{Buffer, prelude::*};
 
-/// `vp-hint` (`hint.css`): a small "i" button whose tooltip says what a
+/// `vp-hint` (`components/hint`): a small "i" button whose tooltip says what a
 /// word means, and a `hidden` copy of the tooltip that the button's
 /// `aria-describedby` names, so a screen reader reads it as the button's
 /// description.
@@ -66,15 +66,18 @@ fn fnv1a32(bytes: &[u8]) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Hint hint="Ignored issues stay out of the counts." label="About ignored" id="hint-ignored" />
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../hint.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/hint/examples/basic.html"))
+        );
     }
 
     #[test]

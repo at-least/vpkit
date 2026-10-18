@@ -1,6 +1,6 @@
 use hypertext::{Buffer, prelude::*};
 
-/// `vp-field` (`field.css`): one form field's box, its label (`vp-label`)
+/// `vp-field` (`components/field`): one form field's box, its label (`vp-label`)
 /// first and the body under it, 0.375rem apart: the control the page
 /// writes, then a [`FieldHint`] or a [`FieldError`] where there is one.
 ///
@@ -119,10 +119,10 @@ pub fn field_error_id(id: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Field id="code" label="Coupon code">
                 <input class="vp-input w-full" id="code" aria-invalid="true" aria-describedby="code-hint code-error">
@@ -131,7 +131,10 @@ mod tests {
             </Field>
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../field.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/field/examples/field.html"))
+        );
     }
 
     #[test]

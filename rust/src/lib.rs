@@ -1,12 +1,18 @@
 //! vpkit's components as [hypertext] components: the markup the `vp-*`
 //! classes expect, for an app that renders with hypertext's `rsx!` or
-//! `maud!`. The CSS stays the components: import the stylesheet of each
-//! one you use (`@import "vpkit/empty.css";`), as without this crate.
+//! `maud!`; its icons as inline SVG ([`icon`]); and, with the `css`
+//! feature, its stylesheets embedded ([`css`]), so an app's cargo
+//! dependency on this crate, at a commit, is the one pin for both its
+//! markup and its CSS: the app writes the stylesheets out
+//! (`vpkit::css::write`) and its Tailwind entry imports the components it
+//! uses from there.
 //!
-//! One module per stylesheet (`empty.rs` renders `empty.css`'s markup),
-//! and only the components whose markup is more than a class on one
-//! element: a button, an input or a badge is a class string, written on the
-//! element with the attributes the page gives it.
+//! One module per component (`empty.rs` renders `components/empty`'s
+//! markup), and only the components whose markup is more than a class on
+//! one element: a button, an input or a badge is a class string, written on
+//! the element with the attributes the page gives it; a variant is an
+//! attribute (`data-variant="brand"`), a state the one the markup carries
+//! anyway (`aria-current`, `aria-invalid`, `disabled`).
 //!
 //! A component emits vpkit's classes and nothing else. Where it has a root
 //! element, `class` adds the page's utilities to it (`class="mb-0"`), as
@@ -27,10 +33,13 @@
 #![warn(missing_docs)]
 
 mod chip;
+#[cfg(feature = "css")]
+pub mod css;
 mod dialog;
 mod empty;
 mod field;
 mod hint;
+pub mod icon;
 mod pager;
 mod tabs;
 
@@ -43,7 +52,7 @@ pub use pager::Pager;
 pub use tabs::{Tab, Tabs};
 
 #[cfg(test)]
-mod header;
+mod example;
 
 use hypertext::{AttributeBuffer, context::AttributeValue, prelude::*};
 

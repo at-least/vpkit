@@ -2,7 +2,7 @@ use hypertext::{Buffer, prelude::*};
 
 use crate::Class;
 
-/// `vp-empty` (`empty.css`): the box a list shows when it has nothing to
+/// `vp-empty` (`components/empty`): the box a list shows when it has nothing to
 /// list, a title and an optional line under it.
 ///
 /// ```
@@ -51,15 +51,18 @@ impl Renderable for Empty<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Empty title="No issues" desc="Nothing matched these filters in the last 7 days." .. />
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../empty.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/empty/examples/basic.html"))
+        );
     }
 
     #[test]

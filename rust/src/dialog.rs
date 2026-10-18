@@ -1,6 +1,6 @@
 use hypertext::{Buffer, prelude::*};
 
-/// `vp-dialog` (`dialog.css`): a modal `<dialog>` with its title
+/// `vp-dialog` (`components/dialog`): a modal `<dialog>` with its title
 /// (`vp-dialog-title`), the body under it. The page opens it with
 /// `showModal()` and writes the body, its last part a
 /// `<div class="vp-dialog-actions">` of buttons.
@@ -53,21 +53,24 @@ impl<R: Renderable, L: Renderable> Renderable for Dialog<'_, R, L> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::header::example;
+    use crate::example::example;
 
     #[test]
-    fn renders_the_stylesheets_markup() {
+    fn renders_the_example() {
         let html = rsx! {
             <Dialog id="rename" title="Rename">
                 <p>"…"</p>
                 <div class="vp-dialog-actions">
                     <button class="vp-btn" type="button">"Cancel"</button>
-                    <button class="vp-btn vp-btn-brand" type="submit">"Rename"</button>
+                    <button class="vp-btn" data-variant="brand" type="submit">"Rename"</button>
                 </div>
             </Dialog>
         }
         .render();
-        assert_eq!(*html.as_inner(), example(include_str!("../../dialog.css")));
+        assert_eq!(
+            *html.as_inner(),
+            example(include_str!("../../components/dialog/examples/basic.html"))
+        );
     }
 
     #[test]

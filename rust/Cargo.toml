@@ -3,9 +3,18 @@ name = "vpkit"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.85"
-description = "vpkit's components as hypertext components: the markup of the vp-* classes, for an app that renders with hypertext"
+description = "vpkit's components as hypertext components: the markup of the vp-* classes, its icons as inline SVG, and, with the css feature, its stylesheets embedded, for an app that renders with hypertext"
 license = "MIT"
 publish = false
 
+[features]
+# the app kit's stylesheets embedded (vpkit::css), for an app's CSS build
+css = []
+
 [dependencies]
 hypertext = "0.12.1"
+
+[[bin]]
+name = "vpkit-css"
+path = "src/bin/vpkit-css.rs"
+required-features = ["css"]
