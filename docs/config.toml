@@ -101,6 +101,7 @@ items = [
   { text = "Site Footer", link = "@/components/site-footer.md" },
   { text = "Skip Link", link = "@/components/skip.md" },
   { text = "Spinner", link = "@/components/spinner.md" },
+  { text = "Sponsors", link = "@/components/sponsor.md" },
   { text = "Status", link = "@/components/status.md" },
   { text = "Table", link = "@/components/table.md" },
   { text = "Tabs", link = "@/components/tabs.md" },

@@ -2512,6 +2512,90 @@ cases.push({
   checks: TEAM_SECTION_CHECKS.map(({ refTarget, refPseudo, ...check }) => check),
 });
 
+// sponsors: VitePress's VPSponsors and VPSponsorsGrid (vp-sponsor.css)
+// against vp-sponsor in a 40rem box: two tiers, a big grid of two and a
+// medium grid of three whose row an empty tile fills, the columns and the
+// empty tile written as VitePress's script writes them (data-vp-grid, a
+// div with `empty`, where vpkit's empty tile is an item with nothing in
+// it); every part, a tile hovered with its logo, the empty tile hovered, in
+// light and dark (where a hovered tile turns white and the logos invert);
+// the aside box; the grid's other sizes and every count; on a touch
+// screen; then inside a vp-doc against itself outside one
+const LOGO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='60' viewBox='0 0 240 60'%3E%3Crect width='240' height='60' rx='8' fill='%23e44'/%3E%3C/svg%3E";
+const sponsorTile = (t) =>
+  `<li${t ? ` data-t="${t}"` : ''} class="vp-sponsor-grid-item"><a${t ? ` data-t="${t}-link"` : ''} class="vp-sponsor-grid-link" href="#">` +
+  `<article${t ? ` data-t="${t}-box"` : ''} class="vp-sponsor-grid-box"><img${t ? ` data-t="${t}-img"` : ''} class="vp-sponsor-grid-image" src="${LOGO}" alt="Example"></article></a></li>`;
+const sponsorGrid = (vp, size, cols, tiles, empty = '', t = '') => {
+  const cls = vp ? `vp-sponsor-grid${size === 'medium' ? '' : ` vp-sponsor-grid-${size}`}` : `VPSponsorsGrid vp-sponsor-grid ${size}`;
+  const filler = !empty ? '' : vp ? `<li data-t="${empty}" class="vp-sponsor-grid-item"></li>` : `<div data-t="${empty}" class="vp-sponsor-grid-item empty"></div>`;
+  return `<ul${t ? ` data-t="${t}"` : ''} class="${cls}" data-vp-grid="${cols}">${tiles}${filler}</ul>`;
+};
+const sponsorBox = (vp, mode = 'normal') =>
+  `<div style="width:40rem"><div data-t="box" class="${vp ? `vp-sponsor${mode === 'aside' ? ' vp-sponsor-aside' : ''}` : `VPSponsors vp-sponsor ${mode}`}">` +
+  `<section data-t="s1" class="vp-sponsor-section"><h3 data-t="tier" class="vp-sponsor-tier">Platinum</h3>${sponsorGrid(vp, 'big', 2, sponsorTile('a') + sponsorTile(''), '', 'grid')}</section>` +
+  `<section data-t="s2" class="vp-sponsor-section"><h3 class="vp-sponsor-tier">Gold</h3>${sponsorGrid(vp, 'medium', 3, sponsorTile('b') + sponsorTile(''), 'e')}</section></div></div>`;
+const SPONSOR_TIER = [...MARGIN, ...PADDING, 'width', 'text-align', 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'color', 'background-color', 'height'];
+const SPONSOR_CHECKS = [
+  { target: 'box', props: [...RADIUS, 'overflow-x', 'overflow-y', 'width', 'height'] },
+  { target: 'tier', props: SPONSOR_TIER },
+  { target: 's2', props: [...MARGIN, 'offset-top'] },
+  { target: 'grid', props: ['display', 'flex-wrap', 'row-gap', 'column-gap', 'height'] },
+  { target: 'a', props: ['flex-shrink', 'width', 'background-color', ...TRANSITION] },
+  { target: 'a', state: ['hover'], props: ['background-color'] },
+  { target: 'a-img', on: 'a', state: ['hover'], props: ['filter'] },
+  { target: 'a-link', props: ['display', 'height'] },
+  { target: 'a-box', props: ['display', 'justify-content', 'align-items', 'width'] },
+  { target: 'a-img', props: ['max-width', 'max-height', 'filter', ...TRANSITION, 'width', 'height', 'offset-left', 'offset-top'] },
+  { target: 'b', props: ['width'] },
+  { target: 'b-link', props: ['height'] },
+  { target: 'b-img', props: ['max-width', 'max-height', 'width', 'height'] },
+  { target: 'e', props: ['width', 'height', 'background-color', 'offset-left'] },
+  { target: 'e', state: ['hover'], props: ['background-color'] },
+];
+cases.push({ name: 'sponsors', upstreamFiles: ['vp-sponsor.css'], upstream: sponsorBox(false), vpkit: sponsorBox(true), checks: SPONSOR_CHECKS });
+cases.push({
+  name: 'sponsors, aside',
+  upstreamFiles: ['vp-sponsor.css'],
+  upstream: sponsorBox(false, 'aside'),
+  vpkit: sponsorBox(true, 'aside'),
+  checks: [{ target: 'box', props: [...RADIUS, 'height'] }, { target: 'tier', props: SPONSOR_TIER }],
+});
+for (const size of ['xmini', 'mini', 'small', 'big']) {
+  cases.push({
+    name: `sponsor grid, ${size}`,
+    upstreamFiles: ['vp-sponsor.css'],
+    upstream: `<div style="width:40rem">${sponsorGrid(false, size, 4, sponsorTile('a'))}</div>`,
+    vpkit: `<div style="width:40rem">${sponsorGrid(true, size, 4, sponsorTile('a'))}</div>`,
+    checks: [{ target: 'a-link', props: ['height'] }, { target: 'a-img', props: ['max-width', 'max-height', 'width', 'height'] }],
+  });
+}
+for (const cols of [1, 2, 3, 4, 5, 6]) {
+  cases.push({
+    name: `sponsor grid of ${cols}`,
+    upstreamFiles: ['vp-sponsor.css'],
+    upstream: `<div style="width:40rem">${sponsorGrid(false, 'medium', cols, sponsorTile('a') + sponsorTile('b'))}</div>`,
+    vpkit: `<div style="width:40rem">${sponsorGrid(true, 'medium', cols, sponsorTile('a') + sponsorTile('b'))}</div>`,
+    checks: [{ target: 'a', props: ['width'] }, { target: 'b', props: ['width', 'offset-left', 'offset-top'] }],
+  });
+}
+touch('sponsors', sponsorBox(true), [
+  { target: 'a', ...AT_REST, props: ['background-color'] },
+  { target: 'a-img', on: 'a', ...AT_REST, props: ['filter'] },
+]);
+cases.push({
+  name: 'sponsors in a doc',
+  reference: `<div>${sponsorBox(true)}</div>`,
+  vpkit: inDoc(sponsorBox(true)),
+  checks: [
+    { target: 'tier', props: [...MARGIN, ...PADDING, 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'height'] },
+    { target: 'grid', props: ['list-style-type', ...MARGIN, ...PADDING, 'height'] },
+    { target: 'a', props: [...MARGIN, ...PADDING, 'width'] },
+    { target: 'a-link', props: ['text-decoration-line', 'height'] },
+    { target: 'a-img', props: [...MARGIN, 'width', 'height'] },
+    { target: 'e', props: [...MARGIN, 'offset-left'] },
+  ],
+});
+
 // breadcrumb: own-drive's folder path (its nav, a crumb that is a link,
 // the current folder's crumb, and the slash between crumbs) against
 // vp-breadcrumb: the list, its items at rest and hovered, and the slash the

@@ -100,6 +100,7 @@ The examples on these pages are live. Each is a page of its own, with Tailwind a
 | [Site Footer](@/components/site-footer.md) | `vp-site-footer` | VitePress's `VPFooter` |
 | [Skip Link](@/components/skip.md) | `vp-skip` | VitePress's `VPSkipLink` |
 | [Spinner](@/components/spinner.md) | `vp-spinner` | the loading ring of VitePress's local search box |
+| [Sponsors](@/components/sponsor.md) | `vp-sponsor` | VitePress's `VPSponsors` and its grid |
 | [Status](@/components/status.md) | `vp-status` | none, vpkit's own: the reply to what was just done |
 | [Table](@/components/table.md) | `vp-table` | VitePress's markdown tables |
 | [Tabs](@/components/tabs.md) | `vp-tabs` | VitePress's code group tab bar |

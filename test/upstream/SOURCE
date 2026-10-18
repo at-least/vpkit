@@ -8,7 +8,8 @@ above:
     $U/components/VPBadge.vue $U/styles/components/custom-block.css \
     $U/styles/components/vp-doc.css $U/components/VPFeature.vue \
     $U/styles/icons.css $U/styles/utils.css $U/styles/fonts.css \
-    $U/styles/components/vp-code-group.css test/upstream/
+    $U/styles/components/vp-code-group.css \
+    $U/styles/components/vp-sponsor.css test/upstream/
   cp $U/Layout.vue $U/NotFound.vue test/upstream/components/
   # (test/compare.mjs reads VPSwitch.vue and VPSwitchAppearance.vue from
   # components/ too, as the toggle's originals)
