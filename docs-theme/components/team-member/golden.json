@@ -1,0 +1,124 @@
+{
+  "team-member": {
+    "light": {
+      ".vp-team-member-links > .vp-icon-btn": {
+        "offset-left": "122px",
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-team-member-sponsor :focus:focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "-2px"
+      }
+    },
+    "dark": {
+      ".vp-team-member-links > .vp-icon-btn": {
+        "offset-left": "122px",
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-team-member-sponsor :focus:focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "-2px"
+      }
+    }
+  },
+  "team-member small": {
+    "light": {
+      ".vp-team-member-links > .vp-icon-btn": {
+        "offset-left": "122px",
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-team-member-sponsor :focus:focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "-2px"
+      }
+    },
+    "dark": {
+      ".vp-team-member-links > .vp-icon-btn": {
+        "offset-left": "122px",
+        "width": "44px",
+        "height": "44px"
+      },
+      ".vp-team-member-sponsor :focus:focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "-2px"
+      }
+    }
+  },
+  "team-member small example": {
+    "light": {
+      ".vp-team-member": {
+        "width": "320px",
+        "height": "227.96875px",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px"
+      },
+      ".vp-team-member-profile": {
+        "padding-top": "32px",
+        "padding-right": "32px",
+        "padding-bottom": "32px",
+        "padding-left": "32px",
+        "background-color": "rgb(246, 246, 247)"
+      },
+      ".vp-team-member-avatar": {
+        "width": "64px",
+        "height": "64px"
+      },
+      ".vp-team-member-name": {
+        "font-size": "16px",
+        "line-height": "24px",
+        "letter-spacing": "normal"
+      },
+      ".vp-team-member-desc": {
+        "font-size": "14px",
+        "line-height": "20px",
+        "max-width": "none",
+        "padding-top": "12px"
+      }
+    },
+    "dark": {
+      ".vp-team-member": {
+        "width": "320px",
+        "height": "227.96875px",
+        "border-top-left-radius": "12px",
+        "border-top-right-radius": "12px",
+        "border-bottom-right-radius": "12px",
+        "border-bottom-left-radius": "12px"
+      },
+      ".vp-team-member-profile": {
+        "padding-top": "32px",
+        "padding-right": "32px",
+        "padding-bottom": "32px",
+        "padding-left": "32px",
+        "background-color": "rgb(32, 33, 39)"
+      },
+      ".vp-team-member-avatar": {
+        "width": "64px",
+        "height": "64px"
+      },
+      ".vp-team-member-name": {
+        "font-size": "16px",
+        "line-height": "24px",
+        "letter-spacing": "normal"
+      },
+      ".vp-team-member-desc": {
+        "font-size": "14px",
+        "line-height": "20px",
+        "max-width": "none",
+        "padding-top": "12px"
+      }
+    }
+  }
+}
