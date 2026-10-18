@@ -8,14 +8,10 @@ description = "VitePress's VPSkipLink as a class: the skip-to-content link, hidd
 VitePress's `VPSkipLink`, the "Skip to content" link at the top of every page.
 
 ```css
-@import "vpkit/skip.css";
+@import "vpkit/components/skip/skip.css";
 ```
 
-{% <vp_example title="A skip link, shown while focused" min_height="4rem"> %}
-<a class="vp-skip" href="#main">Skip to content</a>
-<p>Press <kbd class="vp-kbd">Tab</kbd> in this frame to focus the link.</p>
-<main id="main"></main>
-{% </vp_example> %}
+{{ <vp_example file="skip/link" title="A skip link, shown while focused" min_height="4rem" /> }}
 
 - `vp-skip`: visually hidden until it has the keyboard's focus, then a pill fixed at the top left corner: brand text, bold, on the page's color with a shadow, above everything.
 
