@@ -1,0 +1,87 @@
+/* vpkit — hint, `vp-hint`: a small "i" beside a word whose tooltip says
+ * what it means, shown hovered, focused from the keyboard, or open after a
+ * tap (a title attribute, which touch and most assistive technology never
+ * show, is what it replaces); vpkit's own, on the contract (VitePress has
+ * none). An optional import:
+ * `@import "vpkit/components/hint/hint.css";`
+ *
+ *   <button type="button" class="vp-hint" data-hint="Ignored issues stay out of the counts." aria-label="About ignored" aria-expanded="false" aria-describedby="hint-ignored">i</button>
+ *   <span id="hint-ignored" hidden>Ignored issues stay out of the counts.</span>
+ *
+ * The dot: a 0.875rem circle in a divider border, its "i" 0.625rem in
+ * secondary text, the button's pointer cursor (base.css's). No axis and
+ * no parts. Its tooltip is drawn after it from its data-hint: under it
+ * and centered on it, at most 22rem wide, 0.75rem text in body text on
+ * the elevated ground in a border, a 0.375rem radius, --vp-shadow-2,
+ * above what follows it (z-index 30). It shows while the dot is hovered,
+ * on a device that can hover (a touch screen keeps a tapped element
+ * hovered), focused from the keyboard, or open, `aria-expanded="true"`,
+ * which the page's script toggles on a tap (and drops on a tap
+ * elsewhere); vpkit ships no script. The focus ring is base.css's, on the
+ * dot. The tooltip is drawn, not read: the copy after the dot, `hidden`,
+ * which the dot's aria-describedby names, is what a screen reader reads,
+ * as the dot's description (a hidden element still describes the control
+ * that names it). It has no box, where a visually hidden copy is
+ * positioned absolutely and, in a scrolling table or lane with no
+ * positioned box between, escapes the scroller and widens the page; and
+ * it is read once, as the description, not again as text of its own. Its
+ * place beside the word is the page's (`ml-1`). The crate's `Hint` writes
+ * both. This is the components layer, so a utility on the element
+ * overrides it. */
+
+@layer components {
+  .vp-hint {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: 1px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--vp-radius-full);
+    padding: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    line-height: 1;
+    font-size: 0.625rem;
+    color: var(--vp-c-text-2);
+    background-color: transparent;
+
+    @media (hover: hover) {
+      &:hover::after {
+        display: block;
+      }
+    }
+  }
+
+  /* the tooltip, drawn from data-hint: hidden until the dot is hovered,
+     focused from the keyboard, or open */
+  .vp-hint::after {
+    content: attr(data-hint);
+    position: absolute;
+    top: calc(100% + 0.375rem);
+    left: 50%;
+    z-index: 30;
+    display: none;
+    border: 1px solid var(--vp-c-border);
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.5rem;
+    width: max-content;
+    max-width: 22rem;
+    line-height: 1.4;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: left;
+    text-transform: none;
+    white-space: normal;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-2);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .vp-hint:focus-visible::after,
+  .vp-hint[aria-expanded="true"]::after {
+    display: block;
+  }
+}
