@@ -1,0 +1,94 @@
+/* vpkit's docs theme — Carbon ads, `vp-carbon-ads`, from VitePress's
+ * VPCarbonAds: the box a Carbon ad shows in, and the ad Carbon's script
+ * puts in it. An optional import:
+ * `@import "vpkit/docs-theme/components/carbon-ads/carbon-ads.css";`
+ *
+ *   <div class="vp-carbon-ads">
+ *     <script async src="//cdn.carbonads.com/carbon.js?serve=…&placement=…&format=classic" id="_carbonads_js"></script>
+ *   </div>
+ *
+ * No attributes and no parts: the ad's markup is Carbon's (its image
+ * link, its text `carbon-text` and its credit `carbon-poweredby`), and
+ * the rules for it sit behind :where(), so a utility on it wins.
+ *
+ * VitePress's: the box centers what it holds on --vp-carbon-ads-bg-color,
+ * 0.75rem round, on 1.5rem of padding, at least 16rem tall, its text
+ * 0.75rem at 1.5, weight 500, centered; the ad's image centered, 0.375rem
+ * round; its text a block 0.75rem under, in --vp-carbon-ads-text-color,
+ * the hover color hovered; its credit a block 0.375rem under, 0.6875rem,
+ * uppercase, in --vp-carbon-ads-poweredby-color, the hover color hovered;
+ * of the ads it holds only the first div shows, as Carbon adds one on a
+ * refresh. The colors are the --vp-carbon-ads-* variables, VitePress's
+ * (docs-theme/vars.css derives them from text-1, text-2, brand-1 and
+ * bg-soft). vpkit's: the hovers apply only on a device that can hover,
+ * where VitePress's stick to a tap. Not ported: VitePress's script, which
+ * loads Carbon's only once the aside shows and refreshes the ad on a new
+ * page. Inside a vp-doc (prose.css) the ad's links keep no underline of
+ * the markdown's, an addition: VitePress shows the box only in its
+ * aside. */
+
+@layer components {
+  .vp-carbon-ads {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: var(--vp-radius-lg);
+    min-height: 16rem;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: var(--vp-carbon-ads-bg-color);
+  }
+
+  :where(.vp-carbon-ads) img {
+    margin: 0 auto;
+    border-radius: 0.375rem;
+  }
+
+  :where(.vp-carbon-ads) .carbon-text {
+    display: block;
+    margin: 0 auto;
+    padding-top: 0.75rem;
+    color: var(--vp-carbon-ads-text-color);
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-carbon-ads-hover-text-color);
+      }
+    }
+  }
+
+  :where(.vp-carbon-ads) .carbon-poweredby {
+    display: block;
+    padding-top: 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--vp-carbon-ads-poweredby-color);
+    text-transform: uppercase;
+    transition: color var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-carbon-ads-hover-poweredby-color);
+      }
+    }
+  }
+
+  /* of the ads it holds, the first: Carbon adds one on a refresh */
+  :where(.vp-carbon-ads) > div {
+    display: none;
+  }
+
+  :where(.vp-carbon-ads) > div:first-of-type {
+    display: block;
+  }
+
+  /* inside a vp-doc (prose.css), whose rule for a link underlines it:
+     the ad's links keep none */
+  .vp-doc .vp-carbon-ads a {
+    text-decoration: none;
+  }
+}
