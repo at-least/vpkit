@@ -163,8 +163,8 @@ The app kit needs `light-dark()`: Chrome 123, Safari 17.5, Firefox 120 (every co
 
 ## Decisions
 
-1. **The apps do not bind a component's shape** (the owner, 2026-10-17: 不需要被現在的使用者綁住設計，現在全部都是內部在使用，完全可以不考慮相容). A component takes the best shape and the apps follow; no compatibility is kept.
-2. **The component boundary.** A VitePress component is vpkit's, always (the owner's 一律收錄), in the product it belongs to; a pattern with no original is vpkit's when it is a part of an app's interface in VitePress's look, and the app's when it is that app's own design, pattern by pattern, the owner deciding.
+1. **The apps do not bind a component's shape.** Every consumer is internal, so a component takes the best shape and the apps follow; no compatibility is kept.
+2. **The component boundary.** A VitePress component is vpkit's, always, in the product it belongs to; a pattern with no original is vpkit's when it is a part of an app's interface in VitePress's look, and the app's when it is that app's own design, pattern by pattern, the owner deciding.
 3. **The contract names the job, not the step.** VitePress's `-1`, `-2`, `-3` and `-soft` became text, hover, fill and tint; the brand button's grounds slots of their own; tip and note the brand's and caution the danger's by default; the derived names gone, each component reading the contract through its locals. 34 colors where tokens.css defined 237 names.
 4. **One `light-dark()` pair per color.** Half the declarations, one block per theme, and the pairs follow the page's color scheme into a modal dialog and its `::backdrop` (measured in Chromium 151), at the cost of the browser floor above.
 5. **The stock is the fitted palette.** tokens.css's defaults are VitePress's palette with its contrast shortfalls fitted, so no app imports a theme to reach AA; the docs theme carries VitePress's palette verbatim, since a docs site is VitePress exactly.
