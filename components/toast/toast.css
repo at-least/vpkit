@@ -1,0 +1,36 @@
+/* vpkit — toast, `vp-toast`: the surface of a short status message,
+ * vpkit's own, on the contract (VitePress has none). An optional import:
+ * `@import "vpkit/components/toast/toast.css";`
+ *
+ *   <div class="vp-toast fixed bottom-4 left-1/2 -translate-x-1/2" role="status">Saved notes.txt</div>
+ *
+ * The elevated surface in a divider border, the radius token, 0.5rem by
+ * 0.9rem of padding, body text, --vp-shadow-3. No axis and no parts. A
+ * state, read from `data-state` as vp-status reads it:
+ *   data-state="error"     the text in the danger color
+ *   data-state="success"   the text in the success color
+ * Where it sits (an app fixes it at the bottom center, at most 90vw
+ * wide), how long it stays, and showing and hiding it are the page's.
+ * Announce it from a live region the page keeps rendered (role="status");
+ * one that is display:none while empty may not be read out when the
+ * message arrives. This is the components layer, so a utility on the
+ * element overrides it. */
+
+@layer components {
+  .vp-toast {
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--vp-radius);
+    padding: 0.5rem 0.9rem;
+    color: var(--vp-c-text-1);
+    background-color: var(--vp-c-bg-elv);
+    box-shadow: var(--vp-shadow-3);
+  }
+
+  .vp-toast[data-state="error"] {
+    color: var(--vp-c-danger);
+  }
+
+  .vp-toast[data-state="success"] {
+    color: var(--vp-c-success);
+  }
+}

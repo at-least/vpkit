@@ -1,0 +1,172 @@
+{
+  "toast": {
+    "light": {
+      ".vp-toast": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(226, 226, 227)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "position": "fixed"
+      }
+    },
+    "dark": {
+      ".vp-toast": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(32, 33, 39)",
+        "border-top-color": "rgb(46, 46, 50)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "position": "fixed"
+      }
+    }
+  },
+  "toast error": {
+    "light": {
+      ".vp-toast[data-state=\"error\"]": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(184, 39, 44)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(226, 226, 227)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px"
+      }
+    },
+    "dark": {
+      ".vp-toast[data-state=\"error\"]": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(246, 111, 129)",
+        "background-color": "rgb(32, 33, 39)",
+        "border-top-color": "rgb(46, 46, 50)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px"
+      }
+    }
+  },
+  "toast success": {
+    "light": {
+      ".vp-toast[data-state=\"success\"]": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(24, 121, 78)",
+        "background-color": "rgb(255, 255, 255)",
+        "border-top-color": "rgb(226, 226, 227)",
+        "border-right-color": "rgb(226, 226, 227)",
+        "border-bottom-color": "rgb(226, 226, 227)",
+        "border-left-color": "rgb(226, 226, 227)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px"
+      }
+    },
+    "dark": {
+      ".vp-toast[data-state=\"success\"]": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "8px",
+        "padding-right": "14.4px",
+        "padding-bottom": "8px",
+        "padding-left": "14.4px",
+        "color": "rgb(61, 214, 140)",
+        "background-color": "rgb(32, 33, 39)",
+        "border-top-color": "rgb(46, 46, 50)",
+        "border-right-color": "rgb(46, 46, 50)",
+        "border-bottom-color": "rgb(46, 46, 50)",
+        "border-left-color": "rgb(46, 46, 50)",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px"
+      }
+    }
+  }
+}
