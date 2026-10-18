@@ -17,5 +17,6 @@ VitePress's loading ring, the one in the local search box.
 - It turns whenever it is rendered: show and hide it with `hidden` or your request library's indicator.
 - In a button it turns in the label's color instead, which every button variant holds against its ground; VitePress's brand and divider colors would vanish on a brand button. Its colors are the variables `--vp-spinner-ring` and `--vp-spinner-head`.
 - It stops under `prefers-reduced-motion`, as VitePress's does.
+- Under forced colors (Windows' contrast themes), which paint every border in the system's text color, the ring keeps transparent sides under a head in that color, so the turn still shows.
 
 {{ <vp_example file="spinner/buttons" title="A spinner in each button variant" layout="row" /> }}

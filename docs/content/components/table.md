@@ -31,7 +31,7 @@ The table scrolls sideways on its own rather than squeezing its columns, and eve
 
 - `vp-table-hover`, with `vp-table`: a body row takes the gray wash while hovered, for rows that open something. The cursor is yours (`cursor-pointer`).
 - A body row whose first cell holds a checked checkbox (a [Checkbox](@/components/checkbox.md), or a bare one) is selected, on the brand's tint.
-- A body row with `aria-current` is the one the keyboard's cursor is on: a brand edge on its first cell.
+- A body row with `aria-current` is the one the keyboard's cursor is on: a brand edge on its first cell. Under forced colors (Windows' contrast themes), which drop the shadow that draws the edge, the cell takes a 3px inset frame in the system's text color instead.
 
 {{ <vp_example file="table/rows" title="Hover, a selected row and the cursor's row" /> }}
 
