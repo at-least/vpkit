@@ -1,0 +1,208 @@
+{
+  "file input": {
+    "light": {
+      ".vp-file": {
+        "font-size": "14px",
+        "color": "rgb(60, 60, 67)",
+        "height": "44px",
+        "width": "265px"
+      },
+      ".vp-file::file-selector-button": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "0px",
+        "padding-right": "12px",
+        "padding-bottom": "0px",
+        "padding-left": "12px",
+        "block-size": "44px",
+        "margin-right": "12px",
+        "font-size": "14px",
+        "cursor": "pointer",
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(147, 147, 149)",
+        "border-right-color": "rgb(147, 147, 149)",
+        "border-bottom-color": "rgb(147, 147, 149)",
+        "border-left-color": "rgb(147, 147, 149)",
+        "box-shadow": "none",
+        "transition-property": "all",
+        "transition-duration": "0s"
+      },
+      ".vp-file::file-selector-button :hover": {
+        "color": "rgb(52, 81, 178)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(52, 81, 178)",
+        "border-right-color": "rgb(52, 81, 178)",
+        "border-bottom-color": "rgb(52, 81, 178)",
+        "border-left-color": "rgb(52, 81, 178)",
+        "box-shadow": "none"
+      },
+      ".vp-file::file-selector-button :focus-visible": {
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(52, 81, 178)",
+        "border-right-color": "rgb(52, 81, 178)",
+        "border-bottom-color": "rgb(52, 81, 178)",
+        "border-left-color": "rgb(52, 81, 178)",
+        "box-shadow": "none"
+      },
+      ".vp-file :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(52, 81, 178)",
+        "outline-offset": "2px"
+      }
+    },
+    "dark": {
+      ".vp-file": {
+        "font-size": "14px",
+        "color": "rgb(223, 223, 214)",
+        "height": "44px",
+        "width": "265px"
+      },
+      ".vp-file::file-selector-button": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-right-width": "1px",
+        "border-right-style": "solid",
+        "border-bottom-width": "1px",
+        "border-bottom-style": "solid",
+        "border-left-width": "1px",
+        "border-left-style": "solid",
+        "border-top-left-radius": "8px",
+        "border-top-right-radius": "8px",
+        "border-bottom-right-radius": "8px",
+        "border-bottom-left-radius": "8px",
+        "padding-top": "0px",
+        "padding-right": "12px",
+        "padding-bottom": "0px",
+        "padding-left": "12px",
+        "block-size": "44px",
+        "margin-right": "12px",
+        "font-size": "14px",
+        "cursor": "pointer",
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(22, 22, 24)",
+        "border-top-color": "rgb(103, 105, 109)",
+        "border-right-color": "rgb(103, 105, 109)",
+        "border-bottom-color": "rgb(103, 105, 109)",
+        "border-left-color": "rgb(103, 105, 109)",
+        "box-shadow": "none",
+        "transition-property": "all",
+        "transition-duration": "0s"
+      },
+      ".vp-file::file-selector-button :hover": {
+        "color": "rgb(168, 177, 255)",
+        "background-color": "rgb(22, 22, 24)",
+        "border-top-color": "rgb(168, 177, 255)",
+        "border-right-color": "rgb(168, 177, 255)",
+        "border-bottom-color": "rgb(168, 177, 255)",
+        "border-left-color": "rgb(168, 177, 255)",
+        "box-shadow": "none"
+      },
+      ".vp-file::file-selector-button :focus-visible": {
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(22, 22, 24)",
+        "border-top-color": "rgb(168, 177, 255)",
+        "border-right-color": "rgb(168, 177, 255)",
+        "border-bottom-color": "rgb(168, 177, 255)",
+        "border-left-color": "rgb(168, 177, 255)",
+        "box-shadow": "none"
+      },
+      ".vp-file :focus-visible": {
+        "outline-width": "2px",
+        "outline-style": "solid",
+        "outline-color": "rgb(168, 177, 255)",
+        "outline-offset": "2px"
+      }
+    }
+  },
+  "file input small": {
+    "light": {
+      ".vp-file": {
+        "font-size": "14px",
+        "height": "36px"
+      },
+      ".vp-file::file-selector-button": {
+        "block-size": "36px",
+        "padding-top": "0px",
+        "padding-right": "10px",
+        "padding-bottom": "0px",
+        "padding-left": "10px",
+        "font-size": "14px",
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgb(246, 246, 247)",
+        "border-top-color": "rgb(147, 147, 149)",
+        "border-right-color": "rgb(147, 147, 149)",
+        "border-bottom-color": "rgb(147, 147, 149)",
+        "border-left-color": "rgb(147, 147, 149)"
+      }
+    },
+    "dark": {
+      ".vp-file": {
+        "font-size": "14px",
+        "height": "36px"
+      },
+      ".vp-file::file-selector-button": {
+        "block-size": "36px",
+        "padding-top": "0px",
+        "padding-right": "10px",
+        "padding-bottom": "0px",
+        "padding-left": "10px",
+        "font-size": "14px",
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgb(22, 22, 24)",
+        "border-top-color": "rgb(103, 105, 109)",
+        "border-right-color": "rgb(103, 105, 109)",
+        "border-bottom-color": "rgb(103, 105, 109)",
+        "border-left-color": "rgb(103, 105, 109)"
+      }
+    }
+  },
+  "file input beside a button": {
+    "light": {
+      ".vp-file::file-selector-button": {
+        "block-size": "44px"
+      },
+      ".vp-btn": {
+        "height": "44px"
+      }
+    },
+    "dark": {
+      ".vp-file::file-selector-button": {
+        "block-size": "44px"
+      },
+      ".vp-btn": {
+        "height": "44px"
+      }
+    }
+  },
+  "file input small beside a button": {
+    "light": {
+      ".vp-file::file-selector-button": {
+        "block-size": "36px"
+      },
+      ".vp-btn": {
+        "height": "36px"
+      }
+    },
+    "dark": {
+      ".vp-file::file-selector-button": {
+        "block-size": "36px"
+      },
+      ".vp-btn": {
+        "height": "36px"
+      }
+    }
+  }
+}

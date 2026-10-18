@@ -1,0 +1,68 @@
+/* vpkit — file input, `vp-file`: the browser's file chooser on
+ * <input type="file">, its button drawn as a vp-input's box; vpkit's own,
+ * on the contract (VitePress has no file input). An optional import:
+ * `@import "vpkit/components/file/file.css";`
+ *
+ *   <input class="vp-file" type="file" name="mapping">
+ *   <input class="vp-file" type="file" data-size="sm">
+ *
+ * Not vp-input on the element: the input's fixed box would top-align the
+ * native chooser inside it, the button riding its top border. Here the
+ * element sizes itself and its ::file-selector-button is the box: the
+ * control height (2.75rem, a touch target's 44px), the radius token,
+ * 0.75rem of side padding, the border color on the alternate ground, 14px
+ * body text, and 0.75rem before the file name the browser writes after it
+ * (14px, body text). The axis is an attribute:
+ *   data-size="sm"   the button 2.25rem tall with 0.625rem of side
+ *                    padding, beside a small button
+ * A brand border and text on the button while the input is hovered, on a
+ * device that can hover: the whole element opens the chooser, its file
+ * name too, so it lights the button wherever the pointer is on it.
+ * Focused from the keyboard, the brand border, as vp-input shows a focused
+ * field, and base.css's ring around the element. No transition on the
+ * button: base.css's reduced-motion rule names no ::file-selector-button,
+ * so one would run on under prefers-reduced-motion. Its width is the
+ * browser's; a width utility sets another. The block sets its --vp-file-*
+ * locals, which the pseudo-element inherits, and the size overrides them
+ * and nothing else. This is the components layer, so a utility on the
+ * element overrides it. */
+
+@layer components {
+  .vp-file {
+    --vp-file-height: var(--vp-control-height);
+    --vp-file-padding: 0.75rem;
+
+    font-size: 0.875rem;
+    color: var(--vp-c-text-1);
+
+    &::file-selector-button {
+      height: var(--vp-file-height);
+      margin-right: 0.75rem;
+      border: 1px solid var(--vp-c-border);
+      border-radius: var(--vp-radius);
+      padding: 0 var(--vp-file-padding);
+      font-size: 0.875rem;
+      color: var(--vp-c-text-1);
+      background-color: var(--vp-c-bg-alt);
+      cursor: pointer;
+    }
+
+    /* the element's hover, so a pointer on the file name lights the
+       button it would open */
+    @media (hover: hover) {
+      &:hover::file-selector-button {
+        border-color: var(--vp-c-brand);
+        color: var(--vp-c-brand);
+      }
+    }
+
+    &:focus-visible::file-selector-button {
+      border-color: var(--vp-c-brand);
+    }
+  }
+
+  .vp-file[data-size="sm"] {
+    --vp-file-height: var(--vp-control-height-sm);
+    --vp-file-padding: 0.625rem;
+  }
+}
