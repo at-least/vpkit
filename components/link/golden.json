@@ -1,0 +1,66 @@
+{
+  "link quiet": {
+    "light": {
+      "[data-t=\"a\"]": {
+        "color": "rgb(103, 103, 108)",
+        "font-weight": "400",
+        "text-decoration-line": "none",
+        "text-underline-offset": "2px",
+        "transition-property": "color, opacity",
+        "transition-duration": "0.25s, 0.25s",
+        "opacity": "1"
+      },
+      "[data-t=\"a\"] :hover": {
+        "color": "rgb(52, 81, 178)",
+        "text-decoration-line": "none"
+      }
+    },
+    "dark": {
+      "[data-t=\"a\"]": {
+        "color": "rgb(152, 152, 159)",
+        "font-weight": "400",
+        "text-decoration-line": "none",
+        "text-underline-offset": "2px",
+        "transition-property": "color, opacity",
+        "transition-duration": "0.25s, 0.25s",
+        "opacity": "1"
+      },
+      "[data-t=\"a\"] :hover": {
+        "color": "rgb(168, 177, 255)",
+        "text-decoration-line": "none"
+      }
+    }
+  },
+  "link quiet example": {
+    "light": {
+      "a.font-medium": {
+        "color": "rgb(60, 60, 67)",
+        "font-weight": "500",
+        "text-decoration-line": "none"
+      },
+      "p > a": {
+        "color": "rgb(103, 103, 108)",
+        "font-weight": "400",
+        "text-decoration-line": "none"
+      },
+      "p > a :hover": {
+        "color": "rgb(52, 81, 178)"
+      }
+    },
+    "dark": {
+      "a.font-medium": {
+        "color": "rgb(223, 223, 214)",
+        "font-weight": "500",
+        "text-decoration-line": "none"
+      },
+      "p > a": {
+        "color": "rgb(152, 152, 159)",
+        "font-weight": "400",
+        "text-decoration-line": "none"
+      },
+      "p > a :hover": {
+        "color": "rgb(168, 177, 255)"
+      }
+    }
+  }
+}

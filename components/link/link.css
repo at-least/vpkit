@@ -1,0 +1,73 @@
+/* vpkit — link, `vp-link`, VitePress's markdown link (`.vp-doc a`,
+ * vp-doc.css) as a class, for a link outside the markdown, or a button
+ * drawn as one. An optional import:
+ * `@import "vpkit/components/link/link.css";`
+ *
+ *   <a class="vp-link" href="/orders">All orders</a>
+ *   <button class="vp-link" type="button">Cancel</button>
+ *
+ * Brand text at weight 500, underlined 0.125rem below, in the brand's
+ * hover color when hovered, on a device that can hover (VitePress's hover
+ * also sticks to a tapped link). On a <button> the hit area is the page's
+ * (`min-h-10 px-2`). A <code> inside takes VitePress's colors for code in
+ * a link, the brand and its hover: those rules are `.vp-link > code`, one
+ * class and one element, so they win over vp-code's own color as
+ * `.vp-doc a > code` does over the markdown's code; unlike the alert,
+ * which puts its rules for what is inside behind :where() so a component
+ * inside keeps its look, this one is meant to win.
+ *
+ * The variant is an attribute:
+ *   data-variant="quiet"   vpkit's: a link among text that needn't call
+ *                          out (a file name in a table, a line of
+ *                          metadata), in the color and weight of the text
+ *                          around it, with no underline, brand when
+ *                          hovered. The one variant that sets more than
+ *                          the locals: the weight and the underline are
+ *                          the text's. A weight of its own is a utility
+ *                          (`font-medium`); a color of its own goes on
+ *                          the text around it (`text-secondary` on the
+ *                          line), as a color utility on the link would
+ *                          beat its hover.
+ *
+ *   <a class="vp-link font-medium" data-variant="quiet" href="/files/notes.txt">notes.txt</a>
+ *
+ * The block sets its two colors as --vp-link-* locals from the contract,
+ * so a site retunes them in one rule (`.vp-link { --vp-link-hover-text: … }`),
+ * and the variant overrides them. This is the components layer, so a
+ * utility on the element overrides it. */
+
+@layer components {
+  .vp-link {
+    --vp-link-text: var(--vp-c-brand);
+    --vp-link-hover-text: var(--vp-c-brand-hover);
+
+    font-weight: 500;
+    color: var(--vp-link-text);
+    text-decoration: underline;
+    text-underline-offset: 0.125rem;
+    transition: color var(--vp-duration), opacity var(--vp-duration);
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--vp-link-hover-text);
+
+        & > code {
+          color: var(--vp-c-brand-hover);
+        }
+      }
+    }
+  }
+
+  /* code in a link: VitePress's colors for it, over vp-code's own */
+  .vp-link > code {
+    color: var(--vp-c-brand);
+  }
+
+  .vp-link[data-variant="quiet"] {
+    --vp-link-text: currentColor;
+    --vp-link-hover-text: var(--vp-c-brand);
+
+    font-weight: inherit;
+    text-decoration: none;
+  }
+}
