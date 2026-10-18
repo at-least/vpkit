@@ -42,12 +42,14 @@ jobs:
       - name: Build
         run: zola --root vpkit/docs build --base-url "${{ steps.pages.outputs.base_url }}" --output-dir "$RUNNER_TEMP/site"
       # the Rust crate's documentation under the site's /rust/, where its
-      # pages link (test/docs.mjs follows those links into the same build)
+      # pages link, every feature on as test/rust.mjs builds it (the css
+      # module too), so the links test/docs.mjs follows into that build
+      # lead here to the same pages
       - name: Crate documentation
         env:
           RUSTDOCFLAGS: -D warnings
         run: |
-          cargo doc --manifest-path vpkit/rust/Cargo.toml --no-deps
+          cargo doc --manifest-path vpkit/rust/Cargo.toml --no-deps --all-features
           cp -r vpkit/rust/target/doc "$RUNNER_TEMP/site/rust"
       - uses: actions/upload-pages-artifact@v5
         with:
