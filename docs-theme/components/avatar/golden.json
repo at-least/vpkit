@@ -1,0 +1,124 @@
+{
+  "avatar example": {
+    "light": {
+      ".vp-avatar": {
+        "display": "block",
+        "flex-shrink": "0",
+        "width": "64px",
+        "height": "64px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    },
+    "dark": {
+      ".vp-avatar": {
+        "display": "block",
+        "flex-shrink": "0",
+        "width": "64px",
+        "height": "64px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    }
+  },
+  "avatar sizes": {
+    "light": {
+      ".vp-avatar.size-8": {
+        "flex-shrink": "0",
+        "width": "32px",
+        "height": "32px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover",
+        "offset-top": "0px"
+      },
+      ".vp-avatar.size-24": {
+        "flex-shrink": "0",
+        "width": "96px",
+        "height": "96px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    },
+    "dark": {
+      ".vp-avatar.size-8": {
+        "flex-shrink": "0",
+        "width": "32px",
+        "height": "32px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover",
+        "offset-top": "0px"
+      },
+      ".vp-avatar.size-24": {
+        "flex-shrink": "0",
+        "width": "96px",
+        "height": "96px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    }
+  },
+  "avatar initials": {
+    "light": {
+      ".vp-avatar": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "color": "rgb(103, 103, 108)",
+        "background-color": "rgb(246, 246, 247)",
+        "font-weight": "600",
+        "flex-shrink": "0",
+        "width": "64px",
+        "height": "64px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    },
+    "dark": {
+      ".vp-avatar": {
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "color": "rgb(152, 152, 159)",
+        "background-color": "rgb(32, 33, 39)",
+        "font-weight": "600",
+        "flex-shrink": "0",
+        "width": "64px",
+        "height": "64px",
+        "border-top-left-radius": "50%",
+        "border-top-right-radius": "50%",
+        "border-bottom-right-radius": "50%",
+        "border-bottom-left-radius": "50%",
+        "box-shadow": "rgba(0, 0, 0, 0.1) 0px 12px 32px 0px, rgba(0, 0, 0, 0.08) 0px 2px 6px 0px",
+        "object-fit": "cover"
+      }
+    }
+  }
+}
