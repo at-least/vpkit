@@ -3,41 +3,24 @@ title = "Progress"
 description = "A progress bar, vpkit's own: a track and a brand fill whose width the page sets."
 +++
 
-# Progress <span class="vp-badge vp-badge-tip">vpkit</span> {#progress}
+# Progress <span class="vp-badge" data-variant="tip">vpkit</span> {#progress}
 
 A progress bar. VitePress has none; this is vpkit's own.
 
 ```css
-@import "vpkit/progress.css";
+@import "vpkit/components/progress/progress.css";
 ```
 
-{% <vp_example title="A progress bar at 40%"> %}
-<span class="vp-progress w-28" role="progressbar" aria-label="Storage used"
-      aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-  <span class="vp-progress-bar" style="width: 40%"></span>
-</span>
-{% </vp_example> %}
+{{ <vp_example file="progress/bar" title="A progress bar at 40%" /> }}
 
-- `vp-progress`: the track, a thin bar of the soft gray with rounded ends, as wide as its container. In a flex row it claims the whole row and squeezes the items beside it; give it `flex-1` to take only the free space, or a width utility.
+- `vp-progress`: the track, a thin bar of the gray wash with rounded ends, as wide as its container. In a flex row it claims the whole row and squeezes the items beside it; give it `flex-1` to take only the free space, or a width utility.
 - `vp-progress-bar`: the brand fill, empty until the page sets its width. The value for assistive technology goes in the progressbar's `aria-value*` attributes.
 - With forced colors, as in Windows' contrast themes, the track is framed and the fill takes the system's highlight color.
 
-{% <vp_example title="A bar in a flex row, taking the free space"> %}
-<div class="flex items-center gap-3 text-sm">
-  <span class="vp-progress flex-1" role="progressbar" aria-label="Storage used"
-        aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
-    <span class="vp-progress-bar" style="width: 72%"></span>
-  </span>
-  <span class="text-secondary">7.2 of 10 GB</span>
-</div>
-{% </vp_example> %}
+{{ <vp_example file="progress/row" title="A bar in a flex row, taking the free space" /> }}
 
 ## Indeterminate
 
 A progress bar with `role="progressbar"` and no `aria-valuenow` is indeterminate: work under way whose end isn't known. Its fill sweeps across the track, left to right, every second. Under reduced motion it fills the track at a lower opacity instead, so it reads as busy rather than as a value. A load bar along the top of the window is yours to place (`fixed inset-x-0 top-0 h-0.5`).
 
-{% <vp_example title="Loading"> %}
-<span class="vp-progress w-48" role="progressbar" aria-label="Loading">
-  <span class="vp-progress-bar"></span>
-</span>
-{% </vp_example> %}
+{{ <vp_example file="progress/loading" title="Loading" /> }}

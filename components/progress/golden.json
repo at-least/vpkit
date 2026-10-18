@@ -1,0 +1,126 @@
+{
+  "progress": {
+    "light": {
+      ".vp-progress": {
+        "display": "block",
+        "width": "112px",
+        "height": "4.796875px",
+        "border-top-left-radius": "2.4px",
+        "border-top-right-radius": "2.4px",
+        "border-bottom-right-radius": "2.4px",
+        "border-bottom-left-radius": "2.4px",
+        "background-color": "rgba(142, 150, 170, 0.14)",
+        "overflow-x": "hidden",
+        "overflow-y": "hidden"
+      },
+      ".vp-progress-bar": {
+        "display": "block",
+        "width": "44.7969px",
+        "height": "4.796875px",
+        "background-color": "rgb(52, 81, 178)"
+      }
+    },
+    "dark": {
+      ".vp-progress": {
+        "display": "block",
+        "width": "112px",
+        "height": "4.796875px",
+        "border-top-left-radius": "2.4px",
+        "border-top-right-radius": "2.4px",
+        "border-bottom-right-radius": "2.4px",
+        "border-bottom-left-radius": "2.4px",
+        "background-color": "rgba(101, 117, 133, 0.16)",
+        "overflow-x": "hidden",
+        "overflow-y": "hidden"
+      },
+      ".vp-progress-bar": {
+        "display": "block",
+        "width": "44.7969px",
+        "height": "4.796875px",
+        "background-color": "rgb(168, 177, 255)"
+      }
+    }
+  },
+  "progress with no width set": {
+    "light": {
+      ".vp-progress-bar": {
+        "width": "0px"
+      }
+    },
+    "dark": {
+      ".vp-progress-bar": {
+        "width": "0px"
+      }
+    }
+  },
+  "progress indeterminate": {
+    "light": {
+      ".vp-progress-bar": {
+        "width": "57.5938px",
+        "opacity": "1",
+        "animation-name": "vp-progress-sweep",
+        "animation-duration": "1s",
+        "animation-timing-function": "linear",
+        "animation-iteration-count": "infinite"
+      }
+    },
+    "dark": {
+      ".vp-progress-bar": {
+        "width": "57.5938px",
+        "opacity": "1",
+        "animation-name": "vp-progress-sweep",
+        "animation-duration": "1s",
+        "animation-timing-function": "linear",
+        "animation-iteration-count": "infinite"
+      }
+    }
+  },
+  "progress indeterminate under reduced motion": {
+    "light": {
+      ".vp-progress-bar": {
+        "width": "192px",
+        "opacity": "0.6",
+        "animation-name": "vp-progress-sweep",
+        "animation-duration": "0.001s",
+        "animation-timing-function": "linear",
+        "animation-iteration-count": "1"
+      }
+    },
+    "dark": {
+      ".vp-progress-bar": {
+        "width": "192px",
+        "opacity": "0.6",
+        "animation-name": "vp-progress-sweep",
+        "animation-duration": "0.001s",
+        "animation-timing-function": "linear",
+        "animation-iteration-count": "1"
+      }
+    }
+  },
+  "progress in a row with a label": {
+    "light": {
+      ".vp-progress": {
+        "width": "1189.39px",
+        "height": "4.796875px",
+        "flex-grow": "1",
+        "offset-left": "0px"
+      },
+      ".vp-progress + span": {
+        "offset-left": "1201.390625px",
+        "height": "20px"
+      }
+    },
+    "dark": {
+      ".vp-progress": {
+        "width": "1189.39px",
+        "height": "4.796875px",
+        "flex-grow": "1",
+        "offset-left": "0px"
+      },
+      ".vp-progress + span": {
+        "offset-left": "1201.390625px",
+        "height": "20px"
+      }
+    }
+  }
+}
