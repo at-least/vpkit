@@ -1,0 +1,80 @@
+/* vpkit — choice, `vp-choice`: a radio or a checkbox drawn as a selectable
+ * card, vpkit's own, on the contract (VitePress has none). An optional
+ * import: `@import "vpkit/components/choice/choice.css";`
+ *
+ *   <label class="vp-choice">
+ *     <input type="radio" name="plan" value="monthly">
+ *     <span>Monthly<br>NT$300 a month</span>
+ *   </label>
+ *
+ * The page's color in a divider border, the radius token, 1rem of
+ * padding, 14px text on 24px lines, the control first, 0.75rem from its
+ * text. No axis and no parts: the card's states are its control's, read
+ * with :has(), so there is nothing to toggle but the control. A brand
+ * border hovered; while its control is checked (`:has(:checked)`), the
+ * brand border on the brand tint; while the control has the keyboard's
+ * focus (`:has(:focus-visible)`), base.css's focus ring drawn on the
+ * card and not on the control: the card is the one box the kit draws the
+ * ring on for a control inside it.
+ * While its own control is disabled (`:has(> input:disabled)`: the card's
+ * control, not one nested deeper in its text) the card is dimmed to half
+ * opacity with a not-allowed cursor and takes no hover, as a disabled
+ * vp-btn is drawn; a checked one keeps its checked look, dimmed. The
+ * control is 1rem, aligned with the first line, in the brand color
+ * (accent-color), behind :where() so a utility on it wins. On a <label>,
+ * which brings no pointer, so the card sets one. The hover applies only
+ * on a device that can hover. This is the components layer, so a utility
+ * on the element overrides it. */
+
+@layer components {
+  .vp-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--vp-radius);
+    padding: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    background-color: var(--vp-c-bg);
+    cursor: pointer;
+    transition: border-color var(--vp-duration), background-color var(--vp-duration);
+
+    /* a card whose own control is disabled takes no hover */
+    @media (hover: hover) {
+      &:hover:not(:has(> input:disabled)) {
+        border-color: var(--vp-c-brand);
+      }
+    }
+  }
+
+  .vp-choice:has(:checked) {
+    border-color: var(--vp-c-brand);
+    background-color: var(--vp-c-brand-soft);
+  }
+
+  .vp-choice:has(> input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* base.css's ring, on the card while the control inside has the
+     keyboard's focus */
+  .vp-choice:has(:focus-visible) {
+    outline: var(--vp-focus-ring);
+    outline-offset: var(--vp-focus-ring-offset);
+  }
+
+  /* the control's own ring goes: the card draws the one ring for it */
+  :where(.vp-choice) > input:focus-visible {
+    outline: none;
+  }
+
+  :where(.vp-choice) > input {
+    margin-top: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    accent-color: var(--vp-c-brand);
+  }
+}
