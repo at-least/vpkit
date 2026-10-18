@@ -218,6 +218,20 @@ const INSIDE = [
     { target: X, props: LOOK },
     hovered(X),
   ]],
+  ['a tab', '<nav class="vp-tabs" aria-label="Status"><a data-t="x" class="vp-tabs-tab" href="#">Resolved</a></nav>', [
+    { target: X, props: LOOK },
+    hovered(X),
+  ]],
+  ['a chip link', '<a data-t="x" class="vp-chip" href="#"><span data-t="key" class="vp-chip-key">release:</span><span data-t="value" class="vp-chip-value">2.4.1</span></a>', [
+    { target: X, props: LOOK },
+    hovered(X),
+    { target: '[data-t="key"]', props: LOOK },
+    { target: '[data-t="value"]', props: LOOK },
+  ]],
+  ['a breadcrumb item', '<ol class="vp-breadcrumb"><li><a data-t="x" class="vp-breadcrumb-item" href="#">root</a></li></ol>', [
+    { target: X, props: LOOK },
+    hovered(X),
+  ]],
   // an icon has no text for the alert's link weight to draw
   ['an icon button', '<a data-t="x" class="vp-icon-btn" href="#" aria-label="Copy"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></a>', [
     { target: X, props: ['color', 'text-decoration-line'] },
