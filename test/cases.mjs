@@ -2304,6 +2304,40 @@ cases.push({
   checks: [{ target: 'img', props: [...MARGIN, 'width', 'height', 'max-width'] }],
 });
 
+// team header: VitePress's VPTeamPageTitle (the block, its title and its
+// lead) against vp-team-header, at a phone's width, between 48rem and 60rem
+// and wide, the widths its padding and type change at; then inside a
+// vp-doc, whose rules for a heading and a paragraph it keeps out, against
+// itself outside one. The original's styles are loaded for these cases
+// alone: they name .title and .lead
+const TEAM_LEAD = 'The people who build the product, answer the mail and keep the servers running, from four cities.';
+const teamHeader = (vp) =>
+  vp
+    ? `<header data-t="box" class="vp-team-header"><h1 data-t="title" class="vp-team-header-title">Our team</h1><p data-t="lead" class="vp-team-header-lead">${TEAM_LEAD}</p></header>`
+    : `<div data-t="box" class="VPTeamPageTitle"><h1 data-t="title" class="title">Our team</h1><p data-t="lead" class="lead">${TEAM_LEAD}</p></div>`;
+const TEAM_TYPE = ['font-size', 'line-height', 'letter-spacing', 'font-weight', 'color', ...MARGIN, 'text-align', 'height', 'offset-top'];
+const TEAM_HEADER_CHECKS = [
+  { target: 'box', props: [...PADDING, 'text-align', 'height'] },
+  { target: 'title', props: TEAM_TYPE },
+  { target: 'lead', props: [...TEAM_TYPE, 'max-width', ...PADDING, 'offset-left', 'width'] },
+];
+for (const [name, width] of [['team header', undefined], ['team header at 800px', 800], ["team header at a phone's width", 375]]) {
+  cases.push({
+    name,
+    width,
+    upstreamFiles: ['components/VPTeamPageTitle.vue'],
+    upstream: teamHeader(false),
+    vpkit: teamHeader(true),
+    checks: TEAM_HEADER_CHECKS,
+  });
+}
+cases.push({
+  name: 'team header in a doc',
+  reference: `<div>${teamHeader(true)}</div>`,
+  vpkit: inDoc(teamHeader(true)),
+  checks: TEAM_HEADER_CHECKS,
+});
+
 // breadcrumb: own-drive's folder path (its nav, a crumb that is a link,
 // the current folder's crumb, and the slash between crumbs) against
 // vp-breadcrumb: the list, its items at rest and hovered, and the slash the
