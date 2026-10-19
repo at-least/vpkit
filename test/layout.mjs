@@ -27,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { compileStyle } from '@vue/compiler-sfc';
 import { chromium } from 'playwright-chromium';
 
-import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
+import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unscope } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
 import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, SIDES } from './harness.mjs';
 import { GLOBAL, LAYOUT, rootOf } from './layout-map.mjs';
@@ -281,7 +281,7 @@ function trees(browser, c) {
       return { upstream: tree, vpkit: tree };
     });
   }
-  const css = unwrapDeep(styleOf(c.component));
+  const css = unscope(styleOf(c.component));
   const states = rootStates(c.component, css);
   const own = [...cssClasses(css)];
   const root = rootOf(c.component);
@@ -367,7 +367,7 @@ function deepClasses(css) {
 async function familyTrees(browser, c, html) {
   const members = c.family.map((name) => {
     const rename = namer(name, rootStates(name));
-    const owned = new Set([rootOf(name), ...rootStates(name), ...cssClasses(unwrapDeep(styleOf(name)))]);
+    const owned = new Set([rootOf(name), ...rootStates(name), ...cssClasses(unscope(styleOf(name)))]);
     return {
       name,
       select: `.${rootOf(name)}`,
@@ -543,7 +543,7 @@ try {
     const label = [c.component, c.name].filter(Boolean).join(' ');
     const tree = await trees(browser, c);
     const where = paths(tree.upstream);
-    const own = c.family ? [familyCss(c, tree.scopeOf)] : c.component ? [unwrapDeep(styleOf(c.component))] : [];
+    const own = c.family ? [familyCss(c, tree.scopeOf)] : c.component ? [unscope(styleOf(c.component))] : [];
     const upstreamCss = [upstreamBase, ...own].join('\n');
     const runs = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
     for (const states of c.states ?? [[]]) {

@@ -19,6 +19,7 @@ import { join } from 'node:path';
 import { ALIAS, UNMAPPED } from '../scripts/contract.mjs';
 import { modeValues, parseBlocks, resolve, stripComments } from '../scripts/css.mjs';
 import { ROOT, cssFiles } from '../scripts/components.mjs';
+import { blockOf } from './layout-map.mjs';
 
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 const squash = (value) => value.replace(/\s+/g, ' ').trim();
@@ -95,7 +96,7 @@ for (const [key, value] of upScoped) {
   const [scope] = key.split(' :: ');
   if ([':root', '.dark'].includes(scope) || scope.includes('.vp-graded-containers')) continue;
   compared++;
-  const ourKey = key.replace('.VPSidebar', '.vp-sidebar');
+  const ourKey = key.replace('.VPSidebar', `.${blockOf('VPSidebar')}`);
   if (ourScoped.get(ourKey) !== value) failures.push(`${key}: upstream ${value}, ours ${ourScoped.get(ourKey)}`);
 }
 

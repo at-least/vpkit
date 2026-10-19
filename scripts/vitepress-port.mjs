@@ -22,7 +22,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 
-import { LAYOUT, OUTSIDE, blockOf, componentOfRoot, isGlobal, rootOf } from '../test/layout-map.mjs';
+import { LAYOUT, blockOf, componentOfRoot, docsThemeBlock, isGlobal, rootOf } from '../test/layout-map.mjs';
 import { ALIAS, DERIVED, FROM, renameTokens, contractLines } from './contract.mjs';
 import { modeValues, parseBlocks, resolve } from './css.mjs';
 
@@ -39,13 +39,10 @@ export function styleOf(component) {
   return blocks.map((b) => b[2]).join('\n');
 }
 
-// `:deep(x)` → `x`, by text: Lightning CSS keeps it as raw tokens, and a
-// browser drops the rule
-export const unwrapDeep = (css) => unwrap(css, ':deep(');
-
-// `:slotted(x)` → `x` likewise, Vue's selector for a slot's content
-// (VPTeamPage's rules for the parts a page puts in it)
-export const unwrapSlotted = (css) => unwrap(css, ':slotted(');
+// Vue's scoped selectors unwrapped, by text: `:deep(x)` (a child's
+// element) and `:slotted(x)` (a slot's content, VPTeamPage's parts) → `x`.
+// Lightning CSS keeps them as raw tokens, and a browser drops the rule
+export const unscope = (css) => unwrap(unwrap(css, ':deep('), ':slotted(');
 
 function unwrap(css, open) {
   let out = '';
@@ -105,11 +102,11 @@ export function namer(component, states) {
   return (name) => {
     if (name === root) return block;
     if (isGlobal(name)) return name;
-    if (OUTSIDE[name]) return OUTSIDE[name];
     if (modifiers[name]) return `${block}--${modifiers[name]}`;
     if (deep[name]) return namer(deep[name], rootStates(deep[name]))(name);
     const other = componentOfRoot(name);
     if (other) return blockOf(other);
+    if (/^VP[A-Z]/.test(name)) return docsThemeBlock(name);
     return states.has(name) ? `${block}--${name}` : `${block}__${name}`;
   };
 }
@@ -117,7 +114,7 @@ export function namer(component, states) {
 // the classes the component's CSS compounds on its root or on a variant of
 // it (VPNavTranslations' .VPNavScreenTranslations.open), and those
 // test/layout-map.mjs names as its states
-export function rootStates(component, css = unwrapDeep(styleOf(component))) {
+export function rootStates(component, css = unscope(styleOf(component))) {
   const roots = [rootOf(component), ...Object.keys(LAYOUT[component].modifiers ?? {})];
   const states = new Set(LAYOUT[component].states);
   transform({
@@ -227,7 +224,7 @@ export function cssClasses(css) {
 }
 
 function portCss(component) {
-  const css = unwrapDeep(styleOf(component));
+  const css = unscope(styleOf(component));
   return renameCss(css, namer(component, rootStates(component, css)), blockOf(component)).trim();
 }
 
@@ -308,7 +305,7 @@ function docsVars() {
   const mediaDecl = css.match(/@media \(min-width: 60rem\) \{\s*:root \{\s*([^}]*?)\s*\}\s*\}/)?.[1];
   if (!mediaDecl) throw new Error('vars.css has no @media :root block');
   const media = `@media (min-width: 60rem) {\n  :root {\n    ${mediaDecl}\n  }\n}`;
-  const hideNav = [...css.matchAll(/(\.hide-nav[^{]*) \{\s*([^}]*?)\s*\}/g)].map((m) => `${m[1].replace('.VPSidebar', '.vp-sidebar')} {\n  ${m[2]}\n}`);
+  const hideNav = [...css.matchAll(/(\.hide-nav[^{]*) \{\s*([^}]*?)\s*\}/g)].map((m) => `${m[1].replace('.VPSidebar', `.${blockOf('VPSidebar')}`)} {\n  ${m[2]}\n}`);
   if (hideNav.length !== 2) throw new Error('vars.css has not two .hide-nav blocks');
   return `:root {
 ${out.join('\n')}

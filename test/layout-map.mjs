@@ -17,6 +17,9 @@
 // (VPNavMenu's VPNavBarMenu in the bar) → the modifier's name (bar); wraps:
 // the components whose root this component's root also is (VPNavSocialLinks
 // renders a VPSocialLinks)
+import { basename } from 'node:path';
+import { componentDirs } from '../scripts/components.mjs';
+
 export const LAYOUT = {
   Layout: { file: 'components/Layout.vue', root: 'Layout' },
   VPContent: { file: 'components/VPContent.vue' },
@@ -119,22 +122,27 @@ export const GLOBAL = [
 ];
 export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-');
 
-// VitePress components the docs theme has as components of their own
-// (docs-theme/components/), named by a layout component's rules
-// (VPHomeContent stretches a VPHomeSponsors or a VPTeamPage in the home
-// page's markdown to the window's width): their vpkit names
-export const OUTSIDE = { VPHomeSponsors: 'vp-home-sponsors', VPTeamPage: 'vp-team-page' };
-
 export function rootOf(component) {
   return LAYOUT[component].root ?? component;
 }
 
+// vpkit's name for a VitePress component: kebab case, without VP
+const kebab = (component) => `vp-${component.replace(/^VP/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`;
+
 export function blockOf(component) {
   const entry = LAYOUT[component];
   if (!entry) throw new Error(`no layout component ${component}`);
-  if (entry.block) return entry.block;
-  const name = component.replace(/^VP/, '');
-  return `vp-${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`;
+  return entry.block ?? kebab(component);
+}
+
+// a VitePress component a layout component's rules name that is no layout
+// component (VPHomeContent stretches a VPHomeSponsors or a VPTeamPage in
+// the home page's markdown to the window's width) is the docs theme's own
+// (docs-theme/components/), named the same way; one it lacks fails the port
+export function docsThemeBlock(component) {
+  const block = kebab(component);
+  if (!componentDirs('docs-theme').some((dir) => `vp-${basename(dir)}` === block)) throw new Error(`a layout rule names ${component}, and the docs theme has no ${block}`);
+  return block;
 }
 
 // the component whose root class this is, if any; a root that is a plain

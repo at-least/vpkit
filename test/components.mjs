@@ -35,7 +35,7 @@ import { chromium } from 'playwright-chromium';
 import { ROOT, componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
-import { unwrapDeep, unwrapSlotted } from '../scripts/vitepress-port.mjs';
+import { unscope } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
 import { entry } from './harness.mjs';
 
@@ -60,7 +60,7 @@ function upstreamCss(files) {
     if (!file.endsWith('.vue')) return src;
     const style = src.match(/<style[^>]*>([\s\S]*?)<\/style>/);
     if (!style) throw new Error(`no <style> block in ${file}`);
-    return unwrapSlotted(unwrapDeep(style[1]));
+    return unscope(style[1]);
   }).join('\n');
 }
 
