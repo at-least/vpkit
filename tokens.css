@@ -150,9 +150,11 @@
   --vp-duration: 0.25s;
   --vp-duration-slow: 0.5s;
 
-  /* the one focus ring, base.css's :focus-visible */
+  /* the one focus ring, base.css's :focus-visible, and its offset inset by
+     its width, where a component's box or its container clips outside it */
   --vp-focus-ring: 2px solid var(--vp-c-brand);
   --vp-focus-ring-offset: 2px;
+  --vp-focus-ring-inset: -2px;
 
   /* the top bar's height, which a menu and a nav screen read; the width a
      bar's row and a footer center their content at */

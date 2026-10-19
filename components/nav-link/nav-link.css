@@ -115,6 +115,6 @@
   /* the focus ring inset: the lane is a scroll box, which clips the ring
      2px outside a link as tall as the lane, the first at its edge */
   :where(.vp-nav-lane) > .vp-nav-link:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
 }

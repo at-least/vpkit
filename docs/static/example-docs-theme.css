@@ -851,6 +851,7 @@
   --vp-duration-slow: 0.5s;
   --vp-focus-ring: 2px solid var(--vp-c-brand);
   --vp-focus-ring-offset: 2px;
+  --vp-focus-ring-inset: -2px;
   --vp-nav-height: 4rem;
   --vp-layout-max-width: 90rem;
   --vp-backdrop-bg-color: rgba(0, 0, 0, 0.6);
@@ -2453,7 +2454,7 @@ pre, code, kbd, samp {
     white-space: nowrap;
   }
   :where(.vp-nav-lane) > .vp-nav-link:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
   .vp-pager {
     display: flex;
@@ -2595,7 +2596,7 @@ pre, code, kbd, samp {
     }
   }
   a.vp-row:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
   .vp-row-title {
     display: block;
@@ -2852,8 +2853,7 @@ pre, code, kbd, samp {
   .vp-table-scroll {
     overflow-x: auto;
     &:focus-visible {
-      outline: var(--vp-focus-ring);
-      outline-offset: -2px;
+      outline-offset: var(--vp-focus-ring-inset);
     }
   }
   :where(.vp-table-scroll) > .vp-table {
@@ -2914,7 +2914,6 @@ pre, code, kbd, samp {
     text-decoration: underline dotted var(--vp-c-text-2);
     text-underline-offset: 0.15em;
     background-color: transparent;
-    cursor: pointer;
     transition: color var(--vp-duration);
     @media (hover: hover) {
       &:hover {
@@ -2986,7 +2985,7 @@ pre, code, kbd, samp {
     }
   }
   .vp-tabs-tab:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
   .vp-tabs-tab::after {
     position: absolute;
@@ -3492,7 +3491,7 @@ pre, code, kbd, samp {
       background-color: var(--vp-c-sponsor);
     }
     &:focus-visible {
-      outline-offset: -2px;
+      outline-offset: var(--vp-focus-ring-inset);
     }
   }
   :where(.vp-team-member-sponsor) > svg {

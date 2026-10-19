@@ -74,7 +74,7 @@
   /* the focus ring inset: the bar is a scroll box, which clips the ring
      2px outside a tab as tall as the bar */
   .vp-tabs-tab:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
 
   /* the bar under a tab, lit while it is selected */

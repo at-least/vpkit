@@ -111,8 +111,7 @@
     overflow-x: auto;
 
     &:focus-visible {
-      outline: var(--vp-focus-ring);
-      outline-offset: -2px;
+      outline-offset: var(--vp-focus-ring-inset);
     }
   }
 
@@ -200,7 +199,6 @@
     text-decoration: underline dotted var(--vp-c-text-2);
     text-underline-offset: 0.15em;
     background-color: transparent;
-    cursor: pointer;
     transition: color var(--vp-duration);
 
     @media (hover: hover) {

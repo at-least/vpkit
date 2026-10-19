@@ -62,7 +62,7 @@
   /* its focus ring inset: the panel clips outside its rows (overflow:
      hidden, for its corners), where the ring 2px out would be */
   a.vp-row:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--vp-focus-ring-inset);
   }
 
   .vp-row-title {
