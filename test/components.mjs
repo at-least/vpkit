@@ -37,7 +37,7 @@ import { ROOT, componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unscope } from '../scripts/vitepress-port.mjs';
-import { productCss } from './harness.mjs';
+import { GEOMETRY, productCss } from './harness.mjs';
 import { pool } from './pool.mjs';
 
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
@@ -153,7 +153,7 @@ async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
   const node = state?.length ? await nodeId(cdp, on ?? target) : null;
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: state });
   const values = await page.evaluate(
-    ([target, pseudo, props]) => {
+    ([target, pseudo, props, GEOMETRY]) => {
       // getAnimations() flushes the style change the forced state just
       // made, so its transitions exist here; finish() jumps them to their
       // end values instead of reading a color halfway through. Only the
@@ -165,16 +165,50 @@ async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
       const el = document.querySelector(target);
       if (!el) return { error: `no ${target}` };
       const style = getComputedStyle(el, pseudo ?? null);
+      // a pseudo-element's box is read below, through the protocol: here
+      // its originating element's, which its offsets are measured from
       const box = el.getBoundingClientRect();
-      const parent = (el.parentElement ?? document.documentElement).getBoundingClientRect();
-      const geometry = { height: box.height, 'offset-top': box.top - parent.top, 'offset-left': box.left - parent.left };
-      return Object.fromEntries(props.map((p) => [p, p in geometry ? `${geometry[p]}px` : style.getPropertyValue(p)]));
+      const parent = pseudo ? box : (el.parentElement ?? document.documentElement).getBoundingClientRect();
+      const viewport = document.documentElement.clientWidth;
+      const geometry = (b) => ({
+        height: b.height,
+        'offset-top': b.top - parent.top,
+        'offset-left': b.left - parent.left,
+        'viewport-left': b.left,
+        'viewport-right': viewport - b.right,
+      });
+      const values = Object.fromEntries(props.filter((p) => !GEOMETRY.includes(p)).map((p) => [p, style.getPropertyValue(p)]));
+      if (props.includes('scroll-width')) values['scroll-width'] = `${el.scrollWidth}px`;
+      return { values, geometry: pseudo ? null : geometry(box), parent: { top: parent.top, left: parent.left }, viewport };
     },
-    [target, pseudo, props],
+    [target, pseudo, props, GEOMETRY],
   );
+  if (values.error) {
+    if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: [] });
+    throw new Error(values.error);
+  }
+  let geometry = values.geometry;
+  if (pseudo && props.some((p) => GEOMETRY.includes(p) && p !== 'scroll-width')) {
+    // the pseudo-element's border box, from the protocol (no script reads one)
+    const id = node ?? (await nodeId(cdp, target));
+    const { node: described } = await cdp.send('DOM.describeNode', { nodeId: id, depth: 1 });
+    const type = pseudo.replace(/^::/, '');
+    const own = (described.pseudoElements ?? []).find((p) => p.pseudoType === type);
+    if (!own) throw new Error(`${target}${pseudo} has no box`);
+    const { model } = await cdp.send('DOM.getBoxModel', { backendNodeId: own.backendNodeId });
+    const [left, top, right, , , bottom] = model.border;
+    const { parent, viewport } = values;
+    geometry = {
+      height: bottom - top,
+      'offset-top': top - parent.top,
+      'offset-left': left - parent.left,
+      'viewport-left': left,
+      'viewport-right': viewport - right,
+    };
+  }
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: [] });
-  if (values.error) throw new Error(values.error);
-  return values;
+  for (const p of props) if (p in (geometry ?? {})) values.values[p] = `${geometry[p]}px`;
+  return values.values;
 }
 
 // the test files, each with its product and its golden file

@@ -41,6 +41,12 @@ export const TYPE = ['font-size', 'line-height', 'font-weight', 'font-family', '
 export const OUTLINE = ['outline-width', 'outline-style', 'outline-color', 'outline-offset'];
 // geometry the runner reads off the box: its height, and its offset inside its parent
 export const BOX = ['height', 'offset-top', 'offset-left'];
+// all it reads: BOX, the box's distance from the viewport's left and right
+// edges (negative past them), and the element's scroll width (on `html`,
+// the page's: wider than the viewport when the page scrolls sideways). A
+// pseudo-element's box is read too, its offsets from its originating
+// element
+export const GEOMETRY = [...BOX, 'viewport-left', 'viewport-right', 'scroll-width'];
 
 // a component's examples, read by its test file's URL (`const ex =
 // examples(import.meta.url)`): ex(id) is examples/<id>.html's markup
