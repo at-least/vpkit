@@ -127,6 +127,28 @@
       }
     }
   },
+  "table wider than its scroll box, a hidden label at its end": {
+    "light": {
+      ".vp-table-scroll": {
+        "position": "relative",
+        "overflow-x": "auto",
+        "width": "256px"
+      },
+      "html": {
+        "scroll-width": "320px"
+      }
+    },
+    "dark": {
+      ".vp-table-scroll": {
+        "position": "relative",
+        "overflow-x": "auto",
+        "width": "256px"
+      },
+      "html": {
+        "scroll-width": "320px"
+      }
+    }
+  },
   "table sticky": {
     "light": {
       ".vp-table": {

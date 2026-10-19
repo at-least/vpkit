@@ -19,7 +19,7 @@ The table scrolls sideways on its own rather than squeezing its columns, and eve
 
 ## In a scroll box
 
-`vp-table-scroll` is a box the table scrolls sideways in, the table inside it a plain table filling the box. A box that scrolls should take focus, so the arrow keys scroll it: `tabindex="0"`, `role="region"` and a label. Its focus ring, base.css's, is drawn inside it.
+`vp-table-scroll` is a box the table scrolls sideways in, the table inside it a plain table filling the box. What is placed absolutely inside it, such as a header's visually hidden label (`sr-only`), belongs to the box: it scrolls with the table instead of widening the page. A box that scrolls should take focus, so the arrow keys scroll it: `tabindex="0"`, `role="region"` and a label. Its focus ring, base.css's, is drawn inside it.
 
 {{ <vp_example file="table/scroll" title="A table wider than its box" /> }}
 

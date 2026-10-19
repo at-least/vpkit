@@ -2466,6 +2466,7 @@ pre, code, kbd, samp {
     font-size: 0.875rem;
   }
   .vp-table-scroll {
+    position: relative;
     overflow-x: auto;
     &:focus-visible {
       outline-offset: var(--vp-focus-ring-inset);

@@ -18,9 +18,12 @@
  * an orthogonal switch (a class), a part or a state:
  *   vp-table-scroll   a block of its own: a box the table scrolls
  *                     sideways in, where the table is a plain table
- *                     filling the box. A box that scrolls takes focus as
- *                     a region (`tabindex="0"`, a label), base.css's ring
- *                     drawn 2px inside it
+ *                     filling the box, and the containing block of what
+ *                     is placed absolutely in it (a header's visually
+ *                     hidden label), which scrolls and clips with the
+ *                     table rather than widening the page. A box that
+ *                     scrolls takes focus as a region (`tabindex="0"`, a
+ *                     label), base.css's ring drawn 2px inside it
  *
  *   <div class="vp-table-scroll" tabindex="0" role="region" aria-label="Files">
  *     <table class="vp-table">…</table>
@@ -106,8 +109,11 @@
   }
 
   /* a box the table scrolls in: the table a plain table filling it; the
+     containing block of what is placed absolutely inside it, which then
+     scrolls and clips with the table instead of widening the page; the
      focus ring restated 2px inside, where the box's edge shows it */
   .vp-table-scroll {
+    position: relative;
     overflow-x: auto;
 
     &:focus-visible {

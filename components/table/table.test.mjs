@@ -1,11 +1,12 @@
 // vp-table against VitePress's markdown table (test/upstream/vp-doc.css,
 // `.vp-doc table`): the block, its margins and scrolling, the rows' bands
 // and lines, the cells' borders, padding and type. vpkit's own, golden:
-// the scroll box with its focus ring inset; the stuck header, at the top
-// and under a bar; the hovered, selected and cursor's rows; the row
-// actions at rest, with the row hovered or focused, on the cursor's row
-// and on a selected one; the sort control as a link and as a button, and
-// the current sort; the stacked table at a phone's width; the examples.
+// the scroll box with its focus ring inset, and a hidden label inside it
+// kept in it; the stuck header, at the top and under a bar; the hovered,
+// selected and cursor's rows; the row actions at rest, with the row
+// hovered or focused, on the cursor's row and on a selected one; the sort
+// control as a link and as a button, and the current sort; the stacked
+// table at a phone's width; the examples.
 // vpkit against vpkit: a touch screen's hovers at rest and its actions
 // always shown, the button sort against the link, the stacked table wide
 // against the table without the class.
@@ -56,6 +57,23 @@ for (const [name, rows] of [['table in a scroll box', ROWS], ['table wider than 
     ],
   });
 }
+
+// a box placed absolutely inside the scrolling table (a header cell's
+// visually hidden label, Tailwind's sr-only) stays in the box: the box is
+// its containing block, so it scrolls and clips with the table instead of
+// widening the page (on a 20rem screen, a 16rem box, the label past 30rem)
+cases.push({
+  name: 'table wider than its scroll box, a hidden label at its end',
+  width: 320,
+  html:
+    '<div class="vp-table-scroll" tabindex="0" role="region" aria-label="Files" style="width:16rem"><table class="vp-table">' +
+    WIDE.replace('<th>Modified</th>', '<th>Modified</th><th><span class="sr-only">Actions</span></th>').replace('</td></tr>', '</td><td>Open</td></tr>') +
+    '</table></div>',
+  checks: [
+    { target: '.vp-table-scroll', props: ['position', 'overflow-x', 'width'] },
+    { target: 'html', props: ['scroll-width'] },
+  ],
+});
 
 // the stuck header, at the top and under a bar: a plain table with
 // separate borders, each cell its bottom and right, the first column its
