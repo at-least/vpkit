@@ -27,6 +27,7 @@
 import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { ROOT, writeEntry } from '../scripts/components.mjs';
+import { compileCss } from './compile.mjs';
 
 export const SIDES = ['top', 'right', 'bottom', 'left'];
 export const BORDER = SIDES.flatMap((s) => [`border-${s}-width`, `border-${s}-style`]);
@@ -48,13 +49,14 @@ export const examples = (url) => (id) => readFileSync(new URL(`examples/${id}.ht
 // markup inside a vp-doc, as a page's markdown wraps it
 export const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
-// the entry a product's tests compile (scripts/components.mjs's
-// writeEntry), its sources the component directories, whose examples and
-// tests carry the utilities they use; the path is relative to the root, as
-// compileCss takes it
-export function entry(product) {
+// a product as its tests compile it, as it ships: the app kit minified, as
+// the apps build it, the docs theme unminified, as vpkit-zola builds it;
+// from an entry (scripts/components.mjs's writeEntry) whose sources are the
+// component directories, whose examples and tests carry the utilities they
+// use
+export function productCss(product) {
   const file = writeEntry(join(ROOT, 'node_modules/.cache/vpkit', `${product}.css`), product === 'docs' ? 'docs-theme' : '', (rel) =>
     ['components', 'docs-theme/components'].map((dir) => `@source "${rel(join(ROOT, dir))}";`),
   );
-  return relative(ROOT, file);
+  return compileCss(relative(ROOT, file), { minify: product === 'app' });
 }

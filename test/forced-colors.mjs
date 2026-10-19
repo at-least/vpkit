@@ -18,8 +18,7 @@
 
 import { chromium } from 'playwright-chromium';
 
-import { compileCss } from './compile.mjs';
-import { entry } from './harness.mjs';
+import { productCss } from './harness.mjs';
 
 const toggle = (checked) =>
   `<button class="vp-toggle" type="button" role="switch" aria-checked="${checked}"><span class="vp-toggle-check"></span></button>`;
@@ -70,7 +69,7 @@ const PAIRS = {
   docs: [['a sun icon and an empty box its size', sun, noSun]],
 };
 
-const CSS = Object.fromEntries(Object.keys(PAIRS).map((product) => [product, compileCss(entry(product))]));
+const CSS = Object.fromEntries(Object.keys(PAIRS).map((product) => [product, productCss(product)]));
 const browser = await chromium.launch();
 const failures = [];
 try {

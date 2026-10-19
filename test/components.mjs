@@ -13,10 +13,11 @@
 // - source `golden`: with the values in golden.json beside the test file,
 //   vpkit's own: a component VitePress has no original for, or a named
 //   departure from one (the check says why). UPDATE_GOLDEN=1 rewrites them.
-// Lengths match within 1/32px (the minified build prints numbers to six
-// digits). vpkit is compiled minified, as totality ships it, from an entry
-// that imports every component; the docs theme's components compile with
-// docs-theme/vars.css, VitePress's own palette. Each side loads its own
+// Lengths match within 1/32px (the app kit's minified build prints numbers
+// to six digits). Each product is compiled as it ships, from an entry that
+// imports every component: the app kit minified, as the apps build it; the
+// docs theme unminified, as vpkit-zola builds it, with docs-theme/vars.css,
+// VitePress's own palette. Each side loads its own
 // fonts.css (vpkit's; VitePress's, which also names Inter in its base
 // stack), the Inter files served from fonts/, so a width that depends on
 // text is Inter's wherever the test runs, not the machine's fallback
@@ -36,8 +37,7 @@ import { ROOT, componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unscope } from '../scripts/vitepress-port.mjs';
-import { compileCss } from './compile.mjs';
-import { entry } from './harness.mjs';
+import { productCss } from './harness.mjs';
 
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
@@ -200,7 +200,7 @@ for (const { c } of selected) {
 }
 
 // the products the selected cases render, each compiled once
-const css = Object.fromEntries([...new Set(selected.map(({ suite }) => suite.product))].map((product) => [product, `${FONTS.vpkit}\n${compileCss(entry(product))}`]));
+const css = Object.fromEntries([...new Set(selected.map(({ suite }) => suite.product))].map((product) => [product, `${FONTS.vpkit}\n${productCss(product)}`]));
 // VitePress imports fonts.css after its vars.css, so its Inter stack wins
 const upstreamBase = `${upstreamCss(UPSTREAM)}\n${FONTS.upstream}`;
 const fitted = fittedPalette();

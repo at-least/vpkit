@@ -82,15 +82,12 @@ const CHECKS = [
   { target: '.vp-team-member-sponsor > svg', refTarget: '.sp-icon', props: ['margin-right', 'width', 'height', 'offset-left', 'offset-top'] },
 ];
 const FILES = ['components/VPTeamMembersItem.vue', 'components/VPSocialLinks.vue', 'components/VPSocialLink.vue'];
-// the small card's three lines at 1.4285714, which the minified build prints
-// as 1.42857, each 1/64px short: the boxes they stack in take the sum
-const STACKS = ['.vp-team-member', '.vp-team-member-profile', '.vp-team-member-data', '.vp-team-member-links'];
 for (const small of [false, true]) {
   cases.push({
     name: small ? 'team-member small' : 'team-member',
     upstream: { files: FILES, html: card(false, small) },
     html: card(true, small),
-    checks: small ? CHECKS.map((c) => (STACKS.includes(c.target) ? { ...c, tolerance: 3 / 64 } : c)) : CHECKS,
+    checks: CHECKS,
   });
 }
 
