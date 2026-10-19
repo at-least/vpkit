@@ -77,7 +77,7 @@ Not themed, in tokens.css too: the font families, the radii (`--vp-radius-sm` 0.
 
 Computed styles can't show what forced colors do: `test/forced-colors.mjs` renders the components whose state is drawn only with a background under emulated forced colors and requires two states to differ in pixels. `test/motion.mjs` holds the reduced-motion rule (rule 10). `test/tokens.mjs` holds the docs theme's variables to VitePress's `vars.css`, resolved on each side, and the breakpoints to its media queries. `test/layout.mjs` holds the docs theme's layout and the markdown to pages VitePress rendered. `test/rust.mjs` holds the crate. `test/docs.mjs` holds the site. `test/README.md` has each in detail.
 
-A clone of vuejs/vitepress checked out at the SOURCE tag is the standard every ported or copied file is held to, and `test/upstream`'s files are byte-identical to it. A re-sync is a plain copy at a new tag, then `node scripts/vitepress-port.mjs --write` for `prose.css` and the docs theme's `layout.css` and `vars.css`, `node scripts/fit-stock.mjs` for the defaults, and the tests.
+A clone of vuejs/vitepress checked out at the SOURCE tag is the standard every ported or copied file is held to, and `test/upstream`'s files are byte-identical to it. A re-sync is a plain copy at a new tag, then `node scripts/vitepress-port.mjs --write` for `prose.css`, `fonts.css` and the docs theme's `layout.css`, `vars.css` and `icons.css`, `node scripts/fit-stock.mjs` for the defaults, and the tests.
 
 ## The catalogue
 

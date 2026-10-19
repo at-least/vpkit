@@ -1,7 +1,7 @@
-// Port VitePress's stylesheets: the docs theme's layout and variables, and
-// the markdown.
+// Port VitePress's stylesheets: the docs theme's layout, variables and
+// icons, the markdown, and the fonts' faces.
 //
-//   node scripts/vitepress-port.mjs --write        write the three files
+//   node scripts/vitepress-port.mjs --write        write the five files
 //   node scripts/vitepress-port.mjs VPContent VPDoc …   print a component's port
 //
 // A layout component's <style> from test/upstream (verbatim copies of
@@ -10,12 +10,13 @@
 // for VitePress's color names, read as the contract's (scripts/contract.mjs),
 // with the variables they read defined on .vp-doc; the docs theme's
 // variables are vars.css with its palette on the contract's names and its
-// own names aliased onto them. Rerun after re-syncing test/upstream; the
-// tests fail while a file is not this script's output.
+// own names aliased onto them; the icons and the fonts' @font-face rules are
+// verbatim. Rerun after re-syncing test/upstream; the tests fail while a
+// file is not this script's output.
 //
-// Vue's scoping is gone in the port: `:deep(x)` is unwrapped, and a selector
-// loses the [data-v-…] attribute Vue adds to its last compound, the same
-// 0,1,0 for every rule of a component.
+// Vue's scoping is gone in the port: `:deep(x)` and `:slotted(x)` are
+// unwrapped, and a selector loses the [data-v-…] attribute Vue adds to its
+// last compound, the same 0,1,0 for every rule of a component.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -418,6 +419,48 @@ export const FILES = {
     ],
     components: [],
   },
+  'docs-theme/icons.css': {
+    header: `/* vpkit's docs theme — icons, VitePress's styles/icons.css (v2.0.0-alpha.20)
+ * verbatim inside @layer components, for the layout: \`@import
+ * "vpkit/docs-theme/icons.css";\`. The app kit draws its icons as inline
+ * SVG (the crate's \`icon\` module), which needs no mask and no \`data:\` in a
+ * page's Content-Security-Policy.
+ *
+ *   <span class="vpi-search" aria-hidden="true"></span>
+ *
+ * An icon is a \`vpi-*\` class: a 1em mask over currentColor, so it takes the
+ * text color and size around it. The icons are Lucide's (ISC; the copyright
+ * and permission notice is in LICENSE-Lucide). Each is an inline SVG, a
+ * data: URL: a page with a Content-Security-Policy allows \`img-src data:\`,
+ * or the browser refuses the masks and every icon shows nothing. vpkit's
+ * additions: under forced colors, which replace the background color the
+ * mask paints with by the page's, an icon paints in the system's text
+ * color. Written by scripts/vitepress-port.mjs. */`,
+    globals: [['icons.css', "VitePress's masks"]],
+    // vpkit's addition, after VitePress's ground for a mask
+    after: `  @media (forced-colors: active) {
+    [class^='vpi-']:not(.bg),
+    [class*=' vpi-']:not(.bg),
+    .vp-icon:not(.bg) {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }`,
+  },
+  'fonts.css': {
+    header: `/* vpkit — Inter webfonts (generated subsets, ported from VitePress).
+   An optional import, separate from index.css: \`@import "vpkit/fonts.css";\`.
+   The url()s are relative to the compiled stylesheet (the Tailwind CLI
+   leaves them as written), so serve this package's fonts/ directory next
+   to it. Written by scripts/vitepress-port.mjs: VitePress's fonts.css's
+   @font-face rules verbatim, their url()s beside the stylesheet. */`,
+    body: () => {
+      const css = readFileSync(join(ROOT, 'test/upstream/fonts.css'), 'utf8');
+      const last = css.lastIndexOf('@font-face');
+      const faces = css.slice(css.indexOf('@font-face'), css.indexOf('}', last) + 1);
+      return `${faces.replace(/url\('\.\.\/fonts\/([^']+)'\)/g, 'url("fonts/$1")')}\n`;
+    },
+  },
   'docs-theme/vars.css': {
     header: `/* vpkit's docs theme — VitePress's variables (vars.css at v2.0.0-alpha.20),
  * for its layout: its palette on the contract's names, unfitted, one
@@ -435,12 +478,13 @@ export const FILES = {
 };
 
 export function fileText(name) {
-  const { header, body, locals, rename = (css) => css, globals = [], components = [], layer = 'components' } = FILES[name];
+  const { header, body, locals, rename = (css) => css, globals = [], components = [], after, layer = 'components' } = FILES[name];
   if (body) return `${header}\n\n${body()}`;
   const sections = [
     ...(locals ? [locals()] : []),
     ...globals.map(([file, what]) => `  /* ${file}: ${what} */\n${indent(rename(readFileSync(join(ROOT, 'test/upstream', file), 'utf8').trim()))}`),
     ...components.map((c) => `  /* ${c} (${LAYOUT[c].file}) */\n${indent(portCss(c))}`),
+    ...(after ? [after] : []),
   ];
   return `${header}\n\n@layer ${layer} {\n${sections.join('\n\n')}\n}\n`;
 }
