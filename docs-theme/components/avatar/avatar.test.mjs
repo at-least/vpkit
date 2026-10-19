@@ -5,12 +5,9 @@
 // compared); then inside a vp-doc against itself alone. The examples'
 // sizes and the initials are golden: vpkit's uses of the class.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, RADIUS, example } from '../../../test/harness.mjs';
+import { MARGIN, RADIUS, examples } from '../../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

@@ -7,12 +7,9 @@
 // open side by side, and the bars under forced colors (vpkit's addition),
 // closed and open, at rest and hovered.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { TRANSITION, example } from '../../test/harness.mjs';
+import { TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

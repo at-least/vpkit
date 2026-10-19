@@ -5,12 +5,9 @@
 // golden: the outline variant. vpkit against vpkit: the outlined link card
 // against a link card, and a touch screen's hover at rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, BORDER_COLOR, COLORS, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, BORDER_COLOR, COLORS, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -18,7 +15,6 @@ const UPSTREAM = { files: ['VPFeature.vue'] };
 const text = (title, details) => `<h2 data-t="title" class="${title}">Fast</h2><p data-t="details" class="${details}">Instant server start, always.</p>`;
 const upstreamCard = (tag) => `<${tag} class="VPFeature${tag === 'a' ? ' link' : ''}"${tag === 'a' ? ' href="#"' : ''}><article class="box">${text('title', 'details')}</article></${tag}>`;
 const vpkitCard = (tag, attrs = '') => `<${tag} class="vp-card"${attrs}${tag === 'a' ? ' href="#"' : ''}>${text('vp-card-title', 'vp-card-details')}</${tag}>`;
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 const SURFACE = [...BORDER, ...RADIUS, ...COLORS, ...TRANSITION, 'height', 'width'];
 const BOX = ['display', 'flex-direction', ...PADDING];

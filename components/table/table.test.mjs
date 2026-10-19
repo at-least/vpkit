@@ -10,12 +10,9 @@
 // always shown, the button sort against the link, the stacked table wide
 // against the table without the class.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

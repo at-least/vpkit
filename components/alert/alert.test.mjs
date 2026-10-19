@@ -9,12 +9,9 @@
 // against itself alone, in and out of a vp-doc, and a touch screen's hover
 // at rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -26,7 +23,6 @@ const variant = (type) => (type === 'info' ? '' : ` data-variant="${type}"`);
 const ofType = (type) => (type === 'info' ? '.vp-alert:not([data-variant])' : `.vp-alert[data-variant="${type}"]`);
 // VitePress renders a container inside .vp-doc, whose rules for links and
 // code meet custom-block.css's: the upstream side is that rendering
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];
 const LINK = ['color', 'font-weight', 'text-decoration-line', 'text-underline-offset', ...TRANSITION, 'opacity'];

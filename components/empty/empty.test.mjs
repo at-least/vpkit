@@ -3,18 +3,14 @@
 // and, vpkit against vpkit, the lines inside a vp-doc against themselves
 // outside one.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { COLORS, PADDING, RADIUS, example } from '../../test/harness.mjs';
+import { COLORS, PADDING, RADIUS, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
 const BOX = ['display', 'flex-direction', 'align-items', 'justify-content', 'row-gap', ...PADDING, ...RADIUS, 'text-align', ...COLORS, 'height'];
 const LINE = ['margin-top', 'margin-bottom', 'line-height', 'font-size', 'font-weight', 'color', 'max-width'];
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // the crate's example: the box, the title, the line under it
 cases.push({

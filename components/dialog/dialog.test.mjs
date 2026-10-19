@@ -6,12 +6,9 @@
 // the crate's markup and the docs' form; at a phone's width the 92vw cap;
 // and the title inside a vp-doc against itself alone.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, MARGIN, PADDING, RADIUS, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

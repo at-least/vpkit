@@ -5,12 +5,9 @@
 // looks as it does at rest, a disabled control nested deeper in the text
 // leaves the card as it is, a touch screen's hover is rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

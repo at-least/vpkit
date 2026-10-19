@@ -6,12 +6,9 @@
 // against itself alone. vpkit's own, golden: the examples, vp-nav-lane
 // fitting, overflowing and on a touch screen, and a lane's link focused.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -21,7 +18,6 @@ const UPSTREAM = { files: ['components/VPNavMenuLink.vue'] };
 const LINK = ['display', 'align-items', 'min-height', ...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', 'line-height', 'font-size', 'font-weight', 'color', 'text-decoration-line', ...TRANSITION, 'height'];
 const upstreamLink = (cls, attrs = '') => `<a class="VPLink link VPNavMenuLink ${cls}" href="#"${attrs}><span>Guide</span></a>`;
 const vpkitLink = (variant, attrs = '') => `<a class="vp-nav-link"${variant} href="#"${attrs}><span>Guide</span></a>`;
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // in the bar and in the screen: at rest and hovered, then current
 for (const [place, cls, variant] of [['bar', 'VPNavBarMenuLink', ''], ['screen', 'VPNavScreenMenuLink', ' data-variant="screen"']]) {

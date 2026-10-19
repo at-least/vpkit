@@ -5,16 +5,12 @@
 // a vp-doc against themselves outside one, as <span> and as <p>, a link
 // row in a vp-doc, and a touch screen's hover at rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, OUTLINE, PADDING, TRANSITION, example } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const ROW = [...PADDING, 'border-bottom-width', 'border-bottom-style', 'border-bottom-color', 'height', 'offset-top'];
 const TEXT = ['display', 'line-height', 'font-size', 'font-weight', 'color', 'overflow-wrap', ...MARGIN, 'height'];
 const LINK = ['display', 'color', 'font-weight', 'text-decoration-line', 'background-color', ...TRANSITION];

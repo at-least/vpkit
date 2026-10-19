@@ -6,12 +6,9 @@
 // it is 0.5rem each way. vpkit's, golden: the focus ring on the shown
 // link.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { OUTLINE, PADDING, RADIUS, example } from '../../test/harness.mjs';
+import { OUTLINE, PADDING, RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

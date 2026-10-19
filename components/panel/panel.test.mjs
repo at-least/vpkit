@@ -4,16 +4,12 @@
 // panel nested in a flush one against one alone, and the box and the
 // header inside a vp-doc against themselves outside one.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const in24 = (html) => `<div style="width:24rem">${html}</div>`;
 const BOXP = ['display', ...BORDER, ...BORDER_COLOR, ...RADIUS, ...PADDING, 'overflow-x', 'overflow-y', 'background-color', 'color', ...TRANSITION, 'height', 'width'];
 const HEADING = ['font-size', 'line-height', 'letter-spacing', 'font-weight', 'color', 'height'];

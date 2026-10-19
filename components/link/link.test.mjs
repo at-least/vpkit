@@ -5,12 +5,9 @@
 // around it, inside a vp-doc against itself outside one, and a touch
 // screen's hover at rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { TRANSITION, example } from '../../test/harness.mjs';
+import { TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -19,7 +16,6 @@ const LINK = ['color', 'font-weight', 'text-decoration-line', 'text-underline-of
 const LOOK = ['color', 'font-weight', 'text-decoration-line'];
 const A = '[data-t="a"]';
 const CODE = '[data-t="code"]';
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // as a link and as a button, with code inside, against the markdown's link
 for (const tag of ['a', 'button']) {

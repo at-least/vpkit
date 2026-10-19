@@ -7,15 +7,12 @@
 // its content. What is VitePress's is compared with it: the panel, the
 // items at rest, hovered and current, the groups and their titles. What
 // is vpkit's is golden or against vpkit: the examples, aria-current's
-// values, the padding local, the focus ring, a touch screen, a vp-doc and
-// an alert around it.
+// values, the padding local, the focus ring, a touch screen, a vp-doc
+// around it (alert.test.mjs holds an item inside an alert).
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -183,20 +180,4 @@ const LOOK = ['color', 'text-decoration-line', 'font-weight'];
     reference: html,
     checks: [{ target: T('g-title'), props: ['margin-top', 'margin-bottom', 'line-height'] }],
   });
-}
-// inside an alert, whose rules for links match bare links only: an item
-// keeps its look and its hover, not dimmed; and inside one in a doc
-{
-  const html = `<div class="vp-dropdown">${item('Profile', 'item')}</div>`;
-  for (const [name, wrap] of [['inside an alert', (h) => `<div class="vp-alert" data-variant="tip">${h}</div>`], ['inside an alert in a doc', (h) => `<div class="vp-doc"><div class="vp-alert" data-variant="tip">${h}</div></div>`]]) {
-    cases.push({
-      name: `dropdown item ${name}`,
-      html: wrap(html),
-      reference: `<div>${html}</div>`,
-      checks: [
-        { target: T('item'), props: LOOK },
-        { target: T('item'), state: ['hover'], props: ['color', 'opacity'] },
-      ],
-    });
-  }
 }

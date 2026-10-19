@@ -4,12 +4,9 @@
 // the chooser and the button beside it at the one control height. vpkit
 // against vpkit: a touch screen's hover at rest.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

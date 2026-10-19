@@ -2,12 +2,9 @@
 // page sets through --vp-dot-color, and in the text's color of a secondary
 // line; the example's legend, each dot centered on its word's line.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { RADIUS, example } from '../../test/harness.mjs';
+import { RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

@@ -2,12 +2,9 @@
 // golden: the box's grid and gap, each part's type and color, the margins
 // inside a field and outside one, a narrow box, a row of fields.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { COLORS, MARGIN, TYPE, example } from '../../test/harness.mjs';
+import { COLORS, MARGIN, TYPE, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

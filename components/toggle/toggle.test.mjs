@@ -6,12 +6,9 @@
 // knob's aria-checked state (VPSwitch has none), an inline SVG where
 // VitePress has a mask, the icon's fade in both modes, the focus ring.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

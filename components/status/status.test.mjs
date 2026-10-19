@@ -4,17 +4,13 @@
 // vpkit against vpkit: inside a vp-doc against itself outside one, and a
 // component inside the slot against itself alone.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, example } from '../../test/harness.mjs';
+import { MARGIN, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
 const STATUS = ['font-size', 'line-height', 'color', ...MARGIN, 'height'];
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // the example's three replies: at rest, in error, in success
 cases.push({ name: 'status', html: ex('replies'), checks: [{ target: '.vp-status:not([data-state])', props: STATUS }] });

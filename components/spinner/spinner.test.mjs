@@ -10,12 +10,9 @@
 // is the bounding box, which the turning ring widens past 18px at most
 // angles.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, BORDER_COLOR, RADIUS, example } from '../../test/harness.mjs';
+import { BORDER, BORDER_COLOR, RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

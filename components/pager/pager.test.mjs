@@ -3,16 +3,12 @@
 // with no summary, whose actions keep the far end; vpkit against vpkit,
 // the summary inside a vp-doc against itself outside one.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, example } from '../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const ROW = ['display', 'align-items', 'justify-content', 'column-gap', ...PADDING, 'height'];
 const LINE = ['font-size', 'color', ...MARGIN, 'line-height', 'offset-left', 'offset-top', 'height'];
 const ACTIONS = ['display', 'column-gap', 'margin-left', 'offset-left', 'offset-top'];

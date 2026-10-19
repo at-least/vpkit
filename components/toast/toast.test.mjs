@@ -2,12 +2,9 @@
 // padding, colors and shadow) on the example fixed at the bottom of the
 // page, and the text's color in the error and success states.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, PADDING, RADIUS, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, PADDING, RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

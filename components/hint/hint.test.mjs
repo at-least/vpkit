@@ -6,12 +6,9 @@
 // tooltip stays hidden. The copy after the dot is a hidden element, with
 // no style to compare.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

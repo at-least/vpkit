@@ -8,12 +8,9 @@
 // page's my-0), the margin inside an alert, and the radius and margin at a
 // phone's width, where VitePress's block bleeds to the page's edges.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { MARGIN, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -21,7 +18,6 @@ const UPSTREAM = { files: ['vp-doc.css'] };
 const TEXT = '{\n  "level": "error",\n  "message": "panic in send_digest: connection reset by peer, after 3 retries over 40 seconds"\n}';
 const BOX = ['background-color', ...RADIUS, 'overflow-x', ...MARGIN, ...TRANSITION, 'height'];
 const CODE = ['display', ...PADDING, 'line-height', 'font-size', 'font-family', 'color', 'background-color', ...RADIUS, 'tab-size', ...TRANSITION, 'offset-top', 'offset-left'];
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const at = (width, html) => `<div style="width:${width}">${html}</div>`;
 const upstreamPre = `<div class="language-json"><pre><code>${TEXT}</code></pre></div>`;
 const vpkitPre = `<pre class="vp-pre"><code>${TEXT}</code></pre>`;

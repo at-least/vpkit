@@ -3,12 +3,9 @@
 // (where the label is a touch target over the cell's padding and the
 // control keeps its size); the focus ring; the example's select column.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, OUTLINE, example } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

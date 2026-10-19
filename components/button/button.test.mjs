@@ -5,12 +5,9 @@
 // flex box for an icon, the small size, the danger and ghost variants (own
 // designs on the contract), the disabled look, the focus ring.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, BOX, COLORS, OUTLINE, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, BOX, COLORS, OUTLINE, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

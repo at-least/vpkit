@@ -9,12 +9,9 @@
 // count; on a touch screen against itself at rest; then inside a vp-doc
 // against itself outside one. The example is golden.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, RADIUS, TRANSITION, examples } from '../../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

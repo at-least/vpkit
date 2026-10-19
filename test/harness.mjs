@@ -41,8 +41,12 @@ export const OUTLINE = ['outline-width', 'outline-style', 'outline-color', 'outl
 // geometry the runner reads off the box: its height, and its offset inside its parent
 export const BOX = ['height', 'offset-top', 'offset-left'];
 
-// the markup of a component's example: dir is the test file's directory
-export const example = (dir, id) => readFileSync(join(dir, 'examples', `${id}.html`), 'utf8').trim();
+// a component's examples, read by its test file's URL (`const ex =
+// examples(import.meta.url)`): ex(id) is examples/<id>.html's markup
+export const examples = (url) => (id) => readFileSync(new URL(`examples/${id}.html`, url), 'utf8').trim();
+
+// markup inside a vp-doc, as a page's markdown wraps it
+export const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // the entry a product's tests compile: Tailwind, the examples and tests
 // scanned for the utilities they use, vpkit, every component, the markdown

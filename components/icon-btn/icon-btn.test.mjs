@@ -5,15 +5,13 @@
 // on the control height (and the small size), the radius and the gray
 // wash hovered with their transitions, the icon centered in the larger
 // square, the appearance switch, the focus ring. vpkit against vpkit: an
-// SVG that keeps its own fill, a sized icon, the button inside a vp-doc
-// and an alert, and a touch screen's hover at rest.
+// SVG that keeps its own fill, a sized icon, the button inside a vp-doc,
+// and a touch screen's hover at rest (alert.test.mjs holds it inside an
+// alert).
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BOX, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { BOX, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -148,20 +146,6 @@ cases.push({
     { target: '.vp-icon-btn', state: ['hover'], props: ['color', 'background-color'] },
   ],
 });
-// inside an alert, whose rules for links match bare links only (an icon
-// has no text for the alert's link weight to draw), and inside one in a doc
-for (const [name, wrap] of [['inside an alert', (h) => `<div class="vp-alert" data-variant="tip">${h}</div>`], ['inside an alert in a doc', (h) => `<div class="vp-doc"><div class="vp-alert" data-variant="tip">${h}</div></div>`]]) {
-  cases.push({
-    name: `icon-btn ${name}`,
-    html: wrap(BTN),
-    reference: `<div>${BTN}</div>`,
-    checks: [
-      { target: '.vp-icon-btn', props: ['color', 'text-decoration-line'] },
-      { target: '.vp-icon-btn', state: ['hover'], props: ['color', 'opacity'] },
-    ],
-  });
-}
-
 // on a touch screen a hovered button looks as it does at rest
 cases.push({
   name: 'icon-btn on a touch screen',

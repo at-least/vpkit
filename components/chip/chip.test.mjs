@@ -2,15 +2,12 @@
 // control at rest and hovered and its icon, the focus ring, the hit area
 // on a touch screen, a chip that is a link. vpkit against vpkit: a touch
 // screen's hover at rest, the remove control inside a vp-doc, a link chip
-// inside a vp-doc and inside an alert (and inside one in a doc), whose
-// rules for links match bare links only.
+// inside a vp-doc, whose rules for links match bare links only
+// (alert.test.mjs holds one inside an alert).
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -90,23 +87,17 @@ cases.push({
   ],
 });
 
-// the link chip inside a vp-doc, and inside an alert (and inside one in a
-// doc), whose rules for links match bare links only: its look and its
-// hover, not dimmed
-for (const [name, wrap] of [
-  ['in a doc', (h) => `<div class="vp-doc">${h}</div>`],
-  ['inside an alert', (h) => `<div class="vp-alert" data-variant="tip">${h}</div>`],
-  ['inside an alert in a doc', (h) => `<div class="vp-doc"><div class="vp-alert" data-variant="tip">${h}</div></div>`],
-]) {
-  cases.push({
-    name: `chip link ${name}`,
-    html: wrap(ex('link')),
-    reference: `<div>${ex('link')}</div>`,
-    checks: [
-      { target: '.vp-chip', props: LOOK },
-      { target: '.vp-chip', state: ['hover'], props: ['color', 'opacity'] },
-      { target: '.vp-chip-key', props: LOOK },
-      { target: '.vp-chip-value', props: LOOK },
-    ],
-  });
-}
+// the link chip inside a vp-doc, whose rules for links match bare links
+// only: its look and its hover, not dimmed (alert.test.mjs holds it inside
+// an alert)
+cases.push({
+  name: 'chip link in a doc',
+  html: inDoc(ex('link')),
+  reference: `<div>${ex('link')}</div>`,
+  checks: [
+    { target: '.vp-chip', props: LOOK },
+    { target: '.vp-chip', state: ['hover'], props: ['color', 'opacity'] },
+    { target: '.vp-chip-key', props: LOOK },
+    { target: '.vp-chip-value', props: LOOK },
+  ],
+});

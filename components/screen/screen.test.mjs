@@ -7,12 +7,9 @@
 // VitePress's covers it and pads down past it. The example, golden: the
 // menu hidden, and open with its links, its group and its row.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { MARGIN, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

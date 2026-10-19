@@ -4,12 +4,9 @@
 // bar at 0.6; a bar in a flex row with a label. Against vpkit: a bar
 // alone in a flex row is as wide as the row, as it is in block flow.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { RADIUS, example } from '../../test/harness.mjs';
+import { RADIUS, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

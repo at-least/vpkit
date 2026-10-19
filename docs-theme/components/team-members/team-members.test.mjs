@@ -10,12 +10,9 @@
 // the small grid of three cards, is golden on the grid's own geometry: its
 // cards are vp-team-member's, whose stylesheet sizes them.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, example } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

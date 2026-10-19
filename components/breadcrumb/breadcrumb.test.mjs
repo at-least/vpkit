@@ -2,15 +2,12 @@
 // hovered, the current one, the slash the list draws before every item
 // but the first, a current crumb that is a span and a long name in a
 // narrow box, the focus ring. vpkit against vpkit: a touch screen's hover
-// at rest, a crumb inside an alert (and inside one in a doc), whose rules
-// for links match bare links only, and the list inside a vp-doc.
+// at rest and the list inside a vp-doc (alert.test.mjs holds a crumb
+// inside an alert).
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, OUTLINE, PADDING, example } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
@@ -64,23 +61,6 @@ cases.push({
   reference: ex('path'),
   checks: [{ target: ITEM, state: ['hover'], refState: [], props: HOVER }],
 });
-
-// inside an alert, whose rules for links match bare links only: a crumb
-// keeps its look and its hover, not dimmed; and inside one in a doc
-{
-  const crumb = '<ol class="vp-breadcrumb"><li><a class="vp-breadcrumb-item" href="#">root</a></li></ol>';
-  for (const [name, wrap] of [['inside an alert', (h) => `<div class="vp-alert" data-variant="tip">${h}</div>`], ['inside an alert in a doc', (h) => `<div class="vp-doc"><div class="vp-alert" data-variant="tip">${h}</div></div>`]]) {
-    cases.push({
-      name: `breadcrumb item ${name}`,
-      html: wrap(crumb),
-      reference: `<div>${crumb}</div>`,
-      checks: [
-        { target: '.vp-breadcrumb-item', props: LOOK },
-        { target: '.vp-breadcrumb-item', state: ['hover'], props: ['color', 'opacity'] },
-      ],
-    });
-  }
-}
 
 // inside a vp-doc (prose.css, compiled last, as an app imports it), whose
 // rules for a list indent, number and space it and for a link underline,

@@ -8,12 +8,9 @@
 // where VitePress paints 1px of background. Then the example inside a
 // vp-doc, whose rule for an h2 draws a line above it, against itself alone.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, PADDING, example } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

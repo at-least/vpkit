@@ -7,12 +7,9 @@
 // an SVG outside a code block or a link. The names carry a word after
 // `icon`, so CASES='^icon ' selects them and not the icon button's.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BOX, example } from '../../test/harness.mjs';
+import { BOX, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

@@ -5,17 +5,13 @@
 // golden. vpkit against vpkit: the four inside a vp-doc against themselves
 // outside one, on the elements an app puts them on.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, example } from '../../test/harness.mjs';
+import { MARGIN, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
 const UPSTREAM = { files: ['vp-doc.css'] };
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 const HEADING = ['font-size', 'line-height', 'letter-spacing', 'font-weight', 'color', 'height'];
 const DESC = ['max-width', 'font-size', 'line-height', 'color', 'height'];
 

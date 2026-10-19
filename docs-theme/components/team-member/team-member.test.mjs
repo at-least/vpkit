@@ -13,12 +13,9 @@
 // height, where VPSocialLink is 2.25rem) and the focus ring on the sponsor
 // strip.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, example } from '../../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

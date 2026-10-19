@@ -11,12 +11,9 @@
 // no transform on the open panel. vpkit against vpkit: a fixed box inside
 // the open drawer against one in the page, the drawer inside a vp-doc.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, COLORS, MARGIN, PADDING, SIDES, TRANSITION, example } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, SIDES, TRANSITION, examples } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 

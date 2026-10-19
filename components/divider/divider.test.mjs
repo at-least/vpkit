@@ -8,17 +8,13 @@
 // vpkit: the vertical and the labelled one inside a vp-doc against
 // themselves outside one.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { BORDER, BORDER_COLOR, MARGIN, SIDES, example } from '../../test/harness.mjs';
+import { BORDER, BORDER_COLOR, MARGIN, SIDES, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
 const RULE = [...MARGIN, ...BORDER, ...BORDER_COLOR, 'width', 'height', 'background-color'];
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // the markdown's rule
 cases.push({

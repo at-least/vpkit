@@ -3,18 +3,14 @@
 // a vp-link, where it takes the link's colors. vpkit against vpkit: inside
 // a vp-doc against itself outside one.
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { PADDING, RADIUS, TRANSITION, example } from '../../test/harness.mjs';
+import { PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ex = (id) => example(HERE, id);
+const ex = examples(import.meta.url);
 
 export const cases = [];
 
 const UPSTREAM = { files: ['vp-doc.css'] };
 const LOOK = ['font-family', 'font-size', 'color', 'background-color', ...RADIUS, ...PADDING, ...TRANSITION];
-const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 cases.push({
   name: 'code',
