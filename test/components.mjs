@@ -28,8 +28,8 @@
 //
 // Exits 1, listing every differing property, when any case differs.
 
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { basename, dirname, join, relative, sep } from 'node:path';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright-chromium';
 
@@ -192,11 +192,21 @@ for (const [product, dirs] of Object.entries(PRODUCTS)) {
 }
 const selected = suites.flatMap((s) => s.cases.filter((c) => !only || only.test(c.name)).map((c) => ({ suite: s, c })));
 if (!selected.length) throw new Error(only ? `CASES=${process.env.CASES} matches no case` : 'no cases');
+// a case's kind is its source; a check may name another only as a golden
+// departure, which says why
+const kindOf = (c) => (c.upstream ? 'upstream' : c.reference ? 'reference' : 'golden');
 for (const { c } of selected) {
   if (c.upstream && c.reference) throw new Error(`${c.name}: a case has an upstream or a reference, not both`);
+  const kind = kindOf(c);
+  for (const check of c.checks) {
+    const source = check.source ?? kind;
+    if (source === 'golden' && kind !== 'golden' && !check.why) throw new Error(`${c.name}: a golden check on a case with a${kind === 'upstream' ? 'n upstream' : ' reference'} must say why`);
+    if (source !== 'golden' && kind === 'golden') throw new Error(`${c.name}: a check sourced ${source} on a case without one`);
+  }
 }
 
-const css = { app: `${FONTS.vpkit}\n${compileCss(entry('app'))}`, docs: PRODUCTS.docs.length ? `${FONTS.vpkit}\n${compileCss(entry('docs'))}` : null };
+// the products the selected cases render, each compiled once
+const css = Object.fromEntries([...new Set(selected.map(({ suite }) => suite.product))].map((product) => [product, `${FONTS.vpkit}\n${compileCss(entry(product))}`]));
 // VitePress imports fonts.css after its vars.css, so its Inter stack wins
 const upstreamBase = `${upstreamCss(UPSTREAM)}\n${FONTS.upstream}`;
 const fitted = fittedPalette();
@@ -205,70 +215,84 @@ const key = (check) => `${check.target}${check.pseudo ?? ''}${check.state?.lengt
 const browser = await chromium.launch();
 const failures = [];
 const compared = { upstream: 0, reference: 0, golden: 0 };
-try {
-  for (const { suite, c } of selected) {
-    const vpkitCss = css[suite.product];
-    const kind = c.upstream ? 'upstream' : c.reference ? 'reference' : 'golden';
-    const refCss = kind === 'upstream' ? `${upstreamBase}\n${suite.product === 'app' ? fitted : ''}\n${upstreamCss(c.upstream.files ?? [])}` : vpkitCss;
-    const refBody = kind === 'upstream' ? c.upstream.html : c.reference;
-    suite.next[c.name] = {};
-    for (const dark of [false, true]) {
-      const mode = dark ? 'dark' : 'light';
-      const vpkit = await open(browser, vpkitCss, c.html, { ...c, dark });
-      const ref = kind === 'golden' ? null : await open(browser, refCss, refBody, { ...c, dark });
-      const got = (suite.next[c.name][mode] = {});
-      for (const check of c.checks) {
-        const source = check.source ?? kind;
-        if (source === 'golden' && kind !== 'golden' && !check.why) {
-          failures.push(`${c.name}: a golden check on a case with a${kind === 'upstream' ? 'n upstream' : ' reference'} must say why`);
-          break;
-        }
-        if (source !== 'golden' && kind === 'golden') {
-          failures.push(`${c.name}: a check sourced ${source} on a case without one`);
-          break;
-        }
-        const where = `${c.name} [${mode}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;
-        let values;
-        try {
-          values = await measure(vpkit, check);
-        } catch (e) {
-          failures.push(`${where}: ${e.message}`);
-          continue;
-        }
-        if (source === 'golden') {
-          got[key(check)] = { ...got[key(check)], ...values };
-          const have = suite.golden[c.name]?.[mode]?.[key(check)];
-          for (const prop of check.props) {
-            compared.golden++;
-            if (same(have?.[prop], values[prop], prop, check.tolerance)) continue;
-            if (UPDATE) continue;
-            failures.push(`${where} ${prop}: golden ${have?.[prop] ?? '(none)'} | vpkit ${values[prop]}`);
-          }
-          continue;
-        }
-        let reference;
-        try {
-          reference = await measure(ref, {
-            ...check,
-            target: check.refTarget ?? check.target,
-            on: check.refOn ?? check.on,
-            state: 'refState' in check ? check.refState : check.state,
-            pseudo: 'refPseudo' in check ? check.refPseudo : check.pseudo,
-          });
-        } catch (e) {
-          failures.push(`${where}: ${source}: ${e.message}`);
-          continue;
-        }
+
+// one case, both modes: its failures, in check order
+async function runCase({ suite, c }) {
+  const failures = [];
+  const vpkitCss = css[suite.product];
+  const kind = kindOf(c);
+  const refCss = kind === 'upstream' ? `${upstreamBase}\n${suite.product === 'app' ? fitted : ''}\n${upstreamCss(c.upstream.files ?? [])}` : vpkitCss;
+  const refBody = kind === 'upstream' ? c.upstream.html : c.reference;
+  suite.next[c.name] = {};
+  for (const dark of [false, true]) {
+    const mode = dark ? 'dark' : 'light';
+    const vpkit = await open(browser, vpkitCss, c.html, { ...c, dark });
+    const ref = kind === 'golden' ? null : await open(browser, refCss, refBody, { ...c, dark });
+    const got = (suite.next[c.name][mode] = {});
+    for (const check of c.checks) {
+      const source = check.source ?? kind;
+      const where = `${c.name} [${mode}${check.state ? ` :${check.state.join(':')}` : ''}] ${check.target}${check.pseudo ?? ''}`;
+      let values;
+      try {
+        values = await measure(vpkit, check);
+      } catch (e) {
+        failures.push(`${where}: ${e.message}`);
+        continue;
+      }
+      if (source === 'golden') {
+        got[key(check)] = { ...got[key(check)], ...values };
+        const have = suite.golden[c.name]?.[mode]?.[key(check)];
         for (const prop of check.props) {
-          compared[source]++;
-          if (same(reference[prop], values[prop], prop, check.tolerance)) continue;
-          failures.push(`${where} ${prop}: ${source} ${reference[prop]} | vpkit ${values[prop]}`);
+          compared.golden++;
+          if (same(have?.[prop], values[prop], prop, check.tolerance)) continue;
+          if (UPDATE) continue;
+          failures.push(`${where} ${prop}: golden ${have?.[prop] ?? '(none)'} | vpkit ${values[prop]}`);
+        }
+        continue;
+      }
+      let reference;
+      try {
+        reference = await measure(ref, {
+          ...check,
+          target: check.refTarget ?? check.target,
+          on: check.refOn ?? check.on,
+          state: 'refState' in check ? check.refState : check.state,
+          pseudo: 'refPseudo' in check ? check.refPseudo : check.pseudo,
+        });
+      } catch (e) {
+        failures.push(`${where}: ${source}: ${e.message}`);
+        continue;
+      }
+      for (const prop of check.props) {
+        compared[source]++;
+        if (same(reference[prop], values[prop], prop, check.tolerance)) continue;
+        failures.push(`${where} ${prop}: ${source} ${reference[prop]} | vpkit ${values[prop]}`);
+      }
+    }
+    await vpkit.page.close();
+    if (ref) await ref.page.close();
+  }
+  return failures;
+}
+
+// four cases at a time (the run is mostly page opens: 74 s one at a time,
+// 27 s four at once, eight no faster), their failures kept in case order
+try {
+  const byCase = new Array(selected.length);
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: Math.min(4, selected.length) }, async () => {
+      while (next < selected.length) {
+        const i = next++;
+        try {
+          byCase[i] = await runCase(selected[i]);
+        } catch (e) {
+          throw new Error(`${selected[i].c.name}: ${e.message}`);
         }
       }
-      await vpkit.page.close();
-      if (ref) await ref.page.close();
-    }
-  }
+    }),
+  );
+  failures.push(...byCase.flat());
 } finally {
   await browser.close();
 }
