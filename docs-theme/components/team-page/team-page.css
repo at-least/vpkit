@@ -1,0 +1,80 @@
+/* vpkit's docs theme — team page, `vp-team-page`, from VitePress's
+ * VPTeamPage: the block a team page's parts stand in, with the space
+ * round it and between them. An optional import:
+ * `@import "vpkit/docs-theme/components/team-page/team-page.css";`
+ *
+ *   <div class="vp-team-page">
+ *     <header class="vp-team-header">…</header>
+ *     <ul class="vp-team-members">…</ul>
+ *     <section class="vp-team-section">…</section>
+ *   </div>
+ *
+ * The block 6rem above and below (8rem from 48rem wide). No attributes
+ * and no parts of its own: its children are the team components, which
+ * it spaces as VitePress's does: a section 4rem under a section or a
+ * members grid (6rem from 48rem wide) and 1rem under the header from 48rem
+ * wide; a members grid 1.5rem under another and 1.5rem of padding at each
+ * side (3rem from 48rem wide, 4rem from 60rem). On the home page (the
+ * layout's vp-home) the header takes a gutter border above and 5.5rem of
+ * padding over its title.
+ *
+ * VitePress's: every length and the gutter color. vpkit's: a members grid
+ * is one element where VPTeamMembers is two, so its padding is on the
+ * grid, content-box, the grid's width inside it its own as VitePress's
+ * container's is, and only a grid that is the page's child takes it; the
+ * home page's header outranks the header's own padding by specificity
+ * where VitePress needs !important. Inside the home page's markdown the
+ * docs theme's layout stretches the block to the window's width, as
+ * VitePress's does. */
+
+@layer components {
+  .vp-team-page {
+    margin: 6rem 0;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-page {
+      margin: 8rem 0;
+    }
+  }
+
+  .vp-home .vp-team-page > .vp-team-header {
+    border-top: 1px solid var(--vp-c-gutter);
+    padding-top: 5.5rem;
+  }
+
+  .vp-team-page > :is(.vp-team-section, .vp-team-members) + .vp-team-section {
+    margin-top: 4rem;
+  }
+
+  .vp-team-page > .vp-team-members + .vp-team-members {
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-page > .vp-team-header + .vp-team-section {
+      margin-top: 1rem;
+    }
+
+    .vp-team-page > :is(.vp-team-section, .vp-team-members) + .vp-team-section {
+      margin-top: 6rem;
+    }
+  }
+
+  .vp-team-page > .vp-team-members {
+    box-sizing: content-box;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-team-page > .vp-team-members {
+      padding: 0 3rem;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .vp-team-page > .vp-team-members {
+      padding: 0 4rem;
+    }
+  }
+}

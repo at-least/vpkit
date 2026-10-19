@@ -67,8 +67,10 @@
   }
 
   /* inside a vp-doc (prose.css), whose rules for a list give it bullets
-     and an indent, and space above every item but the first: none */
-  .vp-doc .vp-team-members {
+     and an indent, and space above every item but the first: none (one
+     class, as any rule here outranks prose.css's layer, so a team page's
+     padding for its grids wins) */
+  :where(.vp-doc) .vp-team-members {
     list-style: none;
     padding: 0;
   }

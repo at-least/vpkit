@@ -23,7 +23,8 @@ above:
     VPNavSocialLinks VPSocialLinks VPSocialLink VPNavTranslations VPNavScreen \
     VPDocFooter VPDocFooterLastUpdated VPFooter VPHome VPHero VPButton \
     VPFeatures VPFeature VPHomeContent VPLocalSearchBox VPTeamMembersItem \
-    VPIcon VPTeamPageTitle VPTeamPageSection VPTeamMembers VPCarbonAds; do
+    VPIcon VPTeamPageTitle VPTeamPageSection VPTeamMembers VPCarbonAds \
+    VPTeamPage; do
     cp $U/components/$c.vue test/upstream/components/
   done
 

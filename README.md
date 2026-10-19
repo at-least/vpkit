@@ -52,7 +52,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 The documentation is at <https://at-least.github.io/vpkit/>: a site in `docs/`, built with vpkit-zola, with live examples of every component and a gallery of the color themes. `cd docs && zola serve` serves it locally ([docs/README.md](docs/README.md)). Its pages:
 
 - Guide: [What is vpkit?](docs/content/guide/what-is-vpkit.md), [Getting Started](docs/content/guide/getting-started.md) (installation, the entry, the page, the parts one by one, the components, the markdown, the icons, the fonts, a color theme, the docs theme), [Utilities and Variables](docs/content/guide/utilities.md) (dark mode, the breakpoints, the semantic names, the contract and the other `--vp-*` variables, the global rules), [Rust](docs/content/guide/rust.md) (the crate: the stylesheets, the icons, the components).
-- [Components](docs/content/components/_index.md): a page for each of the app kit's 45 and the docs theme's 7, each with its import and live examples.
+- [Components](docs/content/components/_index.md): a page for each of the app kit's 45 and the docs theme's 8, each with its import and live examples.
 - [Themes](docs/content/themes.md): every color theme, to try on the page; what a theme sets, where they come from, your own colors, switching at runtime.
 
 The library's design is [DESIGN.md](DESIGN.md): the two products, the rules every component follows, the token contract, how a component is proven, the catalogue, the crate, and the decisions behind them.

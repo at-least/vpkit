@@ -3512,13 +3512,53 @@ pre, code, kbd, samp {
   .vp-team-members:has(> :last-child:nth-child(3)) {
     max-width: var(--vp-team-members-three);
   }
-  .vp-doc .vp-team-members {
+  :where(.vp-doc) .vp-team-members {
     list-style: none;
     padding: 0;
   }
   .vp-doc .vp-team-members > li {
     margin: 0;
     padding: 0;
+  }
+  .vp-team-page {
+    margin: 6rem 0;
+  }
+  @media (min-width: 48rem) {
+    .vp-team-page {
+      margin: 8rem 0;
+    }
+  }
+  .vp-home .vp-team-page > .vp-team-header {
+    border-top: 1px solid var(--vp-c-gutter);
+    padding-top: 5.5rem;
+  }
+  .vp-team-page > :is(.vp-team-section, .vp-team-members) + .vp-team-section {
+    margin-top: 4rem;
+  }
+  .vp-team-page > .vp-team-members + .vp-team-members {
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .vp-team-page > .vp-team-header + .vp-team-section {
+      margin-top: 1rem;
+    }
+    .vp-team-page > :is(.vp-team-section, .vp-team-members) + .vp-team-section {
+      margin-top: 6rem;
+    }
+  }
+  .vp-team-page > .vp-team-members {
+    box-sizing: content-box;
+    padding: 0 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .vp-team-page > .vp-team-members {
+      padding: 0 3rem;
+    }
+  }
+  @media (min-width: 60rem) {
+    .vp-team-page > .vp-team-members {
+      padding: 0 4rem;
+    }
   }
   .vp-team-section {
     padding: 0 2rem;

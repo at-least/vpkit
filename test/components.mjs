@@ -35,7 +35,7 @@ import { chromium } from 'playwright-chromium';
 import { ROOT, componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
-import { unwrapDeep } from '../scripts/vitepress-port.mjs';
+import { unwrapDeep, unwrapSlotted } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
 import { entry } from './harness.mjs';
 
@@ -51,15 +51,16 @@ const UPSTREAM = ['vars.css', 'base.css', 'icons.css'];
 
 // a .vue file contributes its <style> block: `scoped` only adds an
 // attribute selector, which an isolated page doesn't need, and a
-// `:deep(x)` is unwrapped to `x` as the layout port does (a browser drops
-// a selector with :deep() in it, and with it the rule)
+// `:deep(x)` or a `:slotted(x)` is unwrapped to `x`, as the layout port
+// unwraps :deep() (a browser drops a selector with either in it, and with
+// it the rule)
 function upstreamCss(files) {
   return files.map((file) => {
     const src = readFileSync(join(ROOT, 'test/upstream', file), 'utf8');
     if (!file.endsWith('.vue')) return src;
     const style = src.match(/<style[^>]*>([\s\S]*?)<\/style>/);
     if (!style) throw new Error(`no <style> block in ${file}`);
-    return unwrapDeep(style[1]);
+    return unwrapSlotted(unwrapDeep(style[1]));
   }).join('\n');
 }
 

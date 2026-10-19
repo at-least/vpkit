@@ -22,7 +22,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 
-import { LAYOUT, blockOf, componentOfRoot, isGlobal, rootOf } from '../test/layout-map.mjs';
+import { LAYOUT, OUTSIDE, blockOf, componentOfRoot, isGlobal, rootOf } from '../test/layout-map.mjs';
 import { ALIAS, DERIVED, FROM, renameTokens, contractLines } from './contract.mjs';
 import { modeValues, parseBlocks, resolve } from './css.mjs';
 
@@ -41,18 +41,24 @@ export function styleOf(component) {
 
 // `:deep(x)` → `x`, by text: Lightning CSS keeps it as raw tokens, and a
 // browser drops the rule
-export function unwrapDeep(css) {
+export const unwrapDeep = (css) => unwrap(css, ':deep(');
+
+// `:slotted(x)` → `x` likewise, Vue's selector for a slot's content
+// (VPTeamPage's rules for the parts a page puts in it)
+export const unwrapSlotted = (css) => unwrap(css, ':slotted(');
+
+function unwrap(css, open) {
   let out = '';
   let rest = css;
-  for (let at = rest.indexOf(':deep('); at !== -1; at = rest.indexOf(':deep(')) {
+  for (let at = rest.indexOf(open); at !== -1; at = rest.indexOf(open)) {
     let depth = 1;
-    let end = at + ':deep('.length;
+    let end = at + open.length;
     for (; depth > 0; end++) {
-      if (end >= rest.length) throw new Error('unbalanced :deep(');
+      if (end >= rest.length) throw new Error(`unbalanced ${open}`);
       if (rest[end] === '(') depth++;
       else if (rest[end] === ')') depth--;
     }
-    out += rest.slice(0, at) + rest.slice(at + ':deep('.length, end - 1);
+    out += rest.slice(0, at) + rest.slice(at + open.length, end - 1);
     rest = rest.slice(end);
   }
   return out + rest;
@@ -99,6 +105,7 @@ export function namer(component, states) {
   return (name) => {
     if (name === root) return block;
     if (isGlobal(name)) return name;
+    if (OUTSIDE[name]) return OUTSIDE[name];
     if (modifiers[name]) return `${block}--${modifiers[name]}`;
     if (deep[name]) return namer(deep[name], rootStates(deep[name]))(name);
     const other = componentOfRoot(name);

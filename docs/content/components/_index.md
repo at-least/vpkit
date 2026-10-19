@@ -91,6 +91,7 @@ VitePress's components for a docs site, in `docs-theme/components/`, on VitePres
 | [Team Header](@/components/team-header.md) | `vp-team-header` | VitePress's `VPTeamPageTitle` |
 | [Team Member](@/components/team-member.md) | `vp-team-member` | VitePress's `VPTeamMembersItem` |
 | [Team Members](@/components/team-members.md) | `vp-team-members` | VitePress's `VPTeamMembers` |
+| [Team Page](@/components/team-page.md) | `vp-team-page` | VitePress's `VPTeamPage` |
 | [Team Section](@/components/team-section.md) | `vp-team-section` | VitePress's `VPTeamPageSection` |
 
 The library's design, the rules every component follows and how each is held to its original, is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).
