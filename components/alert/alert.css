@@ -72,7 +72,8 @@
  * vp-empty) keeps its own look, hovered too, its paragraph parts their
  * own margins and line, inside a vp-doc too, with no rule of its own
  * against the alert's. The block sets every --vp-alert-* local
- * from the contract (code's ground is the alert's, the icon its text) and
+ * from the contract (code's ground is the alert's, the icon its text, a
+ * type's icon its links' color) and
  * a variant overrides the locals and nothing else;
  * since every alert sets its own, a nested alert keeps its own colors,
  * its links and code included. This is the components layer, so a utility
@@ -201,42 +202,38 @@
     margin: 0;
   }
 
-  /* the types: VitePress's note is the info look under its own title, so
-     only its icon differs; the others each take a role's tint and text */
-  .vp-alert[data-variant="note"] {
-    --vp-alert-icon: var(--vp-c-brand);
+  /* the types: each one's icon in its links' color; VitePress's note is
+     the info look under its own title, so only its icon differs, the
+     brand's; the others each take a role's tint and text */
+  .vp-alert[data-variant] {
+    --vp-alert-icon: var(--vp-alert-link);
   }
 
   .vp-alert[data-variant="tip"] {
     --vp-alert-bg: var(--vp-c-brand-soft);
-    --vp-alert-icon: var(--vp-c-brand);
   }
 
   .vp-alert[data-variant="important"] {
     --vp-alert-bg: var(--vp-c-important-soft);
     --vp-alert-link: var(--vp-c-important);
     --vp-alert-link-hover: var(--vp-c-important-hover);
-    --vp-alert-icon: var(--vp-c-important);
   }
 
   .vp-alert[data-variant="warning"] {
     --vp-alert-bg: var(--vp-c-warning-soft);
     --vp-alert-link: var(--vp-c-warning);
     --vp-alert-link-hover: var(--vp-c-warning-hover);
-    --vp-alert-icon: var(--vp-c-warning);
   }
 
   .vp-alert[data-variant="danger"] {
     --vp-alert-bg: var(--vp-c-danger-soft);
     --vp-alert-link: var(--vp-c-danger);
     --vp-alert-link-hover: var(--vp-c-danger-hover);
-    --vp-alert-icon: var(--vp-c-danger);
   }
 
   .vp-alert[data-variant="caution"] {
     --vp-alert-bg: var(--vp-c-caution-soft);
     --vp-alert-link: var(--vp-c-caution);
     --vp-alert-link-hover: var(--vp-c-caution-hover);
-    --vp-alert-icon: var(--vp-c-caution);
   }
 }

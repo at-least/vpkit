@@ -19,8 +19,9 @@
  * centered, 0.375rem between the two; under forced colors, which erase a
  * background, the dot paints in the system's text color.
  *
- * The block sets its locals from the contract, a variant overrides them
- * (its tint in --vp-badge-tint too, which the outline moves to the border).
+ * The block sets its locals from the contract, a variant overrides them:
+ * its text, and its tint, --vp-badge-tint, the ground, which the outline
+ * moves to the border.
  * VPBadge's own rules for a badge in a .vp-doc heading (h1 to h6, the
  * markdown's) and in the doc footer (the docs theme's vp-doc-footer, where
  * it is hidden) are here too, as VitePress keeps them with the badge; they
@@ -36,8 +37,8 @@
 
     --vp-badge-border: transparent;
     --vp-badge-text: var(--vp-c-text-2);
-    --vp-badge-bg: var(--vp-c-gray-soft);
     --vp-badge-tint: var(--vp-c-gray-soft);
+    --vp-badge-bg: var(--vp-badge-tint);
 
     display: inline-block;
     margin-left: 0.125rem;
@@ -55,37 +56,31 @@
 
   .vp-badge:is([data-variant="note"], [data-variant="tip"]) {
     --vp-badge-text: var(--vp-c-brand);
-    --vp-badge-bg: var(--vp-c-brand-soft);
     --vp-badge-tint: var(--vp-c-brand-soft);
   }
 
   .vp-badge[data-variant="important"] {
     --vp-badge-text: var(--vp-c-important);
-    --vp-badge-bg: var(--vp-c-important-soft);
     --vp-badge-tint: var(--vp-c-important-soft);
   }
 
   .vp-badge[data-variant="caution"] {
     --vp-badge-text: var(--vp-c-caution);
-    --vp-badge-bg: var(--vp-c-caution-soft);
     --vp-badge-tint: var(--vp-c-caution-soft);
   }
 
   .vp-badge[data-variant="warning"] {
     --vp-badge-text: var(--vp-c-warning);
-    --vp-badge-bg: var(--vp-c-warning-soft);
     --vp-badge-tint: var(--vp-c-warning-soft);
   }
 
   .vp-badge[data-variant="danger"] {
     --vp-badge-text: var(--vp-c-danger);
-    --vp-badge-bg: var(--vp-c-danger-soft);
     --vp-badge-tint: var(--vp-c-danger-soft);
   }
 
   .vp-badge[data-variant="success"] {
     --vp-badge-text: var(--vp-c-success);
-    --vp-badge-bg: var(--vp-c-success-soft);
     --vp-badge-tint: var(--vp-c-success-soft);
   }
 
