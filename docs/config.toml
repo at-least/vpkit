@@ -112,9 +112,11 @@ text = "Docs theme"
 items = [
   { text = "Avatar", link = "@/components/avatar.md" },
   { text = "Carbon Ads", link = "@/components/carbon-ads.md" },
+  { text = "Home Sponsors", link = "@/components/home-sponsors.md" },
   { text = "Sponsors", link = "@/components/sponsor.md" },
   { text = "Team Header", link = "@/components/team-header.md" },
   { text = "Team Member", link = "@/components/team-member.md" },
   { text = "Team Members", link = "@/components/team-members.md" },
+  { text = "Team Page", link = "@/components/team-page.md" },
   { text = "Team Section", link = "@/components/team-section.md" },
 ]

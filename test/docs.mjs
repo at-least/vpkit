@@ -1,8 +1,8 @@
 // The documentation (docs/): it builds with zola, it has a page for each
-// component (the app kit's and the docs theme's), each page shows every
-// example file of its component's directory (the markup the crate's tests
-// render, so none is held by a test and shown by no page), and its
-// examples work.
+// component (the app kit's and the docs theme's), with an entry in its
+// product's group of the sidebar; each page shows every example file of
+// its component's directory (the markup the crate's tests render, so none
+// is held by a test and shown by no page), and its examples work.
 // Each example frame (docs/templates/vp-example.html) must load its example
 // stylesheet, which must style every class the example's markup uses; it
 // must be as tall as its content, so it never scrolls, and no wider than
@@ -35,6 +35,7 @@ import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, sta
 import { tmpdir } from 'node:os';
 import { basename, extname, join } from 'node:path';
 import { chromium } from 'playwright-chromium';
+import { parse } from 'smol-toml';
 import { ROOT, componentDirs, examples } from '../scripts/components.mjs';
 import { modeValues, side } from '../scripts/css.mjs';
 
@@ -51,6 +52,22 @@ const components = [...componentDirs(''), ...componentDirs('docs-theme')].map((d
 const pages = readdirSync(join(DOCS, 'content/components')).filter((f) => f !== '_index.md' && f.endsWith('.md')).map((f) => f.replace(/\.md$/, ''));
 for (const name of components) if (!pages.includes(name)) failures.push(`${name} has no page: docs/content/components/${name}.md`);
 for (const name of pages.filter((p) => !components.includes(p))) failures.push(`docs/content/components/${name}.md: no component directory is named ${name}`);
+
+// the sidebar (config.toml's extra.sidebar): an entry for every component's
+// page in its product's group, the app kit's under Components and the docs
+// theme's under Docs theme, its text the page's title, and none for a page
+// another group's or no component's
+const sidebar = parse(readFileSync(join(DOCS, 'config.toml'), 'utf8')).extra.sidebar;
+for (const [group, product] of [['Components', ''], ['Docs theme', 'docs-theme']]) {
+  const names = componentDirs(product).map((d) => basename(d));
+  const entries = new Map(sidebar.find((g) => g.text === group).items.map((i) => [i.link.match(/^@\/components\/(.+)\.md$/)[1], i.text]));
+  for (const name of names.filter((n) => pages.includes(n))) {
+    const [, title] = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8').match(/^title = "(.*)"$/m);
+    if (!entries.has(name)) failures.push(`docs/config.toml: the ${group} sidebar has no entry for ${name}.md, "${title}"`);
+    else if (entries.get(name) !== title) failures.push(`docs/config.toml: the ${group} sidebar calls ${name}.md "${entries.get(name)}", its title is "${title}"`);
+  }
+  for (const name of [...entries.keys()].filter((n) => !names.includes(n))) failures.push(`docs/config.toml: the ${group} sidebar links ${name}.md, which is not one of its components`);
+}
 
 // a component VitePress has no original for (its description says
 // "vpkit's own") carries a vpkit badge after its page's heading, as
