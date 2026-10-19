@@ -16,7 +16,7 @@
 //! assert!(sized.as_inner().contains(r#"class="vp-icon""#));
 //! let _: Icon = SUN;
 //! ```
-use hypertext::{Buffer, Raw, prelude::*};
+use hypertext::{Buffer, prelude::*};
 
 /// An icon: its paths inside the 24-unit square.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -36,27 +36,21 @@ impl Icon {
     }
 
     // hypertext's rsx! knows the HTML elements, not SVG's: the markup is
-    // written out, the class escaped as an attribute value
+    // written out, the class rendered by hypertext as an attribute value,
+    // which escapes it
     fn write(&self, class: Option<&str>, buffer: &mut Buffer) {
-        let mut svg = String::from("<svg");
+        buffer.dangerously_get_string().push_str("<svg");
         if let Some(class) = class {
-            svg.push_str(" class=\"");
-            for ch in class.chars() {
-                match ch {
-                    '&' => svg.push_str("&amp;"),
-                    '"' => svg.push_str("&quot;"),
-                    '<' => svg.push_str("&lt;"),
-                    _ => svg.push(ch),
-                }
-            }
-            svg.push('"');
+            buffer.dangerously_get_string().push_str(" class=\"");
+            class.render_to(buffer.as_attribute_buffer());
+            buffer.dangerously_get_string().push('"');
         }
+        let svg = buffer.dangerously_get_string();
         svg.push_str(
             r#" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">"#,
         );
         svg.push_str(self.inner);
         svg.push_str("</svg>");
-        Raw::<_>::dangerously_create(svg).render_to(buffer);
     }
 }
 
@@ -196,6 +190,15 @@ mod tests {
         assert!(
             html.as_inner()
                 .starts_with(r#"<svg class="size-5" aria-hidden="true""#)
+        );
+    }
+
+    #[test]
+    fn the_class_is_escaped() {
+        let html = rsx! { (PLUS.class(r#"a"b&c<d"#)) }.render();
+        assert!(
+            html.as_inner()
+                .starts_with(r#"<svg class="a&quot;b&amp;c&lt;d" aria-hidden="true""#)
         );
     }
 }
