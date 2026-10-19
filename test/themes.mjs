@@ -15,7 +15,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 // the luminance and contrast the generators fit with: one implementation
-import { composite, contrast, luminance, white } from '../scripts/color.mjs';
+import { composite, contrast, luminance, solid, white } from '../scripts/color.mjs';
 import { hasPair, modeValues, parseBlocks, stripComments } from '../scripts/css.mjs';
 import { ROOT, cssFiles } from '../scripts/components.mjs';
 
@@ -68,21 +68,16 @@ for (const file of cssFiles('docs-theme')) {
   }
 }
 
-// a token as a solid color: a 6-digit hex, or rgba() composited over the
-// backdrop (when one is given)
+// a token as a solid color (color.mjs's solid): a 6-digit hex, or rgba()
+// composited over the backdrop (when one is given)
 function color(values, token, backdrop) {
   const value = values.get(`--vp-c-${token}`);
   if (value === undefined) throw new Error(`token --vp-c-${token} not defined`);
-  if (value.startsWith('#')) {
-    if (!/^#[0-9a-f]{6}$/i.test(value)) throw new Error(`--vp-c-${token} = ${value}: expected 6-digit hex`);
-    return value.toLowerCase();
+  try {
+    return solid(value, backdrop);
+  } catch (e) {
+    throw new Error(`--vp-c-${token} = ${e.message}`);
   }
-  const rgba = value.match(/^rgba\((.*)\)$/);
-  if (!backdrop || !rgba) throw new Error(`--vp-c-${token} = ${value}: expected a hex literal${backdrop ? ' or rgba()' : ''}`);
-  const parts = rgba[1].split(',').map((n) => (n.trim() === '' ? NaN : Number(n.trim())));
-  if (parts.length !== 4 || parts.some(Number.isNaN)) throw new Error(`--vp-c-${token} = ${value}`);
-  const [r, g, b, a] = parts;
-  return composite([r, g, b], a, backdrop);
 }
 
 const names = readdirSync(join(ROOT, 'themes'))

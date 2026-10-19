@@ -52,6 +52,20 @@ export const renameTokens = (css) => css.replace(/var\(--vp-c-([a-z0-9-]+)\)/g, 
 
 // the VitePress variable each contract name stands in for, on the
 // upstream side of a comparison on vpkit's palette
-export const ONTO = Object.fromEntries(
-  Object.entries(FROM).map(([name, from]) => [name, name === 'brand-fill-hover' ? 'button-brand-hover-bg' : name === 'brand-fill-active' ? 'button-brand-active-bg' : `c-${from}`]),
-);
+const DERIVED_FROM = Object.fromEntries(Object.entries(DERIVED).map(([vp, name]) => [name, vp]));
+export const ONTO = Object.fromEntries(Object.entries(FROM).map(([name, from]) => [name, DERIVED_FROM[name] ?? `c-${from}`]));
+
+// the contract's colors as tokens.css, the themes and the docs theme write
+// them: one light-dark() pair a line, in FROM's order, a blank line between
+// groups (a name's first word); light and dark map each name to its value
+export function contractLines(light, dark) {
+  const lines = [];
+  let group = null;
+  for (const name of Object.keys(FROM)) {
+    const g = name.split('-')[0];
+    if (group && g !== group) lines.push('');
+    group = g;
+    lines.push(`  --vp-c-${name}: light-dark(${light[name]}, ${dark[name]});`);
+  }
+  return lines;
+}

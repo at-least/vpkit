@@ -19,21 +19,14 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { black, composite, fitAll, hexs, mix, white } from './color.mjs';
-import { FROM } from './contract.mjs';
+import { black, fitAll, mix, solid, white } from './color.mjs';
+import { FROM, contractLines } from './contract.mjs';
 import { modeValues, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
 const BEGIN = '  /* fit-stock: begin */';
 const END = '  /* fit-stock: end */';
-
-// an rgba() token composited over bg, or a hex as is
-function over(value, bg) {
-  const m = value.match(/^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/);
-  if (!m) return value;
-  return composite(hexs([Number(m[1]), Number(m[2]), Number(m[3])]), Number(m[4]), bg);
-}
 
 const vars = readFileSync(join(ROOT, 'test/upstream/vars.css'), 'utf8');
 const root = modeValues(vars, ':root');
@@ -45,15 +38,15 @@ for (const mode of ['light', 'dark']) {
   const get = (name) => resolve(stock[mode], stock[mode].get(`--vp-c-${name}`));
   const v = Object.fromEntries(Object.entries(FROM).map(([to, from]) => [to, get(from)]));
   const [bg, elv] = [v.bg, v['bg-elv']];
-  const gray = over(v['gray-soft'], bg);
-  const gray2 = over(v['gray-soft'], gray);
+  const gray = solid(v['gray-soft'], bg);
+  const gray2 = solid(v['gray-soft'], gray);
   // a hovered link: as text on the page, the elevated surface and code's
   // tint, and dimmed to 0.75 in the gray containers and on their code
   v['brand-hover'] = fitAll(v['brand-hover'], mode, { text: [bg, elv, gray], dimmed: [gray, gray2] });
   // each role's hovered link, dimmed in its own container and on code's tint there
   for (const role of ['important', 'warning', 'danger', 'caution']) {
-    const tint = over(v[`${role}-soft`], bg);
-    const tint2 = over(v[`${role}-soft`], tint);
+    const tint = solid(v[`${role}-soft`], bg);
+    const tint2 = solid(v[`${role}-soft`], tint);
     v[`${role}-hover`] = fitAll(v[`${role}-hover`], mode, { dimmed: [tint, tint2] });
   }
   // the brand button's white label: 4.5 at rest, hovered and pressed
@@ -66,15 +59,7 @@ for (const mode of ['light', 'dark']) {
   fitted[mode] = v;
 }
 
-let block = '';
-let group = null;
-for (const name of Object.keys(FROM)) {
-  const g = name.split('-')[0];
-  if (group && g !== group) block += '\n';
-  group = g;
-  block += `  --vp-c-${name}: light-dark(${fitted.light[name]}, ${fitted.dark[name]});\n`;
-}
-block += '\n';
+let block = `${contractLines(fitted.light, fitted.dark).join('\n')}\n\n`;
 for (let i = 1; i <= 5; i++) block += `  --vp-shadow-${i}: ${root.get(`--vp-shadow-${i}`).replace(/\s+/g, ' ')};\n`;
 
 const path = join(ROOT, 'tokens.css');

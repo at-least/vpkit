@@ -51,6 +51,22 @@ export function composite(color, alpha, bg) {
   return hexs([Math.round(fr * alpha + br * (1 - alpha)), Math.round(fg * alpha + bg2 * (1 - alpha)), Math.round(fb * alpha + bb * (1 - alpha))]);
 }
 
+// a color value as a solid color: a 6-digit hex as is (lowercased), or
+// rgba() composited over bg; anything else throws, and so does rgba()
+// without a bg to composite it over
+export function solid(value, bg) {
+  if (value.startsWith('#')) {
+    if (!/^#[0-9a-f]{6}$/i.test(value)) throw new Error(`${value}: expected a 6-digit hex`);
+    return value.toLowerCase();
+  }
+  const rgba = value.match(/^rgba\((.*)\)$/);
+  if (!bg || !rgba) throw new Error(`${value}: expected a hex literal${bg ? ' or rgba()' : ''}`);
+  const parts = rgba[1].split(',').map((n) => (n.trim() === '' ? NaN : Number(n.trim())));
+  if (parts.length !== 4 || parts.some(Number.isNaN)) throw new Error(`${value}: expected rgba(r, g, b, a)`);
+  const [r, g, b, a] = parts;
+  return composite([r, g, b], a, bg);
+}
+
 // the margin the fits clear the test's minimums by; the committed themes
 // were fitted with it, so it stays
 export const EPS = 0.03;

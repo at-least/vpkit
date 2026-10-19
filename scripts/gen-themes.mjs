@@ -30,6 +30,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from 'smol-toml';
 import { EPS, black, composite, contrast, fit, fitAll, fitOnTint, luminance as lum, mix, normHex, rgb, stepTo, white } from './color.mjs';
+import { FROM, contractLines } from './contract.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HELIX = join(ROOT, 'helix');
@@ -70,7 +71,7 @@ const pal = (stem) => paletteOf(load(stem), stem);
 
 // --- theme spec -----------------------------------------------------------
 // slot keys: bg bg_alt bg_elv text1 border brand1 brand2 brand3 success
-//            warning danger important sponsor (text2 and text3 derive
+//            warning danger important (text2 and text3 derive
 //            from text1 in buildMode)
 // light: 'derived' → build a light half from the dark palette (for schemes
 // that publish no light mode; stated in the header).
@@ -78,142 +79,142 @@ const SPECS = [
   { name: 'tokyonight', desc: 'calm blue-violet, day and storm',
     light: { f: 'tokyonight_day', m: { bg: 'bg', bg_alt: 'bg-selection', bg_elv: 'bg-menu',
       text1: 'fg', border: 'border',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'magenta' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } },
     dark: { f: 'tokyonight_storm', p2: 'tokyonight', m: { bg: 'bg', bg_alt: 'bg-menu', bg_elv: 'bg-selection',
       text1: '#c0caf5', border: 'border',
-      brand1: 'p2:blue', success: 'p2:green', warning: 'p2:yellow', danger: 'p2:red', important: 'p2:purple', sponsor: 'p2:magenta' } } },
+      brand1: 'p2:blue', success: 'p2:green', warning: 'p2:yellow', danger: 'p2:red', important: 'p2:purple' } } },
   { name: 'gruvbox', desc: 'retro groove, warm cream and charcoal',
     light: { f: 'gruvbox_light', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
       text1: 'fg0', border: 'bg3',
-      brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1', sponsor: 'purple1' } },
+      brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1' } },
     dark: { f: 'gruvbox', m: { bg: 'bg0', bg_alt: 'bg0_s', bg_elv: 'bg1',
       text1: 'fg1', border: 'bg2',
-      brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1', sponsor: 'purple1' } } },
+      brand1: 'blue1', success: 'green1', warning: 'yellow1', danger: 'red1', important: 'purple1' } } },
   { name: 'gruvbox-material', desc: 'the material take on gruvbox, softer and calmer',
     light: { f: 'gruvbox_material_light_medium', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
       text1: 'fg1', border: 'bg3',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } },
     dark: { f: 'gruvbox_material_dark_medium', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
       text1: 'fg1', border: 'bg3',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } } },
   { name: 'onedark', desc: "Atom's One: grey-blue surfaces, saturated accents",
     light: { f: 'onelight', m: { bg: 'white', bg_alt: 'grey-100', bg_elv: 'white',
       text1: 'black', border: 'grey-300',
-      brand1: 'blue', success: 'green', warning: 'gold', danger: 'red', important: 'purple', sponsor: 'pink' } },
+      brand1: 'blue', success: 'green', warning: 'gold', danger: 'red', important: 'purple' } },
     dark: { f: 'onedark', m: { bg: 'black', bg_alt: 'light-black', bg_elv: 'gray',
       text1: 'white', border: 'gray',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } } },
   { name: 'everforest', desc: 'green, calm and low-noise by design',
     light: { f: 'everforest_light', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg0',
       text1: 'fg', border: 'bg3',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'purple' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } },
     dark: { f: 'everforest_dark', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
       text1: 'fg', border: 'bg3',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple', sponsor: 'orange' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'purple' } } },
   { name: 'ayu', desc: 'subtle, elegant, one bright accent set',
     light: { f: 'ayu_light', m: { bg: 'background', bg_alt: 'black', bg_elv: 'white',
       text1: 'foreground', border: 'dark_gray',
-      brand1: 'blue', success: 'green', warning: 'orange', danger: 'red', important: 'magenta', sponsor: 'red' } },
+      brand1: 'blue', success: 'green', warning: 'orange', danger: 'red', important: 'magenta' } },
     dark: { f: 'ayu_dark', m: { bg: 'background', bg_alt: '#0b0f14', bg_elv: 'dark_gray',
       text1: 'foreground', border: 'dark_gray',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta' } } },
   { name: 'solarized', desc: 'the classic: selective contrast, warm and marine',
     light: { f: 'solarized_light', m: { bg: 'base03', bg_alt: 'base02', bg_elv: 'base03',
       text1: 'base01', border: 'base015',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet', sponsor: 'magenta' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet' } },
     dark: { f: 'solarized_dark', m: { bg: 'base03', bg_alt: 'base025', bg_elv: 'base015',
       text1: 'base2', border: 'base01',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet', sponsor: 'magenta' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'violet' } } },
   { name: 'kanagawa', desc: 'wave and lotus: ink, sumi and ukiyo-e color',
     light: { f: 'kanagawa-lotus', m: { bg: 'lotusWhite0', bg_alt: 'lotusWhite1', bg_elv: 'lotusWhite0',
       text1: 'lotusInk0', border: 'lotusBlue1',
       brand1: 'lotusBlue2', success: 'lotusSuperGreen', warning: 'lotusYellow2', danger: 'lotusAutumnRed',
-      important: 'lotusSuperViolet', sponsor: 'lotusSuperPink' } },
+      important: 'lotusSuperViolet' } },
     dark: { f: 'kanagawa', m: { bg: 'sumiInk3', bg_alt: 'sumiInk4', bg_elv: 'sumiInk5',
       text1: 'fujiWhite', border: 'sumiInk6',
       brand1: 'crystalBlue', success: 'springGreen', warning: 'carpYellow', danger: 'waveRed',
-      important: 'oniViolet', sponsor: 'sakuraPink' } } },
+      important: 'oniViolet' } } },
   { name: 'papercolor', desc: 'plain paper, high legibility, 16-color spirit',
     light: { f: 'papercolor-light', m: { bg: 'background', bg_alt: '#e0e0e0', bg_elv: 'background',
       text1: 'foreground', border: 'matchparen_bg',
       brand1: 'regular4', success: 'regular2', warning: 'cursorlinenr_fg', danger: 'regular1',
-      important: 'bright3', sponsor: 'bright2' } },
+      important: 'bright3' } },
     dark: { f: 'papercolor-dark', m: { bg: 'background', bg_alt: 'cursorline_secondary_bg', bg_elv: 'popupmenu_bg',
       text1: 'foreground', border: 'matchparen_bg',
       brand1: 'regular4', success: 'regular2', warning: 'bright4', danger: 'regular1',
-      important: 'bright3', sponsor: 'bright5' } } },
+      important: 'bright3' } } },
   { name: 'seoul256', desc: 'low-contrast seoul nights, paper days derived',
     light: 'derived',
     dark: { f: 'seoul256-dark', m: { bg: 'black1', bg_alt: 'gray1', bg_elv: 'gray3',
       text1: 'white', border: 'gray4',
       brand1: 'blue1', success: 'green3', warning: 'yellow5', danger: 'salmon1',
-      important: 'magenta1', sponsor: 'mauve' } } },
+      important: 'magenta1' } } },
   { name: 'modus', desc: "Emacs' accessible flagship: maximum legibility",
     light: { f: 'modus_operandi', m: { bg: 'bg-main', bg_alt: 'bg-dim', bg_elv: 'bg-main',
       text1: 'fg-main', border: 'bg-active',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta-warmer' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta' } },
     dark: { f: 'modus_vivendi', m: { bg: 'bg-main', bg_alt: 'bg-dim', bg_elv: 'bg-inactive',
       text1: 'fg-main', border: 'bg-inactive',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'magenta-warmer' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta' } } },
   { name: 'flexoki', desc: "ink on paper: Step's warm absolute palette",
     light: { f: 'flexoki_light', m: { bg: 'bg', bg_alt: 'bg-2', bg_elv: '#ffffff',
       text1: 'tx', border: 'ui-3',
-      brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu', sponsor: 'ma' } },
+      brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu' } },
     dark: { f: 'flexoki_dark', m: { bg: 'bg', bg_alt: 'bg-2', bg_elv: 'ui-2',
       text1: 'tx', border: 'ui-3',
-      brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu', sponsor: 'ma' } } },
+      brand1: 'bl', success: 'gr', warning: 'ye', danger: 're', important: 'pu' } } },
   { name: 'iceberg', desc: 'cool navy-blue calm, light and dark',
     light: { f: 'iceberg-light', m: { bg: 'background_bg', bg_alt: 'sel_bg', bg_elv: 'background_bg',
       text1: 'background_fg', border: 'matchparen_bg',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'light-red' } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta' } },
     dark: { f: 'iceberg-dark', m: { bg: 'background_bg', bg_alt: 'linenr_bg', bg_elv: 'cursorlinenr_bg',
       text1: 'background_fg', border: 'matchparen_bg',
-      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta', sponsor: 'light-red' } } },
+      brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red', important: 'magenta' } } },
   { name: 'adwaita', desc: "GNOME's own: libadwaita light and dark",
     light: { f: 'adwaita-dark', m: { bg: 'light_1', bg_alt: 'light_3', bg_elv: 'light_1',
       text1: 'dark_5', border: 'light_4',
       brand1: 'blue_5', success: 'green_6', warning: 'yellow_6', danger: 'red_5',
-      important: 'purple_5', sponsor: 'red_5' } },
+      important: 'purple_5' } },
     dark: { f: 'adwaita-dark', m: { bg: 'libadwaita_dark', bg_alt: 'libadwaita_dark_alt', bg_elv: 'libadwaita_popup',
       text1: 'light_2', border: 'split_and_borders',
       brand1: 'blue_2', success: 'green_3', warning: 'yellow_4', danger: 'red_3',
-      important: 'purple_2', sponsor: 'red_2' } } },
+      important: 'purple_2' } } },
   { name: 'dracula', desc: 'the famous dark purple, light derived from its palette',
     light: 'derived',
     dark: { f: 'dracula', m: { bg: 'background', bg_alt: 'black', bg_elv: 'current_line',
       text1: 'foreground', border: 'indent',
       brand1: 'purple', success: 'green', warning: 'yellow', danger: 'red',
-      important: 'pink', sponsor: 'pink' } } },
+      important: 'pink' } } },
   { name: 'monokai', desc: 'the classic that colored a decade of editors',
     light: 'derived',
     dark: { f: 'monokai', p2: 'monokai_pro', m: { bg: 'background', bg_alt: 'widget', bg_elv: 'selection',
       text1: 'text', border: '#3b3c35',
       brand1: '#66d9ef', success: '#a6e22e', warning: '#e6db74', danger: '#f92672',
-      important: '#ae81ff', sponsor: '#fd971f' } } },
+      important: '#ae81ff' } } },
   { name: 'material', desc: "Google's material ocean, light derived from its palette",
     light: 'derived',
     dark: { f: 'material_oceanic', m: { bg: 'bg', bg_alt: 'active', bg_elv: 'highlight',
       text1: 'text', border: 'disabled',
       brand1: 'accent', success: '#c3e88d', warning: '#ffcb6b', danger: '#f07178',
-      important: '#c792ea', sponsor: '#ff5370' } } },
+      important: '#c792ea' } } },
   { name: 'night-owl', desc: 'deep navy, bright primaries; light derived from its palette',
     light: 'derived',
     dark: { f: 'night_owl', m: { bg: 'background', bg_alt: 'background2', bg_elv: 'selection',
       text1: 'foreground', border: 'grey4',
       brand1: 'blue', success: 'green', warning: 'gold', danger: 'red',
-      important: 'pink', sponsor: 'pink' } } },
+      important: 'pink' } } },
   { name: 'sonokai', desc: "high-contrast, saturated, EdenEast's flavor",
     light: 'derived',
     dark: { f: 'sonokai', m: { bg: 'bg0', bg_alt: 'bg1', bg_elv: 'bg2',
       text1: 'fg', border: 'bg3',
       brand1: 'blue', success: 'green', warning: 'yellow', danger: 'red',
-      important: 'purple', sponsor: 'red' } } },
+      important: 'purple' } } },
   { name: 'darcula', desc: "JetBrains' default: warm greys, muted accents",
     light: 'derived',
     dark: { f: 'darcula', m: { bg: 'grey00', bg_alt: 'grey01', bg_elv: 'grey02',
       text1: 'grey05', border: 'grey02',
       brand1: 'lightblue', success: 'darkgreen', warning: 'yellow', danger: 'darkred',
-      important: 'purple', sponsor: 'rainbow_purple' } } },
+      important: 'purple' } } },
 ];
 
 // a half's slot colors: its map's refs looked up in its palette file f (a
@@ -347,35 +348,14 @@ function rgba(c, a) {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-// the contract (tokens.css), slot by slot, in its order; a blank line
-// between the groups
-export const TOKENS = [
-  ['bg', '--vp-c-bg'], ['bg_alt', '--vp-c-bg-alt'], ['bg_elv', '--vp-c-bg-elv'], ['bg_soft', '--vp-c-bg-soft'],
-  ['text1', '--vp-c-text-1'], ['text2', '--vp-c-text-2'], ['text3', '--vp-c-text-3'],
-  ['border', '--vp-c-border'], ['divider', '--vp-c-divider'], ['gutter', '--vp-c-gutter'],
-  ['brand', '--vp-c-brand'], ['brand_hover', '--vp-c-brand-hover'], ['brand_fill', '--vp-c-brand-fill'],
-  ['brand_fill_hover', '--vp-c-brand-fill-hover'], ['brand_fill_active', '--vp-c-brand-fill-active'],
-  ['brand_soft', '--vp-c-brand-soft'],
-  ['gray_fill', '--vp-c-gray-fill'], ['gray_fill_hover', '--vp-c-gray-fill-hover'],
-  ['gray_fill_active', '--vp-c-gray-fill-active'], ['gray_soft', '--vp-c-gray-soft'],
-  ['success', '--vp-c-success'], ['success_soft', '--vp-c-success-soft'],
-  ['warning', '--vp-c-warning'], ['warning_hover', '--vp-c-warning-hover'], ['warning_soft', '--vp-c-warning-soft'],
-  ['danger', '--vp-c-danger'], ['danger_hover', '--vp-c-danger-hover'], ['danger_soft', '--vp-c-danger-soft'],
-  ['caution', '--vp-c-caution'], ['caution_hover', '--vp-c-caution-hover'], ['caution_soft', '--vp-c-caution-soft'],
-  ['important', '--vp-c-important'], ['important_hover', '--vp-c-important-hover'], ['important_soft', '--vp-c-important-soft'],
-];
+// a contract name's slot key in a theme's map: its - as _ (text-1 as text1)
+const slotOf = (name) => name.replace(/^text-(\d)$/, 'text$1').replace(/-/g, '_');
 
 // a theme's one block: every token a light-dark() pair, the shadows from
 // the light text color
-export function emitBlock(light, dark) {
-  let out = ':root {\n';
-  let group = null;
-  for (const [k, css] of TOKENS) {
-    const g = css.replace(/^--vp-c-/, '').split('-')[0];
-    if (group && g !== group) out += '\n';
-    group = g;
-    out += `  ${css}: light-dark(${light[k]}, ${dark[k]});\n`;
-  }
+function emitBlock(light, dark) {
+  const byName = (m) => Object.fromEntries(Object.keys(FROM).map((name) => [name, m[slotOf(name)]]));
+  const out = `:root {\n${contractLines(byName(light), byName(dark)).join('\n')}\n`;
   const shadows = [
     `0 1px 2px ${rgba(light.text1, 0.05)}, 0 1px 2px ${rgba(light.text1, 0.07)}`,
     `0 3px 12px ${rgba(light.text1, 0.09)}, 0 1px 4px ${rgba(light.text1, 0.09)}`,
@@ -386,7 +366,7 @@ export function emitBlock(light, dark) {
   return `${out}\n${shadows}\n}\n`;
 }
 
-export function emitCss(name, desc, note, light, dark) {
+function emitCss(name, desc, note, light, dark) {
   return `/* Built-in theme: ${name} — ${desc}. ${note} */\n${emitBlock(light, dark)}`;
 }
 
@@ -394,19 +374,19 @@ export function emitCss(name, desc, note, light, dark) {
 // its page and text-1 moved toward the other half's extremes, brand-1 and
 // its roles as they are, brand-2/3 mixed from brand-1 (the map's other
 // keys, surfaces, text-2/3, border, a fitted brand-2/3, are not carried)
-const derivedLight = ({ bg, text1, brand1, success, warning, danger, important, sponsor }) => ({
+const derivedLight = ({ bg, text1, brand1, success, warning, danger, important }) => ({
   bg: mix(bg, white, 0.94), bg_alt: mix(bg, white, 0.9), bg_elv: mix(bg, white, 0.955),
   text1: mix(text1, black, 0.75),
   border: mix(bg, white, 0.84),
   brand1, brand2: mix(brand1, black, 0.15), brand3: mix(brand1, black, 0.28),
-  success, warning, danger, important, sponsor,
+  success, warning, danger, important,
 });
-const derivedDark = ({ bg, text1, brand1, success, warning, danger, important, sponsor }) => ({
+const derivedDark = ({ bg, text1, brand1, success, warning, danger, important }) => ({
   bg: mix(bg, black, 0.9), bg_alt: mix(bg, black, 0.86), bg_elv: mix(bg, black, 0.82),
   text1: mix(text1, white, 0.78),
   border: mix(bg, black, 0.72),
   brand1, brand2: mix(brand1, white, 0.15), brand3: mix(brand1, white, 0.08),
-  success, warning, danger, important, sponsor,
+  success, warning, danger, important,
 });
 
 function curated() {
@@ -430,7 +410,7 @@ function curated() {
 // slots are inferred from key names and hue classification, the other
 // mode is derived from the palette's own hues. Curated names above win.
 
-const CURATED = new Set([...SPECS.map((s) => s.name), 'github', 'catppuccin', 'nord', 'rose-pine', 'vitepress']);
+const CURATED = new Set([...SPECS.map((s) => s.name), 'github', 'catppuccin', 'nord', 'rose-pine']);
 
 const BG_RE = /^(bg|background|base|canvas)/i;
 const SURFACE_SKIP = /red|green|blue|yellow|magenta|cyan|visual|selection|menu|focus|inlay|popup|highlight|status|diff|dim|alt|current|hl|line|added|changed|removed|gutter|contrast|search|fg/i;
@@ -538,20 +518,19 @@ export function autoSlots(stem) {
   // muted/monochrome palettes carry no distinct hues: fall back to
   // canonical seeds (such a scheme has no hue to preserve anyway); the
   // contrast fitter restyles them per mode
-  const seeds = { brand1: '#2050a8', success: '#2f7d1f', warning: '#8f640d', danger: '#a3443f', important: '#7048a8', sponsor: '#a02f6f' };
+  const seeds = { brand1: '#2050a8', success: '#2f7d1f', warning: '#8f640d', danger: '#a3443f', important: '#7048a8' };
   const order = {
     brand1: ['blue', 'cyan', 'purple', 'magenta', 'orange', 'green', 'red'],
     success: ['green', 'cyan', 'yellow'],
     warning: ['yellow', 'orange'],
     danger: ['red', 'orange', 'magenta'],
     important: ['purple', 'magenta', 'blue'],
-    sponsor: ['magenta', 'red', 'purple'],
   };
   // assign the discriminating roles first so the signature accents (brand)
   // never steal a hue a container needs
   const roles = {};
   const taken = new Set([bg, fg]);
-  for (const role of ['danger', 'warning', 'success', 'important', 'brand1', 'sponsor']) {
+  for (const role of ['danger', 'warning', 'success', 'important', 'brand1']) {
     let c = pick(...order[role]);
     if (c === null || taken.has(c)) c = seeds[role];
     roles[role] = c;

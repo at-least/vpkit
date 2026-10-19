@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 
 import { LAYOUT, blockOf, componentOfRoot, isGlobal, rootOf } from '../test/layout-map.mjs';
-import { ALIAS, DERIVED, FROM, renameTokens } from './contract.mjs';
+import { ALIAS, DERIVED, FROM, renameTokens, contractLines } from './contract.mjs';
 import { modeValues, parseBlocks, resolve } from './css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -265,13 +265,8 @@ function docsVars() {
   const { css, light, dark } = upstreamVars();
   const out = [];
   out.push("  /* VitePress's palette on the contract's names, unfitted: the docs theme is VitePress exactly */");
-  let group = null;
-  for (const [name, from] of Object.entries(FROM)) {
-    const g = name.split('-')[0];
-    if (group && g !== group) out.push('');
-    group = g;
-    out.push(`  --vp-c-${name}: light-dark(${resolve(light, light.get(`--vp-c-${from}`))}, ${resolve(dark, dark.get(`--vp-c-${from}`))});`);
-  }
+  const palette = (values) => Object.fromEntries(Object.entries(FROM).map(([name, from]) => [name, resolve(values, values.get(`--vp-c-${from}`))]));
+  out.push(...contractLines(palette(light), palette(dark)));
   out.push('', "  /* VitePress's own names, its color names aliases onto the contract */");
   for (const [name, value] of light) {
     if (name.startsWith('--vp-font-family')) continue;
