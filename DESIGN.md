@@ -159,7 +159,7 @@ The docs theme's 9, in `docs-theme/components/`, on VitePress's variables: `vp-a
 
 ## Browsers
 
-The app kit needs `light-dark()`: Chrome 123, Safari 17.5, Firefox 120 (every color is a pair; without it the colors fall to their initial values). Native nesting is flattened by the minified build (Tailwind's); unminified, the docs theme's build, it needs Chrome 120, Safari 17.2, Firefox 117. The drawer's slide needs `@starting-style` and `transition-behavior: allow-discrete` (Chrome 117, Safari 17.5, Firefox 129) and degrades to no slide without them. The tests run Chromium only; the other engines are not measured.
+The app kit needs `light-dark()`: Chrome 123, Safari 17.5, Firefox 120 (every color is a pair; without it the colors fall to their initial values). Native nesting is flattened by the minified build (Tailwind's); unminified, the docs theme's build, it needs Chrome 120, Safari 17.2, Firefox 117. The drawer's slide needs `@starting-style` and `transition-behavior: allow-discrete` (Chrome 117, Safari 17.5, Firefox 129) and degrades to no slide without them. The hint's tooltip stays on the screen by anchor positioning (`anchor-scope`, `position-try-fallbacks`: Chrome 131, Safari 26, Firefox 147) and degrades to its place under the dot, which by the screen's edge runs past it. The tests run Chromium only; the other engines are not measured.
 
 ## Decisions
 

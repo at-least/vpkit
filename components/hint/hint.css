@@ -13,21 +13,27 @@
  * no parts. Its tooltip is drawn after it from its data-hint: under it
  * and centered on it, at most 22rem wide, 0.75rem text in body text on
  * the elevated ground in a border, a 0.375rem radius, --vp-shadow-2,
- * above what follows it (z-index 30). It shows while the dot is hovered,
- * on a device that can hover (a touch screen keeps a tapped element
- * hovered), focused from the keyboard, or open, `aria-expanded="true"`,
- * which the page's script toggles on a tap (and drops on a tap
- * elsewhere); vpkit ships no script. The focus ring is base.css's, on the
- * dot. The tooltip is drawn, not read: the copy after the dot, `hidden`,
- * which the dot's aria-describedby names, is what a screen reader reads,
- * as the dot's description (a hidden element still describes the control
- * that names it). It has no box, where a visually hidden copy is
- * positioned absolutely and, in a scrolling table or lane with no
- * positioned box between, escapes the scroller and widens the page; and
- * it is read once, as the description, not again as text of its own. Its
- * place beside the word is the page's (`ml-1`). The crate's `Hint` writes
- * both. This is the components layer, so a utility on the element
- * overrides it. */
+ * above what follows it (z-index 30). It stays on the screen: anchored
+ * to its dot and placed against the screen (CSS anchor positioning),
+ * shifted to stay 1rem in from its edges, narrower on a narrow one, and
+ * over the dot where under it would leave the screen's bottom; so no
+ * scrolling box around the dot clips it and it widens no page. Without
+ * anchor positioning (before Chrome 131, Safari 26, Firefox 147) it is
+ * placed under the dot as it is drawn, and by the screen's edge it runs
+ * past it. It shows while the dot is hovered, on a device that can hover
+ * (a touch screen keeps a tapped element hovered), focused from the
+ * keyboard, or open, `aria-expanded="true"`, which the page's script
+ * toggles on a tap (and drops on a tap elsewhere); vpkit ships no
+ * script. The focus ring is base.css's, on the dot. The tooltip is drawn,
+ * not read: the copy after the dot, `hidden`, which the dot's
+ * aria-describedby names, is what a screen reader reads, as the dot's
+ * description (a hidden element still describes the control that names it).
+ * It has no box, where a visually hidden copy is positioned absolutely and,
+ * in a scrolling table or lane with no positioned box between, escapes the
+ * scroller and widens the page; and it is read once, as the description,
+ * not again as text of its own. Its place beside the word is the page's
+ * (`ml-1`). The crate's `Hint` writes both. This is the components layer,
+ * so a utility on the element overrides it. */
 
 @layer components {
   .vp-hint {
@@ -83,5 +89,28 @@
   .vp-hint:focus-visible::after,
   .vp-hint[aria-expanded="true"]::after {
     display: block;
+  }
+
+  /* kept on the screen: anchored to its own dot (each dot scopes the
+     name to itself), placed against the screen, centered under the dot
+     and shifted to stay 1rem in from the screen's edges, over the dot
+     where under it is off the screen's bottom; placed against the screen
+     it is clipped by no scrolling box around the dot and widens no page */
+  @supports (anchor-scope: --vp-hint) and (position-try-fallbacks: flip-block) {
+    .vp-hint {
+      anchor-name: --vp-hint;
+      anchor-scope: --vp-hint;
+    }
+
+    .vp-hint::after {
+      position: fixed;
+      position-anchor: --vp-hint;
+      position-area: bottom;
+      position-try-fallbacks: flip-block;
+      inset: auto;
+      margin: 0.375rem 1rem 0;
+      max-width: min(22rem, 100% - 2rem);
+      transform: none;
+    }
   }
 }
