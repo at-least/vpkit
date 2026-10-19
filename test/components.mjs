@@ -81,10 +81,11 @@ function fittedPalette() {
     .join('\n');
 }
 
-// Lengths match within 1/32 px. The minified build prints numbers to six
-// significant digits (2.7142857 -> 2.71429), which moves a line box by
-// 0.0001px and can tip layout's 1/64 px rounding. A check's `tolerance`
-// widens that for a stack of such lines. Everything else compares exactly.
+// Lengths match within 1/32 px. The app kit's minified build prints
+// numbers to six significant digits (2.7142857 -> 2.71429), which moves a
+// line box by 0.0001px and can tip layout's 1/64 px rounding. A check's
+// `tolerance` widens that for a stack of such lines. Everything else
+// compares exactly.
 const PX = /^-?\d+(\.\d+)?px$/;
 function same(a, b, tolerance = 1 / 32) {
   if (a === undefined || b === undefined) return false;
