@@ -2126,6 +2126,7 @@ pre, code, kbd, samp {
     --vp-file-padding: 0.625rem;
   }
   .vp-hamburger {
+    --vp-hamburger-bar: var(--vp-c-text-1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2154,7 +2155,7 @@ pre, code, kbd, samp {
     left: 0;
     width: 1rem;
     height: 0.125rem;
-    background-color: var(--vp-c-text-1);
+    background-color: var(--vp-hamburger-bar);
     transition: top var(--vp-duration), background-color var(--vp-duration-slow), transform var(--vp-duration);
   }
   :where(.vp-hamburger-box) > span:nth-child(1) {
@@ -2181,13 +2182,15 @@ pre, code, kbd, samp {
     transform: translateX(0) rotate(135deg);
   }
   @media (hover: hover) {
+    .vp-hamburger[aria-expanded="true"]:hover {
+      --vp-hamburger-bar: var(--vp-c-text-2);
+    }
     .vp-hamburger[aria-expanded="true"]:hover :where(.vp-hamburger-box) > span {
-      background-color: var(--vp-c-text-2);
       transition: top var(--vp-duration), background-color var(--vp-duration), transform var(--vp-duration);
     }
   }
   @media (forced-colors: active) {
-    :where(.vp-hamburger-box) > span, .vp-hamburger[aria-expanded="true"]:hover :where(.vp-hamburger-box) > span {
+    :where(.vp-hamburger-box) > span {
       forced-color-adjust: none;
       background-color: CanvasText;
     }

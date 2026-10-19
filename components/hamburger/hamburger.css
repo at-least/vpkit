@@ -25,12 +25,16 @@
  * and the screen itself: set `aria-expanded` on the button, and
  * `aria-controls` to the screen's id. One addition: under forced colors
  * (Windows' contrast themes) the browser erases backgrounds, and the bars
- * are backgrounds, so there they take the text color. The rules for the
+ * are backgrounds, so there they take the text color, in every state:
+ * the states set the bars' color through a local, --vp-hamburger-bar.
+ * The rules for the
  * bars sit behind :where(), adding no specificity; a utility on one wins
  * by its layer. */
 
 @layer components {
   .vp-hamburger {
+    --vp-hamburger-bar: var(--vp-c-text-1);
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +61,7 @@
     left: 0;
     width: 1rem;
     height: 0.125rem;
-    background-color: var(--vp-c-text-1);
+    background-color: var(--vp-hamburger-bar);
     transition: top var(--vp-duration), background-color var(--vp-duration-slow), transform var(--vp-duration);
   }
 
@@ -74,17 +78,20 @@
   /* hovered open, the bars turn secondary text, the color as quick as the slide */
   .vp-hamburger[aria-expanded="true"] {
     @media (hover: hover) {
+      &:hover {
+        --vp-hamburger-bar: var(--vp-c-text-2);
+      }
+
       &:hover :where(.vp-hamburger-box) > span {
-        background-color: var(--vp-c-text-2);
         transition: top var(--vp-duration), background-color var(--vp-duration), transform var(--vp-duration);
       }
     }
   }
 
-  /* with the hovered-open selector too, which outranks the plain one */
+  /* the states set --vp-hamburger-bar, not the bars' background, so this
+     rule, later at the bars' specificity, holds in every state */
   @media (forced-colors: active) {
-    :where(.vp-hamburger-box) > span,
-    .vp-hamburger[aria-expanded="true"]:hover :where(.vp-hamburger-box) > span {
+    :where(.vp-hamburger-box) > span {
       forced-color-adjust: none;
       background-color: CanvasText;
     }
