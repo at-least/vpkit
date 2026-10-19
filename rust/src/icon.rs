@@ -1,6 +1,6 @@
-//! Icons as inline SVG: Lucide's (ISC; LICENSE-Lucide), the VitePress icons
-//! an app draws plus a few of its own, each a 24-unit square of 2px
-//! strokes in `currentColor`, so it takes the text's color and, at 1em in
+//! Icons as inline SVG: Lucide's (ISC; LICENSE-Lucide), every icon VitePress
+//! draws plus a few of its own, each a 24-unit square of 2px strokes
+//! (`SPARKLES`'s 1.8, as VitePress draws it) in `currentColor`, so it takes the text's color and, at 1em in
 //! `vp-icon` or sized by the component around it (a button's, an icon
 //! button's), the text's size. Inline, so a page whose
 //! Content-Security-Policy refuses `data:` images draws it too, where a
@@ -143,6 +143,36 @@ pub const TRIANGLE_ALERT: Icon = Icon::new(
 /// A check mark in a circle: done, success.
 pub const CIRCLE_CHECK: Icon =
     Icon::new(r#"<path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/>"#);
+/// A corner arrow, down and to the left: the Enter key (VitePress's search
+/// box, its select hint).
+pub const CORNER_DOWN_LEFT: Icon =
+    Icon::new(r#"<path d="M20 4v7a4 4 0 0 1-4 4H4"/><path d="m9 10l-5 5l5 5"/>"#);
+/// A key with a cross: delete, clear a field (VitePress's search box, its
+/// reset).
+pub const DELETE: Icon = Icon::new(
+    r#"<path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm2 4l6 6m0-6l-6 6"/>"#,
+);
+/// A heart: sponsor (VitePress's sponsors and team members).
+pub const HEART: Icon = Icon::new(
+    r#"<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2c-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>"#,
+);
+/// Two scripts: languages, a translation (VitePress's translations menu).
+pub const LANGUAGES: Icon =
+    Icon::new(r#"<path d="m5 8l6 6m-7 0l6-6l2-3M2 5h12M7 2h1m14 20l-5-10l-5 10m2-4h6"/>"#);
+/// Two squares beside lines: a detailed list (VitePress's search box, its
+/// layout toggle).
+pub const LAYOUT_LIST: Icon = Icon::new(
+    r#"<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7m-7 5h7m-7 6h7m-7 5h7"/>"#,
+);
+/// Sparkles: AI (VitePress's Ask AI button), its strokes 1.8 as VitePress
+/// draws it.
+pub const SPARKLES: Icon = Icon::new(
+    r#"<g stroke-width="1.8"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594zM20 2v4m2-2h-4"/><circle cx="4" cy="20" r="2"/></g>"#,
+);
+/// A pen on a square: edit (VitePress's doc footer, its edit link).
+pub const SQUARE_PEN: Icon = Icon::new(
+    r#"<path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>"#,
+);
 
 #[cfg(test)]
 mod tests {

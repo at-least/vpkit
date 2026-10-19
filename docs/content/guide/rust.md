@@ -27,7 +27,7 @@ target/vpkit-css/debug/vpkit-css target/vpkit
 
 ## Icons
 
-`vpkit::icon` has Lucide's icons as inline SVG in `currentColor`: `SUN`, `MOON` and `MONITOR` for an appearance switch, `X`, `PLUS`, `MINUS`, `CHECK`, `SEARCH`, `MENU`, `MORE_HORIZONTAL`, the four `CHEVRON_*` and `ARROW_*`, `COPY`, `EXTERNAL_LINK`, `INFO`, `CIRCLE_ALERT`, `TRIANGLE_ALERT`, `CIRCLE_CHECK`. An icon renders where a `Renderable` goes; `.class("vp-icon")` puts a class on its `<svg>`, for a size or a component's part.
+`vpkit::icon` has Lucide's icons as inline SVG in `currentColor`: `SUN`, `MOON` and `MONITOR` for an appearance switch, `X`, `PLUS`, `MINUS`, `CHECK`, `SEARCH`, `MENU`, `MORE_HORIZONTAL`, the four `CHEVRON_*` and `ARROW_*`, `COPY`, `EXTERNAL_LINK`, `INFO`, `CIRCLE_ALERT`, `TRIANGLE_ALERT`, `CIRCLE_CHECK`, and the rest of VitePress's: `CORNER_DOWN_LEFT`, `DELETE`, `HEART`, `LANGUAGES`, `LAYOUT_LIST`, `SPARKLES` (its strokes 1.8, as VitePress draws it), `SQUARE_PEN`. An icon renders where a `Renderable` goes; `.class("vp-icon")` puts a class on its `<svg>`, for a size or a component's part.
 
 ```rust
 use hypertext::prelude::*;
