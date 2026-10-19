@@ -142,73 +142,74 @@ async function open(browser, css, body, { dark, touch, width, reducedMotion, for
   return { page, cdp };
 }
 
-async function nodeId(cdp, selector) {
-  const { root } = await cdp.send('DOM.getDocument');
+// a node by its selector, under the document root of one DOM.getDocument
+// (each call of which drops the node ids handed out before it)
+async function nodeId(cdp, root, selector) {
   const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector });
-  if (!nodeId) throw new Error(`no ${selector} to force a state on`);
+  if (!nodeId) throw new Error(`no ${selector} in the page`);
   return nodeId;
 }
 
 async function measure({ page, cdp }, { target, on, state, pseudo, props }) {
-  const node = state?.length ? await nodeId(cdp, on ?? target) : null;
+  // a pseudo-element's geometry is read through the protocol, below
+  const pseudoBox = Boolean(pseudo) && props.some((p) => GEOMETRY.includes(p) && p !== 'scroll-width');
+  const { root } = state?.length || pseudoBox ? await cdp.send('DOM.getDocument') : {};
+  const node = state?.length ? await nodeId(cdp, root, on ?? target) : null;
   if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: state });
-  const values = await page.evaluate(
-    ([target, pseudo, props, GEOMETRY]) => {
-      // getAnimations() flushes the style change the forced state just
-      // made, so its transitions exist here; finish() jumps them to their
-      // end values instead of reading a color halfway through. Only the
-      // transitions: an infinite animation (a spinner) has no end to jump
-      // to, and finish() throws on one
-      for (const animation of document.getAnimations()) {
-        if (animation instanceof CSSTransition) animation.finish();
-      }
-      const el = document.querySelector(target);
-      if (!el) return { error: `no ${target}` };
-      const style = getComputedStyle(el, pseudo ?? null);
-      // a pseudo-element's box is read below, through the protocol: here
-      // its originating element's, which its offsets are measured from
-      const box = el.getBoundingClientRect();
-      const parent = pseudo ? box : (el.parentElement ?? document.documentElement).getBoundingClientRect();
-      const viewport = document.documentElement.clientWidth;
-      const geometry = (b) => ({
-        height: b.height,
-        'offset-top': b.top - parent.top,
-        'offset-left': b.left - parent.left,
-        'viewport-left': b.left,
-        'viewport-right': viewport - b.right,
-      });
-      const values = Object.fromEntries(props.filter((p) => !GEOMETRY.includes(p)).map((p) => [p, style.getPropertyValue(p)]));
-      if (props.includes('scroll-width')) values['scroll-width'] = `${el.scrollWidth}px`;
-      return { values, geometry: pseudo ? null : geometry(box), parent: { top: parent.top, left: parent.left }, viewport };
-    },
-    [target, pseudo, props, GEOMETRY],
-  );
-  if (values.error) {
+  // the forced state is cleared whatever is thrown, so the case's next
+  // check, on the same page, measures without it
+  try {
+    const read = await page.evaluate(
+      ([target, pseudo, props, GEOMETRY]) => {
+        // getAnimations() flushes the style change the forced state just
+        // made, so its transitions exist here; finish() jumps them to their
+        // end values instead of reading a color halfway through. Only the
+        // transitions: an infinite animation (a spinner) has no end to jump
+        // to, and finish() throws on one
+        for (const animation of document.getAnimations()) {
+          if (animation instanceof CSSTransition) animation.finish();
+        }
+        const el = document.querySelector(target);
+        if (!el) return { error: `no ${target}` };
+        const style = getComputedStyle(el, pseudo ?? null);
+        // a pseudo-element's box is read below, through the protocol: here
+        // its originating element's, which its offsets are measured from
+        const box = el.getBoundingClientRect();
+        const parent = pseudo ? box : (el.parentElement ?? document.documentElement).getBoundingClientRect();
+        const viewport = document.documentElement.clientWidth;
+        const values = Object.fromEntries(props.filter((p) => !GEOMETRY.includes(p)).map((p) => [p, style.getPropertyValue(p)]));
+        if (props.includes('scroll-width')) values['scroll-width'] = `${el.scrollWidth}px`;
+        return { values, box: pseudo ? null : { top: box.top, left: box.left, right: box.right, height: box.height }, parent: { top: parent.top, left: parent.left }, viewport };
+      },
+      [target, pseudo, props, GEOMETRY],
+    );
+    if (read.error) throw new Error(read.error);
+    let box = read.box;
+    if (pseudoBox) {
+      // the pseudo-element's border box, from the protocol (no script reads
+      // one), the target's own, whatever element a state is forced on
+      const { node: described } = await cdp.send('DOM.describeNode', { nodeId: await nodeId(cdp, root, target), depth: 1 });
+      const own = (described.pseudoElements ?? []).find((p) => p.pseudoType === pseudo.replace(/^::/, ''));
+      if (!own) throw new Error(`${target}${pseudo} has no box`);
+      const { model } = await cdp.send('DOM.getBoxModel', { backendNodeId: own.backendNodeId });
+      const [left, top, right, , , bottom] = model.border;
+      box = { top, left, right, height: bottom - top };
+    }
+    if (box) {
+      const { parent, viewport } = read;
+      const geometry = {
+        height: box.height,
+        'offset-top': box.top - parent.top,
+        'offset-left': box.left - parent.left,
+        'viewport-left': box.left,
+        'viewport-right': viewport - box.right,
+      };
+      for (const p of props) if (p in geometry) read.values[p] = `${geometry[p]}px`;
+    }
+    return read.values;
+  } finally {
     if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: [] });
-    throw new Error(values.error);
   }
-  let geometry = values.geometry;
-  if (pseudo && props.some((p) => GEOMETRY.includes(p) && p !== 'scroll-width')) {
-    // the pseudo-element's border box, from the protocol (no script reads one)
-    const id = node ?? (await nodeId(cdp, target));
-    const { node: described } = await cdp.send('DOM.describeNode', { nodeId: id, depth: 1 });
-    const type = pseudo.replace(/^::/, '');
-    const own = (described.pseudoElements ?? []).find((p) => p.pseudoType === type);
-    if (!own) throw new Error(`${target}${pseudo} has no box`);
-    const { model } = await cdp.send('DOM.getBoxModel', { backendNodeId: own.backendNodeId });
-    const [left, top, right, , , bottom] = model.border;
-    const { parent, viewport } = values;
-    geometry = {
-      height: bottom - top,
-      'offset-top': top - parent.top,
-      'offset-left': left - parent.left,
-      'viewport-left': left,
-      'viewport-right': viewport - right,
-    };
-  }
-  if (node) await cdp.send('CSS.forcePseudoState', { nodeId: node, forcedPseudoClasses: [] });
-  for (const p of props) if (p in (geometry ?? {})) values.values[p] = `${geometry[p]}px`;
-  return values.values;
 }
 
 // the test files, each with its product and its golden file
