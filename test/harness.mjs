@@ -24,9 +24,9 @@
 // upstream or a reference: a departure from the original, which `why`
 // must name).
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, join, relative, sep } from 'node:path';
-import { ROOT, componentDirs } from '../scripts/components.mjs';
+import { readFileSync } from 'node:fs';
+import { join, relative } from 'node:path';
+import { ROOT, writeEntry } from '../scripts/components.mjs';
 
 export const SIDES = ['top', 'right', 'bottom', 'left'];
 export const BORDER = SIDES.flatMap((s) => [`border-${s}-width`, `border-${s}-style`]);
@@ -48,23 +48,13 @@ export const examples = (url) => (id) => readFileSync(new URL(`examples/${id}.ht
 // markup inside a vp-doc, as a page's markdown wraps it
 export const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
-// the entry a product's tests compile: Tailwind, the examples and tests
-// scanned for the utilities they use, vpkit, every component, the markdown
-// last (an app compiles it below the components); the docs theme's with its
-// own variables and icons. Written under node_modules/.cache, where
-// Tailwind resolves its own import; the path is relative to the root, as
+// the entry a product's tests compile (scripts/components.mjs's
+// writeEntry), its sources the component directories, whose examples and
+// tests carry the utilities they use; the path is relative to the root, as
 // compileCss takes it
 export function entry(product) {
-  const cache = join(ROOT, 'node_modules/.cache/vpkit');
-  mkdirSync(cache, { recursive: true });
-  const rel = (p) => relative(cache, p).split(sep).join('/');
-  const lines = ['@import "tailwindcss" source(none);'];
-  for (const dir of ['components', 'docs-theme/components']) if (existsSync(join(ROOT, dir))) lines.push(`@source "${rel(join(ROOT, dir))}";`);
-  lines.push(`@import "${rel(join(ROOT, 'index.css'))}";`);
-  if (product === 'docs') for (const f of ['docs-theme/vars.css', 'docs-theme/icons.css']) if (existsSync(join(ROOT, f))) lines.push(`@import "${rel(join(ROOT, f))}";`);
-  for (const dir of [...componentDirs(''), ...(product === 'docs' ? componentDirs('docs-theme') : [])]) lines.push(`@import "${rel(join(dir, `${basename(dir)}.css`))}";`);
-  if (existsSync(join(ROOT, 'prose.css'))) lines.push(`@import "${rel(join(ROOT, 'prose.css'))}";`);
-  const file = join(cache, `${product}.css`);
-  writeFileSync(file, `${lines.join('\n')}\n`);
+  const file = writeEntry(join(ROOT, 'node_modules/.cache/vpkit', `${product}.css`), product === 'docs' ? 'docs-theme' : '', (rel) =>
+    ['components', 'docs-theme/components'].map((dir) => `@source "${rel(join(ROOT, dir))}";`),
+  );
   return relative(ROOT, file);
 }

@@ -12,9 +12,10 @@
 // Compiled through the Tailwind CLI as a consumer compiles vpkit, minified.
 // Exits 1, listing every name that compiles to the wrong thing.
 
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import { ROOT } from '../scripts/components.mjs';
 import { compileCss } from './compile.mjs';
-
-const css = compileCss('test/utilities-entry.css');
 
 // the declarations a class's rule holds, or null when Tailwind made none;
 // a class with a variant is found by its escaped selector
@@ -76,6 +77,13 @@ const none = [
   'bg-body', 'bg-secondary', 'bg-muted', 'border-secondary', 'fill-muted', 'text-alt', 'text-soft', 'text-elv', 'text-page', 'border-alt', 'fill-soft',
   'text-text-1', 'bg-bg', 'bg-bg-alt', 'fill-text-2', 'text-brand-1', 'text-danger-1', 'bg-default-soft', 'border-default-1',
 ];
+
+// the theme alone, with every name the checks read listed inline (no source
+// file carries all of them), so a name is compiled exactly when it is checked
+const entry = join(ROOT, 'node_modules/.cache/vpkit/utilities.css');
+mkdirSync(dirname(entry), { recursive: true });
+writeFileSync(entry, `@import "tailwindcss" source(none);\n@source inline("${[...Object.keys(want), ...none, 'text-secondary/50'].join(' ')}");\n@import "../../../index.css";\n`);
+const css = compileCss(relative(ROOT, entry));
 
 let failed = 0;
 for (const [cls, decl] of Object.entries(want)) {

@@ -11,14 +11,14 @@
 // the job each token does (body text, links, buttons, badge text, alert link
 // hovers) on both sides. Exits 1, listing every failure.
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
 // the luminance and contrast the generators fit with: one implementation
 import { composite, contrast, luminance, white } from '../scripts/color.mjs';
 import { hasPair, modeValues, parseBlocks, stripComments } from '../scripts/css.mjs';
+import { ROOT, cssFiles } from '../scripts/components.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 
 const failures = [];
@@ -39,15 +39,6 @@ for (const shadow of SHADOWS) {
   if (!stock.has(shadow)) fail(`tokens.css: no ${shadow}`);
 }
 
-// every .css file under a directory, recursively
-function cssFiles(dir) {
-  if (!existsSync(join(ROOT, dir))) return [];
-  return readdirSync(join(ROOT, dir), { recursive: true, withFileTypes: true })
-    .filter((e) => e.isFile() && e.name.endsWith('.css'))
-    .map((e) => join(e.parentPath, e.name).slice(ROOT.length + 1))
-    .sort();
-}
-
 // every --vp-c-* a stylesheet reads
 function reads(css) {
   const names = new Set();
@@ -56,7 +47,7 @@ function reads(css) {
 }
 
 // the app kit reads the contract and nothing else
-const appKit = [...['tokens.css', 'theme.css', 'base.css', 'prose.css', 'fonts.css'].filter((f) => existsSync(join(ROOT, f))), ...cssFiles('components')];
+const appKit = ['tokens.css', 'theme.css', 'base.css', 'prose.css', 'fonts.css', ...cssFiles('components')];
 for (const file of appKit) {
   for (const name of reads(read(file))) {
     checks++;
@@ -64,9 +55,7 @@ for (const file of appKit) {
   }
 }
 // the docs theme reads the contract and its own variables
-const docsVars = existsSync(join(ROOT, 'docs-theme/vars.css'))
-  ? [...modeValues(read('docs-theme/vars.css'), ':root').keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length))
-  : [];
+const docsVars = [...modeValues(read('docs-theme/vars.css'), ':root').keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length));
 // VitePress's own slip, carried verbatim by the port: VPSidebar.vue sets
 // `box-shadow: var(--vp-c-shadow-3)` on the phone's open sidebar, and
 // nothing defines that name (the shadows are --vp-shadow-*), so it never

@@ -89,12 +89,12 @@ try {
       );
       for (const forced of ['none', 'active']) {
         await page.emulateMedia({ forcedColors: forced });
-        // shot still: every transition and animation run to its end; one
+        // shot still: every transition and animation jumped to its end; one
         // that never ends cannot be, and the pair's markup stills it
         await page.evaluate(() => {
           const endless = document.getAnimations().filter((a) => a.effect.getTiming().iterations === Infinity);
           if (endless.length) throw new Error(`${endless.length} animation(s) never end: the pair's markup must still them`);
-          return Promise.all(document.getAnimations().map((a) => a.finished));
+          for (const a of document.getAnimations()) a.finish();
         });
         const [boxA, boxB] = [await size('a'), await size('b')];
         if (boxA !== boxB) {

@@ -23,8 +23,8 @@
 import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { basename, join, relative, sep } from 'node:path';
-import { ROOT, componentDirs, examples } from './components.mjs';
+import { join, relative } from 'node:path';
+import { ROOT, examples, writeEntry } from './components.mjs';
 import { modeValues, resolve } from './css.mjs';
 
 const DOCS = join(ROOT, 'docs');
@@ -43,21 +43,11 @@ function exampleFiles() {
 // where Tailwind resolves its own import; its sources are the example
 // copies and the frame's template
 function entry(product, examplesDir) {
-  mkdirSync(CACHE, { recursive: true });
-  const rel = (p) => relative(CACHE, p).split(sep).join('/');
-  const lines = [
-    '@import "tailwindcss" source(none);',
+  return writeEntry(join(CACHE, `${product || 'app'}.css`), product, (rel) => [
     `@source "${rel(examplesDir)}";`,
     `@source "${rel(join(DOCS, 'templates/vp-example.html'))}";`,
     `@import "${rel(join(ROOT, 'fonts.css'))}";`,
-    `@import "${rel(join(ROOT, 'index.css'))}";`,
-  ];
-  if (product === 'docs-theme') for (const f of ['docs-theme/vars.css', 'docs-theme/icons.css']) lines.push(`@import "${rel(join(ROOT, f))}";`);
-  for (const dir of [...componentDirs(''), ...(product === 'docs-theme' ? componentDirs('docs-theme') : [])]) lines.push(`@import "${rel(join(dir, `${basename(dir)}.css`))}";`);
-  lines.push(`@import "${rel(join(ROOT, 'prose.css'))}";`);
-  const file = join(CACHE, `${product || 'app'}.css`);
-  writeFileSync(file, `${lines.join('\n')}\n`);
-  return file;
+  ]);
 }
 
 // the colors a gallery card draws (brand-hover, the hovered link's color,

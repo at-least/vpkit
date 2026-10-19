@@ -12,11 +12,10 @@
 //
 // Exits 1, naming each pseudo-element the rule misses.
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { ROOT, cssFiles } from '../scripts/components.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 
 const rule = read('base.css').match(/@media \(prefers-reduced-motion: reduce\) \{\s*([^{]+)\{/);
@@ -25,14 +24,7 @@ const named = new Set(rule[1].split(',').map((s) => s.trim()).filter((s) => s.st
 
 // every stylesheet vpkit ships: the root ones, the components, the docs theme
 function files() {
-  const out = readdirSync(ROOT).filter((f) => f.endsWith('.css'));
-  for (const dir of ['components', 'docs-theme']) {
-    if (!existsSync(join(ROOT, dir))) continue;
-    for (const e of readdirSync(join(ROOT, dir), { recursive: true, withFileTypes: true })) {
-      if (e.isFile() && e.name.endsWith('.css')) out.push(join(e.parentPath, e.name).slice(ROOT.length + 1));
-    }
-  }
-  return out.sort();
+  return [...readdirSync(ROOT).filter((f) => f.endsWith('.css')), ...cssFiles('components'), ...cssFiles('docs-theme')].sort();
 }
 
 const failures = [];

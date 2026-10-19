@@ -14,13 +14,12 @@
 //
 // Exits 1, listing every difference.
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { ALIAS, UNMAPPED } from '../scripts/contract.mjs';
 import { modeValues, parseBlocks, resolve } from '../scripts/css.mjs';
+import { ROOT, cssFiles } from '../scripts/components.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
 const squash = (value) => value.replace(/\s+/g, ' ').trim();
 
@@ -106,12 +105,6 @@ for (const [key, value] of upScoped) {
 // page have no value to hold a fallback to
 const UNDEFINED = ['--vp-layout-top-height', '--vp-doc-top-height', '--vp-vh', '--vp-extra-scroll-margin'];
 const defined = new Map([...modeValues(tokens, ':root'), ...modeValues(docs, ':root')]);
-function cssFiles(dir) {
-  if (!existsSync(join(ROOT, dir))) return [];
-  return readdirSync(join(ROOT, dir), { recursive: true, withFileTypes: true })
-    .filter((e) => e.isFile() && e.name.endsWith('.css'))
-    .map((e) => join(e.parentPath, e.name).slice(ROOT.length + 1));
-}
 let fallbacks = 0;
 for (const file of ['prose.css', 'base.css', ...cssFiles('components'), ...cssFiles('docs-theme')].sort()) {
   for (const m of read(file).matchAll(/var\((--vp-[a-z0-9-]+),\s*((?:[^()]|\([^()]*\))+)\)/g)) {

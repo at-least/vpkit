@@ -29,18 +29,16 @@
 // Exits 1, listing every differing property, when any case differs.
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, dirname, join, relative } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { basename, join, relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright-chromium';
-
-import { componentDirs } from '../scripts/components.mjs';
+import { ROOT, componentDirs } from '../scripts/components.mjs';
 import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
 import { entry } from './harness.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 
@@ -183,7 +181,6 @@ const suites = [];
 for (const [product, dirs] of Object.entries(PRODUCTS)) {
   for (const dir of dirs) {
     const file = join(dir, `${basename(dir)}.test.mjs`);
-    if (!existsSync(file)) continue;
     const { cases } = await import(pathToFileURL(file).href);
     const goldenFile = join(dir, 'golden.json');
     const golden = existsSync(goldenFile) ? JSON.parse(readFileSync(goldenFile, 'utf8')) : {};

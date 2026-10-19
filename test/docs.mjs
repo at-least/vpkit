@@ -33,12 +33,11 @@
 import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { basename, dirname, extname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { basename, extname, join } from 'node:path';
 import { chromium } from 'playwright-chromium';
-import { componentDirs, examples } from '../scripts/components.mjs';
+import { ROOT, componentDirs, examples } from '../scripts/components.mjs';
+import { modeValues, side } from '../scripts/css.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS = join(ROOT, 'docs');
 const ORIGIN = 'http://docs.test';
 const BASE = `${ORIGIN}/vpkit`;
@@ -267,10 +266,12 @@ try {
         if (/\/vpkit\/themes\/[^/]+\.css$/.test(new URL(route.request().url()).pathname)) await new Promise((r) => setTimeout(r, 300));
         return serve(route);
       });
-      // in every window, the page's and its frames': its --vp-c-brand-hover,
+      // in every window, the page's and its frames': its --vp-c-brand-hover's
+      // light side (a light-dark() pair's computed value is the pair itself),
       // the page's with its frames', and its own at its first frame
       await context.addInitScript(() => {
-        window.brandHover = (root = document.documentElement) => getComputedStyle(root).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase();
+        window.brandHover = (root = document.documentElement) =>
+          getComputedStyle(root).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase().replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim();
         // each window's value, and whether it is the docs theme's (the page, or a frame on the docs theme's stylesheet)
         window.brandHoverAll = () => [document, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentDocument)].map((d, i) => ({ value: brandHover(d.documentElement), docs: i === 0 || !!d.querySelector('link[href*="example-docs-theme"]') }));
         requestAnimationFrame(() => { window.firstFrameBrandHover = brandHover(); });
@@ -279,8 +280,6 @@ try {
       page.on('pageerror', (e) => failures.push(`the gallery's pages: ${e.message}`));
       const KEY = 'vpkit-docs-theme';
       const theme = (name) => index.find((t) => t.name === name);
-      // a light-dark() pair's computed value is the pair itself; the light side is read off it
-      const lightOf = (value) => value.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim();
       // what a window must show: a theme's brand-hover everywhere, or the
       // stock's, which is the docs theme's in the page and its frames and
       // the app kit's in the app kit's frames
@@ -290,7 +289,7 @@ try {
       const expect = async (what, value, where = '/themes/') => {
         try {
           await page.waitForFunction(
-            (value) => brandHoverAll().every((b) => b.value.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim() === (typeof value === 'string' ? value : b.docs ? value.docs : value.app)),
+            (value) => brandHoverAll().every((b) => b.value === (typeof value === 'string' ? value : b.docs ? value.docs : value.app)),
             value,
             { timeout: 5000 },
           );
@@ -303,7 +302,7 @@ try {
       const expectFirst = async (what, value, where = '/themes/') => {
         const first = await page.evaluate(() => [window, ...[...document.querySelectorAll('iframe.vp-example')].map((f) => f.contentWindow)].map((w, i) => [w.firstFrameBrandHover, i === 0 || !!w.document.querySelector('link[href*="example-docs-theme"]')]));
         for (const [i, [got, docs]] of first.entries()) {
-          if (lightOf(got ?? '') !== wanted(value, docs)) failures.push(`${where}, ${what}${i ? `, frame ${i}` : ''}: --vp-c-brand-hover ${got} at the first frame, not ${wanted(value, docs)}`);
+          if (got !== wanted(value, docs)) failures.push(`${where}, ${what}${i ? `, frame ${i}` : ''}: --vp-c-brand-hover ${got} at the first frame, not ${wanted(value, docs)}`);
         }
       };
       const expectPressed = async (what, name) => {
@@ -316,7 +315,7 @@ try {
       // (themes.json's stock entry) in the app kit's frames, which write
       // the page's theme links into their own heads as they are parsed; and
       // the stock card pressed
-      const docsStock = lightOf(readFileSync(join(ROOT, 'docs-theme/vars.css'), 'utf8').match(/--vp-c-brand-hover:\s*([^;]+);/)[1].toLowerCase());
+      const docsStock = modeValues(readFileSync(join(ROOT, 'docs-theme/vars.css'), 'utf8'), ':root', 'light').get('--vp-c-brand-hover').toLowerCase();
       const stock = { docs: docsStock, app: index[0].light['brand-hover'] };
       await page.goto(`${BASE}/themes/`);
       await page.waitForSelector('.theme-gallery__card');
@@ -356,12 +355,11 @@ try {
       // the sampler runs in the page from before the clicks, every 10ms,
       // until github's color arrives
       await page.evaluate((until) => {
-        const light = (v) => v.replace(/^light-dark\(\s*([^,]+),.*$/, '$1').trim();
         window.sampled = (async () => {
           const seen = new Set();
           const start = performance.now();
           while (performance.now() - start < 3000) {
-            const now = light(brandHover());
+            const now = brandHover();
             seen.add(now);
             if (now === until) break;
             await new Promise((r) => setTimeout(r, 10));
@@ -399,7 +397,7 @@ try {
       await noScript.route(`${ORIGIN}/**`, serve);
       const plain = await noScript.newPage();
       await plain.goto(`${BASE}/components/button/`);
-      const plainBrandHover = lightOf(await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase()));
+      const plainBrandHover = side(await plain.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--vp-c-brand-hover').trim().toLowerCase()), 'light');
       if (plainBrandHover !== stock.docs) failures.push(`/components/button/ with JavaScript off: --vp-c-brand-hover ${plainBrandHover}, not the docs theme's stock ${stock.docs}`);
       await noScript.close();
       await context.close();
