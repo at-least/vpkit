@@ -16,9 +16,9 @@
 //!
 //! A component emits vpkit's classes and nothing else. `Chip`, `Empty` and
 //! `Pager` take `class`, the page's utilities on their root element
-//! (`class="mb-0"`), as `class="vp-empty mb-0"` would by hand; `Dialog`,
-//! `Field` and `Tabs` take none. Tailwind finds them in the app's own
-//! source, where they are written.
+//! (`class="mb-0"`), as `class="vp-empty mb-0"` would by hand;
+//! `AppearanceSwitch`, `Dialog`, `Field` and `Tabs` take none. Tailwind
+//! finds them in the app's own source, where they are written.
 //!
 //! ```
 //! use hypertext::prelude::*;
@@ -43,6 +43,7 @@ mod hint;
 pub mod icon;
 mod pager;
 mod tabs;
+mod toggle;
 
 pub use chip::Chip;
 pub use dialog::Dialog;
@@ -51,6 +52,7 @@ pub use field::{Field, FieldError, FieldHint, field_error_id, field_hint_id};
 pub use hint::Hint;
 pub use pager::Pager;
 pub use tabs::{Tab, Tabs};
+pub use toggle::AppearanceSwitch;
 
 #[cfg(test)]
 mod example;

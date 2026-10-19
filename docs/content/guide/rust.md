@@ -42,6 +42,7 @@ A component whose markup is more than one class on one element:
 
 | Rust | Classes | Page |
 | --- | --- | --- |
+| [`AppearanceSwitch`](../../rust/vpkit/struct.AppearanceSwitch.html) | `vp-toggle`, its appearance variant | [Toggle](@/components/toggle.md) |
 | [`Chip`](../../rust/vpkit/struct.Chip.html) | `vp-chip` | [Chip](@/components/chip.md) |
 | [`Dialog`](../../rust/vpkit/struct.Dialog.html) | `vp-dialog` | [Dialog](@/components/dialog.md) |
 | [`Empty`](../../rust/vpkit/struct.Empty.html) | `vp-empty` | [Empty State](@/components/empty.md) |

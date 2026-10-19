@@ -26,4 +26,6 @@ The page's script keeps `aria-checked` in step; here an `onclick`:
 
 {{ <vp_example file="toggle/appearance" title="The appearance switch" layout="row" /> }}
 
+In Rust: [`AppearanceSwitch`](../../rust/vpkit/struct.AppearanceSwitch.html), from vpkit's [crate](@/guide/rust.md), writes it, with the `aria-label` you give it and, for the page's script, an optional id.
+
 The script that toggles `.dark` and `aria-checked` is the page's ([vpkit-zola](https://github.com/at-least/vpkit-zola)'s `vpkit-zola.js` has VitePress's).

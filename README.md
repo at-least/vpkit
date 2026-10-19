@@ -41,7 +41,7 @@ Then import it from your Tailwind entry stylesheet, after Tailwind itself, with 
 
 ### The crate
 
-`rust/` is the crate `vpkit`: hypertext components for the markup that is more than one class (`Chip`, `Dialog`, `Empty`, `Field`, `Hint`, `Pager`, `Tabs`), Lucide's icons as inline SVG (`vpkit::icon`), and, with the `css` feature, every stylesheet embedded (`vpkit::css`). Its documentation, every component's fields with examples its tests run, is at <https://at-least.github.io/vpkit/rust/vpkit/>; the site's [Rust](docs/content/guide/rust.md) page lists what it has.
+`rust/` is the crate `vpkit`: hypertext components for the markup that is more than one class (`AppearanceSwitch`, `Chip`, `Dialog`, `Empty`, `Field`, `Hint`, `Pager`, `Tabs`), Lucide's icons as inline SVG (`vpkit::icon`), and, with the `css` feature, every stylesheet embedded (`vpkit::css`). Its documentation, every component's fields with examples its tests run, is at <https://at-least.github.io/vpkit/rust/vpkit/>; the site's [Rust](docs/content/guide/rust.md) page lists what it has.
 
 ### The docs theme
 
