@@ -13,7 +13,7 @@ use crate::icon::{MOON, SUN};
 /// use hypertext::prelude::*;
 /// use vpkit::AppearanceSwitch;
 ///
-/// let html = rsx! { <AppearanceSwitch label="Appearance" id="appearance" /> }.render();
+/// let html = rsx! { <AppearanceSwitch label="Appearance" id="appearance" .. /> }.render();
 /// assert!(html.as_inner().starts_with(concat!(
 ///     r#"<button class="vp-toggle" id="appearance" data-variant="appearance" type="button" role="switch" aria-checked="false" aria-label="Appearance">"#,
 ///     r#"<span class="vp-toggle-check"><span class="vp-toggle-icon"><svg class="vp-toggle-light""#,
@@ -27,6 +27,9 @@ pub struct AppearanceSwitch<'a> {
     pub label: &'a str,
     /// The button's id, for the page's script; `""` leaves it out.
     pub id: &'a str,
+    /// The hint shown on hover (`title`): the action, as VitePress's
+    /// "Switch to dark theme", not the name; `""` leaves it out.
+    pub title: &'a str,
 }
 
 impl Renderable for AppearanceSwitch<'_> {
@@ -37,7 +40,7 @@ impl Renderable for AppearanceSwitch<'_> {
             "vpkit::AppearanceSwitch needs a label"
         );
         rsx! {
-            <button class="vp-toggle" id=(self.id)[!self.id.is_empty()] data-variant="appearance" type="button" role="switch" aria-checked="false" aria-label=(self.label)>
+            <button class="vp-toggle" id=(self.id)[!self.id.is_empty()] data-variant="appearance" type="button" role="switch" aria-checked="false" aria-label=(self.label) title=(self.title)[!self.title.is_empty()]>
                 <span class="vp-toggle-check">
                     <span class="vp-toggle-icon">
                         (SUN.class("vp-toggle-light"))
@@ -67,12 +70,15 @@ mod tests {
     }
 
     #[test]
-    fn writes_the_id_and_escapes_the_label() {
-        let html = rsx! { <AppearanceSwitch label="Dark & light" id="themeToggle" /> }.render();
+    fn writes_the_id_and_the_title_and_escapes_the_label() {
+        let html = rsx! {
+            <AppearanceSwitch label="Dark & light" id="themeToggle" title="toggle dark mode" />
+        }
+        .render();
         assert!(
             html.as_inner().starts_with(concat!(
                 r#"<button class="vp-toggle" id="themeToggle" data-variant="appearance" type="button""#,
-                r#" role="switch" aria-checked="false" aria-label="Dark &amp; light">"#,
+                r#" role="switch" aria-checked="false" aria-label="Dark &amp; light" title="toggle dark mode">"#,
             )),
             "{}",
             html.as_inner()
