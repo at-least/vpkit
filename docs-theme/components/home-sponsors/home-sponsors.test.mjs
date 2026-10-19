@@ -8,7 +8,7 @@
 // link (the button is the layout's VPButton). Then the example inside a
 // vp-doc, whose rule for an h2 the message keeps out, against itself alone.
 
-import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -49,7 +49,7 @@ for (const [name, width] of [['home-sponsors', undefined], ['home-sponsors at 80
 // inside a vp-doc: the example (which has no action), both sides vpkit's
 cases.push({
   name: 'home-sponsors in a doc',
-  html: `<div class="vp-doc">${ex('sponsors')}</div>`,
+  html: inDoc(ex('sponsors')),
   reference: `<div>${ex('sponsors')}</div>`,
   checks: CHECKS.filter((c) => c.target !== '.vp-home-sponsors-action').map(({ refTarget, ...check }) => check),
 });

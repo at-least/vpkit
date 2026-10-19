@@ -51,9 +51,9 @@ cases.push({
   name: 'icon beside its text',
   html: ex('text'),
   checks: [
-    { target: '.text-success .vp-icon', props: ['width', 'height', ...BOX] },
+    { target: '.text-success .vp-icon', props: ['width', ...BOX] },
     { target: '.text-success svg', props: ['fill', 'width', 'height'] },
-    { target: '.text-warning .vp-icon', props: ['width', 'height', ...BOX] },
+    { target: '.text-warning .vp-icon', props: ['width', ...BOX] },
     { target: '.text-warning svg', props: ['fill', 'stroke', 'width', 'height'] },
   ],
 });

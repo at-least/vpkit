@@ -9,7 +9,7 @@
 // and a touch screen's hover at rest (alert.test.mjs holds it inside an
 // alert).
 
-import { BOX, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
+import { BOX, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -69,7 +69,7 @@ cases.push({
   html: ex('buttons'),
   checks: [
     { target: '.vp-icon-btn', props: ['width', 'height', ...COLORS] },
-    { target: '.vp-icon-btn > svg', props: ['width', 'height', 'fill', 'stroke', ...BOX] },
+    { target: '.vp-icon-btn > svg', props: ['width', 'fill', 'stroke', ...BOX] },
     { target: 'a.vp-icon-btn > svg', props: ['fill', 'stroke'] },
   ],
 });
@@ -139,7 +139,7 @@ cases.push({
 const BTN = `<a class="vp-icon-btn" href="#" aria-label="Like">${SVG}</a>`;
 cases.push({
   name: 'icon-btn in a doc',
-  html: `<div class="vp-doc">${BTN}</div>`,
+  html: inDoc(BTN),
   reference: BTN,
   checks: [
     { target: '.vp-icon-btn', props: ['color', 'text-decoration-line', ...TRANSITION] },

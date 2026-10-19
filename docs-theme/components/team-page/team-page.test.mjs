@@ -11,7 +11,7 @@
 // whose reset of a grid's padding the page's padding outranks, against the
 // page alone.
 
-import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -78,7 +78,7 @@ for (const [suffix, width] of [['', undefined], [" at a phone's width", 375]]) {
 // reset of it there, the example against itself alone
 cases.push({
   name: 'team-page in a doc',
-  html: `<div class="vp-doc">${ex('page')}</div>`,
+  html: inDoc(ex('page')),
   reference: `<div>${ex('page')}</div>`,
   checks: [
     { target: '.vp-team-page', props: MARGIN },

@@ -5,7 +5,7 @@
 // at rest and the list inside a vp-doc (alert.test.mjs holds a crumb
 // inside an alert).
 
-import { MARGIN, OUTLINE, PADDING, examples } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -69,7 +69,7 @@ cases.push({
 // there: not compared
 cases.push({
   name: 'breadcrumb in a doc',
-  html: `<div class="vp-doc">${ex('path')}</div>`,
+  html: inDoc(ex('path')),
   reference: `<div>${ex('path')}</div>`,
   checks: [
     { target: '.vp-breadcrumb', props: ['display', ...MARGIN, ...PADDING, 'list-style-type', 'height'] },

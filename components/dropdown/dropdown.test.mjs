@@ -10,7 +10,7 @@
 // values, the padding local, the focus ring, a touch screen, a vp-doc
 // around it (alert.test.mjs holds an item inside an alert).
 
-import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -164,7 +164,7 @@ const LOOK = ['color', 'text-decoration-line', 'font-weight'];
   const html = `<div class="vp-dropdown">${item('Profile', 'item')}</div>`;
   cases.push({
     name: 'dropdown item in a doc',
-    html: `<div class="vp-doc">${html}</div>`,
+    html: inDoc(html),
     reference: html,
     checks: [
       { target: T('item'), props: [...LOOK, ...TRANSITION] },
@@ -176,7 +176,7 @@ const LOOK = ['color', 'text-decoration-line', 'font-weight'];
   const html = `<div class="vp-dropdown">${group('g', 'Sort by', item('Name'))}</div>`;
   cases.push({
     name: 'dropdown title in a doc',
-    html: `<div class="vp-doc">${html}</div>`,
+    html: inDoc(html),
     reference: html,
     checks: [{ target: T('g-title'), props: ['margin-top', 'margin-bottom', 'line-height'] }],
   });

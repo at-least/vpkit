@@ -85,12 +85,8 @@ function fittedPalette() {
 // 0.0001px and can tip layout's 1/64 px rounding. A check's `tolerance`
 // widens that for a stack of such lines. Everything else compares exactly.
 const PX = /^-?\d+(\.\d+)?px$/;
-// A transparent shadow with no offset, blur or spread paints nothing;
-// Tailwind's shadow utilities put four of them before the real one.
-const NO_SHADOW = /rgba\(0, 0, 0, 0\) 0px 0px 0px 0px(, )?/g;
-function same(a, b, prop, tolerance = 1 / 32) {
+function same(a, b, tolerance = 1 / 32) {
   if (a === undefined || b === undefined) return false;
-  if (prop === 'box-shadow') [a, b] = [a.replace(NO_SHADOW, ''), b.replace(NO_SHADOW, '')];
   if (a === b) return true;
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
@@ -242,7 +238,7 @@ async function runCase({ suite, c }) {
         const have = suite.golden[c.name]?.[mode]?.[key(check)];
         for (const prop of check.props) {
           compared.golden++;
-          if (same(have?.[prop], values[prop], prop, check.tolerance)) continue;
+          if (same(have?.[prop], values[prop], check.tolerance)) continue;
           if (UPDATE) continue;
           failures.push(`${where} ${prop}: golden ${have?.[prop] ?? '(none)'} | vpkit ${values[prop]}`);
         }
@@ -263,7 +259,7 @@ async function runCase({ suite, c }) {
       }
       for (const prop of check.props) {
         compared[source]++;
-        if (same(reference[prop], values[prop], prop, check.tolerance)) continue;
+        if (same(reference[prop], values[prop], check.tolerance)) continue;
         failures.push(`${where} ${prop}: ${source} ${reference[prop]} | vpkit ${values[prop]}`);
       }
     }

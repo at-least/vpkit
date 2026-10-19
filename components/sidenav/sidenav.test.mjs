@@ -9,7 +9,7 @@
 // link. vpkit against vpkit: a touch screen's hover at rest, the sidenav
 // inside a vp-doc.
 
-import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -92,7 +92,7 @@ cases.push({
 // title, the list and the links keep their look and place
 cases.push({
   name: 'sidenav in a doc',
-  html: `<div class="vp-doc">${vpkit}</div>`,
+  html: inDoc(vpkit),
   reference: vpkit,
   checks: [
     { target: '.vp-sidenav-title', props: [...TEXT, ...MARGIN, ...PADDING, 'height'] },

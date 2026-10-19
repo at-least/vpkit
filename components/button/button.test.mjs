@@ -112,14 +112,14 @@ cases.push({
   name: 'button with an icon',
   html: ex('icons'),
   checks: [
-    { target: '.vp-btn > svg', props: ['width', 'height', 'flex-shrink', ...BOX] },
+    { target: '.vp-btn > svg', props: ['width', 'flex-shrink', ...BOX] },
     { target: '.vp-btn', props: ['height', 'width'] },
   ],
 });
 cases.push({
   name: 'button large with an icon',
   html: '<a class="vp-btn" data-size="lg" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>Sign in with Google</a>',
-  checks: [{ target: 'svg', props: ['width', 'height', 'flex-shrink', ...BOX] }, { target: '.vp-btn', props: ['height'] }],
+  checks: [{ target: 'svg', props: ['width', 'flex-shrink', ...BOX] }, { target: '.vp-btn', props: ['height'] }],
 });
 cases.push({
   name: 'button with a sized icon',

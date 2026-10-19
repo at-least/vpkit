@@ -4,7 +4,7 @@
 // at rest, a touch screen's hover at rest, the frame inside a vp-doc
 // against itself alone.
 
-import { BORDER, BORDER_COLOR, MARGIN, OUTLINE, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
+import { BORDER, BORDER_COLOR, MARGIN, OUTLINE, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -58,7 +58,7 @@ cases.push({
 // its underline's absence and its hover, the image its margin
 cases.push({
   name: 'thumb in a doc',
-  html: `<div class="vp-doc">${link}</div>`,
+  html: inDoc(link),
   reference: link,
   checks: [
     { target: '.vp-thumb', props: FRAME },

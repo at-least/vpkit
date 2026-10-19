@@ -9,7 +9,7 @@
 // selected tab, those WAI-ARIA treats as false), a touch screen, the focus
 // ring (inset, the bar clipping outside a tab), a link tab inside a vp-doc.
 
-import { OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
+import { OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -102,7 +102,7 @@ cases.push({
 // keeps its look, at rest, current and hovered
 cases.push({
   name: 'tabs links in a doc',
-  html: `<div class="vp-doc">${ex('links')}</div>`,
+  html: inDoc(ex('links')),
   reference: ex('links'),
   checks: [
     { target: '.vp-tabs-tab:not([aria-current])', props: ['color', 'text-decoration-line', 'font-weight', ...TRANSITION] },

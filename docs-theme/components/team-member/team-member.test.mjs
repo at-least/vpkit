@@ -13,7 +13,7 @@
 // height, where VPSocialLink is 2.25rem) and the focus ring on the sponsor
 // strip.
 
-import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -113,7 +113,7 @@ cases.push({
 // line is not among its props)
 cases.push({
   name: 'team-member in a doc',
-  html: `<div class="vp-doc">${ex('member')}</div>`,
+  html: inDoc(ex('member')),
   reference: `<div>${ex('member')}</div>`,
   checks: CHECKS.map(({ refTarget, source, why, ...check }) => check),
 });

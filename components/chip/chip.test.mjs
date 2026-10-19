@@ -65,7 +65,7 @@ cases.push({
   const chip = `<p>${ex('basic')}</p>`;
   cases.push({
     name: 'chip in a doc',
-    html: `<div class="vp-doc">${chip}</div>`,
+    html: inDoc(chip),
     reference: chip,
     checks: [
       { target: '.vp-chip-remove', props: ['color', 'text-decoration-line', ...PADDING, ...MARGIN] },

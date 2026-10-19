@@ -17,7 +17,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ALIAS, UNMAPPED } from '../scripts/contract.mjs';
-import { modeValues, parseBlocks, resolve } from '../scripts/css.mjs';
+import { modeValues, parseBlocks, resolve, stripComments } from '../scripts/css.mjs';
 import { ROOT, cssFiles } from '../scripts/components.mjs';
 
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
@@ -69,7 +69,7 @@ else {
 // navbar's heights (VitePress's .VPSidebar is the layout's .vp-sidebar),
 // the CJK font families (tokens.css's)
 function collect(css, into = new Map()) {
-  const src = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const src = stripComments(css);
   const stack = [];
   let i = 0;
   while (i < src.length) {

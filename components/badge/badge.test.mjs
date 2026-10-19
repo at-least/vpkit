@@ -3,7 +3,7 @@
 // footer, VPBadge's own rules. vpkit's own, golden: the success type, the
 // outline, the dot.
 
-import { BORDER, COLORS, MARGIN, PADDING, RADIUS, examples } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, RADIUS, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -40,8 +40,8 @@ for (const level of [1, 2, 3, 4, 5, 6]) {
   for (const small of [false, true]) {
     cases.push({
       name: `badge in h${level}${small ? ', small' : ''}`,
-      upstream: { ...UPSTREAM, html: `<div class="vp-doc"><h${level}>Title <span class="VPBadge tip${small ? ' small' : ''}">beta</span></h${level}></div>` },
-      html: `<div class="vp-doc"><h${level}>Title <span class="vp-badge" data-variant="tip"${small ? ' data-size="sm"' : ''}>beta</span></h${level}></div>`,
+      upstream: { ...UPSTREAM, html: inDoc(`<h${level}>Title <span class="VPBadge tip${small ? ' small' : ''}">beta</span></h${level}>`) },
+      html: inDoc(`<h${level}>Title <span class="vp-badge" data-variant="tip"${small ? ' data-size="sm"' : ''}>beta</span></h${level}>`),
       checks: [{ target: '.vp-badge', refTarget: '.VPBadge', props: [...BOXP, 'vertical-align', ...COLORS] }],
     });
   }

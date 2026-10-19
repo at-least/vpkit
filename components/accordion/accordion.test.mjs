@@ -7,7 +7,7 @@
 // VitePress masks a span; the focus ring. vpkit against vpkit: a touch
 // screen's hover at rest, the title inside a vp-doc.
 
-import { MARGIN, OUTLINE, PADDING, TRANSITION, examples } from '../../test/harness.mjs';
+import { MARGIN, OUTLINE, PADDING, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -75,7 +75,7 @@ cases.push({
 // rule for a summary gives it margins: the title keeps its place
 cases.push({
   name: 'accordion title in a doc',
-  html: `<div class="vp-doc">${section(true)}</div>`,
+  html: inDoc(section(true)),
   reference: `<div>${section(true)}</div>`,
   checks: [
     { target: '.vp-accordion-title', props: [...MARGIN, 'line-height', 'font-size', 'font-weight', 'color', 'height'] },

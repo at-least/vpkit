@@ -165,11 +165,7 @@ for (const name of names) {
       minimum('brand', color(values, 'gray-soft', elv), 4.5);
 
       // the brand button: white text on its ground at rest, hovered and pressed
-      for (const fill of ['brand-fill', 'brand-fill-hover', 'brand-fill-active']) {
-        checks++;
-        const ratio = contrast(white, hex(fill));
-        if (ratio < 3 - 1e-9) fail(`${label}: --vp-c-${fill} ${hex(fill)} has contrast ${ratio.toFixed(2)} < 3 with white`);
-      }
+      for (const fill of ['brand-fill', 'brand-fill-hover', 'brand-fill-active']) minimum(fill, white, 3);
 
       // a hovered link, as text, and dimmed to 0.75 in a container
       // (prose.css's custom blocks and the alert dim a hovered link), on

@@ -29,6 +29,7 @@ import { chromium } from 'playwright-chromium';
 
 import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unwrapDeep } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
+import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, SIDES } from './harness.mjs';
 import { GLOBAL, LAYOUT, rootOf } from './layout-map.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -222,13 +223,10 @@ const known = [
   },
 ];
 
-const SIDES = ['top', 'right', 'bottom', 'left'];
 const PROPS = [
   'display', 'position', ...SIDES, 'z-index', 'box-sizing',
   'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height',
-  ...SIDES.map((s) => `margin-${s}`), ...SIDES.map((s) => `padding-${s}`),
-  ...SIDES.flatMap((s) => [`border-${s}-width`, `border-${s}-style`, `border-${s}-color`]),
-  ...['top-left', 'top-right', 'bottom-right', 'bottom-left'].map((c) => `border-${c}-radius`),
+  ...MARGIN, ...PADDING, ...BORDER, ...BORDER_COLOR, ...RADIUS,
   'flex-direction', 'flex-wrap', 'flex-grow', 'flex-shrink', 'flex-basis', 'order',
   'justify-content', 'align-items', 'align-self', 'row-gap', 'column-gap',
   'grid-template-columns', 'grid-template-rows',
@@ -460,21 +458,6 @@ function familyCss(c, scopeOf) {
     .join('\n');
 }
 
-// lengths match within 1/32px: layout rounds to 1/64px
-const PX = /^-?\d+(\.\d+)?px$/;
-// a data: URL's image, decoded and spelled one way: Tailwind's compiler
-// re-encodes VitePress's SVG URLs (' as %27, no space before />)
-const DATA_URL = /url\("data:image\/svg\+xml,([^"]*)"\)/g;
-const svgText = (v) =>
-  v.replace(DATA_URL, (_, data) => `url(svg:${decodeURIComponent(data).replace(/"/g, "'").replace(/\s*(\/?>)/g, '$1').replace(/\s+/g, ' ').trim()})`);
-
-function same(a, b) {
-  if (typeof a === 'string' && typeof b === 'string' && a.includes('data:image/svg+xml')) [a, b] = [svgText(a), svgText(b)];
-  if (a === b) return true;
-  if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) <= 1 / 32;
-  return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= 1 / 32;
-}
-
 const BODY = 'color:var(--vp-c-text-1);background-color:var(--vp-c-bg);margin:0';
 
 async function render(browser, css, body, width, dark, states) {
@@ -573,7 +556,7 @@ try {
         up.forEach((u, i) => {
           for (const prop of Object.keys(u)) {
             compared++;
-            if (same(u[prop], vp[i][prop])) continue;
+            if (u[prop] === vp[i][prop]) continue;
             const delta = known.find((k) => k.case.test(label) && k.element.test(where[i]) && k.prop === prop);
             if (!delta) {
               failures.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);

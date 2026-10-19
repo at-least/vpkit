@@ -7,7 +7,7 @@
 // truncating. vpkit against vpkit: the
 // title inside a vp-doc against itself alone.
 
-import { MARGIN, PADDING, TRANSITION, examples } from '../../test/harness.mjs';
+import { MARGIN, PADDING, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -81,7 +81,7 @@ cases.push({
 // and weights any <a>: the title keeps its look, at rest and hovered
 cases.push({
   name: 'topbar title in a doc',
-  html: `<div class="vp-doc">${BAR}</div>`,
+  html: inDoc(BAR),
   reference: `<div>${BAR}</div>`,
   checks: [
     { target: '.vp-topbar-title', props: ['color', 'font-weight', 'text-decoration-line', ...TRANSITION] },

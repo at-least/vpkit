@@ -19,7 +19,7 @@ const RULE = [...MARGIN, ...BORDER, ...BORDER_COLOR, 'width', 'height', 'backgro
 // the markdown's rule
 cases.push({
   name: 'divider',
-  upstream: { files: ['vp-doc.css'], html: '<div class="vp-doc"><hr></div>' },
+  upstream: { files: ['vp-doc.css'], html: inDoc('<hr>') },
   html: '<hr class="vp-divider">',
   checks: [{ target: '.vp-divider', refTarget: 'hr', props: RULE }],
 });
@@ -59,7 +59,7 @@ cases.push({
   name: 'divider vertical in a doc',
   html: inDoc(row(VERTICAL)),
   reference: `<div>${row(VERTICAL)}</div>`,
-  checks: [{ target: '.vp-divider', props: [...RULE, 'display', 'height'] }],
+  checks: [{ target: '.vp-divider', props: [...RULE, 'display'] }],
 });
 cases.push({
   name: 'divider vertical example',

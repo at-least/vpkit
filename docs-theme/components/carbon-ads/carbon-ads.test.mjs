@@ -6,7 +6,7 @@
 // addition keeps the markdown's underline off the ad's links, against
 // itself outside one. The example is golden.
 
-import { MARGIN, PADDING, RADIUS, TRANSITION, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -54,7 +54,7 @@ cases.push({
 // against itself alone
 cases.push({
   name: 'carbon ads in a doc',
-  html: `<div class="vp-doc">${ad('vp-carbon-ads')}</div>`,
+  html: inDoc(ad('vp-carbon-ads')),
   reference: `<div>${ad('vp-carbon-ads')}</div>`,
   checks: CHECKS.filter((c) => !c.state),
 });

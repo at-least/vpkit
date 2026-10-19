@@ -8,7 +8,7 @@
 // where VitePress paints 1px of background. Then the example inside a
 // vp-doc, whose rule for an h2 draws a line above it, against itself alone.
 
-import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -47,7 +47,7 @@ for (const [name, width] of [['team-section', undefined], ['team-section at 800p
 // title's ::before on each)
 cases.push({
   name: 'team-section in a doc',
-  html: `<div class="vp-doc">${ex('section')}</div>`,
+  html: inDoc(ex('section')),
   reference: `<div>${ex('section')}</div>`,
   checks: CHECKS.map(({ refTarget, refPseudo, source, why, ...check }) => check),
 });

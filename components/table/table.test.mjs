@@ -10,7 +10,7 @@
 // always shown, the button sort against the link, the stacked table wide
 // against the table without the class.
 
-import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, TRANSITION, examples } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, OUTLINE, PADDING, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -27,7 +27,7 @@ const LINE = ['border-top-width', 'border-top-style', 'border-top-color'];
 const CELL = [...BORDER, ...COLORS, ...PADDING, 'text-align', 'font-size', 'font-weight', 'height'];
 cases.push({
   name: 'table',
-  upstream: { files: ['vp-doc.css'], html: `<div class="vp-doc"><table>${ROWS}</table></div>` },
+  upstream: { files: ['vp-doc.css'], html: inDoc(`<table>${ROWS}</table>`) },
   html: `<table class="vp-table">${ROWS}</table>`,
   checks: [
     { target: '.vp-table', refTarget: 'table', props: ['display', 'border-collapse', ...MARGIN, 'overflow-x', 'height', 'width'] },

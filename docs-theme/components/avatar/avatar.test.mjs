@@ -5,7 +5,7 @@
 // compared); then inside a vp-doc against itself alone. The examples'
 // sizes and the initials are golden: vpkit's uses of the class.
 
-import { MARGIN, RADIUS, examples } from '../../../test/harness.mjs';
+import { MARGIN, RADIUS, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -33,7 +33,7 @@ cases.push({
 // above and below: against itself alone
 cases.push({
   name: 'avatar in a doc',
-  html: `<div class="vp-doc">${AVATAR}</div>`,
+  html: inDoc(AVATAR),
   reference: `<div>${AVATAR}</div>`,
   checks: [{ target: '.vp-avatar', props: [...MARGIN, 'width', 'height', 'max-width'] }],
 });

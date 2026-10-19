@@ -10,7 +10,7 @@
 // the small grid of three cards, is golden on the grid's own geometry: its
 // cards are vp-team-member's, whose stylesheet sizes them.
 
-import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -62,7 +62,7 @@ for (const width of [360, 400]) {
 // indent and space above every item but the first: against itself alone
 cases.push({
   name: 'team members in a doc',
-  html: `<div class="vp-doc">${vpkit(3)}</div>`,
+  html: inDoc(vpkit(3)),
   reference: `<div>${vpkit(3)}</div>`,
   checks: [
     { target: GRID, props: ['list-style-type', ...PADDING, ...MARGIN, 'width', 'height'] },

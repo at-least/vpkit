@@ -5,7 +5,7 @@
 // whose rules for a heading and a paragraph it keeps out, against itself
 // alone. All VitePress's: nothing golden.
 
-import { MARGIN, PADDING, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -31,7 +31,7 @@ for (const [name, width] of [['team-header', undefined], ['team-header at 800px'
 // inside a vp-doc: the example, both sides vpkit's
 cases.push({
   name: 'team-header in a doc',
-  html: `<div class="vp-doc">${ex('header')}</div>`,
+  html: inDoc(ex('header')),
   reference: `<div>${ex('header')}</div>`,
   checks: CHECKS.map(({ refTarget, ...check }) => check),
 });

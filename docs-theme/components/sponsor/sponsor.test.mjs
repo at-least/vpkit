@@ -9,7 +9,7 @@
 // count; on a touch screen against itself at rest; then inside a vp-doc
 // against itself outside one. The example is golden.
 
-import { MARGIN, PADDING, RADIUS, TRANSITION, examples } from '../../../test/harness.mjs';
+import { MARGIN, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -107,7 +107,7 @@ cases.push({
 // margins, an image margins and a link an underline: against itself alone
 cases.push({
   name: 'sponsors in a doc',
-  html: `<div class="vp-doc">${box(true)}</div>`,
+  html: inDoc(box(true)),
   reference: `<div>${box(true)}</div>`,
   checks: [
     { target: t('tier'), props: [...MARGIN, ...PADDING, 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'height'] },

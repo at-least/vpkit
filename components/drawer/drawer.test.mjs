@@ -11,7 +11,7 @@
 // no transform on the open panel. vpkit against vpkit: a fixed box inside
 // the open drawer against one in the page, the drawer inside a vp-doc.
 
-import { BORDER, COLORS, MARGIN, PADDING, SIDES, TRANSITION, examples } from '../../test/harness.mjs';
+import { BORDER, COLORS, MARGIN, PADDING, SIDES, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -113,7 +113,7 @@ cases.push({
 // is the page's
 cases.push({
   name: 'drawer in a doc',
-  html: `<div class="vp-doc">${drawer}</div>`,
+  html: inDoc(drawer),
   reference: `<div>${drawer}</div>`,
   checks: [{ target: '.vp-drawer', props: [...PADDING, ...COLORS, 'width', 'opacity'] }],
 });
