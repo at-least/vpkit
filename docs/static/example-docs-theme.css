@@ -3192,6 +3192,57 @@ pre, code, kbd, samp {
   .vp-doc .vp-carbon-ads a {
     text-decoration: none;
   }
+  .vp-home-sponsors {
+    margin: 6rem 0;
+    border-top: 1px solid var(--vp-c-gutter);
+    padding: 5.5rem 1.5rem 0;
+  }
+  @media (min-width: 48rem) {
+    .vp-home-sponsors {
+      margin: 8rem 0;
+      padding: 5.5rem 3rem 0;
+    }
+  }
+  @media (min-width: 60rem) {
+    .vp-home-sponsors {
+      padding: 5.5rem 4rem 0;
+    }
+  }
+  .vp-home-sponsors-container {
+    margin: 0 auto;
+    max-width: 72rem;
+  }
+  .vp-home-sponsors-love {
+    margin: 0 auto;
+    width: fit-content;
+    font-size: 1.75rem;
+    color: var(--vp-c-text-3);
+  }
+  :where(.vp-home-sponsors-love) > svg {
+    display: inline-block;
+    vertical-align: baseline;
+    width: 1em;
+    height: 1em;
+  }
+  .vp-home-sponsors-message {
+    margin: 0 auto;
+    border-top: none;
+    padding-top: 0.625rem;
+    max-width: 20rem;
+    text-align: center;
+    letter-spacing: normal;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+  .vp-home-sponsors-list {
+    padding-top: 2rem;
+  }
+  .vp-home-sponsors-action {
+    padding-top: 2.5rem;
+    text-align: center;
+  }
   .vp-sponsor {
     --vp-sponsor-radius: 1rem;
     --vp-sponsor-tier-padding: 0.8125rem 0 0.6875rem;

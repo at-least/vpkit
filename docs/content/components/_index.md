@@ -87,6 +87,7 @@ VitePress's components for a docs site, in `docs-theme/components/`, on VitePres
 | --- | --- | --- |
 | [Avatar](@/components/avatar.md) | `vp-avatar` | the picture of VitePress's `VPTeamMembersItem` |
 | [Carbon Ads](@/components/carbon-ads.md) | `vp-carbon-ads` | VitePress's `VPCarbonAds` |
+| [Home Sponsors](@/components/home-sponsors.md) | `vp-home-sponsors` | VitePress's `VPHomeSponsors` |
 | [Sponsors](@/components/sponsor.md) | `vp-sponsor` | VitePress's `VPSponsors` and its grid |
 | [Team Header](@/components/team-header.md) | `vp-team-header` | VitePress's `VPTeamPageTitle` |
 | [Team Member](@/components/team-member.md) | `vp-team-member` | VitePress's `VPTeamMembersItem` |

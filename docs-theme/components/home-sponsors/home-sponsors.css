@@ -1,0 +1,103 @@
+/* vpkit's docs theme — home sponsors, `vp-home-sponsors`, from VitePress's
+ * VPHomeSponsors: a home page's sponsors section, a heart, a message, the
+ * sponsors' box and an action under it. An optional import:
+ * `@import "vpkit/docs-theme/components/home-sponsors/home-sponsors.css";`
+ *
+ *   <section class="vp-home-sponsors">
+ *     <div class="vp-home-sponsors-container">
+ *       <div class="vp-home-sponsors-love"><svg aria-hidden="true" viewBox="0 0 24 24" …>…</svg></div>
+ *       <h2 class="vp-home-sponsors-message">Made possible by its sponsors.</h2>
+ *       <div class="vp-home-sponsors-list"><div class="vp-sponsor">…</div></div>
+ *       <div class="vp-home-sponsors-action"><a class="vp-button vp-button--medium vp-button--sponsor" href="…">Become a sponsor</a></div>
+ *     </div>
+ *   </section>
+ *
+ * The block a gutter border above, 5.5rem of padding over its content and
+ * 1.5rem at each side (3rem from 48rem wide, 4rem from 60rem), 6rem above
+ * and below (8rem from 48rem). No attributes; the parts:
+ *   vp-home-sponsors-container   at most 72rem wide, centered
+ *   vp-home-sponsors-love        the heart: its box as wide as it and
+ *                                centered, 1.75rem, in text-3; the SVG
+ *                                straight inside 1em square on the
+ *                                baseline, as VitePress's mask sits (behind
+ *                                :where(), so a rule of the page's wins)
+ *   vp-home-sponsors-message     the message, 0.625rem under, 1rem at 1.5,
+ *                                weight 500, text-2, centered, at most 20rem
+ *                                wide
+ *   vp-home-sponsors-list        the sponsors (a vp-sponsor box), 2rem under
+ *   vp-home-sponsors-action      the action, 2.5rem under, centered: the
+ *                                docs theme's sponsor button (the layout's
+ *                                VPButton, vp-button vp-button--sponsor)
+ * The message and the action may be left out, as VitePress's may.
+ *
+ * VitePress's: every length, the gutter, text-2 and text-3. vpkit's: the
+ * heart an inline SVG (Lucide's, the crate's icon::HEART) where VitePress's
+ * is a vpi-heart mask; one wrapper fewer (VitePress's header, unstyled);
+ * the padding over the content in the shorthand, where VitePress needs
+ * !important to keep it under its later one. Inside the home page's
+ * markdown the docs theme's layout stretches the block to the window's
+ * width, as VitePress's does; inside a vp-doc (prose.css, below the
+ * components) the message keeps the markdown's rule for an h2 out, its
+ * line, margins and type, as VitePress resets them. */
+
+@layer components {
+  .vp-home-sponsors {
+    margin: 6rem 0;
+    border-top: 1px solid var(--vp-c-gutter);
+    padding: 5.5rem 1.5rem 0;
+  }
+
+  @media (min-width: 48rem) {
+    .vp-home-sponsors {
+      margin: 8rem 0;
+      padding: 5.5rem 3rem 0;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .vp-home-sponsors {
+      padding: 5.5rem 4rem 0;
+    }
+  }
+
+  .vp-home-sponsors-container {
+    margin: 0 auto;
+    max-width: 72rem;
+  }
+
+  .vp-home-sponsors-love {
+    margin: 0 auto;
+    width: fit-content;
+    font-size: 1.75rem;
+    color: var(--vp-c-text-3);
+  }
+
+  :where(.vp-home-sponsors-love) > svg {
+    display: inline-block;
+    vertical-align: baseline;
+    width: 1em;
+    height: 1em;
+  }
+
+  .vp-home-sponsors-message {
+    margin: 0 auto;
+    border-top: none;
+    padding-top: 0.625rem;
+    max-width: 20rem;
+    text-align: center;
+    letter-spacing: normal;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+  }
+
+  .vp-home-sponsors-list {
+    padding-top: 2rem;
+  }
+
+  .vp-home-sponsors-action {
+    padding-top: 2.5rem;
+    text-align: center;
+  }
+}

@@ -108,14 +108,12 @@ export const LAYOUT = {
   VPNavScreen: { file: 'components/VPNavScreen.vue' },
 };
 
-// classes that keep their names in every component: global ones (mac: on
-// :root, VitePress's client sets it on Apple devices; vp-external-link-icon
-// and no-icon: what vp-doc.css draws the external link arrow by, which
-// VPLink and VPSocialLink set), and VitePress components vpkit does not
-// port that another's rules name (VPHomeContent stretches a VPHomeSponsors
-// in the home page's markdown to the window's width)
+// classes that keep their names in every component, the global ones (mac:
+// on :root, VitePress's client sets it on Apple devices;
+// vp-external-link-icon and no-icon: what vp-doc.css draws the external
+// link arrow by, which VPLink and VPSocialLink set)
 export const GLOBAL = [
-  'dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon', 'VPHomeSponsors',
+  'dark', 'mac', 'vp-doc', 'visually-hidden', 'vp-external-link-icon', 'no-icon',
   // the markdown's code groups, in the local search's excerpts
   'vp-code-group', 'tabs',
 ];
@@ -123,9 +121,9 @@ export const isGlobal = (name) => GLOBAL.includes(name) || name.startsWith('vpi-
 
 // VitePress components the docs theme has as components of their own
 // (docs-theme/components/), named by a layout component's rules
-// (VPHomeContent stretches a VPTeamPage in the home page's markdown to the
-// window's width): their vpkit names
-export const OUTSIDE = { VPTeamPage: 'vp-team-page' };
+// (VPHomeContent stretches a VPHomeSponsors or a VPTeamPage in the home
+// page's markdown to the window's width): their vpkit names
+export const OUTSIDE = { VPHomeSponsors: 'vp-home-sponsors', VPTeamPage: 'vp-team-page' };
 
 export function rootOf(component) {
   return LAYOUT[component].root ?? component;

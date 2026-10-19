@@ -473,7 +473,7 @@
   }
 
   /* stretch to full viewport width, overflow is clipped by .VPHome */
-  .vp-doc .VPHomeSponsors,
+  .vp-doc .vp-home-sponsors,
   .vp-doc .vp-team-page {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
