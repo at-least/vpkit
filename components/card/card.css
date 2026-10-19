@@ -60,13 +60,12 @@
     transition: border-color var(--vp-duration), background-color var(--vp-duration);
   }
 
-  /* a link card: the brand border hovered, the text's color kept over the
-     markdown's rule for a hovered link */
+  /* a link card: the brand border hovered (the block's color holds over
+     the markdown's rule for a hovered link, a layer below) */
   a.vp-card {
     @media (hover: hover) {
       &:hover {
         border-color: var(--vp-card-hover-border);
-        color: inherit;
       }
     }
   }

@@ -52,10 +52,8 @@
     --vp-btn-border: transparent;
     --vp-btn-text: var(--vp-c-text-1);
     --vp-btn-bg: var(--vp-c-gray-fill);
-    --vp-btn-hover-border: transparent;
     --vp-btn-hover-text: var(--vp-c-text-1);
     --vp-btn-hover-bg: var(--vp-c-gray-fill-hover);
-    --vp-btn-active-border: transparent;
     --vp-btn-active-text: var(--vp-btn-hover-text);
     --vp-btn-active-bg: var(--vp-c-gray-fill-active);
 
@@ -79,14 +77,12 @@
 
     @media (hover: hover) {
       &:hover {
-        border-color: var(--vp-btn-hover-border);
         color: var(--vp-btn-hover-text);
         background-color: var(--vp-btn-hover-bg);
       }
     }
 
     &:active {
-      border-color: var(--vp-btn-active-border);
       color: var(--vp-btn-active-text);
       background-color: var(--vp-btn-active-bg);
       transition: color var(--vp-duration-fast), border-color var(--vp-duration-fast), background-color var(--vp-duration-fast);
@@ -111,7 +107,6 @@
   .vp-btn[data-variant="ghost"] {
     --vp-btn-text: var(--vp-c-text-2);
     --vp-btn-bg: transparent;
-    --vp-btn-hover-text: var(--vp-c-text-1);
     --vp-btn-hover-bg: var(--vp-c-gray-soft);
     --vp-btn-active-bg: var(--vp-c-gray-soft);
   }

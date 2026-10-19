@@ -915,7 +915,6 @@ pre, code, kbd, samp {
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 0.25rem 0.6875rem 0;
-    width: 100%;
     line-height: 1.7142857;
     font-size: 0.875rem;
     font-weight: 500;
@@ -1191,10 +1190,8 @@ pre, code, kbd, samp {
     --vp-btn-border: transparent;
     --vp-btn-text: var(--vp-c-text-1);
     --vp-btn-bg: var(--vp-c-gray-fill);
-    --vp-btn-hover-border: transparent;
     --vp-btn-hover-text: var(--vp-c-text-1);
     --vp-btn-hover-bg: var(--vp-c-gray-fill-hover);
-    --vp-btn-active-border: transparent;
     --vp-btn-active-text: var(--vp-btn-hover-text);
     --vp-btn-active-bg: var(--vp-c-gray-fill-active);
     display: inline-flex;
@@ -1216,13 +1213,11 @@ pre, code, kbd, samp {
     transition: color var(--vp-duration), border-color var(--vp-duration), background-color var(--vp-duration);
     @media (hover: hover) {
       &:hover {
-        border-color: var(--vp-btn-hover-border);
         color: var(--vp-btn-hover-text);
         background-color: var(--vp-btn-hover-bg);
       }
     }
     &:active {
-      border-color: var(--vp-btn-active-border);
       color: var(--vp-btn-active-text);
       background-color: var(--vp-btn-active-bg);
       transition: color var(--vp-duration-fast), border-color var(--vp-duration-fast), background-color var(--vp-duration-fast);
@@ -1243,7 +1238,6 @@ pre, code, kbd, samp {
   .vp-btn[data-variant="ghost"] {
     --vp-btn-text: var(--vp-c-text-2);
     --vp-btn-bg: transparent;
-    --vp-btn-hover-text: var(--vp-c-text-1);
     --vp-btn-hover-bg: var(--vp-c-gray-soft);
     --vp-btn-active-bg: var(--vp-c-gray-soft);
   }
@@ -1292,7 +1286,6 @@ pre, code, kbd, samp {
   @media (hover: hover) {
     a.vp-card:hover {
       border-color: var(--vp-card-hover-border);
-      color: inherit;
     }
   }
   .vp-card[data-variant="outline"] {
