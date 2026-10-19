@@ -88,7 +88,7 @@ function build(out) {
   }
   // the pages' own examples count as sources too: when building elsewhere
   // (--check), they are read from docs/
-  if (out !== DOCS && existsSync(join(DOCS, 'examples/pages'))) {
+  if (out !== DOCS) {
     mkdirSync(examplesDir, { recursive: true });
     cpSync(join(DOCS, 'examples/pages'), join(examplesDir, 'pages'), { recursive: true });
   }
@@ -107,7 +107,6 @@ function build(out) {
 function generated(root) {
   const out = [];
   for (const dir of ['examples', 'static']) {
-    if (!existsSync(join(root, dir))) continue;
     for (const e of readdirSync(join(root, dir), { recursive: true, withFileTypes: true })) {
       if (e.isFile()) out.push(relative(root, join(e.parentPath, e.name)));
     }

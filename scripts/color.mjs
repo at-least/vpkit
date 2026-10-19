@@ -11,7 +11,7 @@ const parseHex = (hex) => {
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 };
 export const rgb = (c) => (typeof c === 'string' ? parseHex(c.replace(/^#/, '')) : c);
-export const hexs = ([r, g, b]) => `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+const hexs = ([r, g, b]) => `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 // a palette's hex as the fits compare it: lowercase, #abc → #aabbcc
 export const normHex = (v) => {
   v = v.toLowerCase();

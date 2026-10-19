@@ -187,7 +187,7 @@ const SPECS = [
       important: 'pink' } } },
   { name: 'monokai', desc: 'the classic that colored a decade of editors',
     light: 'derived',
-    dark: { f: 'monokai', p2: 'monokai_pro', m: { bg: 'background', bg_alt: 'widget', bg_elv: 'selection',
+    dark: { f: 'monokai', m: { bg: 'background', bg_alt: 'widget', bg_elv: 'selection',
       text1: 'text', border: '#3b3c35',
       brand1: '#66d9ef', success: '#a6e22e', warning: '#e6db74', danger: '#f92672',
       important: '#ae81ff' } } },
@@ -456,11 +456,10 @@ export function autoSlots(stem) {
   const p = paletteOf(data, stem);
   if (Object.keys(p).length < 6) return null;
 
-  // Resolve `ui.<entry> = { <field> = "palette-key or #hex" }`. Helix
-  // writes the key quoted, `"ui.background"`, a top-level key with a dot
-  // in it, not a `ui` table; both are read.
+  // Resolve `"ui.<entry>" = { <field> = "palette-key or #hex" }`: Helix
+  // writes the key quoted, a top-level key with a dot in it.
   const uiHint = (entry, field) => {
-    const node = data[`ui.${entry}`] ?? data.ui?.[entry];
+    const node = data[`ui.${entry}`];
     if (isTable(node)) {
       const v = node[field];
       if (typeof v === 'string') {
