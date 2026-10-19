@@ -38,6 +38,7 @@ import { ONTO } from '../scripts/contract.mjs';
 import { modeValues } from '../scripts/css.mjs';
 import { unscope } from '../scripts/vitepress-port.mjs';
 import { productCss } from './harness.mjs';
+import { pool } from './pool.mjs';
 
 const UPDATE = Boolean(process.env.UPDATE_GOLDEN);
 const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
@@ -125,13 +126,15 @@ async function open(browser, css, body, { dark, touch, width, reducedMotion, for
     `<!doctype html><html${dark ? ' class="dark"' : ''}><head><base href="${ORIGIN}/"><style>${css}</style></head><body>${body}</body></html>`,
   );
   if (errors.length) throw new Error(`the page's script failed: ${errors.join('; ')}`);
-  const inter = await page.evaluate(async () => (await document.fonts.load('1em Inter')).filter((f) => f.status === 'loaded').length);
+  const { inter, hover, reduced, forced } = await page.evaluate(async () => ({
+    inter: (await document.fonts.load('1em Inter')).filter((f) => f.status === 'loaded').length,
+    hover: matchMedia('(hover: hover)').matches,
+    reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    forced: matchMedia('(forced-colors: active)').matches,
+  }));
   if (!inter) throw new Error('Inter did not load from fonts/');
-  const hover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
   if (hover === Boolean(touch)) throw new Error(`(hover: hover) is ${hover} on a ${touch ? 'touch' : 'desktop'} page`);
-  const reduced = await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   if (reduced !== Boolean(reducedMotion)) throw new Error(`(prefers-reduced-motion: reduce) is ${reduced} on a page ${reducedMotion ? 'under' : 'without'} reduced motion`);
-  const forced = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
   if (forced !== Boolean(forcedColors)) throw new Error(`(forced-colors: active) is ${forced} on a page ${forcedColors ? 'under' : 'without'} forced colors`);
   await cdp.send('DOM.enable');
   await cdp.send('CSS.enable');
@@ -272,18 +275,9 @@ async function runCase({ suite, c }) {
 // four cases at a time (the run is mostly page opens: 74 s one at a time,
 // 27 s four at once, eight no faster), their failures kept in case order
 try {
-  const byCase = new Array(selected.length);
-  let next = 0;
-  await Promise.all(
-    Array.from({ length: Math.min(4, selected.length) }, async () => {
-      while (next < selected.length) {
-        const i = next++;
-        try {
-          byCase[i] = await runCase(selected[i]);
-        } catch (e) {
-          throw new Error(`${selected[i].c.name}: ${e.message}`);
-        }
-      }
+  const byCase = await pool(selected, 4, (s) =>
+    runCase(s).catch((e) => {
+      throw new Error(`${s.c.name}: ${e.message}`);
     }),
   );
   failures.push(...byCase.flat());

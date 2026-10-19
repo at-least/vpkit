@@ -19,6 +19,7 @@
 import { chromium } from 'playwright-chromium';
 
 import { productCss } from './harness.mjs';
+import { pool } from './pool.mjs';
 
 const toggle = (checked) =>
   `<button class="vp-toggle" type="button" role="switch" aria-checked="${checked}"><span class="vp-toggle-check"></span></button>`;
@@ -73,41 +74,48 @@ const CSS = Object.fromEntries(Object.keys(PAIRS).map((product) => [product, pro
 const browser = await chromium.launch();
 const failures = [];
 try {
-  const page = await browser.newPage();
-  const size = async (t) => {
-    const { width, height } = await page.locator(`[data-t="${t}"]`).boundingBox();
-    return `${width}×${height}`;
-  };
-  for (const [product, pairs] of Object.entries(PAIRS)) {
-    for (const [name, a, b] of pairs) {
-      await page.setContent(
-        `<!doctype html><html><head><style>${CSS[product]}</style></head>` +
-          `<body style="padding:8px">` +
-          `<div data-t="a" style="display:inline-block;padding:4px">${a}</div><br>` +
-          `<div data-t="b" style="display:inline-block;padding:4px">${b}</div></body></html>`,
-      );
-      for (const forced of ['none', 'active']) {
-        await page.emulateMedia({ forcedColors: forced });
-        // shot still: every transition and animation jumped to its end; one
-        // that never ends cannot be, and the pair's markup stills it
-        await page.evaluate(() => {
-          const endless = document.getAnimations().filter((a) => a.effect.getTiming().iterations === Infinity);
-          if (endless.length) throw new Error(`${endless.length} animation(s) never end: the pair's markup must still them`);
-          for (const a of document.getAnimations()) a.finish();
-        });
-        const [boxA, boxB] = [await size('a'), await size('b')];
-        if (boxA !== boxB) {
-          console.log(`BOX  ${name}, forced colors ${forced}: ${boxA} against ${boxB}`);
-          failures.push(`${name}: the boxes differ with forced colors ${forced} (${boxA} against ${boxB}), so the shots hold nothing`);
-          continue;
-        }
-        const [shotA, shotB] = [await page.locator('[data-t="a"]').screenshot(), await page.locator('[data-t="b"]').screenshot()];
-        const differ = !shotA.equals(shotB);
-        console.log(`${differ ? 'ok  ' : 'SAME'} ${name}, forced colors ${forced}`);
-        if (!differ) failures.push(`${name} render the same with forced colors ${forced}`);
+  // the pairs four at a time, a page each, their lines and failures kept in
+  // pair order
+  const pairs = Object.entries(PAIRS).flatMap(([product, list]) => list.map(([name, a, b]) => ({ product, name, a, b })));
+  const shot = await pool(pairs, 4, async ({ product, name, a, b }) => {
+    const lines = [];
+    const failed = [];
+    const page = await browser.newPage();
+    const size = async (t) => {
+      const { width, height } = await page.locator(`[data-t="${t}"]`).boundingBox();
+      return `${width}×${height}`;
+    };
+    await page.setContent(
+      `<!doctype html><html><head><style>${CSS[product]}</style></head>` +
+        `<body style="padding:8px">` +
+        `<div data-t="a" style="display:inline-block;padding:4px">${a}</div><br>` +
+        `<div data-t="b" style="display:inline-block;padding:4px">${b}</div></body></html>`,
+    );
+    for (const forced of ['none', 'active']) {
+      await page.emulateMedia({ forcedColors: forced });
+      // shot still: every transition and animation jumped to its end; one
+      // that never ends cannot be, and the pair's markup stills it
+      await page.evaluate(() => {
+        const endless = document.getAnimations().filter((a) => a.effect.getTiming().iterations === Infinity);
+        if (endless.length) throw new Error(`${endless.length} animation(s) never end: the pair's markup must still them`);
+        for (const a of document.getAnimations()) a.finish();
+      });
+      const [boxA, boxB] = [await size('a'), await size('b')];
+      if (boxA !== boxB) {
+        lines.push(`BOX  ${name}, forced colors ${forced}: ${boxA} against ${boxB}`);
+        failed.push(`${name}: the boxes differ with forced colors ${forced} (${boxA} against ${boxB}), so the shots hold nothing`);
+        continue;
       }
+      const [shotA, shotB] = [await page.locator('[data-t="a"]').screenshot(), await page.locator('[data-t="b"]').screenshot()];
+      const differ = !shotA.equals(shotB);
+      lines.push(`${differ ? 'ok  ' : 'SAME'} ${name}, forced colors ${forced}`);
+      if (!differ) failed.push(`${name} render the same with forced colors ${forced}`);
     }
-  }
+    await page.close();
+    return { lines, failed };
+  });
+  for (const { lines } of shot) for (const line of lines) console.log(line);
+  failures.push(...shot.flatMap((s) => s.failed));
 } finally {
   await browser.close();
 }

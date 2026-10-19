@@ -31,6 +31,7 @@ import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unscope } from
 import { compileCss } from './compile.mjs';
 import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, SIDES } from './harness.mjs';
 import { GLOBAL, LAYOUT, rootOf } from './layout-map.mjs';
+import { pool } from './pool.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(join(ROOT, file), 'utf8');
@@ -539,35 +540,45 @@ const browser = await chromium.launch();
 let compared = 0;
 let renders = 0;
 try {
+  // every run of every case: a width, dark or not, the states forced
+  const runs = [];
   for (const c of cases) {
     const label = [c.component, c.name].filter(Boolean).join(' ');
     const tree = await trees(browser, c);
     const where = paths(tree.upstream);
     const own = c.family ? [familyCss(c, tree.scopeOf)] : c.component ? [unscope(styleOf(c.component))] : [];
     const upstreamCss = [upstreamBase, ...own].join('\n');
-    const runs = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
+    const sizes = (c.widths ?? VIEWPORTS).map((w) => [w, false]).concat([[DARK_AT, true]]);
     for (const states of c.states ?? [[]]) {
-      for (const [width, dark] of runs) {
-        const up = await render(browser, upstreamCss, tree.upstream, width, dark, states);
-        const vp = await render(browser, vpkit, tree.vpkit, width, dark, states);
-        if (up.length !== vp.length) throw new Error(`${label}: ${up.length} elements upstream, ${vp.length} in vpkit`);
-        renders++;
-        const run = `${label} [${width}px${dark ? ' dark' : ''}${states.length ? ' :' + states.join(':') : ''}]`;
-        up.forEach((u, i) => {
-          for (const prop of Object.keys(u)) {
-            compared++;
-            if (u[prop] === vp[i][prop]) continue;
-            const delta = known.find((k) => k.case.test(label) && k.element.test(where[i]) && k.prop === prop);
-            if (!delta) {
-              failures.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);
-              continue;
-            }
-            delta.hits = (delta.hits ?? 0) + 1;
-          }
-        });
-      }
+      for (const [width, dark] of sizes) runs.push({ label, tree, where, upstreamCss, width, dark, states });
     }
   }
+  // four runs at a time, each run's two sides rendered at once, their
+  // failures kept in run order
+  const byRun = await pool(runs, 4, async ({ label, tree, where, upstreamCss, width, dark, states }) => {
+    const [up, vp] = await Promise.all([
+      render(browser, upstreamCss, tree.upstream, width, dark, states),
+      render(browser, vpkit, tree.vpkit, width, dark, states),
+    ]);
+    if (up.length !== vp.length) throw new Error(`${label}: ${up.length} elements upstream, ${vp.length} in vpkit`);
+    renders++;
+    const run = `${label} [${width}px${dark ? ' dark' : ''}${states.length ? ' :' + states.join(':') : ''}]`;
+    const differ = [];
+    up.forEach((u, i) => {
+      for (const prop of Object.keys(u)) {
+        compared++;
+        if (u[prop] === vp[i][prop]) continue;
+        const delta = known.find((k) => k.case.test(label) && k.element.test(where[i]) && k.prop === prop);
+        if (!delta) {
+          differ.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);
+          continue;
+        }
+        delta.hits = (delta.hits ?? 0) + 1;
+      }
+    });
+    return differ;
+  });
+  failures.push(...byRun.flat());
 } finally {
   await browser.close();
 }

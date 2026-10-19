@@ -172,13 +172,13 @@ try {
   };
   const browser = await chromium.launch();
   try {
-    const runWidth = async (width) => {
+    const runWidth = async (width, paths) => {
       const context = await browser.newContext({ viewport: { width, height: 800 } });
       await context.route(`${ORIGIN}/**`, serve);
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
-      for (const path of withExamples) {
+      for (const path of paths) {
         errors.length = 0;
         await page.goto(`${BASE}${path}`);
         const where = `${path} at ${width}px`;
@@ -402,9 +402,10 @@ try {
       await noScript.close();
       await context.close();
     };
-    // the widths and the gallery share nothing but the failures, so they run
-    // at once: half the time of one after another
-    await Promise.all([...WIDTHS.map(runWidth), runGallery()]);
+    // the widths, each one's pages in three slices, and the gallery share
+    // nothing but the failures, so they run at once
+    const slices = [0, 1, 2].map((k) => withExamples.filter((_, i) => i % 3 === k));
+    await Promise.all([...WIDTHS.flatMap((width) => slices.map((paths) => runWidth(width, paths))), runGallery()]);
   } finally {
     await browser.close();
   }
