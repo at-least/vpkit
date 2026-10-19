@@ -208,22 +208,6 @@ const cases = [
   },
 ];
 
-// intentional differences: { case: /name/, element: /path/, prop, reason }
-const known = [
-  {
-    case: /^navbar/,
-    element: /^img\.VPImage\.logo$/,
-    prop: 'vertical-align',
-    reason: "Tailwind's preflight gives replaced elements vertical-align: middle, VitePress's version of it leaves baseline; the logo is a flex item, where it does nothing",
-  },
-  {
-    case: /^home$/,
-    element: /^img\.VPImage\.image-src$/,
-    prop: 'vertical-align',
-    reason: "the same preflight rule; the hero image is absolutely positioned, where it does nothing",
-  },
-];
-
 const PROPS = [
   'display', 'position', ...SIDES, 'z-index', 'box-sizing',
   'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height',
@@ -567,13 +551,7 @@ try {
     up.forEach((u, i) => {
       for (const prop of Object.keys(u)) {
         compared++;
-        if (u[prop] === vp[i][prop]) continue;
-        const delta = known.find((k) => k.case.test(label) && k.element.test(where[i]) && k.prop === prop);
-        if (!delta) {
-          differ.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);
-          continue;
-        }
-        delta.hits = (delta.hits ?? 0) + 1;
+        if (u[prop] !== vp[i][prop]) differ.push(`${run} ${where[i]} ${prop}: upstream ${u[prop]} | vpkit ${vp[i][prop]}`);
       }
     });
     return differ;
@@ -583,13 +561,6 @@ try {
   await browser.close();
 }
 
-for (const k of known) {
-  if (k.hits) console.log(`KNOWN ${k.hits}× ${k.case} ${k.element} ${k.prop}: ${k.reason}`);
-  else failures.push(`known difference no longer occurs, remove it: ${k.case} ${k.element} ${k.prop}`);
-}
 for (const f of failures) console.log(`DIFF  ${f}`);
-console.log(
-  `${cases.length} layout cases in ${renders} renders (widths, dark, states): ${compared} values compared, ` +
-    `${failures.length} differ, ${known.reduce((n, k) => n + (k.hits ?? 0), 0)} known`,
-);
+console.log(`${cases.length} layout cases in ${renders} renders (widths, dark, states): ${compared} values compared, ${failures.length} differ`);
 process.exit(failures.length ? 1 : 0);

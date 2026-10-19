@@ -1,8 +1,9 @@
 /* vpkit — the page and VitePress's global element rules: what its base.css
  * adds after Tailwind's preflight (which Tailwind supplies). The page's
- * colors and typography on body, the placeholder color and the focus ring
- * sit in @layer base, after the preflight, so a utility on the element
- * still wins. The rest is unlayered, so it beats every utility: CJK line
+ * colors and typography on body, the placeholder color, the focus ring and
+ * the baseline under an image or an SVG sit in @layer base, after the
+ * preflight, so a utility on the element still wins. The rest is
+ * unlayered, so it beats every utility: CJK line
  * breaking (which VitePress keeps in its vars.css), bold at 600, the pointer cursor on buttons, overflow-wrap, no
  * autospace in code, and reduced motion.
  *
@@ -14,6 +15,14 @@
  * erase a box-shadow ring. A component restates it only to inset it
  * (vp-table-scroll) or to draw it on the card around a focused control
  * (vp-choice); `outline-none` on an element removes it.
+ *
+ * The baseline: Tailwind's preflight puts img, svg, video, canvas, audio,
+ * iframe, embed and object at `vertical-align: middle`, VitePress's
+ * version of it leaves them on the baseline. A block (both preflights
+ * make them one) and a flex or grid item take neither; one made inline,
+ * as the crate's `SUN.class("vp-icon")` is, sits on the baseline, where
+ * VitePress's VPIcon sits, and `align-middle` on it centers it on the
+ * lowercase letters.
  *
  * The reduced-motion rule names ::backdrop beside VitePress's `*, ::before,
  * ::after`: the star matches elements, so VitePress's scrim, an element, is
@@ -42,6 +51,18 @@
   :focus-visible {
     outline: var(--vp-focus-ring);
     outline-offset: var(--vp-focus-ring-offset);
+  }
+
+  /* on the baseline, as VitePress's preflight leaves them */
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    vertical-align: baseline;
   }
 }
 

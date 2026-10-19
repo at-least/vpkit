@@ -9,7 +9,8 @@
  * An inline-block 1em square, so the text's font size is its size, the SVG
  * filling it, painted in currentColor, so the text's color is its color,
  * as VPIcon draws an icon given as markup. No axis and no part. The crate's
- * `vpkit::icon` writes an SVG with this class (`SUN.class("vp-icon")`).
+ * `vpkit::icon` writes an SVG with this class (`SUN.class("vp-icon")`),
+ * which sits on the baseline as the span does (base.css).
  *
  * vpkit's difference, as `vp-icon-btn`'s: VitePress fills every SVG with
  * currentColor, which turns a stroke icon (fill="none") solid; here an SVG

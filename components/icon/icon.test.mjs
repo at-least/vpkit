@@ -1,11 +1,13 @@
 // vp-icon against VitePress's VPIcon (test/upstream/components/VPIcon.vue),
 // its form for an icon given as markup: in a line of 1.25rem text in the
 // brand color, the box takes the text's size and sits on its line, the SVG
-// fills it in the text's color. vpkit's difference, golden or against
-// vpkit: an SVG that sets its own fill keeps it, and a size utility on the
-// SVG wins. No case inside a vp-doc: prose.css has no rule for a span or
-// an SVG outside a code block or a link. The names carry a word after
-// `icon`, so CASES='^icon ' selects them and not the icon button's.
+// fills it in the text's color; the crate's form, the class on the SVG
+// itself, takes the same box on the same line. vpkit's difference, golden
+// or against vpkit: an SVG that sets its own fill keeps it, and a size
+// utility on the SVG wins. No case inside a vp-doc: prose.css has no rule
+// for a span or an SVG outside a code block or a link. The names carry a
+// word after `icon`, so CASES='^icon ' selects them and not the icon
+// button's.
 
 import { BOX, examples } from '../../test/harness.mjs';
 
@@ -27,6 +29,15 @@ cases.push({
     { target: '.vp-icon', refTarget: '.VPIcon', props: ['display', 'width', 'height', 'vertical-align', 'offset-top', 'offset-left'] },
     { target: '.vp-icon svg', refTarget: '.VPIcon svg', props: ['display', 'width', 'height', 'fill', 'offset-top'] },
   ],
+});
+
+// the crate's form (rust/src/icon.rs, `SUN.class("vp-icon")`), the class on
+// the SVG: its box against VPIcon's span, on the baseline as the span is
+cases.push({
+  name: 'icon as the crate writes it',
+  upstream: { ...UPSTREAM, html: line(`<span class="VPIcon">${SVG()}</span>`, '--vp-c-brand-1') },
+  html: line(SVG(' class="vp-icon" fill="none" stroke="currentColor"'), '--vp-c-brand'),
+  checks: [{ target: 'svg.vp-icon', refTarget: '.VPIcon', props: ['display', 'width', 'height', 'vertical-align', 'offset-top', 'offset-left'] }],
 });
 
 // an SVG that sets its own fill keeps it: against the same SVG alone
