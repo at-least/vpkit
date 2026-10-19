@@ -21,7 +21,7 @@ vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = [
 With the `css` feature, `vpkit::css::FILES` holds every stylesheet by its path in the kit and `vpkit::css::write(dir)` lays them out under a directory, for the Tailwind entry to import ([Getting Started](@/guide/getting-started.md#installation)). With the feature on in the app's dependency, the dependency's `vpkit-css` binary, built from the commit the lock file names, writes them with one command; an app binary that never calls `vpkit::css` carries none of it.
 
 ```sh
-cargo build --locked -p vpkit --bin vpkit-css --target-dir target/vpkit-css
+cargo build -p vpkit --bin vpkit-css --target-dir target/vpkit-css
 target/vpkit-css/debug/vpkit-css target/vpkit
 ```
 

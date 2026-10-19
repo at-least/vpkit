@@ -17,7 +17,7 @@ vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = [
 Before the Tailwind build, write the stylesheets out of the crate at that same commit, with its `css` feature (the dependency's `vpkit-css` binary, built from the commit the lock file names in a target directory of its own; or `vpkit::css::write("target/vpkit")` from a binary of your own):
 
 ```sh
-cargo build --locked -p vpkit --bin vpkit-css --target-dir target/vpkit-css
+cargo build -p vpkit --bin vpkit-css --target-dir target/vpkit-css
 target/vpkit-css/debug/vpkit-css target/vpkit
 ```
 
