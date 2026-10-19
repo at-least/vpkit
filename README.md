@@ -10,14 +10,14 @@ An app that renders its pages in Rust with [hypertext](https://crates.io/crates/
 
 ```toml
 [dependencies]
-vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = ["css"] }
 ```
 
-Before the Tailwind build, write the stylesheets out of the crate at that commit (its `css` feature; the `vpkit-css` binary, or `vpkit::css::write` from a binary of your own):
+Before the Tailwind build, write the stylesheets out of the crate at that commit (its `css` feature: the dependency's `vpkit-css` binary, built from the locked commit in a target directory of its own, so another rev's build elsewhere cannot replace it before it runs; or `vpkit::css::write` from a binary of your own):
 
 ```sh
-cargo install --git https://github.com/at-least/vpkit --rev <sha> --features css --root target/vpkit-css vpkit
-target/vpkit-css/bin/vpkit-css target/vpkit
+cargo build --locked -p vpkit --bin vpkit-css --target-dir target/vpkit-css
+target/vpkit-css/debug/vpkit-css target/vpkit
 ```
 
 Anything else takes the CSS from npm, pinned to a commit with `#<sha>` after the name:

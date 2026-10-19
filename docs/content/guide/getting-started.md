@@ -11,14 +11,14 @@ vpkit is a Rust crate and a package of plain CSS in one repository. An app that 
 
 ```toml
 [dependencies]
-vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = ["css"] }
 ```
 
-Before the Tailwind build, write the stylesheets out of the crate at that same commit, with its `css` feature (the `vpkit-css` binary, installed from the repository at the rev the lock file names; or `vpkit::css::write("target/vpkit")` from a binary of your own with the feature on):
+Before the Tailwind build, write the stylesheets out of the crate at that same commit, with its `css` feature (the dependency's `vpkit-css` binary, built from the commit the lock file names in a target directory of its own; or `vpkit::css::write("target/vpkit")` from a binary of your own):
 
 ```sh
-cargo install --git https://github.com/at-least/vpkit --rev <sha> --features css --root target/vpkit-css vpkit
-target/vpkit-css/bin/vpkit-css target/vpkit
+cargo build --locked -p vpkit --bin vpkit-css --target-dir target/vpkit-css
+target/vpkit-css/debug/vpkit-css target/vpkit
 ```
 
 Anything else takes the CSS from npm, pinned to a commit with `#<sha>`:

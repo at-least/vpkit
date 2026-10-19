@@ -13,16 +13,16 @@ The crate is not on crates.io: add it from the repository at a commit.
 
 ```toml
 [dependencies]
-vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>" }
+vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = ["css"] }
 ```
 
 ## The stylesheets
 
-With the `css` feature, `vpkit::css::FILES` holds every stylesheet by its path in the kit and `vpkit::css::write(dir)` lays them out under a directory, for the Tailwind entry to import ([Getting Started](@/guide/getting-started.md#installation)). The feature belongs in the CSS build, not in the app's own dependency: the `vpkit-css` binary, installed from the repository at the rev the lock file names, writes them with one command.
+With the `css` feature, `vpkit::css::FILES` holds every stylesheet by its path in the kit and `vpkit::css::write(dir)` lays them out under a directory, for the Tailwind entry to import ([Getting Started](@/guide/getting-started.md#installation)). With the feature on in the app's dependency, the dependency's `vpkit-css` binary, built from the commit the lock file names, writes them with one command; an app binary that never calls `vpkit::css` carries none of it.
 
 ```sh
-cargo install --git https://github.com/at-least/vpkit --rev <sha> --features css --root target/vpkit-css vpkit
-target/vpkit-css/bin/vpkit-css target/vpkit
+cargo build --locked -p vpkit --bin vpkit-css --target-dir target/vpkit-css
+target/vpkit-css/debug/vpkit-css target/vpkit
 ```
 
 ## Icons
