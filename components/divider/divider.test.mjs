@@ -3,10 +3,10 @@
 // clusters (test/upstream/components/VPNavBar.vue, the `::before` on the
 // cluster after the menu, read on the cluster VPSocialLinks makes a flex
 // row), each in a flex row as the bar's is; its place in the row is
-// golden, named, since a pseudo-element's box can't be read off its
-// element. vpkit's own, golden: the labelled divider. vpkit against
-// vpkit: the vertical and the labelled one inside a vp-doc against
-// themselves outside one.
+// golden, named, since the runner reads the ::before's offsets from the
+// cluster it is drawn in and the <hr>'s from the row. vpkit's own,
+// golden: the labelled divider. vpkit against vpkit: the vertical and the
+// labelled one inside a vp-doc against themselves outside one.
 
 import { BORDER, BORDER_COLOR, MARGIN, SIDES, examples, inDoc } from '../../test/harness.mjs';
 
@@ -51,7 +51,7 @@ cases.push({
       target: '.vp-divider',
       source: 'golden',
       props: ['offset-top', 'offset-left', 'height'],
-      why: "the rule sits centered in its flex row, 0.5rem after the item before it, as VitePress's does in the bar; its place is read off the <hr>, where VitePress's rule is a ::before whose box the runner reads off its element",
+      why: "the rule sits centered in its flex row, 0.5rem after the item before it, as VitePress's does in the bar; its place is read off the <hr>: VitePress's rule is a ::before, whose offsets the runner reads from the cluster it is drawn in (its left 8px, its margin), not from the row (the <hr>'s 49px, after the menu)",
     },
   ],
 });

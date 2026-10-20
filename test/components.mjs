@@ -216,7 +216,7 @@ async function readValues({ page, cdp, root }, { target, pseudo, pseudoBox, prop
     // the axes)
     const { node: described } = await cdp.send('DOM.describeNode', { nodeId: await nodeId(cdp, root, target), depth: 1 });
     const own = (described.pseudoElements ?? []).find((p) => p.pseudoType === pseudo.replace(/^::/, ''));
-    if (!own) throw new Error(`${target}${pseudo} has no box`);
+    if (!own) throw new Error(`the protocol lists no ${target}${pseudo} (none is drawn, or the protocol lists none of its kind, as ::file-selector-button)`);
     const { model } = await cdp.send('DOM.getBoxModel', { backendNodeId: own.backendNodeId });
     const xs = model.border.filter((_, i) => i % 2 === 0);
     const ys = model.border.filter((_, i) => i % 2 === 1);

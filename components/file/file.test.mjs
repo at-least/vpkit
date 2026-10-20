@@ -10,7 +10,9 @@ const ex = examples(import.meta.url);
 
 export const cases = [];
 
-// the chooser is a pseudo-element: its height is read as block-size
+// the chooser's height is read as block-size: the runner reads a
+// pseudo-element's box through the protocol, which lists a ::before or an
+// ::after but no ::file-selector-button
 const BUTTON = [...BORDER, ...RADIUS, ...PADDING, 'block-size', 'margin-right', 'font-size', 'cursor', ...COLORS, 'box-shadow', ...TRANSITION];
 const FILE = '<input class="vp-file" type="file">';
 const button = (check) => ({ target: '.vp-file', pseudo: '::file-selector-button', ...check });
