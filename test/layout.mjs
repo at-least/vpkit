@@ -29,7 +29,7 @@ import { chromium } from 'playwright-chromium';
 
 import { FILES, cssClasses, fileText, namer, rootStates, styleOf, unscope } from '../scripts/vitepress-port.mjs';
 import { compileCss } from './compile.mjs';
-import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, SIDES } from './harness.mjs';
+import { BORDER, BORDER_COLOR, MARGIN, PADDING, RADIUS, SIDES, nodeId } from './harness.mjs';
 import { GLOBAL, LAYOUT, rootOf } from './layout-map.mjs';
 import { pool } from './pool.mjs';
 
@@ -455,8 +455,7 @@ async function render(browser, css, body, width, dark, states) {
     await cdp.send('DOM.enable');
     await cdp.send('CSS.enable');
     const { root } = await cdp.send('DOM.getDocument');
-    const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector: 'body > *' });
-    await cdp.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: states });
+    await cdp.send('CSS.forcePseudoState', { nodeId: await nodeId(cdp, root, 'body > *'), forcedPseudoClasses: states });
   }
   const values = await page.evaluate(
     ([props, pseudoProps]) => {
