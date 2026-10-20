@@ -9,8 +9,12 @@
 name: docs
 
 on:
-  push:
-    branches: [main]
+  # Nightly (Asia/Taipei 03:xx; cron is UTC) plus manual. No push/PR
+  # trigger: agents push many times a day and a run per push was not
+  # worth it (2026-10-21). The gate job skips a nightly whose HEAD
+  # already has a finished run.
+  schedule:
+    - cron: "10 19 * * *"
   workflow_dispatch:
 
 permissions:
@@ -23,7 +27,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Nightly only: skip everything when this workflow already finished a
+  # run (not cancelled) on this exact commit. Manual runs always go.
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          wf=${GITHUB_WORKFLOW_REF%@*}; wf=${wf##*/}
+          last=$(gh run list -w "$wf" -b main -s completed -L 20 --json headSha,conclusion \
+            -q '[.[] | select(.conclusion != "cancelled")][0].headSha')
+          echo "last finished run: ${last:-none}; HEAD: $GITHUB_SHA"
+          if [ "$GITHUB_EVENT_NAME" != schedule ] || [ "$last" != "$GITHUB_SHA" ]; then echo run=true; else echo run=false; fi >> "$GITHUB_OUTPUT"
+
   build:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -56,7 +83,8 @@ jobs:
           path: ${{ runner.temp }}/site
 
   deploy:
-    needs: build
+    needs: [gate, build]
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
