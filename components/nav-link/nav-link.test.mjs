@@ -2,7 +2,8 @@
 // VPNavMenuLink.vue): the bar's link (VPNavBarMenuLink) and the screen's
 // (VPNavScreenMenuLink), at rest, hovered and current (`.active` there,
 // aria-current="page" here). vpkit against vpkit: a <button> against the
-// <a>, a touch screen's hover at rest, and each link inside a vp-doc
+// <a>, in the bar and in the screen (there with the page's w-full
+// text-start), a touch screen's hover at rest, and each link inside a vp-doc
 // against itself alone. vpkit's own, golden: the examples, vp-nav-lane
 // fitting, overflowing and on a touch screen, and a lane's link focused.
 
@@ -44,6 +45,17 @@ cases.push({
   reference: vpkitLink(''),
   html: '<button class="vp-nav-link" type="submit"><span>Sign out</span></button>',
   checks: [{ target: '.vp-nav-link', props: LINK }],
+});
+
+// a form's submit in the screen: an <a> fills the screen's column by block
+// flow, a button's box hugs its label and centers it, so the page adds
+// w-full text-start (width is the page's) and it is the same row
+const SCREEN_COLUMN = (html) => `<div style="width:18rem">${html}</div>`;
+cases.push({
+  name: 'nav-link screen <button>',
+  reference: SCREEN_COLUMN(vpkitLink(' data-variant="screen"')),
+  html: SCREEN_COLUMN('<button class="vp-nav-link w-full text-start" data-variant="screen" type="submit"><span>Guide</span></button>'),
+  checks: [{ target: '.vp-nav-link', props: [...LINK, 'width', 'text-align'] }],
 });
 
 // the examples: the bar's links with a current one and a button, and the

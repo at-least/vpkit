@@ -10,6 +10,7 @@
  *   </nav>
  *
  *   <a class="vp-nav-link" data-variant="screen" href="/guide">Guide</a>
+ *   <button class="vp-nav-link w-full text-start" data-variant="screen" type="submit">Sign out</button>
  *
  * `vp-nav-link` alone is the bar's link (VPNavBarMenuLink): a flex row as
  * tall as the bar (--vp-nav-height), 0.75rem of padding each side,
@@ -21,7 +22,11 @@
  *                           its text and 0.6875rem below, on a 24px line,
  *                           its rule fading with its color. The one
  *                           variant that sets more than the locals: it is
- *                           VitePress's other box
+ *                           VitePress's other box. An <a> fills the
+ *                           screen's column by block flow; a <button> (a
+ *                           form's Sign out) hugs its label and centers it,
+ *                           so the page adds `w-full text-start` (width is
+ *                           the page's) and it is the same row
  * A state: the current page's link (`aria-current="page"`, where VitePress
  * has `.active`) is brand, in the bar and in the screen. The hover applies
  * only on a device that can hover; VitePress's also stuck to a tapped

@@ -14,7 +14,7 @@ VitePress's `VPNavMenuLink`: a link of the navbar's menu, in the bar and in the 
 {{ <vp_example file="nav-link/bar" title="The bar's links, one current" layout="row" /> }}
 
 - `vp-nav-link`: the bar's link, a flex row as tall as the navbar, brand on hover and while it is the current page's (`aria-current="page"`, where VitePress has `.active`). On a `<button>` it is the same row: a form's submit drawn as a link of the menu.
-- `data-variant="screen"`: the screen's link, a block with a divider under it.
+- `data-variant="screen"`: the screen's link, a block with a divider under it. A link fills the screen's width by itself; on a `<button>` (a form's Sign out) add `w-full text-start`, since a button's box hugs its label and centers it.
 
 {{ <vp_example file="nav-link/screen" title="The screen's links" layout="stack" /> }}
 
