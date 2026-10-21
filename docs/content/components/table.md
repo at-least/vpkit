@@ -17,6 +17,12 @@ The table scrolls sideways on its own rather than squeezing its columns, and eve
 
 {{ <vp_example file="table/margin" title="Without the margin" /> }}
 
+## A record
+
+One item's fields are the same table with no head: each row opens with a row header, `<th scope="row">`, and its value. VitePress styles every header cell alike, not only the head's, so the key column takes the header's look on every row. For a record's details with no table look, use [Description List](@/components/dl.md).
+
+{{ <vp_example file="table/record" title="A record: a row header on every row" /> }}
+
 ## In a scroll box
 
 `vp-table-scroll` is a box the table scrolls sideways in, the table inside it a plain table filling the box. What is placed absolutely inside it, such as a header's visually hidden label (`sr-only`), belongs to the box: it scrolls with the table instead of widening the page. A box that scrolls should take focus, so the arrow keys scroll it: `tabindex="0"`, `role="region"` and a label. Its focus ring, base.css's, is drawn inside it.

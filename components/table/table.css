@@ -14,8 +14,12 @@
  * 0.5rem by 1rem of padding, the header's cells 0.875rem at weight 600 in
  * secondary text on the soft ground, a row's ground turning in
  * --vp-duration-slow. The rules for what is inside sit behind
- * :where(.vp-table). No axis. vpkit's additions for an app's tables, each
- * an orthogonal switch (a class), a part or a state:
+ * :where(.vp-table). A record, one item's fields, is the same table with
+ * no thead, each row keyed by a row header (`<tr><th scope="row">Status</th>
+ * <td>Paid</td></tr>`): VitePress's header rule is for every th, so the
+ * key column takes the header cells' look on every row. No axis.
+ * vpkit's additions for an app's tables, each an orthogonal switch (a
+ * class), a part or a state:
  *   vp-table-scroll   a block of its own: a box the table scrolls
  *                     sideways in, where the table is a plain table
  *                     filling the box, and the containing block of what

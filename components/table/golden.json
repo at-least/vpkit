@@ -1125,6 +1125,32 @@
       }
     }
   },
+  "table record example": {
+    "light": {
+      "tbody tr:nth-child(2) > th": {
+        "font-weight": "600",
+        "color": "rgb(103, 103, 108)",
+        "background-color": "rgb(246, 246, 247)",
+        "width": "102px"
+      },
+      "tbody tr:nth-child(2) > td": {
+        "color": "rgb(60, 60, 67)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    "dark": {
+      "tbody tr:nth-child(2) > th": {
+        "font-weight": "600",
+        "color": "rgb(152, 152, 159)",
+        "background-color": "rgb(32, 33, 39)",
+        "width": "102px"
+      },
+      "tbody tr:nth-child(2) > td": {
+        "color": "rgb(223, 223, 214)",
+        "background-color": "rgba(0, 0, 0, 0)"
+      }
+    }
+  },
   "table scroll example": {
     "light": {
       ".vp-table-scroll": {

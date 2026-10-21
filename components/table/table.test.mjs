@@ -1,6 +1,7 @@
 // vp-table against VitePress's markdown table (test/upstream/vp-doc.css,
 // `.vp-doc table`): the block, its margins and scrolling, the rows' bands
-// and lines, the cells' borders, padding and type. vpkit's own, golden:
+// and lines, the cells' borders, padding and type, and a record's (no
+// thead, a row header keying each row). vpkit's own, golden:
 // the scroll box with its focus ring inset, and a hidden label inside it
 // kept in it; the stuck header, at the top and under a bar; the hovered,
 // selected and cursor's rows; the row actions at rest, with the row
@@ -37,6 +38,24 @@ cases.push({
     { target: ROW2, props: ['background-color'] },
     { target: 'th', props: CELL },
     { target: 'td', props: CELL },
+  ],
+});
+
+// a record, one item's fields: no thead, each row keyed by a row header —
+// VitePress's header rule is for every th, not the head's, so the key
+// column is its header cell, on every row
+const RECORD =
+  '<tbody><tr><th scope="row">Order</th><td>#1042</td></tr>' +
+  '<tr><th scope="row">Status</th><td>Paid</td></tr></tbody>';
+cases.push({
+  name: 'table record',
+  upstream: { files: ['vp-doc.css'], html: inDoc(`<table>${RECORD}</table>`) },
+  html: `<table class="vp-table">${RECORD}</table>`,
+  checks: [
+    { target: ROW1, props: ['background-color', 'border-top-color'] },
+    { target: ROW2, props: ['background-color'] },
+    { target: `${ROW2} > th`, props: CELL },
+    { target: `${ROW2} > td`, props: CELL },
   ],
 });
 
@@ -238,6 +257,14 @@ cases.push({
   ],
 });
 cases.push({ name: 'table without the margin', html: ex('margin'), checks: [{ target: '.vp-table', props: MARGIN }] });
+cases.push({
+  name: 'table record example',
+  html: ex('record'),
+  checks: [
+    { target: 'tbody tr:nth-child(2) > th', props: ['font-weight', 'color', 'background-color', 'width'] },
+    { target: 'tbody tr:nth-child(2) > td', props: ['color', 'background-color'] },
+  ],
+});
 cases.push({
   name: 'table scroll example',
   width: 375,
