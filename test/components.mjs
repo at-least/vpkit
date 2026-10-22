@@ -258,7 +258,7 @@ for (const { c } of selected) {
   for (const check of c.checks) {
     const source = check.source ?? kind;
     if (source === 'golden' && kind !== 'golden' && !check.why) throw new Error(`${c.name}: a golden check on a case with a${kind === 'upstream' ? 'n upstream' : ' reference'} must say why`);
-    if (source !== 'golden' && kind === 'golden') throw new Error(`${c.name}: a check sourced ${source} on a case without one`);
+    if (source !== 'golden' && source !== kind) throw new Error(`${c.name}: a check sourced ${source} on a case ${kind === 'golden' ? 'without one' : `with a${kind === 'upstream' ? 'n upstream' : ' reference'}`}`);
   }
 }
 
