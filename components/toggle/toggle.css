@@ -12,7 +12,7 @@
  * track, the control's border color on the gray wash, a brand border
  * hovered, and the round knob. The parts:
  *   vp-toggle-check   the knob (VPSwitch's .check), white in light and
- *                     black in dark (the one literal color: VitePress's
+ *                     black in dark (a literal color: VitePress's
  *                     neutral-inverse, which the contract has no slot
  *                     for), under --vp-shadow-1; it slides to the right
  *                     while the button's aria-checked is "true", vpkit's
