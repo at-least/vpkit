@@ -5,10 +5,12 @@
 //
 // The contract is tokens.css's: every --vp-c-* it defines (34) and the five
 // shadows. Every stylesheet of the app kit (tokens, theme, base, prose,
-// fonts, the components) may read no other --vp-c-*; the docs theme
-// (docs-theme/) may read its own vars.css's too. Each theme defines all of
-// them in one :root block, each color a light-dark() pair, and meets the
-// WCAG contrast minimums of the job each token does (body text, links,
+// fonts, the components) may read no other --vp-c-*, and no --vp-* but
+// tokens.css's, its own and a hook the page sets; only tokens.css writes
+// literal colors, the few listed below aside. The docs theme (docs-theme/)
+// may read its own vars.css's colors too. Each theme defines the whole
+// contract in one :root block, each color a light-dark() pair, and meets
+// the WCAG contrast minimums of the job each token does (body text, links,
 // buttons, badge text, alert link hovers) on both sides. Exits 1, listing
 // every failure.
 
@@ -47,6 +49,23 @@ function reads(css) {
   return names;
 }
 
+// a stylesheet's declarations, [property, value], at any depth, its
+// strings and url()s emptied: what a string says and what an image draws
+// (prose.css's VitePress icons) are not the stylesheet's colors
+function declarations(css) {
+  const text = stripComments(css)
+    .replace(/url\((?:"[^"]*"|'[^']*'|[^)]*)\)/g, 'url()')
+    .replace(/"[^"]*"|'[^']*'/g, '""');
+  const found = [];
+  for (const [, segment, end] of text.matchAll(/([^;{}]*)([;{}])/g)) {
+    const declaration = segment.trim();
+    const colon = declaration.indexOf(':');
+    if (end === '{' || declaration.startsWith('@') || colon === -1) continue;
+    found.push([declaration.slice(0, colon).trim(), declaration.slice(colon + 1).trim()]);
+  }
+  return found;
+}
+
 // the app kit reads the contract and nothing else
 const appKit = ['tokens.css', 'theme.css', 'base.css', 'prose.css', 'fonts.css', ...cssFiles('components')];
 for (const file of appKit) {
@@ -55,6 +74,82 @@ for (const file of appKit) {
     if (!COLORS.includes(name)) fail(`${file} reads --vp-c-${name}, which tokens.css does not define`);
   }
 }
+// nor another --vp-*: a name is tokens.css's or the stylesheet's own (a
+// component's locals), or a hook the page sets, which no stylesheet
+// defines, so each read carries a fallback
+const PAGE_HOOKS = ['--vp-layout-top-height'];
+const tokenNames = new Set(declarations(read('tokens.css')).map(([prop]) => prop));
+for (const file of appKit) {
+  const own = declarations(read(file));
+  const ownNames = new Set(own.map(([prop]) => prop));
+  checks++;
+  for (const hook of PAGE_HOOKS) if (ownNames.has(hook)) fail(`${file} defines ${hook}, a hook the page sets`);
+  for (const [, value] of own) {
+    for (const [, name, fallback] of value.matchAll(/var\((--vp-[\w-]+)\s*(,)?/g)) {
+      if (name.startsWith('--vp-c-')) continue;
+      checks++;
+      if (PAGE_HOOKS.includes(name)) {
+        if (!fallback) fail(`${file} reads ${name} without a fallback, a hook no stylesheet defines`);
+      } else if (!tokenNames.has(name) && !ownNames.has(name)) {
+        fail(`${file} reads ${name}, which neither tokens.css nor it defines`);
+      }
+    }
+  }
+}
+
+// and none but tokens.css writes a literal color, so a theme recolors the
+// whole kit. A literal is a hex, a color function or one of CSS Color 4's
+// named colors; transparent is no color, currentColor the text's and a
+// system color (a forced colors block's CanvasText) the user's
+const NAMED_COLORS = new Set(
+  ('aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet brown ' +
+    'burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan ' +
+    'darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid ' +
+    'darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet ' +
+    'deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ' +
+    'ghostwhite gold goldenrod gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki ' +
+    'lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow ' +
+    'lightgray lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue lightslategray ' +
+    'lightslategrey lightsteelblue lightyellow lime limegreen linen magenta maroon mediumaquamarine ' +
+    'mediumblue mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen ' +
+    'mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin navajowhite navy oldlace ' +
+    'olive olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise palevioletred ' +
+    'papayawhip peachpuff peru pink plum powderblue purple rebeccapurple red rosybrown royalblue ' +
+    'saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray slategrey ' +
+    'snow springgreen steelblue tan teal thistle tomato turquoise violet wheat white whitesmoke yellow ' +
+    'yellowgreen').split(' '),
+);
+function literals(value) {
+  const found = [...value.matchAll(/#[0-9a-f]{3,8}\b|(?<![-\w])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\((?:[^()]|\([^()]*\))*\)/gi)].map(([m]) => m);
+  for (const [word] of value.matchAll(/(?<![-\w#])[a-z]+(?![-\w(])/gi)) if (NAMED_COLORS.has(word.toLowerCase())) found.push(word);
+  return found;
+}
+// the literals the kit writes, each where it is: the button's white text,
+// on the brand fills the contract fits for white, and the toggle's knob,
+// VitePress's neutral-inverse, which the contract has no slot for; and a
+// mask's stops anywhere, of which only the alpha reaches the page
+const ALLOWED_LITERALS = new Map([
+  ['components/button/button.css --vp-btn-text', 'white'],
+  ['components/button/button.css --vp-btn-hover-text', 'white'],
+  ['components/toggle/toggle.css --vp-toggle-knob', 'light-dark(#ffffff, #000000)'],
+]);
+const MASKS = ['mask', 'mask-image', '-webkit-mask', '-webkit-mask-image'];
+const allowedSeen = new Set();
+for (const file of appKit.filter((f) => f !== 'tokens.css')) {
+  for (const [prop, value] of declarations(read(file))) {
+    checks++;
+    const found = literals(value);
+    if (!found.length || MASKS.includes(prop)) continue;
+    const key = `${file} ${prop}`;
+    if (ALLOWED_LITERALS.get(key) === value) allowedSeen.add(key);
+    else fail(`${file}: ${prop}: ${value} writes a literal color (${found.join(', ')})`);
+  }
+}
+for (const key of ALLOWED_LITERALS.keys()) {
+  checks++;
+  if (!allowedSeen.has(key)) fail(`${key}: an allowed literal no longer written; drop it from the list`);
+}
+
 // the docs theme reads the contract and its own variables
 const docsVars = [...modeValues(read('docs-theme/vars.css'), ':root').keys()].filter((k) => k.startsWith('--vp-c-')).map((k) => k.slice('--vp-c-'.length));
 // VitePress's own slip, carried verbatim by the port: VPSidebar.vue sets
