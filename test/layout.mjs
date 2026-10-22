@@ -75,7 +75,7 @@ const cases = [
   { component: 'VPDoc', name: 'without sidebar', page: 'guide_getting-started.html', toggle: { 'has-sidebar': false } },
   { component: 'VPSkipLink', page: 'guide_getting-started.html', states: [[], ['focus']] },
   // rendered only while the sidebar is open
-  { component: 'VPBackdrop', markup: '<div class="VPBackdrop"></div>' },
+  { component: 'VPBackdrop', page: 'hydrated/guide_getting-started.375.sidebar-open.html' },
   // the 404 page's content, which VitePress renders in the browser only:
   // its default texts
   {
