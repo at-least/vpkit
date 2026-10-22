@@ -21,8 +21,8 @@
  * VitePress's also stuck to a tapped button. The focus ring is base.css's.
  *
  * When the button shows is the page's (`md:hidden`: VitePress hides it
- * from 768px, where the bar shows the menu), as are opening the screen
- * and the screen itself: set `aria-expanded` on the button, and
+ * from 768px, where the bar shows the menu), as is opening the screen:
+ * set `aria-expanded` on the button, and
  * `aria-controls` to the screen's id. One addition: under forced colors
  * (Windows' contrast themes) the browser erases backgrounds, and the bars
  * are backgrounds, so there they take the text color, in every state:

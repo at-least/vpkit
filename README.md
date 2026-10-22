@@ -1,8 +1,8 @@
 # vpkit
 
-VitePress's look for applications: a [Tailwind CSS v4](https://tailwindcss.com) theme on a 34-color contract, VitePress's components as CSS classes (`vp-btn`, `vp-input`, `vp-dialog`, …), a Rust crate that writes their markup and carries the stylesheets, 222 color themes, and VitePress's docs layout as a product of its own.
+VitePress's look for applications: a [Tailwind CSS v4](https://tailwindcss.com) theme on a 34-color contract, components in VitePress's look as CSS classes (`vp-btn`, `vp-input`, `vp-dialog`, …), a Rust crate that writes their markup and carries the stylesheets, 222 color themes, and VitePress's docs layout as a product of its own.
 
-It is plain CSS for Tailwind to compile. There is no build step: vpkit's own `npm install` is only for its tests and its theme generators.
+It is plain CSS for Tailwind to compile. There is no build step: vpkit's own `npm install` is only for its tests and its generators.
 
 ## Use
 
@@ -71,7 +71,7 @@ The generated files, and what writes them:
 - the color themes, all but the four hand-tuned ones (`github`, `catppuccin`, `nord`, `rose-pine`, edited directly): `node scripts/gen-themes.mjs`, from its slot maps and `helix/` (its TOML parser, `smol-toml`, comes with `npm install`); tokens.css's colors, VitePress's palette with its contrast shortfalls fitted: `node scripts/fit-stock.mjs`, from `test/upstream/vars.css`; `npm test` fails while tokens.css is not fit-stock.mjs's output, and the themes are what gen-themes.mjs last wrote (no test reruns it). The color math the two share with `test/themes.mjs` is `scripts/color.mjs`, the CSS reader `scripts/css.mjs`, and the contract's names against VitePress's `scripts/contract.mjs`.
 - `prose.css`, `fonts.css`, `docs-theme/layout.css`, `docs-theme/vars.css` and `docs-theme/icons.css`: `node scripts/vitepress-port.mjs --write`, from VitePress's sources after a re-sync; the tests fail if a file is not its output.
 - a component's `golden.json`: `UPDATE_GOLDEN=1 node test/components.mjs`, after a deliberate change to what the component paints.
-- `docs/examples/`, `docs/static/example.css`, `docs/static/example-docs-theme.css` and `docs/static/themes.json`: `node scripts/build-docs.mjs`, after changing an example or a theme; `npm test` fails while they are stale.
+- `docs/examples/` (all but `pages/`, the guide pages' own), `docs/static/example.css`, `docs/static/example-docs-theme.css` and `docs/static/themes.json`: `node scripts/build-docs.mjs`, after changing an example or a theme; `npm test` fails while they are stale.
 
 ## License
 

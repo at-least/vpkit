@@ -9,7 +9,7 @@
  *
  * No attributes and no parts: the ad's markup is Carbon's (its image
  * link, its text `carbon-text` and its credit `carbon-poweredby`), and
- * the rules for it sit behind :where(), so a utility on it wins.
+ * the rules for it sit behind :where(), adding no specificity.
  *
  * VitePress's: the box centers what it holds on --vp-carbon-ads-bg-color,
  * 0.75rem round, on 1.5rem of padding, at least 16rem tall, its text

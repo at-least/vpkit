@@ -85,7 +85,7 @@ The components are one import each, so a site ships only the ones it uses:
 
 ## Markdown
 
-`prose.css` is VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, code group tabs, and the arrow of an external link, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states; the variables it reads are defined on `.vp-doc`, so it needs nothing but the contract.
+`prose.css` is VitePress's own styles for its markdown, inside `<div class="vp-doc">`: headings with anchor links, custom blocks and GitHub alerts, code blocks with their copy button, language label, highlighted and diff lines and line numbers, code group tabs, and the arrow of an external link, under VitePress's own class names. Not the code's colors, which come with the highlighter. Its rules are in `@layer base`, below the components, so a component inside a `vp-doc` keeps its look and its states; the variables it reads are defined on `.vp-doc`, so it needs nothing beyond `tokens.css`.
 
 ```css
 @import "vpkit/prose.css";
@@ -112,7 +112,7 @@ Without one, the page is VitePress's palette with its contrast shortfalls fitted
 
 ## The docs theme
 
-VitePress's navbar, sidebar, outline, home page and footers are `docs-theme/`: VitePress's markup with its classes renamed, on VitePress's own variables and palette, for a docs theme. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it:
+VitePress's navbar, sidebar, outline, home page and footers are `docs-theme/`: their stylesheets, for VitePress's markup with its classes renamed, on VitePress's own variables and palette, for a docs theme. [vpkit-zola](https://github.com/at-least/vpkit-zola), the Zola theme this site is built with, is built on it:
 
 ```css
 @import "vpkit";

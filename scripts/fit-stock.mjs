@@ -1,10 +1,10 @@
 // tokens.css's colors: VitePress's own palette (vars.css at the tag in
 // test/upstream/SOURCE) on the contract's names, with its contrast
-// shortfalls fitted: a hovered link (brand-hover and the roles' hovers), as
-// text and dimmed to 0.75 in its container, at 4.5:1, as test/themes.mjs
-// holds every theme to; and, beyond the test's minimums (3:1, 1.1), the
-// brand button's white label at 4.5:1 at rest, hovered and pressed, and a
-// control's border at 3:1 on the page. The fits are
+// shortfalls fitted: a hovered link (brand-hover as text and dimmed to 0.75
+// in its container, the roles' hovers dimmed in theirs) at 4.5:1, as
+// test/themes.mjs holds every theme to; and, beyond the test's minimums
+// (3:1, 1.1), the brand button's white label at 4.5:1 at rest, hovered and
+// pressed, and a control's border at 3:1 on the page. The fits are
 // gen-themes.mjs's steps toward black (light) or white (dark), from the
 // color math the generators and the test share (scripts/color.mjs).
 //

@@ -11,11 +11,11 @@ VitePress's look as CSS classes for an application, one optional import each, so
 @import "vpkit/components/button/button.css";
 ```
 
-A component is a directory named after its class: `vp-badge` is `components/badge/`, `vp-icon-btn` is `components/icon-btn/`; `vp-label` and `vp-field-error` are `components/field/`'s. Each holds the stylesheet, its examples (`examples/*.html`, the markup these pages show and the crate's tests render) and its proof. Each page opens with its import.
+A component is a directory of its name: `vp-badge` is `components/badge/`, `vp-btn` is `components/button/`; `vp-label` and `vp-field-error` are `components/field/`'s. Each holds the stylesheet, its examples (`examples/*.html`, the markup these pages show, which the crate's tests render for its components) and its proof. Each page opens with its import.
 
 A <span class="vp-badge" data-variant="tip">vpkit</span> badge beside a page's title marks a component VitePress has no original for: vpkit's own, on VitePress's tokens.
 
-The class says what the element is; what varies is an attribute. A mutually exclusive axis is `data-variant` or `data-size`; an orthogonal switch is a class (`vp-table-sticky`); a state is the attribute the markup carries anyway (`disabled`, `aria-invalid`, `aria-current`, `open`). Every control that shares a row is 2.75rem tall, a touch target's 44px, and every focused element draws base.css's ring.
+The class says what the element is; what varies is an attribute. A mutually exclusive axis is `data-variant` or `data-size`; an orthogonal switch is a class (`vp-table-sticky`); a state is the attribute the markup carries anyway (`disabled`, `aria-invalid`, `aria-current`, `open`). Every control that shares a row is 2.75rem tall, a touch target's 44px, and the focus ring is base.css's.
 
 They sit in Tailwind's `components` layer, so a utility on the same element always wins: `class="vp-btn px-8"` gets the wider padding. A variant works only together with its class.
 
@@ -95,4 +95,4 @@ VitePress's components for a docs site, in `docs-theme/components/`, on VitePres
 | [Team Page](@/components/team-page.md) | `vp-team-page` | VitePress's `VPTeamPage` |
 | [Team Section](@/components/team-section.md) | `vp-team-section` | VitePress's `VPTeamPageSection` |
 
-The library's design, the rules every component follows and how each is held to its original, is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).
+The library's design, the rules every component follows and how each is proven, is [DESIGN.md](https://github.com/at-least/vpkit/blob/main/DESIGN.md).

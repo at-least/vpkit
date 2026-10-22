@@ -26,7 +26,7 @@ link_text = "Utilities and variables"
 [[extra.features]]
 icon = "🧩"
 title = "Components as classes"
-details = "Forty-five components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, their variants as attributes, one control height and one focus ring, each held to its original by the tests."
+details = "Forty-five components, one optional import each: <code>vp-btn</code>, <code>vp-alert</code>, <code>vp-input</code>, <code>vp-dialog</code> and more, their variants as attributes, one control height and one focus ring, each held by the tests to VitePress's original or to its recorded values."
 link = "@/components/_index.md"
 link_text = "The components"
 

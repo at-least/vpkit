@@ -1,6 +1,6 @@
 /* vpkit — the tokens. The colors are the contract: the 34 `--vp-c-*`
- * variables and the five shadows every color theme defines, and all a
- * component may read (test/themes.mjs holds both). Each color is one
+ * variables and the five shadows every color theme defines; a component
+ * reads no other `--vp-c-*` (test/themes.mjs holds both). Each color is one
  * `light-dark()` pair, light first: the page's `color-scheme`, set below
  * from `.dark` on <html>, picks the side everywhere, a modal dialog and
  * its ::backdrop included (Chrome 123, Safari 17.5, Firefox 120). The

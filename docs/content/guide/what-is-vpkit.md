@@ -7,7 +7,7 @@ description = "VitePress's look as a Tailwind CSS v4 theme and a kit of componen
 
 vpkit is the look of [VitePress](https://vitepress.dev)'s default theme, for applications: a [Tailwind CSS v4](https://tailwindcss.com) theme (the `--vp-*` variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode, the Inter webfonts), components as CSS classes (`vp-btn`, `vp-input`, `vp-dialog`, …), a Rust crate that writes their markup and carries the stylesheets, 222 color themes, and VitePress's docs layout as a product of its own.
 
-It is plain CSS for Tailwind to compile. There is no build step: vpkit's own `npm install` is only for its tests and theme generators.
+It is plain CSS for Tailwind to compile. There is no build step: vpkit's own `npm install` is only for its tests and its generators.
 
 You are reading a site built on it: [vpkit-zola](https://github.com/at-least/vpkit-zola), a Zola theme on vpkit's docs theme, draws these pages, and the examples in them are vpkit's components as an app uses them.
 
@@ -25,7 +25,7 @@ A component is a class, or a block of a few classes, that gives an element the l
 
 The class says what the element is; what varies is an attribute. A mutually exclusive axis is `data-variant` or `data-size` (`<button class="vp-btn" data-variant="brand" data-size="lg">`); an orthogonal switch is a class (`vp-table-sticky`); a state is the attribute the markup carries anyway: `vp-btn:disabled`, `vp-input[aria-invalid="true"]`, `vp-toggle[aria-checked="true"]`, `vp-btn[aria-current]`. The markup an app already writes for accessibility is the markup the component reads, so there is nothing to keep in sync.
 
-Every control that shares a row shares one height, 2.75rem, a touch target's 44px (`data-size="sm"` 2.25rem, `"lg"` 3rem), and every focused element draws the same ring.
+Every control that shares a row shares one height, 2.75rem, a touch target's 44px (`data-size="sm"` 2.25rem, `"lg"` 3rem), and there is one focus ring.
 
 ## How close to VitePress
 

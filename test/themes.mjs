@@ -4,12 +4,13 @@
 //   node test/themes.mjs
 //
 // The contract is tokens.css's: every --vp-c-* it defines (34) and the five
-// shadows. Every stylesheet of the app kit (tokens, theme, base, prose, the
-// components) may read only those; the docs theme (docs-theme/) may read
-// its own vars.css's too. Each theme defines all of them in one :root block,
-// each color a light-dark() pair, and meets the WCAG contrast minimums of
-// the job each token does (body text, links, buttons, badge text, alert link
-// hovers) on both sides. Exits 1, listing every failure.
+// shadows. Every stylesheet of the app kit (tokens, theme, base, prose,
+// fonts, the components) may read no other --vp-c-*; the docs theme
+// (docs-theme/) may read its own vars.css's too. Each theme defines all of
+// them in one :root block, each color a light-dark() pair, and meets the
+// WCAG contrast minimums of the job each token does (body text, links,
+// buttons, badge text, alert link hovers) on both sides. Exits 1, listing
+// every failure.
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';

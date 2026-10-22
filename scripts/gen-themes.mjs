@@ -73,8 +73,7 @@ const pal = (stem) => paletteOf(load(stem), stem);
 // slot keys: bg bg_alt bg_elv text1 border brand1 brand2 brand3 success
 //            warning danger important (text2 and text3 derive
 //            from text1 in buildMode)
-// light: 'derived' → build a light half from the dark palette (for schemes
-// that publish no light mode; stated in the header).
+// light: 'derived' → build a light half from the dark palette.
 const SPECS = [
   { name: 'tokyonight', desc: 'calm blue-violet, day and storm',
     light: { f: 'tokyonight_day', m: { bg: 'bg', bg_alt: 'bg-selection', bg_elv: 'bg-menu',

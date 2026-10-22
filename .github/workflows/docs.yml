@@ -1,6 +1,6 @@
 # The documentation (docs/), built with zola and published to GitHub Pages
-# on each push to main, with the Rust crate's documentation (rust/) under
-# its /rust/. The site is drawn by vpkit-zola, which
+# with the Rust crate's documentation (rust/) under its /rust/. The site is
+# drawn by vpkit-zola, which
 # docs/themes/vpkit-zola links to as a checkout beside this one
 # (../vpkit-zola), so vpkit-zola is checked out beside it here too, at its
 # main, unpinned, as a local checkout would be. Its stylesheet ships

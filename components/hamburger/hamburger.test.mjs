@@ -4,7 +4,7 @@
 // and hovered open, at a phone's width, where VitePress shows it (it is
 // display:none from 768px; vpkit leaves that to the page). vpkit against
 // vpkit: a touch screen's hover at rest. Golden: the example, closed and
-// open side by side, and the bars under forced colors (vpkit's addition),
+// open, and the bars under forced colors (vpkit's addition),
 // closed and open, at rest and hovered.
 
 import { TRANSITION, examples } from '../../test/harness.mjs';
@@ -69,7 +69,7 @@ for (const open of [false, true]) {
   });
 }
 
-// the example: closed and open side by side
+// the example: closed and open
 cases.push({
   name: 'hamburger example',
   html: ex('states'),

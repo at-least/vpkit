@@ -1,6 +1,6 @@
-// Every item through fn, n at a time, the results in the items' order: the
-// tests that render in Chromium spend their time waiting on pages, which
-// run side by side; each keeps its failures in its items' order this way.
+// Every item through fn, n at a time, the results in the items' order:
+// for work that waits (pages rendering in Chromium), which runs side by
+// side, its failures kept in its items' order.
 export async function pool(items, n, fn) {
   const results = new Array(items.length);
   let next = 0;

@@ -20,7 +20,7 @@
  *                                centered, 1.75rem, in text-3; the SVG
  *                                straight inside 1em square on the
  *                                baseline, as VitePress's mask sits (behind
- *                                :where(), so a rule of the page's wins)
+ *                                :where(), adding no specificity)
  *   vp-home-sponsors-message     the message, 0.625rem under, 1rem at 1.5,
  *                                weight 500, text-2, centered, at most 20rem
  *                                wide

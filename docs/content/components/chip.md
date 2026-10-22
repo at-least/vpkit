@@ -24,4 +24,4 @@ A chip can be a link as a whole, to the list its value filters; it then has no r
 
 In Rust: [`Chip`](../../rust/vpkit/struct.Chip.html), from vpkit's [crate](@/guide/rust.md).
 
-On a coarse pointer, a touch screen, the remove control's hit area grows by 0.4375rem on every side, and as much negative margin cancels it, so the chip keeps its size.
+On a coarse pointer, a touch screen, the remove control's padding, its hit area, is 0.4375rem on every side, and as much negative margin cancels it, so the chip keeps its size.

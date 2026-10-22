@@ -1,9 +1,9 @@
 // vp-page-title and vp-section-title against VitePress's doc headings
 // (test/upstream/vp-doc.css, `.vp-doc h1` and `h3`): the type and the
-// color, wide and at a phone's width; the h3's margin, the markdown's,
-// not ported, golden. vp-page-desc and vp-group-title, vpkit's own,
-// golden. vpkit against vpkit: the four inside a vp-doc against themselves
-// outside one, on the elements an app puts them on.
+// color, the page title wide and at a phone's width; the h3's margin, the
+// markdown's, not ported, golden. vp-page-desc and vp-group-title, vpkit's
+// own, golden. vpkit against vpkit: the four inside a vp-doc against
+// themselves outside one, on the elements an app puts them on.
 
 import { MARGIN, examples, inDoc } from '../../test/harness.mjs';
 

@@ -19,7 +19,7 @@ A person's card on a team page: their picture, name and role, a line about them,
 - `vp-team-member-data`: the text under it, `vp-team-member-name` the name and `vp-team-member-affiliation` the role, with `vp-team-member-org` on the organization, which is secondary text, and brand-colored while hovered when it is a link.
 - `vp-team-member-desc`: a line about them; its links are brand-colored.
 - `vp-team-member-links`: a row of [Icon Button](@/components/icon-btn.md) links, centered.
-- `vp-team-member-sponsor`: a strip under the card in the sponsor color, an inline SVG icon before the word, filled with the sponsor color while hovered or focused.
+- `vp-team-member-sponsor`: a strip at the foot of the card in the sponsor color, an inline SVG icon before the word, filled with the sponsor color while hovered or focused.
 
 {{ <vp_example file="team-member/small" title="The small card" kit="docs-theme" /> }}
 

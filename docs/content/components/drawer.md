@@ -17,7 +17,7 @@ VitePress's sidebar as a phone shows it (`VPSidebar` under 60rem, over `VPBackdr
 - The backdrop is `--vp-backdrop-bg-color`, `VPBackdrop`'s scrim.
 - The slide is VitePress's: in from the left over 0.5s, out over 0.25s, the scrim fading with it. During the slide out a tap on the fading scrim reaches the page beneath: a closed dialog is no longer modal.
 - `showModal()` moves focus into the drawer, to its first link; `autofocus` on an element picks another.
-- Open it with `showModal()`. The drawer says its edge, where the other components leave their place to the page (the skip link apart): a drawer that doesn't is not one. `w-*` and `max-w-none` set another width; `--vp-layout-top-height`, VitePress's variable for a banner above the layout, or `top-16` starts it below a bar.
+- Open it with `showModal()`. The drawer says its edge, where the other components leave their place to the page (the skip link and the nav screen apart): a drawer that doesn't is not one. `w-*` and `max-w-none` set another width; `--vp-layout-top-height`, VitePress's variable for a banner above the layout, or `top-16` starts it below a bar.
 
 Not included: VitePress's z-index and `.open` class (the top layer and `[open]` take their place), the sidebar's desktop rules from 60rem, the scrim's `display: none` from 80rem, the body scroll lock (the page behind still scrolls, as behind `vp-dialog`) and the right-to-left build, so the edge is the left in either direction; the open panel carries no transform, so a fixed element inside it sits at the viewport's corner.
 

@@ -11,7 +11,7 @@
 // without its class, `title`, which the original has no rule for. Golden,
 // each named: the social link's place (vp-icon-btn is on the control
 // height, where VPSocialLink is 2.25rem) and the focus ring on the sponsor
-// strip.
+// strip. The small example is golden too.
 
 import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../../test/harness.mjs';
 

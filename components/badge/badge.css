@@ -92,7 +92,7 @@
   }
 
   /* the outline: the page's color under the text, the variant's tint on
-     the border; after the variants, so it wins at the same specificity */
+     the border */
   .vp-badge-outline.vp-badge {
     --vp-badge-border: var(--vp-badge-tint);
     --vp-badge-bg: var(--vp-c-bg);

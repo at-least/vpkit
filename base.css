@@ -12,9 +12,7 @@
  * button, a link, a field, a scroll box, a dialog. VitePress keeps the
  * browser's ring on a button and none on a field (its border shows); an
  * outline follows the box's corners, and forced colors keep it where they
- * erase a box-shadow ring. A component restates it only to inset it
- * (vp-table-scroll) or to draw it on the card around a focused control
- * (vp-choice); `outline-none` on an element removes it.
+ * erase a box-shadow ring. `outline-none` on an element removes it.
  *
  * The baseline: Tailwind's preflight puts img, svg, video, canvas, audio,
  * iframe, embed and object at `vertical-align: middle`, VitePress's

@@ -1,8 +1,8 @@
 // The documentation (docs/): it builds with zola, it has a page for each
 // component (the app kit's and the docs theme's), with an entry in its
 // product's group of the sidebar; each page shows every example file of
-// its component's directory (the markup the crate's tests render, so none
-// is held by a test and shown by no page), and its examples work.
+// its component's directory (so none is held by a test and shown by no
+// page), and its examples work.
 // Each example frame (docs/templates/vp-example.html) must load its example
 // stylesheet, which must style every class the example's markup uses; it
 // must be as tall as its content, so it never scrolls, and no wider than
@@ -83,9 +83,8 @@ for (const name of pages) {
   if (!own && h1.includes(BADGE)) failures.push(`docs/content/components/${name}.md: a VitePress original's port, but its heading has the vpkit badge: ${h1}`);
 }
 
-// every example file of a component's directory (components/<name>/
-// examples/<id>.html, the markup the crate's tests render too) is shown by
-// the component's page, as `vp_example file="<name>/<id>"`
+// every example file of a component's directory (examples/<id>.html) is
+// shown by the component's page, as `vp_example file="<name>/<id>"`
 for (const product of ['', 'docs-theme']) {
   for (const { name, id } of examples(product)) {
     if (!pages.includes(name)) continue;

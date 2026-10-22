@@ -17,8 +17,7 @@
  *                             it, any element, 1.25rem at 1.6, weight 500,
  *                             on the page's ground with 1.5rem at each
  *                             side, so the line stops short of its text
- *                             (behind :where(), so a rule of the page's
- *                             wins)
+ *                             (behind :where(), adding no specificity)
  *   vp-team-section-lead      the lead, 0.75rem under, 1rem at 1.5, weight
  *                             500, text-2, centered, at most 30rem wide
  *   vp-team-section-members   what the section lists, 2.5rem under it

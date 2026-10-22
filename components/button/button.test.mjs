@@ -27,7 +27,8 @@ const OURS = {
 };
 const UPSTREAM = { files: ['VPButton.vue'] };
 
-// VPButton's two themes in two sizes, as a link and as a button
+// VPButton's alt and brand themes in its two sizes, as a link and as a
+// button
 for (const [theme, variant] of [['alt', ''], ['brand', ' data-variant="brand"']]) {
   for (const [size, attr] of [['medium', ''], ['big', ' data-size="lg"']]) {
     for (const tag of ['a', 'button']) {

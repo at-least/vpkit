@@ -2,8 +2,7 @@
 // control at rest and hovered and its icon, the focus ring, the hit area
 // on a touch screen, a chip that is a link. vpkit against vpkit: a touch
 // screen's hover at rest, the remove control inside a vp-doc, a link chip
-// inside a vp-doc, whose rules for links match bare links only
-// (alert.test.mjs holds one inside an alert).
+// inside a vp-doc (alert.test.mjs holds one inside an alert).
 
 import { MARGIN, OUTLINE, PADDING, RADIUS, TRANSITION, examples, inDoc } from '../../test/harness.mjs';
 
@@ -87,9 +86,8 @@ cases.push({
   ],
 });
 
-// the link chip inside a vp-doc, whose rules for links match bare links
-// only: its look and its hover, not dimmed (alert.test.mjs holds it inside
-// an alert)
+// the link chip inside a vp-doc: its look and its hover, not dimmed
+// (alert.test.mjs holds it inside an alert)
 cases.push({
   name: 'chip link in a doc',
   html: inDoc(ex('link')),

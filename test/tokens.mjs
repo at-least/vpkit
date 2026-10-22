@@ -100,10 +100,9 @@ for (const [key, value] of upScoped) {
   if (ourScoped.get(ourKey) !== value) failures.push(`${key}: upstream ${value}, ours ${ourScoped.get(ourKey)}`);
 }
 
-// a token's fallback written into a stylesheet, `var(--vp-x, value)` (a
-// ::backdrop's, which inherits nothing in older engines), is the token's
-// value, so the copy can't go stale; the tokens VitePress leaves to the
-// page have no value to hold a fallback to
+// a token's fallback written into a stylesheet, `var(--vp-x, value)`, is
+// the token's value, so the copy can't go stale; the tokens VitePress
+// leaves to the page have no value to hold a fallback to
 const UNDEFINED = ['--vp-layout-top-height', '--vp-doc-top-height', '--vp-vh', '--vp-extra-scroll-margin'];
 const defined = new Map([...modeValues(tokens, ':root'), ...modeValues(docs, ':root')]);
 let fallbacks = 0;

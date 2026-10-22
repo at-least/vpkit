@@ -51,7 +51,7 @@ The rest is not themed: the font families (`--vp-font-family-base`, `-mono`), th
 
 `base.css` paints the page ([Getting Started](@/guide/getting-started.md#the-page)) and carries the rules that cannot be utilities:
 
-- the one focus ring: `:focus-visible` draws `--vp-focus-ring`, on a button, a link, a field, a scroll box, a dialog; an outline follows the box's corners, and forced colors keep it. `outline-none` on an element removes it; a component restates it only to inset it.
+- the one focus ring: `:focus-visible` draws `--vp-focus-ring`, on a button, a link, a field, a scroll box, a dialog; an outline follows the box's corners, and forced colors keep it. `outline-none` on an element removes it. A component restates it only to inset it where its box or its container clips it, to draw it on a card whose control is focused (Choice), or to leave it off a `<nav>` that is a skip link's target (Side Navigation).
 - bold at 600, the pointer cursor on buttons, CJK line breaking, no autospace in code
 - reduced motion: every transition and animation off, a dialog's scrim (`::backdrop`) included
 

@@ -18,11 +18,11 @@ VitePress's `VPNavMenuLink`: a link of the navbar's menu, in the bar and in the 
 
 {{ <vp_example file="nav-link/screen" title="The screen's links" layout="stack" /> }}
 
-The bar is [Top Bar](@/components/topbar.md); the screen, and opening it, are the page's.
+The bar is [Top Bar](@/components/topbar.md) and the screen [Nav Screen](@/components/screen.md); opening it is the page's.
 
 ## A lane
 
-`vp-nav-lane`, vpkit's own, is a row of nav links that scrolls sideways rather than wrap or clip, for a header's second row or a page's section links. Its scrollbar is hidden; a wheel, a drag or a swipe still scrolls it. Its links are 2.25rem tall, rounded so the focus ring has a shape, and stay on one line.
+`vp-nav-lane`, vpkit's own, is a row of nav links that scrolls sideways rather than wrap or clip, for a header's second row or a page's section links. Its scrollbar is hidden; a wheel or a swipe still scrolls it. Its links are 2.25rem tall, rounded so the focus ring has a shape, and stay on one line.
 
 While the lane is wider than its box its edges fade, so a clipped label reads as one that scrolls. CSS can't tell when that is: your script sets `data-overflow` when the lane overflows, and removes it when it fits.
 

@@ -25,7 +25,7 @@ One dense row of a list inside a panel, ruled off from the next by a hairline. V
 
 ## A row that is a link
 
-A row on an `<a>` is a block in the text's own color and weight, with no underline, on a soft ground while hovered.
+A row on an `<a>` is a block in the text's own color and weight, with no underline, on the gray wash while hovered.
 
 {{ <vp_example file="row/links" title="Top issues" /> }}
 

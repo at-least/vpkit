@@ -17,6 +17,6 @@ The browser's file chooser on `<input type="file">`, its button drawn as an [Inp
 - A brand border and text on hover; focused from the keyboard, the brand border, as a focused [Input](@/components/input.md) shows, and base.css's ring around the element.
 - The whole element opens the chooser, its file name too, so hovering anywhere on it lights the button.
 - `data-size="sm"`: the button 2.25rem tall, beside a small button.
-- Its width is the browser's, about 330px; on a narrow page a width utility keeps it in, as `max-w-full` does here.
+- Its width is the browser's, about 306px with Inter; on a narrow page a width utility keeps it in, as `max-w-full` does here.
 
 {{ <vp_example file="file/small" title="The small size beside a small button" layout="row" /> }}

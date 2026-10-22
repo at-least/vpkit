@@ -15,7 +15,7 @@
 //   departure from one (the check says why). UPDATE_GOLDEN=1 rewrites them.
 // Lengths match within 1/32px (the app kit's minified build prints numbers
 // to six digits). Each product is compiled as it ships, from an entry that
-// imports every component: the app kit minified, as the apps build it; the
+// imports every component: the app kit minified, as an app may build it; the
 // docs theme unminified, as vpkit-zola builds it, with docs-theme/vars.css,
 // VitePress's own palette. Each side loads its own
 // fonts.css (vpkit's; VitePress's, which also names Inter in its base
@@ -93,11 +93,11 @@ function same(a, b, tolerance = 1 / 32) {
   return PX.test(a) && PX.test(b) && Math.abs(parseFloat(a) - parseFloat(b)) <= tolerance;
 }
 
-// each side's fonts, before its stylesheet: vpkit's fonts.css (its @font-face
-// rules; tokens.css names Inter) and VitePress's (its rules and the :root
-// that names Inter, without its Google Fonts import: the test is offline
-// and the files are the same); both read the files as url("…fonts/…"),
-// which the page's base URL points at the route below
+// each side's fonts: vpkit's fonts.css (its @font-face rules; tokens.css
+// names Inter) and VitePress's (its rules and the :root that names Inter,
+// without its Google Fonts import: the test is offline and the files are
+// the same); both read the files as url("…fonts/…"), which the page's base
+// URL points at the route below
 const FONTS = {
   vpkit: readFileSync(join(ROOT, 'fonts.css'), 'utf8'),
   upstream: readFileSync(join(ROOT, 'test/upstream/fonts.css'), 'utf8').replace(/^@import url\('https:\/\/fonts\.googleapis\.com[^\n]*\n/m, ''),

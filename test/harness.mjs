@@ -1,7 +1,7 @@
 // What a component's test file (components/<name>/<name>.test.mjs) builds
 // its cases from: the property lists the checks share, and the component's
 // examples (components/<name>/examples/<id>.html), the markup its docs
-// page shows and the crate's tests render.
+// page shows.
 //
 // A case:
 //   name       what it is; CASES=<regex> picks cases by it
@@ -19,10 +19,10 @@
 //              emulation), on both sides
 // A check: target (a selector in vpkit's markup), props, state (the
 // pseudo-classes forced on it, or on `on`), pseudo (the pseudo-element
-// read), refTarget/refState/refPseudo (the reference's, when different),
-// tolerance (px, 1/32 by default), source (`golden` on a case that has an
-// upstream or a reference: a departure from the original, which `why`
-// must name).
+// read), refTarget/refOn/refState/refPseudo (the reference's, when
+// different), tolerance (px, 1/32 by default), source (`golden` on a case
+// that has an upstream or a reference: a departure from the original,
+// which `why` must name).
 
 import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -67,7 +67,7 @@ export const examples = (url) => (id) => readFileSync(new URL(`examples/${id}.ht
 export const inDoc = (html) => `<div class="vp-doc">${html}</div>`;
 
 // a product as its tests compile it, as it ships: the app kit minified, as
-// the apps build it, the docs theme unminified, as vpkit-zola builds it;
+// an app may build it, the docs theme unminified, as vpkit-zola builds it;
 // from an entry (scripts/components.mjs's writeEntry) whose sources are the
 // component directories, whose examples and tests carry the utilities they
 // use
