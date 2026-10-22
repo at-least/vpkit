@@ -90,7 +90,7 @@ for (const product of ['', 'docs-theme']) {
   for (const { name, id } of examples(product)) {
     if (!pages.includes(name)) continue;
     const md = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8');
-    if (!md.includes(`<vp_example file="${name}/${id}"`)) failures.push(`docs/content/components/${name}.md: components/${name}/examples/${id}.html is shown by no vp_example on the page`);
+    if (!md.includes(`<vp_example file="${name}/${id}"`)) failures.push(`docs/content/components/${name}.md: ${product && `${product}/`}components/${name}/examples/${id}.html is shown by no vp_example on the page`);
   }
 }
 
