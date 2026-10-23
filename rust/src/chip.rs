@@ -5,8 +5,8 @@ use crate::icon::X;
 
 /// `vp-chip` (`components/chip`): a key and its value in a pill. A filter
 /// the page applies has a control that removes it (`remove_href`, an
-/// [`icon::X`](crate::icon::X) inside, which `vp-chip-remove` sizes at
-/// 1rem); a value that opens a list filtered by it is a link as a whole
+/// [`icon::X`](crate::icon::X) inside, which `vp-chip-remove` sizes); a
+/// value that opens a list filtered by it is a link as a whole
 /// (`href`).
 ///
 /// ```
@@ -27,7 +27,8 @@ pub struct Chip<'a> {
     /// The key (`vp-chip-key`), as the page words it (`"release:"`).
     /// Required: an empty one panics.
     pub key: &'a str,
-    /// The value (`vp-chip-value`).
+    /// The value (`vp-chip-value`). Required: an empty one panics, as it
+    /// would leave an empty part and its gap in the pill.
     pub value: &'a str,
     /// `Some`: the chip is a link to this URL. Not with `remove_href`: a
     /// control inside a link is no valid HTML, so both panic.
@@ -44,6 +45,7 @@ pub struct Chip<'a> {
 impl Renderable for Chip<'_> {
     fn render_to(&self, buffer: &mut Buffer) {
         assert!(!self.key.is_empty(), "vpkit::Chip needs a key");
+        assert!(!self.value.is_empty(), "vpkit::Chip needs a value");
         assert!(
             self.href.is_none() || self.remove_href.is_none(),
             "vpkit::Chip is a link or has a remove control, not both"
@@ -99,6 +101,12 @@ mod tests {
                 r#"<span class="vp-chip-value">&lt;14&gt;</span></span>"#,
             )
         );
+    }
+
+    #[test]
+    #[should_panic(expected = "vpkit::Chip needs a value")]
+    fn an_empty_value_panics() {
+        rsx! { <Chip key="env" .. /> }.render();
     }
 
     #[test]

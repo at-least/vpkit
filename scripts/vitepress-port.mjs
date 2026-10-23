@@ -461,12 +461,16 @@ export const FILES = {
    The url()s are relative to the compiled stylesheet (the Tailwind CLI
    leaves them as written), so serve this package's fonts/ directory next
    to it. Written by scripts/vitepress-port.mjs: VitePress's fonts.css's
-   @font-face rules verbatim, their url()s beside the stylesheet. */`,
+   @font-face rules verbatim, their url()s beside the stylesheet and its
+   comment's script named as VitePress's. */`,
     body: () => {
       const css = readFileSync(join(ROOT, 'test/upstream/fonts.css'), 'utf8');
       const last = css.lastIndexOf('@font-face');
       const faces = css.slice(css.indexOf('@font-face'), css.indexOf('}', last) + 1);
-      return `${faces.replace(/url\('\.\.\/fonts\/([^']+)'\)/g, 'url("fonts/$1")')}\n`;
+      // VitePress's comment names its own script, which vpkit has not
+      const comment = 'see scripts/subsetFonts.py';
+      if (!faces.includes(comment)) throw new Error(`fonts.css: no "${comment}" to name as VitePress's`);
+      return `${faces.replace(/url\('\.\.\/fonts\/([^']+)'\)/g, 'url("fonts/$1")').replace(comment, "see VitePress's scripts/subsetFonts.py")}\n`;
     },
   },
   'docs-theme/vars.css': {

@@ -28,7 +28,8 @@
  * writes on its link too, beside its `.is-active`), is brand with
  * VitePress's indicator, a 2px brand bar on the list's line, which fades
  * in with the color. The link is one block carrying the text's padding and
- * type, and its ::before is the indicator, where VPSidebarItem wraps a
+ * type, positioned (VPSidebarItem's .item is) to hold its ::before, the
+ * indicator, where VPSidebarItem wraps a
  * flex row around a padded paragraph with an indicator element beside it:
  * the same box. The focus ring on a link is base.css's. Not ported:
  * collapsible groups (the caret) and deeper levels. The sidebar's box is

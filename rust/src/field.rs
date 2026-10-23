@@ -1,8 +1,7 @@
 use hypertext::{Buffer, prelude::*};
 
 /// `vp-field` (`components/field`): one form field's box, its label (`vp-label`)
-/// first and the body under it, 0.375rem apart: the control the page
-/// writes, then a [`FieldHint`] or a [`FieldError`] where there is one.
+/// first and the body under it: the control the page writes, then a [`FieldHint`] or a [`FieldError`] where there is one.
 ///
 /// The label's `for` is `id`. The control is the page's, so the page gives
 /// it `id`, `aria-describedby` naming the hint's and the error's ids

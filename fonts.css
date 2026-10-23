@@ -3,7 +3,8 @@
    The url()s are relative to the compiled stylesheet (the Tailwind CLI
    leaves them as written), so serve this package's fonts/ directory next
    to it. Written by scripts/vitepress-port.mjs: VitePress's fonts.css's
-   @font-face rules verbatim, their url()s beside the stylesheet. */
+   @font-face rules verbatim, their url()s beside the stylesheet and its
+   comment's script named as VitePress's. */
 
 @font-face {
   font-family: Inter;
@@ -150,7 +151,7 @@
 }
 
 /* 'Inter Core' reuses the files above, but leaves out characters that should
-   be rendered by CJK fonts in CJK documents - see scripts/subsetFonts.py */
+   be rendered by CJK fonts in CJK documents - see VitePress's scripts/subsetFonts.py */
 
 @font-face {
   font-family: 'Inter Core';
