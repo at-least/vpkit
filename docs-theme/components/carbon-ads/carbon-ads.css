@@ -18,10 +18,9 @@
  * the hover color hovered; its credit a block 0.375rem under, 0.6875rem,
  * uppercase, in --vp-carbon-ads-poweredby-color, the hover color hovered;
  * of the ads it holds only the first div shows, as Carbon adds one on a
- * refresh. The colors are the --vp-carbon-ads-* variables, VitePress's
- * (docs-theme/vars.css derives them from text-1, text-2, brand-1 and
- * bg-soft). vpkit's: the hovers apply only on a device that can hover,
- * where VitePress's stick to a tap. Not ported: VitePress's script, which
+ * refresh. The colors are the --vp-carbon-ads-* variables, VitePress's.
+ * vpkit's: the hovers apply only on a device that can hover, where
+ * VitePress's stick to a tap. Not ported: VitePress's script, which
  * loads Carbon's only once the aside shows and refreshes the ad on a new
  * page. Inside a vp-doc (prose.css) the ad's links keep no underline of
  * the markdown's, an addition: VitePress shows the box only in its
@@ -88,7 +87,7 @@
 
   /* inside a vp-doc (prose.css), whose rule for a link underlines it:
      the ad's links keep none */
-  .vp-doc .vp-carbon-ads a {
+  :where(.vp-doc .vp-carbon-ads) a:where(:not([class*="vp-"])) {
     text-decoration: none;
   }
 }

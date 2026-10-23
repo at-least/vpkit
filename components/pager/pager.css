@@ -51,6 +51,6 @@
      summary margins and a 1.75 line: none, the page's line height */
   .vp-doc .vp-pager-summary {
     margin: 0;
-    line-height: 1.5;
+    line-height: inherit;
   }
 }

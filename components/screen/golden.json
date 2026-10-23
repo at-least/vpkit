@@ -21,6 +21,20 @@
       }
     }
   },
+  "screen under a layout top": {
+    "light": {
+      ".vp-screen": {
+        "top": "113px",
+        "height": "607px"
+      }
+    },
+    "dark": {
+      ".vp-screen": {
+        "top": "113px",
+        "height": "607px"
+      }
+    }
+  },
   "screen hidden": {
     "light": {
       ".vp-screen": {

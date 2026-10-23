@@ -5,9 +5,10 @@
 // page), and its examples work.
 // Each example frame (docs/templates/vp-example.html) must load its example
 // stylesheet, which must style every class the example's markup uses; it
-// must be as tall as its content, so it never scrolls, and no wider than
-// the page at a phone's width; and it must take the page's appearance, and
-// keep it when the navbar's switch changes it. The theme gallery's index
+// must be as tall as its content, so it never scrolls, and its content no
+// wider than the frame at a phone's width; a link to # in it must stay
+// put; and it must take the page's appearance, and keep it when the
+// navbar's switch changes it. The theme gallery's index
 // (docs/static/themes.json) must hold the stock colors and then every theme
 // of themes/; the site must be on the stock colors from a page's first
 // frame until the session picks a theme (the page and the docs theme's
@@ -15,8 +16,9 @@
 // frames on tokens.css's, the fitted one); a pick must recolor the page
 // and its example frame in both modes, and the next pages the session
 // opens from their first frame; and the stock card must take the page
-// back to the stock colors, on the next pages too. Also held: the
-// theme counts the prose states against the index; a pick's card pressed
+// back to the stock colors, on the next pages too. Also held: a page of a
+// component that is vpkit's own carries the vpkit badge in its heading, a
+// port's none; the theme counts the prose states against the index; a pick's card pressed
 // again on the next visit, an encoded name's too; two picks back to back
 // never through the stock colors; the stock card pressed while a pick loads
 // leaves no theme linked; a pick with no stylesheet is forgotten; with

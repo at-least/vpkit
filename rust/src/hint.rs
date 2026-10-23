@@ -7,7 +7,7 @@ use hypertext::{Buffer, prelude::*};
 ///
 /// The tooltip shows while the button is hovered, focused from the
 /// keyboard, or open: the page's script toggles `aria-expanded` on a tap,
-/// since a touch screen never hovers. The copy's id is `id`, or, left
+/// since on a touch screen hovering doesn't open it. The copy's id is `id`, or, left
 /// empty, `hint-` and the hint's FNV-1a hash in hex, so two buttons with
 /// the same hint share one id harmlessly and ids stay stable.
 ///

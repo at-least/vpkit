@@ -11,8 +11,8 @@ name: docs
 on:
   # Nightly (Asia/Taipei 03:xx; cron is UTC) plus manual. No push/PR
   # trigger: agents push many times a day and a run per push was not
-  # worth it (2026-10-21). The gate job skips a nightly whose HEAD
-  # already has a finished run.
+  # worth it. The gate job skips a nightly whose HEAD already has a
+  # finished run.
   schedule:
     - cron: "10 19 * * *"
   workflow_dispatch:

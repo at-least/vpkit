@@ -31,7 +31,7 @@ One item's fields are the same table with no head: each row opens with a row hea
 
 ## A sticky header
 
-`vp-table-sticky`, with `vp-table`, keeps the header row in view while the rows scroll under it. The table is a plain table then, not a box that scrolls; under a bar, set the offset: `style="--vp-table-sticky-top: 4rem"`. The header sticks to the nearest box that scrolls, so inside a `vp-table-scroll`, which scrolls only sideways, leave the box visible where the table fits (`lg:overflow-visible`) for a header that sticks to the page.
+`vp-table-sticky`, with `vp-table`, keeps the header row in view while the rows scroll under it. The table is a plain table then, not a box that scrolls; under a bar, set the offset on the table: `style="--vp-table-sticky-top: 4rem"` (a value set on an ancestor, such as `:root`, is not read). The header sticks to the nearest box that scrolls, so inside a `vp-table-scroll`, which scrolls only sideways, leave the box visible where the table fits (`lg:overflow-visible`) for a header that sticks to the page.
 
 ## Rows
 

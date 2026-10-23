@@ -20,7 +20,7 @@
  *     <a class="vp-team-member-sponsor" href="https://example.com/sponsor"><svg aria-hidden="true" viewBox="0 0 24 24" …>…</svg> Sponsor</a>
  *   </article>
  *
- * The card a column, 0.75rem round (the radius token) and clipped, filling
+ * The card a column, 0.75rem round (--vp-radius-lg) and clipped, filling
  * its cell. One axis, an attribute:
  *   data-size="sm"   the small card: 2rem of padding, a 4rem picture, the
  *                    text 1.25rem under it, the name 1rem at 1.5, the rest

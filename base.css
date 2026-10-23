@@ -77,8 +77,6 @@
   }
 }
 
-/* ── Global rules that cannot be expressed as utilities ────────────────── */
-
 /* VitePress pins bold to 600 instead of preflight's `bolder`. */
 b,
 strong {

@@ -33,18 +33,18 @@
  *     <table class="vp-table">…</table>
  *   </div>
  *
- *   vp-table-sticky   with vp-table: the header row stays in view while
- *                     the rows scroll under it, under a bar when the page
- *                     sets --vp-table-sticky-top; the table a plain table
- *                     (not a box that scrolls, where the header would
- *                     stick to the table), each cell drawing its bottom
- *                     and right border, the first column its left and the
- *                     header its top, since a stuck header loses collapsed
- *                     borders. It sticks to the nearest box that scrolls:
- *                     in a vp-table-scroll, the box, which scrolls only
- *                     sideways, so for a header under the page's bar the
- *                     box stays visible where the table fits
- *                     (`lg:overflow-visible`)
+ *   vp-table-sticky   with vp-table: the header row stays in view while the
+ *                     rows scroll under it, under a bar when the table itself
+ *                     sets --vp-table-sticky-top (its own 0px hides a value
+ *                     set on an ancestor); the table a plain table (not a box
+ *                     that scrolls, where the header would stick to the
+ *                     table), each cell drawing its bottom and right border,
+ *                     the first column its left and the header its top, since
+ *                     a stuck header loses collapsed borders. It sticks to
+ *                     the nearest box that scrolls: in a vp-table-scroll, the
+ *                     box, which scrolls only sideways, so for a header under
+ *                     the page's bar the box stays visible where the table
+ *                     fits (`lg:overflow-visible`)
  *   vp-table-hover    with vp-table: a body row takes the gray wash while
  *                     hovered, on a device that can hover, for rows that
  *                     open something (the cursor is the page's:

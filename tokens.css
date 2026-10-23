@@ -156,8 +156,8 @@
   --vp-focus-ring-offset: 2px;
   --vp-focus-ring-inset: -2px;
 
-  /* the top bar's height, which a menu and a nav screen read; the width a
-     bar's row and a footer center their content at */
+  /* the top bar's height; the width a bar's row and a footer center
+     their content at */
   --vp-nav-height: 4rem;
   --vp-layout-max-width: 90rem;
 

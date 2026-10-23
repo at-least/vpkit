@@ -83,7 +83,10 @@ cases.push({
     name: 'icon-btn with a stroke svg',
     html: `<button class="vp-icon-btn" type="button" aria-label="Close">${svg}</button>`,
     reference: svg,
-    checks: [{ target: 'svg', props: ['fill'] }],
+    checks: [
+      { target: 'svg', props: ['fill'] },
+      { target: 'svg', source: 'golden', props: ['fill'], why: 'an SVG that sets its own fill keeps it, so a stroke icon stays hollow, where VPSocialLink fills every SVG with currentColor' },
+    ],
   });
 }
 

@@ -3,7 +3,7 @@
  * import: `@import "vpkit/components/screen/screen.css";` (`vp-nav-screen`
  * is the docs layout's own screen, so the app's is `vp-screen`)
  *
- *   <div class="vp-screen lg:hidden" id="nav-screen" hidden>
+ *   <div class="vp-screen md:hidden" id="nav-screen" hidden>
  *     <div class="vp-screen-container">
  *       <nav aria-label="Main">
  *         <a class="vp-nav-link" data-variant="screen" href="/store" aria-current="page">Store</a>
@@ -17,8 +17,9 @@
  *   </div>
  *
  * `vp-screen` is the screen: fixed from just under the bar (the bar's
- * height, --vp-nav-height, and its 1px line) to the viewport's foot, full
- * width, 2rem in at each side, on the page's color, scrolling on its own
+ * height, --vp-nav-height, and its 1px line, below a page's banner,
+ * --vp-layout-top-height, as VPNavScreen reads it) to the viewport's
+ * foot, full width, 2rem in at each side, on the page's color, scrolling on its own
  * without scrolling the page behind it, its ground turning in
  * --vp-duration. Where VPNavScreen covers the bar and pads down past it,
  * vpkit's starts under it, so the bar stays above it with no stacking
@@ -37,15 +38,15 @@
  * script toggles with the hamburger's aria-expanded. What is inside is
  * the page's: vp-nav-link's screen variant for the links, vp-accordion for
  * a group of them, vp-toggle's appearance variant in the row; the width
- * it hides at (`lg:hidden`, where the bar shows its links) and the space
- * between its parts (`mt-6`) are the page's too. Not ported: the fade in,
- * Vue's. This is the components layer, so a utility on the element
+ * it hides at (`md:hidden`, 768px, where VitePress's bar shows its links
+ * and the hamburger goes) and the space between its parts (`mt-6`) are
+ * the page's too. Not ported: the fade in, Vue's. This is the components layer, so a utility on the element
  * overrides it. */
 
 @layer components {
   .vp-screen {
     position: fixed;
-    top: calc(var(--vp-nav-height) + 1px);
+    top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 1px);
     right: 0;
     bottom: 0;
     left: 0;

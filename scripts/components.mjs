@@ -39,9 +39,10 @@ export function cssFiles(dir) {
 
 // a Tailwind entry for a product's kit, written at file under
 // node_modules/.cache, where Tailwind resolves its own import: Tailwind,
-// the caller's head (its @source lines, given the path maker), vpkit, the
-// docs theme's variables and icons for its product, every component, and
-// the markdown last (an app compiles it below the components)
+// the caller's head (its @source lines and any import of its own, given
+// the path maker), vpkit, the docs theme's variables and icons for its
+// product, every component, and the markdown last (an app compiles it
+// below the components)
 export function writeEntry(file, product, head) {
   mkdirSync(dirname(file), { recursive: true });
   const rel = (p) => relative(dirname(file), p).split(sep).join('/');

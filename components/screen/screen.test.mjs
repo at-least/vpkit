@@ -30,6 +30,15 @@ cases.push({
   ],
 });
 
+// below a layout top: VitePress's --vp-layout-top-height (a banner above
+// the bar, 0px unset), which VPNavScreen's padding reads
+cases.push({
+  name: 'screen under a layout top',
+  width: 375,
+  html: '<style>:root{--vp-layout-top-height:3rem}</style><div class="vp-screen"><div class="vp-screen-container"><a href="#">Store</a></div></div>',
+  checks: [{ target: '.vp-screen', source: 'golden', props: ['top', 'height'], why: `${UNDER_THE_BAR}; under a banner too, the bar's height, the banner's and the line down` }],
+});
+
 // the labelled row, with the appearance switch at its end on both sides
 const toggle = ex('menu').match(/<button class="vp-toggle"[\s\S]*?<\/button>/)[0];
 cases.push({

@@ -116,7 +116,7 @@
     overflow: hidden;
   }
 
-  .vp-toggle-icon > svg {
+  :where(.vp-toggle-icon) > svg {
     position: absolute;
     top: 0.1875rem;
     left: 0.1875rem;
@@ -127,8 +127,7 @@
   }
 
   /* the appearance switch: the knob and the two icons follow .dark on the
-     root (vp-icon-btn's appearance switch also reads data-appearance
-     there) */
+     root */
   .vp-toggle[data-variant="appearance"] .vp-toggle-dark {
     opacity: 0;
   }

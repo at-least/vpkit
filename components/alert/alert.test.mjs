@@ -21,8 +21,6 @@ const UPSTREAM = { files: ['custom-block.css', 'vp-doc.css'] };
 const TYPES = ['info', 'note', 'tip', 'important', 'warning', 'danger', 'caution'];
 const variant = (type) => (type === 'info' ? '' : ` data-variant="${type}"`);
 const ofType = (type) => (type === 'info' ? '.vp-alert:not([data-variant])' : `.vp-alert[data-variant="${type}"]`);
-// VitePress renders a container inside .vp-doc, whose rules for links and
-// code meet custom-block.css's: the upstream side is that rendering
 
 const ALERT_BOX = [...BORDER, ...RADIUS, ...PADDING, 'line-height', 'font-size', ...COLORS];
 const LINK = ['color', 'font-weight', 'text-decoration-line', 'text-underline-offset', ...TRANSITION, 'opacity'];
@@ -238,8 +236,8 @@ const INSIDE = [
   ]],
   // an empty state's lines are paragraphs, the second after the first:
   // their margins stay the box's gap, the description's color secondary.
-  // Its line height is its own only in a doc (.vp-doc .vp-empty-desc);
-  // elsewhere it inherits the alert's, so it is compared in the doc alone
+  // Its line height is the alert's, inherited, in a doc as outside one
+  // (.vp-doc .vp-empty-desc), so it is compared with the alert outside one
   ['an empty state', '<div data-t="x" class="vp-empty"><p data-t="title" class="vp-empty-title">No issues</p><p data-t="details" class="vp-empty-desc">Nothing matched these filters.</p></div>', [
     { target: X, props: ['color', 'background-color', 'row-gap'] },
     { target: TITLE_T, props: ['color', 'font-weight', ...MARGIN] },
@@ -250,7 +248,8 @@ const INSIDE = [
 ];
 for (const [what, markup, checks, inDocToo = []] of INSIDE) {
   cases.push({ name: `alert with ${what} inside`, reference: `<div>${markup}</div>`, html: `<div class="vp-alert" data-variant="tip">${markup}</div>`, checks });
-  cases.push({ name: `alert with ${what} inside, in a doc`, reference: `<div>${markup}</div>`, html: inDoc(`<div class="vp-alert" data-variant="tip">${markup}</div>`), checks: [...checks, ...inDocToo] });
+  cases.push({ name: `alert with ${what} inside, in a doc`, reference: `<div>${markup}</div>`, html: inDoc(`<div class="vp-alert" data-variant="tip">${markup}</div>`), checks });
+  if (inDocToo.length) cases.push({ name: `alert with ${what} inside, in a doc and outside one`, reference: `<div class="vp-alert" data-variant="tip">${markup}</div>`, html: inDoc(`<div class="vp-alert" data-variant="tip">${markup}</div>`), checks: inDocToo });
 }
 
 // on a touch screen a hovered link looks as it does at rest

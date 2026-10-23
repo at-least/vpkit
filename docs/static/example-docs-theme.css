@@ -2035,7 +2035,7 @@ pre, code, kbd, samp {
   }
   .vp-doc .vp-empty-title, .vp-doc .vp-empty-desc {
     margin: 0;
-    line-height: 1.5;
+    line-height: inherit;
   }
   .vp-label {
     display: block;
@@ -2461,7 +2461,7 @@ pre, code, kbd, samp {
   }
   .vp-doc .vp-pager-summary {
     margin: 0;
-    line-height: 1.5;
+    line-height: inherit;
   }
   .vp-panel {
     --vp-panel-padding: 1rem;
@@ -2609,7 +2609,7 @@ pre, code, kbd, samp {
   }
   .vp-screen {
     position: fixed;
-    top: calc(var(--vp-nav-height) + 1px);
+    top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 1px);
     right: 0;
     bottom: 0;
     left: 0;
@@ -3078,7 +3078,7 @@ pre, code, kbd, samp {
     border-radius: 50%;
     overflow: hidden;
   }
-  .vp-toggle-icon > svg {
+  :where(.vp-toggle-icon) > svg {
     position: absolute;
     top: 0.1875rem;
     left: 0.1875rem;
@@ -3194,7 +3194,7 @@ pre, code, kbd, samp {
   :where(.vp-carbon-ads) > div:first-of-type {
     display: block;
   }
-  .vp-doc .vp-carbon-ads a {
+  :where(.vp-doc .vp-carbon-ads) a:where(:not([class*="vp-"])) {
     text-decoration: none;
   }
   .vp-home-sponsors {

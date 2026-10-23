@@ -19,6 +19,8 @@
  * centered, 0.375rem between the two; under forced colors, which erase a
  * background, the dot paints in the system's text color.
  *
+ * VPBadge's 0.125rem left margin is kept, VitePress's own (`ml-0`
+ * removes it).
  * The block sets its locals from the contract, a variant overrides them:
  * its text, and its tint, --vp-badge-tint, the ground, which the outline
  * moves to the border.

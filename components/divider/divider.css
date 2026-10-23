@@ -28,8 +28,10 @@
  *                                 role="separator">`, the rule broken by
  *                                 the label centered on it, 0.8125rem at
  *                                 1.25rem in secondary text, a 1px rule
- *                                 each side 0.75rem from it; the label is
- *                                 the element's text, the rules are drawn
+ *                                 each side 0.75rem from it, 1rem above
+ *                                 and below as the rule (`my-0` removes
+ *                                 it); the label is the element's text,
+ *                                 the rules are drawn
  * An <hr> is a separator for assistive technology by itself. In a flex
  * row an <hr> is a flex item, as VitePress's ::before is. One addition:
  * under forced colors (Windows' contrast themes) the browser erases

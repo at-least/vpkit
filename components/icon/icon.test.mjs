@@ -45,7 +45,10 @@ cases.push({
   name: 'icon with a stroke svg',
   html: `<span class="vp-icon">${SVG(' fill="none" stroke="currentColor"')}</span>`,
   reference: SVG(' fill="none" stroke="currentColor"'),
-  checks: [{ target: 'svg', props: ['fill'] }],
+  checks: [
+    { target: 'svg', props: ['fill'] },
+    { target: 'svg', source: 'golden', props: ['fill'], why: 'an SVG that sets its own fill keeps it, so a stroke icon stays hollow, where VPIcon fills every SVG with currentColor' },
+  ],
 });
 
 // a size utility on the SVG wins: against the same SVG sized inline

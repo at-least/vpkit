@@ -17,7 +17,7 @@
 //! A component emits vpkit's classes and nothing else. `Chip`, `Empty` and
 //! `Pager` take `class`, the page's utilities on their root element
 //! (`class="mb-0"`), as `class="vp-empty mb-0"` would by hand;
-//! `AppearanceSwitch`, `Dialog`, `Field` and `Tabs` take none. Tailwind
+//! `AppearanceSwitch`, `Dialog`, `Field`, `Hint` and `Tabs` take none. Tailwind
 //! finds them in the app's own source, where they are written.
 //!
 //! ```

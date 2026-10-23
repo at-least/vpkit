@@ -145,6 +145,18 @@
       }
     }
   },
+  "icon-btn with a stroke svg": {
+    "light": {
+      "svg": {
+        "fill": "none"
+      }
+    },
+    "dark": {
+      "svg": {
+        "fill": "none"
+      }
+    }
+  },
   "icon-btn sizes": {
     "light": {
       ".vp-icon-btn": {

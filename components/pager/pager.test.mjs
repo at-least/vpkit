@@ -54,12 +54,14 @@ cases.push({
 
 // inside a vp-doc, whose rule for a paragraph is in play: the summary as
 // it is outside one
-cases.push({
-  name: 'pager in a doc',
-  html: inDoc(ex('basic')),
-  reference: `<div>${ex('basic')}</div>`,
-  checks: [
-    { target: '.vp-pager', props: ['height'] },
-    { target: '.vp-pager-summary', props: LINE },
-  ],
-});
+for (const page of ['', 'line-height:2']) {
+  cases.push({
+    name: `pager in a doc${page ? ' on a page of 2 lines' : ''}`,
+    html: `<div style="${page}">${inDoc(ex('basic'))}</div>`,
+    reference: `<div style="${page}">${ex('basic')}</div>`,
+    checks: [
+      { target: '.vp-pager', props: ['height'] },
+      { target: '.vp-pager-summary', props: LINE },
+    ],
+  });
+}

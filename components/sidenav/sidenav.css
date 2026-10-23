@@ -42,8 +42,7 @@
 @layer components {
   /* the nav is a focus target (tabindex="-1", where a skip link lands) and
      must show no ring there, as VPSidebar's nav shows none: base.css's
-     :focus-visible ring is left off it, as prose.css leaves it off a
-     vp-doc's headings (VitePress's rule for its own focus targets) */
+     :focus-visible ring is left off it */
   .vp-sidenav {
     --vp-sidenav-text: var(--vp-c-text-2);
     --vp-sidenav-hover-text: var(--vp-c-brand);

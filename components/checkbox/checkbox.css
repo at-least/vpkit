@@ -11,8 +11,8 @@
  *   vp-checkbox-label   the label around it that is its tap target,
  *                       centering it; on a coarse pointer a 2.75rem
  *                       square, a touch target's 44px (the control
- *                       height), pulled over the cell's padding by as
- *                       much negative margin so the row barely grows
+ *                       height), pulled over the cell's padding by a
+ *                       negative margin so the row barely grows
  * The control keeps its 1rem on a touch screen: the hit area is the
  * label's. Its name is the page's (`aria-label`, or the row's text the
  * label holds). This is the components layer, so a utility on the element

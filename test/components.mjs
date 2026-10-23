@@ -332,8 +332,8 @@ async function runCase({ suite, c }) {
   return failures;
 }
 
-// four cases at a time (the run is mostly page opens: 74 s one at a time,
-// 27 s four at once, eight no faster), their failures kept in case order
+// four cases at a time (the run is mostly page opens, which wait), their
+// failures kept in case order
 try {
   const byCase = await pool(selected, 4, (s) =>
     runCase(s).catch((e) => {

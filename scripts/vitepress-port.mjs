@@ -327,16 +327,17 @@ ${hideNav.join('\n\n')}
 
 const indent = (css) => css.split('\n').map((l) => (l ? `  ${l}` : l)).join('\n');
 
-// vpkit's ported files, written whole by `--write`: the header, VitePress's
-// global stylesheets the components rely on (verbatim, first, as VitePress
-// loads them before any component), then each component's port in the
-// order VitePress's bundle has them (vitepress.dev's style.css: a child's
-// styles before its parent's), so rules of two components that tie resolve
-// as there. The layout is in @layer components; the markdown in @layer base,
-// below every component, as VitePress's components outrank its vp-doc.css
-// by Vue's scoping, which the port drops (a markdown layer of its own would
-// have to be declared before Tailwind's own order, in every entry, or it
-// sorts after the utilities)
+// vpkit's ported files, written whole by `--write`: the header, then a
+// file's `body`, or its locals, VitePress's global stylesheets (verbatim
+// but for `rename`; first, as VitePress loads them before any component),
+// each component's port in the order VitePress's bundle has them
+// (vitepress.dev's style.css: a child's styles before its parent's), so
+// rules of two components that tie resolve as there, and its `after`. The
+// layout is in @layer components; the markdown in @layer base, below every
+// component, as VitePress's components outrank its vp-doc.css by Vue's
+// scoping, which the port drops (a markdown layer of its own would have to
+// be declared before Tailwind's own order, in every entry, or it sorts
+// after the utilities)
 export const FILES = {
   'docs-theme/layout.css': {
     header: `/* vpkit's docs theme — the page layout, ported from VitePress's components

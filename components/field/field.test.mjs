@@ -1,8 +1,10 @@
 // vp-field, vp-label, vp-field-hint and vp-field-error: vpkit's own, so
 // golden: the box's grid and gap, each part's type and color, the margins
-// inside a field and outside one, a narrow box, a row of fields.
+// inside a field and outside one, a narrow box, a row of fields; and,
+// vpkit against vpkit, the field and the bare parts inside a vp-doc
+// against themselves outside one.
 
-import { COLORS, MARGIN, TYPE, examples } from '../../test/harness.mjs';
+import { COLORS, MARGIN, TYPE, examples, inDoc } from '../../test/harness.mjs';
 
 const ex = examples(import.meta.url);
 
@@ -58,4 +60,26 @@ cases.push({
   html: ex('field'),
   reference: '<input class="vp-input w-full" aria-invalid="true">',
   checks: [{ target: '.vp-input', props: [...COLORS, 'height'] }],
+});
+
+// inside a vp-doc, whose rule for a paragraph gives a line margins: the
+// field and the bare parts as they are outside one
+cases.push({
+  name: 'field in a doc',
+  html: inDoc(ex('field')),
+  reference: `<div>${ex('field')}</div>`,
+  checks: [
+    { target: '.vp-label', props: PART },
+    { target: '.vp-field-hint', props: [...PART, 'offset-top'] },
+    { target: '.vp-field-error', props: [...PART, 'offset-top'] },
+  ],
+});
+cases.push({
+  name: 'label and error outside a field in a doc',
+  html: inDoc(ex('bare')),
+  reference: `<div>${ex('bare')}</div>`,
+  checks: [
+    { target: '.vp-label', props: PART },
+    { target: '.vp-field-error', props: PART },
+  ],
 });

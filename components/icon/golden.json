@@ -1,4 +1,16 @@
 {
+  "icon with a stroke svg": {
+    "light": {
+      "svg": {
+        "fill": "none"
+      }
+    },
+    "dark": {
+      "svg": {
+        "fill": "none"
+      }
+    }
+  },
   "icon beside its text": {
     "light": {
       ".text-success .vp-icon": {

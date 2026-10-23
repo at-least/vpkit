@@ -13,7 +13,7 @@ Groups of links in an app's sidebar, the current page marked: VitePress's sideba
 
 {{ <vp_example file="sidenav/groups" title="Two groups" /> }}
 
-- `vp-sidenav`: the `<nav>`. Where a [Skip Link](@/components/skip.md) lands on it, give it `tabindex="-1"`: it is drawn with no focus ring then, as VitePress's sidebar nav is, the one element the kit draws no ring on at all.
+- `vp-sidenav`: the `<nav>`. Where a [Skip Link](@/components/skip.md) lands on it, give it `tabindex="-1"`: it is drawn with no focus ring then, as VitePress's sidebar nav is.
 - `vp-sidenav-group`: a group of links, 1.5rem above the next. `vp-sidenav-title`: its title, bold.
 - `vp-sidenav-items`: the group's list, a divider line at its left. `vp-sidenav-link`: a link in secondary text, brand when hovered.
 - The current page's link takes `aria-current="page"`: brand, with a bar on the list's line.

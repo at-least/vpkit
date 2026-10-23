@@ -2,18 +2,18 @@
 //
 // Reads helix/*.toml [palette] tables, following a file's `inherits` as
 // Helix does (mergeThemes below), maps each scheme onto the design-token
-// contract (hand-written slot maps below), derives monotonic text/border
-// ramps and the neutral ramp, auto-fits accents for WCAG AA (the same
-// ratios test/themes.mjs enforces, by the math it shares with the test,
-// scripts/color.mjs), and emits themes/<name>.css. A -hover (brand,
-// important, warning, danger, caution; a slot map's brand2) is a hovered
-// link's color, VitePress's -2 as every vpkit and VitePress stylesheet uses
+// contract (hand-written slot maps below), derives a monotonic text ramp,
+// a border where the scheme's own vanishes, and the neutral ramp,
+// auto-fits accents for WCAG AA (the same ratios test/themes.mjs enforces,
+// by the math it shares with the test, scripts/color.mjs), and emits
+// themes/<name>.css. A -hover (brand, important, warning, danger, caution)
+// is a hovered link's color, VitePress's -2 as every vpkit and VitePress stylesheet uses
 // it: the base color stepped toward black in light and toward white in
 // dark until it reads at AA where it is drawn, dimmed to 0.75 in a
 // container as custom-block.css and alert.css dim a hovered link. vars.css
 // also makes -2 the brand button's hover ground; that one is emitted as
-// its own --vp-c-brand-fill-hover, since in dark mode no one color can be
-// both (measured over the 222 themes of 2026-10-10).
+// its own --vp-c-brand-fill-hover, seeded by a slot map's brand2, since in
+// dark mode no one color can be both.
 //
 // The emitted files are the source of truth once committed: rerun after
 // editing the slot maps, rebuild the documentation's theme gallery index
@@ -245,8 +245,8 @@ function buildMode(mode, m, adjusted = new Set()) {
   };
   let [bg, bgAlt, bgElv] = [m.bg, m.bg_alt, m.bg_elv];
   // the elevated surface leaves room for body text: a dark half whose
-  // menus and dialogs are mid-tone (voxed's olive, a misread light
-  // palette's red) moves them toward the page until white reaches 7:1
+  // menus and dialogs are mid-gray (zenburn's, seoul256-dark-soft's) moves
+  // them toward the page until white reaches 7:1
   if (mode === 'dark' && contrast(white, bgElv) < 7.0 + EPS) {
     bgElv = stepTo(bgElv, bg, 20, (x) => contrast(white, x) >= 7.0 + EPS);
     adjusted.add('surfaces');
@@ -266,7 +266,8 @@ function buildMode(mode, m, adjusted = new Set()) {
     adjusted.add('border');
   }
   // brand + semantics: fit on their own tint (composite), which the
-  // contract test measures; a margin over bg keeps the tint passing
+  // contract test measures for the roles; a margin over bg keeps the tint
+  // passing
   const alpha = mode === 'light' ? 0.1 : 0.14;
   const sAlpha = mode === 'light' ? 0.12 : 0.15;
   for (const slot of ['brand1', 'success', 'warning', 'danger', 'important']) {

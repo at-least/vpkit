@@ -52,6 +52,8 @@ for (const mode of ['light', 'dark']) {
   // the brand button's white label: 4.5 at rest, hovered and pressed
   v['brand-fill'] = fitAll(v['brand-fill'], 'light', { text: [white] });
   const rest = v['brand-fill'];
+  // dark: from the fitted rest, not brand-2 and brand-1, a hovered link's and
+  // the text's colors, too light under white
   v['brand-fill-hover'] = fitAll(mode === 'light' ? v['brand-fill-hover'] : mix(rest, black, 0.15), 'light', { text: [white] });
   v['brand-fill-active'] = fitAll(mode === 'light' ? v['brand-fill-active'] : mix(rest, black, 0.25), 'light', { text: [white] });
   // a control's boundary: 3:1 against the page (WCAG 1.4.11)

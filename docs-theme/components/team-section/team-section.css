@@ -28,9 +28,9 @@
  * divider and bg, the contract's names). vpkit's: one element fewer, the
  * line the title's ::before, a border, where VitePress paints 1px of
  * background on an element of its own (forced colors erase a background
- * and keep a border, as the divider's rules say). Inside a vp-doc
- * (prose.css, below the components) the heading keeps the markdown's rule
- * for an h2 out, its line and margins, as VitePress resets them. */
+ * and keep a border). Inside a vp-doc (prose.css, below the components)
+ * the heading keeps the markdown's rule for an h2 out, its line and
+ * margins, as VitePress resets them. */
 
 @layer components {
   .vp-team-section {

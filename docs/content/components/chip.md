@@ -13,7 +13,7 @@ A removable filter: its key and its value in a pill, with a control that removes
 
 {{ <vp_example file="chip/basic" title="A filter in force" layout="row" /> }}
 
-- `vp-chip`: a 12px pill on the soft ground, its parts in a row.
+- `vp-chip`: a pill of 12px text on the soft ground, its parts in a row.
 - `vp-chip-key` in the secondary text, `vp-chip-value` at 600 in the body text.
 - `vp-chip-remove`: a link or a button around an icon, in the secondary text, the body text when hovered, base.css's ring when focused. Its padding is a hit area larger than the icon, taken back by as much negative margin, so the chip keeps its size. The cross is Lucide's x as an inline SVG (above), drawn at 1rem; the Rust crate's `Chip` writes it.
 - Name the control for a screen reader with `aria-label`: the icon says nothing.

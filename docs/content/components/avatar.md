@@ -19,6 +19,6 @@ The round picture of VitePress's `VPTeamMembersItem`, the team page's member car
 
 {{ <vp_example file="avatar/sizes" title="Sizes, in a row with a name" layout="row" kit="docs-theme" /> }}
 
-Without a picture, a `<span>` with initials takes the class for the circle and the shadow, with the centering and a ground as utilities: `inline-flex items-center justify-center bg-soft font-semibold`.
+Without a picture, a `<span>` with initials takes the class for the circle and the shadow, with the centering, a ground and a color as utilities: `inline-flex items-center justify-center bg-soft text-secondary font-semibold`.
 
 {{ <vp_example file="avatar/initials" title="Initials in place of a picture" layout="row" kit="docs-theme" /> }}
