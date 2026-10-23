@@ -101,7 +101,7 @@ The app kit's 45, each on its original or vpkit's own, with its attributes and p
 | `vp-icon-btn` | VPSocialLink | `data-variant` appearance; `data-size` sm; `vp-icon-btn-light`, `-dark`, `-auto` |
 | `vp-icon` | VPIcon | an SVG inside |
 | `vp-tabs` | the code group's bar | `vp-tabs-tab`; `aria-selected`; `aria-current` on a link |
-| `vp-choice` | vpkit's own | `:has(:checked)`, `:has(:focus-visible)`, `:has(> input:disabled)` |
+| `vp-choice` | vpkit's own | `:has(> input:checked)`, `:has(> input:focus-visible)`, `:has(> input:disabled)` |
 | `vp-toast` | vpkit's own | `data-state` error, success |
 | `vp-progress` | vpkit's own | `vp-progress-bar`; no `aria-valuenow` sweeps |
 | `vp-skip` | VPSkipLink | `:focus` |

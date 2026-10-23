@@ -2,8 +2,9 @@
 // rest, hovered, checked and with its control focused from the keyboard
 // (the ring on the card, none on the control), the control's size and
 // color; a disabled card, dimmed, checked or not; and against vpkit: a disabled card hovered
-// looks as it does at rest, a disabled control nested deeper in the text
-// leaves the card as it is, a touch screen's hover is rest.
+// looks as it does at rest, a control nested deeper in the text, disabled,
+// chosen or focused, leaves the card as it is, a touch screen's hover is
+// rest.
 
 import { BORDER, COLORS, OUTLINE, PADDING, RADIUS, TRANSITION, examples } from '../../test/harness.mjs';
 
@@ -72,6 +73,20 @@ for (const checked of [false, true]) {
       { target: '.vp-choice', props: [...COLORS, 'opacity', 'cursor'] },
       { target: '.vp-choice', state: ['hover'], props: COLORS },
     ],
+  });
+  // a select's chosen option is :checked and a focused select :focus-visible:
+  // neither is the card's control, so the card stays unchecked and unringed
+  cases.push({
+    name: 'choice with a select nested deeper',
+    html: nested(false),
+    reference: card('', 'Resolved in 2.4.1'),
+    checks: [{ target: '.vp-choice', props: [...COLORS, ...OUTLINE] }],
+  });
+  cases.push({
+    name: 'choice with a select nested deeper focused',
+    html: nested(false),
+    reference: nested(false),
+    checks: [{ target: '.vp-choice', on: 'select', state: ['focus-visible'], refState: [], props: OUTLINE }],
   });
 }
 

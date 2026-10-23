@@ -11,13 +11,14 @@
  * padding, 14px text on 24px lines, the control first, 0.75rem from its
  * text. No axis and no parts: the card's states are its control's, read
  * with :has(), so there is nothing to toggle but the control. A brand
- * border hovered; while its control is checked (`:has(:checked)`), the
- * brand border on the brand tint; while the control has the keyboard's
- * focus (`:has(:focus-visible)`), base.css's focus ring drawn on the
- * card and not on the control: the card is the one box the kit draws the
- * ring on for a control inside it.
- * While its own control is disabled (`:has(> input:disabled)`: the card's
- * control, not one nested deeper in its text) the card is dimmed to half
+ * border hovered; while its control is checked (`:has(> input:checked)`),
+ * the brand border on the brand tint; while the control has the
+ * keyboard's focus (`:has(> input:focus-visible)`), base.css's focus ring
+ * drawn on the card and not on the control: the card is the one box the
+ * kit draws the ring on for a control inside it. Each state is the card's
+ * own control's, not one nested deeper in its text (a select's chosen
+ * option is :checked too). While its control is disabled
+ * (`:has(> input:disabled)`) the card is dimmed to half
  * opacity with a not-allowed cursor and takes no hover, as a disabled
  * vp-btn is drawn; a checked one keeps its checked look, dimmed. The
  * control is 1rem, aligned with the first line, in the brand color
@@ -49,7 +50,7 @@
     }
   }
 
-  .vp-choice:has(:checked) {
+  .vp-choice:has(> input:checked) {
     border-color: var(--vp-c-brand);
     background-color: var(--vp-c-brand-soft);
   }
@@ -61,7 +62,7 @@
 
   /* base.css's ring, on the card while the control inside has the
      keyboard's focus */
-  .vp-choice:has(:focus-visible) {
+  .vp-choice:has(> input:focus-visible) {
     outline: var(--vp-focus-ring);
     outline-offset: var(--vp-focus-ring-offset);
   }

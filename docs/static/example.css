@@ -1399,7 +1399,7 @@ pre, code, kbd, samp {
       }
     }
   }
-  .vp-choice:has(:checked) {
+  .vp-choice:has(> input:checked) {
     border-color: var(--vp-c-brand);
     background-color: var(--vp-c-brand-soft);
   }
@@ -1407,7 +1407,7 @@ pre, code, kbd, samp {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  .vp-choice:has(:focus-visible) {
+  .vp-choice:has(> input:focus-visible) {
     outline: var(--vp-focus-ring);
     outline-offset: var(--vp-focus-ring-offset);
   }
