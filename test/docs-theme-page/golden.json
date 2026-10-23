@@ -1,0 +1,18 @@
+{
+  "docs theme page vp-icon": {
+    "light": {
+      ".vp-icon": {
+        "mask-image": "none",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "width": "16px"
+      }
+    },
+    "dark": {
+      ".vp-icon": {
+        "mask-image": "none",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "width": "16px"
+      }
+    }
+  }
+}

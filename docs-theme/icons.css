@@ -1,8 +1,9 @@
 /* vpkit's docs theme — icons, VitePress's styles/icons.css (v2.0.0-alpha.20)
  * verbatim inside @layer components, for the layout: `@import
- * "vpkit/docs-theme/icons.css";`. The app kit draws its icons as inline
- * SVG (the crate's `icon` module), which needs no mask and no `data:` in a
- * page's Content-Security-Policy.
+ * "vpkit/docs-theme/icons.css";`. Left out: its .vp-icon, the app kit's
+ * inline-SVG icon's class, which the mask would blank. The app kit draws
+ * its icons as inline SVG (the crate's `icon` module), which needs no
+ * mask and no `data:` in a page's Content-Security-Policy.
  *
  *   <span class="vpi-search" aria-hidden="true"></span>
  *
@@ -18,8 +19,7 @@
 @layer components {
   /* icons.css: VitePress's masks */
   [class^='vpi-'],
-  [class*=' vpi-'],
-  .vp-icon {
+  [class*=' vpi-'] {
     /* an unresolved icon masks to nothing instead of a currentColor box */
     --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E");
     display: inline-block;
@@ -27,14 +27,12 @@
     height: 1em;
   }
   [class^='vpi-'].bg,
-  [class*=' vpi-'].bg,
-  .vp-icon.bg {
+  [class*=' vpi-'].bg {
     background-size: 100% 100%;
     background-color: transparent;
   }
   [class^='vpi-']:not(.bg),
-  [class*=' vpi-']:not(.bg),
-  .vp-icon:not(.bg) {
+  [class*=' vpi-']:not(.bg) {
     -webkit-mask: var(--icon) no-repeat;
     mask: var(--icon) no-repeat;
     -webkit-mask-size: 100% 100%;
@@ -119,8 +117,7 @@
 
   @media (forced-colors: active) {
     [class^='vpi-']:not(.bg),
-    [class*=' vpi-']:not(.bg),
-    .vp-icon:not(.bg) {
+    [class*=' vpi-']:not(.bg) {
       forced-color-adjust: none;
       background-color: CanvasText;
     }

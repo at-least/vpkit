@@ -46,6 +46,8 @@ const only = process.env.CASES ? new RegExp(process.env.CASES) : null;
 const PRODUCTS = { app: componentDirs(''), docs: componentDirs('docs-theme') };
 // and the page's own suite (test/page: base.css's rules on the body, a bare placeholder, the focus ring), with the app kit's
 PRODUCTS.app.push(join(ROOT, 'test/page'));
+// and the docs theme's (test/docs-theme-page: the app kit's components under the docs theme's stylesheets), with the docs theme
+PRODUCTS.docs.push(join(ROOT, 'test/docs-theme-page'));
 
 // VitePress's stylesheets every upstream page loads, in its order
 const UPSTREAM = ['vars.css', 'base.css', 'icons.css'];

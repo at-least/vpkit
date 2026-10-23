@@ -423,9 +423,10 @@ export const FILES = {
   'docs-theme/icons.css': {
     header: `/* vpkit's docs theme — icons, VitePress's styles/icons.css (v2.0.0-alpha.20)
  * verbatim inside @layer components, for the layout: \`@import
- * "vpkit/docs-theme/icons.css";\`. The app kit draws its icons as inline
- * SVG (the crate's \`icon\` module), which needs no mask and no \`data:\` in a
- * page's Content-Security-Policy.
+ * "vpkit/docs-theme/icons.css";\`. Left out: its .vp-icon, the app kit's
+ * inline-SVG icon's class, which the mask would blank. The app kit draws
+ * its icons as inline SVG (the crate's \`icon\` module), which needs no
+ * mask and no \`data:\` in a page's Content-Security-Policy.
  *
  *   <span class="vpi-search" aria-hidden="true"></span>
  *
@@ -438,11 +439,17 @@ export const FILES = {
  * mask paints with by the page's, an icon paints in the system's text
  * color. Written by scripts/vitepress-port.mjs. */`,
     globals: [['icons.css', "VitePress's masks"]],
+    // not .vp-icon: the app kit's inline-SVG icon has the class, and the
+    // mask would blank it on a docs site; the layout uses vpi-* alone
+    rename: (css) => {
+      const out = css.replace(/,\n\.vp-icon(\.bg|:not\(\.bg\))? \{/g, ' {');
+      if (out.match(/\.vp-icon\b(?!-)/)) throw new Error('icons.css: a .vp-icon selector the port does not leave out');
+      return out;
+    },
     // vpkit's addition, after VitePress's ground for a mask
     after: `  @media (forced-colors: active) {
     [class^='vpi-']:not(.bg),
-    [class*=' vpi-']:not(.bg),
-    .vp-icon:not(.bg) {
+    [class*=' vpi-']:not(.bg) {
       forced-color-adjust: none;
       background-color: CanvasText;
     }
