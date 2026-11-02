@@ -1,6 +1,7 @@
 package vpkit
 
 import (
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -41,17 +42,67 @@ func moduleFiles(t *testing.T) []string {
 	return out
 }
 
-// undocumented lists, in file, each exported item without a doc comment: a
-// type, a func, a method, a var or a const, an exported struct field
+// typeName is the name a receiver or an embedded field takes from its type:
+// T, *T, pkg.T, T[P]
+func typeName(expr ast.Expr) string {
+	switch e := expr.(type) {
+	case *ast.Ident:
+		return e.Name
+	case *ast.StarExpr:
+		return typeName(e.X)
+	case *ast.SelectorExpr:
+		return e.Sel.Name
+	case *ast.IndexExpr:
+		return typeName(e.X)
+	case *ast.IndexListExpr:
+		return typeName(e.X)
+	}
+	panic(fmt.Sprintf("typeName: %T", expr))
+}
+
+// undocumented lists, in file, each exported item go doc shows without a doc
+// comment: a type, a func, a method of an exported type, a var or a const, and
+// in an exported type each exported field, embedded field and interface method,
+// down into nested struct types. A field's trailing comment documents it, as
+// go doc prints it.
 func undocumented(fset *token.FileSet, file *ast.File) []string {
 	var out []string
 	at := func(n ast.Node, what string) {
 		out = append(out, fset.Position(n.Pos()).String()+": "+what)
 	}
+	var fields func(list *ast.FieldList, prefix string)
+	fields = func(list *ast.FieldList, prefix string) {
+		for _, field := range list.List {
+			names := []string{}
+			for _, name := range field.Names {
+				names = append(names, name.Name)
+			}
+			if len(field.Names) == 0 {
+				names = append(names, typeName(field.Type))
+			}
+			for _, name := range names {
+				if !ast.IsExported(name) {
+					continue
+				}
+				if field.Doc == nil && field.Comment == nil {
+					at(field, prefix+name)
+				}
+				if st, ok := field.Type.(*ast.StructType); ok {
+					fields(st.Fields, prefix+name+".")
+				}
+			}
+		}
+	}
 	for _, decl := range file.Decls {
 		switch d := decl.(type) {
 		case *ast.FuncDecl:
-			if d.Name.IsExported() && d.Doc == nil {
+			if !d.Name.IsExported() {
+				continue
+			}
+			if d.Recv != nil && !ast.IsExported(typeName(d.Recv.List[0].Type)) {
+				continue
+			}
+			if d.Doc == nil {
 				at(d, d.Name.Name)
 			}
 		case *ast.GenDecl:
@@ -64,16 +115,11 @@ func undocumented(fset *token.FileSet, file *ast.File) []string {
 					if d.Doc == nil && s.Doc == nil {
 						at(s, s.Name.Name)
 					}
-					st, ok := s.Type.(*ast.StructType)
-					if !ok {
-						continue
-					}
-					for _, field := range st.Fields.List {
-						for _, name := range field.Names {
-							if name.IsExported() && field.Doc == nil {
-								at(field, s.Name.Name+"."+name.Name)
-							}
-						}
+					switch tt := s.Type.(type) {
+					case *ast.StructType:
+						fields(tt.Fields, s.Name.Name+".")
+					case *ast.InterfaceType:
+						fields(tt.Methods, s.Name.Name+".")
 					}
 				case *ast.ValueSpec:
 					for _, name := range s.Names {
@@ -88,8 +134,8 @@ func undocumented(fset *token.FileSet, file *ast.File) []string {
 	return out
 }
 
-// every exported item of the module has a doc comment, and every package a
-// package comment, as go doc shows them
+// every exported item of the module that go doc shows has a doc comment, and
+// every package a package comment
 func TestEveryExportedItemIsDocumented(t *testing.T) {
 	files := moduleFiles(t)
 	if len(files) < 10 {
@@ -124,6 +170,49 @@ func TestAnUndocumentedItemFails(t *testing.T) {
 	}
 	got := strings.Join(undocumented(fset, file), "; ")
 	want := "p.go:7:2: A.C; p.go:10:1: D; p.go:12:5: E"
+	if got != want {
+		t.Errorf("got %s, want %s", got, want)
+	}
+}
+
+// each case the review found: an embedded field, an interface method and a
+// nested struct's field are held; a trailing comment documents a field, and a
+// method on an unexported type is not shown by go doc
+func TestUndocumentedMatchesGoDoc(t *testing.T) {
+	src := `package p
+
+import "io"
+
+// A is documented.
+type A struct {
+	io.Writer
+	B string // B is documented.
+}
+
+// I is documented.
+type I interface {
+	M()
+}
+
+type x struct{}
+
+func (x) N() {}
+
+// S is documented.
+type S struct {
+	// In is documented.
+	In struct {
+		Z int
+	}
+}
+`
+	fset := token.NewFileSet()
+	file, err := parser.ParseFile(fset, "p.go", src, parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := strings.Join(undocumented(fset, file), "; ")
+	want := "p.go:7:2: A.Writer; p.go:13:2: I.M; p.go:24:3: S.In.Z"
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)
 	}
