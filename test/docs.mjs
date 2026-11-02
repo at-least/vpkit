@@ -98,12 +98,40 @@ for (const product of ['', 'docs-theme']) {
 
 // the Go module: every component type of the root package (one file per
 // component, chip.go for components/chip) is named on the component's page,
-// with its package, as go doc names it (`vpkit.Chip`)
-for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.go') && !f.endsWith('_test.go') && f !== 'vpkit.go')) {
+// with its package, as go doc names it (`vpkit.Chip`); a file with no struct
+// type (vpkit.go, the stylesheets) has no page
+for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.go') && !f.endsWith('_test.go'))) {
+  const types = [...readFileSync(join(ROOT, file), 'utf8').matchAll(/^type ([A-Z]\w*) struct/gm)].map((m) => m[1]);
+  if (types.length === 0) continue;
   const name = file.slice(0, -'.go'.length);
   const page = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8');
-  for (const [, type] of readFileSync(join(ROOT, file), 'utf8').matchAll(/^type ([A-Z]\w*) struct/gm)) {
+  for (const type of types) {
     if (!page.includes(`\`vpkit.${type}\``)) failures.push(`docs/content/components/${name}.md: does not name the Go module's vpkit.${type}`);
+  }
+}
+// and every name of the module the pages and the README write with its
+// package (`vpkit.FieldHintID`, `icon.Sun`, `vpkit.WriteCSS(dir)`) is one
+// `go doc -c` finds, so a rename in the module fails here. Not without -c:
+// go doc matches a lowercase letter of the name to either case, and found
+// vpkit.FieldHintId.
+{
+  const PACKAGES = { vpkit: 'github.com/at-least/vpkit', icon: 'github.com/at-least/vpkit/go/icon' };
+  const content = join(DOCS, 'content');
+  const files = [join(ROOT, 'README.md'), ...readdirSync(content, { recursive: true }).filter((f) => f.endsWith('.md')).map((f) => join(content, f))];
+  const names = new Map();
+  for (const file of files) {
+    for (const [, pkg, name] of readFileSync(file, 'utf8').matchAll(/\b(vpkit|icon)\.([A-Z]\w*)/g)) {
+      const key = `${PACKAGES[pkg]}.${name}`;
+      if (!names.has(key)) names.set(key, file.slice(ROOT.length + 1));
+    }
+  }
+  if (names.size < 20) throw new Error(`${names.size} Go names read from the pages`);
+  for (const [key, file] of names) {
+    try {
+      execFileSync('go', ['doc', '-c', key], { cwd: ROOT, stdio: 'pipe' });
+    } catch (e) {
+      failures.push(`${file}: names ${key}, which go doc does not find: ${e.stderr.toString().trim()}`);
+    }
   }
 }
 

@@ -91,7 +91,7 @@ The components are one import each, so a site ships only the ones it uses:
 
 ## Icons
 
-An icon is an inline SVG in `currentColor`: the Go module's `icon` package has Lucide's, the set VitePress draws and a few an app needs (`icon.Sun`, `Moon`, `X`, `Plus`, `Search`, `ChevronDown`, …), and any SVG written into the page does the same. [`vp-icon`](@/components/icon.md) sizes one at 1em; a button, an icon button or a chip sizes the SVG inside it. No mask and no `data:` image, so a strict Content-Security-Policy draws them.
+An icon is an inline SVG in `currentColor`: the Go module's `icon` package has Lucide's, the set VitePress draws and a few an app needs (`icon.Sun`, `icon.Moon`, `icon.X`, `icon.Plus`, `icon.Search`, `icon.ChevronDown`, …), and any SVG written into the page does the same. [`vp-icon`](@/components/icon.md) sizes one at 1em; a button, an icon button or a chip sizes the SVG inside it. No mask and no `data:` image, so a strict Content-Security-Policy draws them.
 
 ## Fonts
 
