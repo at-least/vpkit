@@ -89,7 +89,7 @@ func undocumented(fset *token.FileSet, file *ast.File) []string {
 }
 
 // every exported item of the module has a doc comment, and every package a
-// package comment, as go doc shows them (the crate's missing_docs)
+// package comment, as go doc shows them
 func TestEveryExportedItemIsDocumented(t *testing.T) {
 	files := moduleFiles(t)
 	if len(files) < 10 {
