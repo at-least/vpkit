@@ -6,7 +6,7 @@ What is called measured here was measured against VitePress v2.0.0-alpha.20 (`te
 
 ## Who it is for
 
-Three applications, all the owner's, build their pages on the app kit: totality (its store and its admin), own-drive and crashcart, each compiling its stylesheet with the Tailwind CLI. vpkit-zola builds on the docs theme and draws vpkit's documentation. No consumer outside these exists, so a component takes the best shape and the apps follow it (decision 1); a component ported from VitePress keeps VitePress's look, which no app set.
+One application, the owner's, builds its pages on the app kit: totality (its store and its admin), compiling its stylesheet with the Tailwind CLI. vpkit-zola builds on the docs theme and draws vpkit's documentation. No consumer outside these exists, so a component takes the best shape and the app follows it (decision 1); a component ported from VitePress keeps VitePress's look, which no app set.
 
 ## What a component is
 
@@ -69,7 +69,7 @@ Not themed, in tokens.css too: the font families, the radii (`--vp-radius-sm` 0.
 
 **How the generator meets it** (`scripts/gen-themes.mjs`, with `scripts/color.mjs`, the math `test/themes.mjs` shares): each hover is its text color moved toward black in light and toward white in dark until it passes everywhere it is drawn; the brand fills are fitted for white at 3:1, the hover from the brand color (a step toward black in light, toward white in dark, unless the slot map gives one), the pressed a quarter toward black from the rest; a dark half's mid-tone elevated surface moves toward the page until white reaches 7:1; a tint that leaves a hovered link no room is thinned, never below 0.06; a dark page too light to leave room moves toward black; a Helix palette that `inherits` another is read as Helix merges them. The four hand-tuned themes (github, catppuccin, nord, rose-pine) carry the same fits.
 
-**Assumptions**: measured, in dark mode one color can't do the text and the fill job; measured, VitePress's `-2`s are text everywhere in its stylesheets but the brand button's hover ground; stated by the owner, no consumer outside the three apps and vpkit-zola; guessed, that stays so.
+**Assumptions**: measured, in dark mode one color can't do the text and the fill job; measured, VitePress's `-2`s are text everywhere in its stylesheets but the brand button's hover ground; stated by the owner, no consumer outside totality and vpkit-zola; guessed, that stays so.
 
 ## How a component is proven
 
@@ -133,7 +133,7 @@ The app kit's 45, each on its original or vpkit's own, with its attributes and p
 
 The docs theme's 9, in `docs-theme/components/`, on VitePress's variables: `vp-avatar`, `vp-home-sponsors`, `vp-team-page`, `vp-team-header`, `vp-team-section`, `vp-team-member` (`data-size` sm), `vp-team-members` (`data-size` sm), `vp-sponsor` (`data-variant` aside; the grid's `data-size` xmini, mini, small, big), `vp-carbon-ads`. Outside both are only VitePress's theme for Algolia's search widget (`docsearch.css`), not a VitePress component, and the highlighter's colors (`vp-code.css`, Shiki's).
 
-**When a new one is built.** A component VitePress's default theme has is vpkit's: an app part in the app kit, a docs part in the docs theme; a re-sync that brings a new one builds it then. A pattern with no VitePress original becomes an app kit component when it is a part of an app's interface in VitePress's look rather than that app's own design, and an app has a use for it; whose design a pattern is, the owner decides (decision 2). What stays a utility string in an app is its layout and spacing, its own visualizations (crashcart's stack frames and charts, own-drive's file grid), and the arrangements it makes of vpkit's parts for its own screens (a copy line, a stat card, a drop target, an icon tile).
+**When a new one is built.** A component VitePress's default theme has is vpkit's: an app part in the app kit, a docs part in the docs theme; a re-sync that brings a new one builds it then. A pattern with no VitePress original becomes an app kit component when it is a part of an app's interface in VitePress's look rather than that app's own design, and an app has a use for it; whose design a pattern is, the owner decides (decision 2). What stays a utility string in an app is its layout and spacing, its own visualizations, and the arrangements it makes of vpkit's parts for its own screens (a copy line, a stat card, a drop target, an icon tile).
 
 ## The Go module
 
@@ -170,7 +170,7 @@ The app kit needs `light-dark()`: Chrome 123, Safari 17.5, Firefox 120 (every co
 5. **The stock is the fitted palette.** tokens.css's defaults are VitePress's palette with its contrast shortfalls fitted, so no app imports a theme to reach AA; the docs theme carries VitePress's palette verbatim, since a docs site is VitePress exactly.
 6. **Variants are attributes.** `data-variant` and `data-size` for a mutually exclusive axis, classes for orthogonal switches, ARIA for states: one principle, uniform specificity, no compound-selector ordering, and a finite axis the Go module can type.
 7. **One control height, one focus ring.** 2.75rem for every control that shares a row, where VitePress's button was 40px, its social link 36px, the input 44px; base.css's `:focus-visible` outline for everything, where the input drew a box-shadow ring, the button kept the browser's and the choice an outline.
-8. **The Go module carries the CSS.** An app's Go dependency is the one pin; the three apps each had a CSS pin of their own kind and the Rust crate's git rev moved by hand, with nothing tying the two.
+8. **The Go module carries the CSS.** An app's Go dependency is the one pin for its markup and its CSS, as a Cargo dependency was with the Rust crate's `css` feature, which the Go module replaced; before that feature, each app moved a CSS pin of its own kind and its own crate rev by hand, with nothing tying the two.
 9. **Golden values for vpkit's own, upstream for VitePress's.** The upstream clone stays the standard for what is meant to be VitePress's; what is vpkit's is held to its recorded values with its reason beside it; no list of known differences.
 10. **Two products.** The docs layout, VitePress's team page, sponsors and ads are the docs theme's, for vpkit-zola; the app kit holds what an application page uses.
 11. **The markdown stays in `@layer base`** (The markdown, above).
