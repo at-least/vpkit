@@ -1,7 +1,6 @@
 +++
 title = "Go"
 description = "vpkit's Go module: the components' markup as gomponents nodes, Lucide's icons as inline SVG, and the stylesheets embedded, so one commit pins both."
-aliases = ["/guide/rust/"]
 +++
 
 # Go
