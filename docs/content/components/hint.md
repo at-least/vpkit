@@ -21,4 +21,4 @@ A small "i" beside a word whose tooltip says what it means. It shows while hover
 - The tooltip is drawn, not read. The copy after the button is `hidden`, and the button's `aria-describedby` names it, so a screen reader reads it as the button's description; `aria-label` names the button. Hidden, it has no box, so from inside a scrolling table it can't widen the page, and it isn't read a second time as text of its own.
 - Its place beside the word is yours (`ml-1`).
 
-In Rust: [`Hint`](../../rust/vpkit/struct.Hint.html), from vpkit's [crate](@/guide/rust.md); it writes the button and the hidden copy, the copy's id derived from the hint unless you give one.
+In Go: `vpkit.Hint`, from vpkit's [Go module](@/guide/go.md); it writes the button and the hidden copy, the copy's id derived from the hint unless you give one.

@@ -16,7 +16,7 @@
  *                    wide so a long explanation wraps
  * A title alone, or a line of text with neither class, is fine. Inside a
  * vp-doc (prose.css), whose rule for a paragraph would space the lines as
- * the markdown's, each keeps its place. The crate's `Empty` writes this
+ * the markdown's, each keeps its place. The Go module's `vpkit.Empty` writes this
  * markup. */
 
 @layer components {

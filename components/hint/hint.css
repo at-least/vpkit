@@ -32,7 +32,7 @@
  * in a scrolling table or lane with no positioned box between, escapes the
  * scroller and widens the page; and it is read once, as the description,
  * not again as text of its own. Its place beside the word is the page's
- * (`ml-1`). The crate's `Hint` writes both. This is the components layer,
+ * (`ml-1`). The Go module's `vpkit.Hint` writes both. This is the components layer,
  * so a utility on the element overrides it. */
 
 @layer components {

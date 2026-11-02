@@ -1,5 +1,5 @@
 // vp-pager: vpkit's own, so golden: the row, its summary and its actions
-// (the crate's example), a first page with a disabled button, and a pager
+// (the Go module's example), a first page with a disabled button, and a pager
 // with no summary, whose actions keep the far end; vpkit against vpkit,
 // the summary inside a vp-doc against itself outside one.
 
@@ -16,7 +16,7 @@ const BTN = ['offset-left', 'offset-top', 'height', 'opacity'];
 const NEWER = '.vp-pager-actions > :first-child';
 const OLDER = '.vp-pager-actions > :last-child';
 
-// the crate's example: the summary at the row's start, the buttons at its end
+// the Go module's example: the summary at the row's start, the buttons at its end
 cases.push({
   name: 'pager',
   html: ex('basic'),

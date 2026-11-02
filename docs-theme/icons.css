@@ -2,7 +2,7 @@
  * verbatim inside @layer components, for the layout: `@import
  * "vpkit/docs-theme/icons.css";`. Left out: its .vp-icon, the app kit's
  * inline-SVG icon's class, which the mask would blank. The app kit draws
- * its icons as inline SVG (the crate's `icon` module), which needs no
+ * its icons as inline SVG (the Go module's `icon` package), which needs no
  * mask and no `data:` in a page's Content-Security-Policy.
  *
  *   <span class="vpi-search" aria-hidden="true"></span>

@@ -13,7 +13,7 @@ VitePress's `VPSocialLink`, the navbar's social icons, as a button for any icon.
 
 {{ <vp_example file="icon-btn/buttons" title="Icon buttons" layout="row" /> }}
 
-- A square centering its icon, secondary text, body text on hover. The icon is an inline SVG straight inside, 1.25rem (the crate's `vpkit::icon` writes these, or draw your own), which takes the text color unless it sets its own `fill`: the star above is filled, the stroke icons stay hollow. A size utility on the SVG wins.
+- A square centering its icon, secondary text, body text on hover. The icon is an inline SVG straight inside, 1.25rem (the Go module's `icon` package writes these, or draw your own), which takes the text color unless it sets its own `fill`: the star above is filled, the stroke icons stay hollow. A size utility on the SVG wins.
 - vpkit's addition: rounded corners and the gray wash on hover, so it reads as a control; a [ghost button](@/components/button.md) has the same colors.
 - The button shows only the icon: give it an `aria-label`.
 - Use it on `<a href>` or `<button>`, as VitePress does: those elements supply the pointer cursor, the class doesn't.

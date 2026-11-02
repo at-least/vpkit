@@ -14,7 +14,7 @@ const BOXP = ['display', 'align-items', 'column-gap', ...PADDING, ...RADIUS, 'fo
 const LOOK = ['color', 'text-decoration-line', 'font-weight'];
 const REMOVE = ['display', ...PADDING, ...MARGIN, 'color', 'cursor', 'text-decoration-line', ...TRANSITION, 'offset-left', 'height'];
 
-// the crate's example: the pill, its key and value, the remove control at
+// the Go module's example: the pill, its key and value, the remove control at
 // rest and hovered, its icon
 cases.push({
   name: 'chip',

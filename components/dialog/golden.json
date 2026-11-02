@@ -139,7 +139,7 @@
       }
     }
   },
-  "dialog open in place, the crate's markup": {
+  "dialog open in place, the Go module's markup": {
     "light": {
       ".vp-dialog": {
         "display": "block",

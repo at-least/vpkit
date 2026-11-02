@@ -31,7 +31,7 @@
  * The message and the action may be left out, as VitePress's may.
  *
  * VitePress's: every length, the gutter, text-2 and text-3. vpkit's: the
- * heart an inline SVG (Lucide's, the crate's icon::HEART) where VitePress's
+ * heart an inline SVG (Lucide's, the Go module's icon.Heart) where VitePress's
  * is a vpi-heart mask; one wrapper fewer (VitePress's header, unstyled);
  * the padding over the content in the shorthand, where VitePress needs
  * !important to keep it under its later one. Inside the home page's

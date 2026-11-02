@@ -21,7 +21,7 @@
  * showing its panel, and moving the selection with the arrow keys, are
  * the page's. vpkit's addition: a row of links to pages, which are no
  * tabs over panels, is a <nav> whose current link has aria-current; the
- * crate's `Tabs` and `Tab` write it:
+ * Go module's `vpkit.Tabs` and `vpkit.Tab` write it:
  *
  *   <nav class="vp-tabs" aria-label="Status">
  *     <a class="vp-tabs-tab" href="?status=open" aria-current="page">Open</a>

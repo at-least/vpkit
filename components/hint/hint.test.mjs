@@ -1,4 +1,4 @@
-// vp-hint: vpkit's own, so golden: the dot (the crate's markup, beside its
+// vp-hint: vpkit's own, so golden: the dot (the Go module's markup, beside its
 // word), and its tooltip, the ::after drawn from data-hint, hidden at rest
 // and shown hovered, focused from the keyboard and open
 // (aria-expanded="true", which a tap sets: the example); the focus ring;
@@ -20,7 +20,7 @@ const TIP = ['display', 'position', 'max-width', ...PADDING, ...BORDER, ...COLOR
 // where a shown tooltip's box is: from the dot, and from the screen's edges
 const PLACE = ['offset-top', 'offset-left', 'viewport-left', 'viewport-right'];
 const tip = (state, place) => ({ target: '.vp-hint', ...(state ? { state } : {}), pseudo: '::after', props: place ? [...TIP, ...PLACE] : TIP });
-// the crate's markup, beside its word
+// the Go module's markup, beside its word
 const rest = `<p>Ignored ${ex('basic')}</p>`;
 
 // at rest: the dot, its tooltip hidden

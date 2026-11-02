@@ -4,7 +4,6 @@ go 1.26.0
 
 ignore (
 	./node_modules
-	./rust
 )
 
 require maragu.dev/gomponents v1.4.0

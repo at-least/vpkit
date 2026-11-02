@@ -1,9 +1,9 @@
-// vp-dialog: vpkit's own, so golden: the box as a modal (the crate's
+// vp-dialog: vpkit's own, so golden: the box as a modal (the Go module's
 // example, which starts open in place, closed and opened with showModal()
 // by the case's script, as the docs page's button does), centered in the
 // top layer under its backdrop, which getComputedStyle resolves on an open
 // modal dialog; the title and the row of actions; closed; open in place,
-// the crate's markup and the docs' form; at a phone's width the 92vw cap;
+// the Go module's markup and the docs' form; at a phone's width the 92vw cap;
 // and the title inside a vp-doc against itself alone.
 
 import { BORDER, COLORS, MARGIN, PADDING, RADIUS, examples, inDoc } from '../../test/harness.mjs';
@@ -20,7 +20,7 @@ const BOXP = ['display', 'position', ...MARGIN, ...BORDER, ...RADIUS, ...PADDING
 const TITLE = ['margin-top', 'margin-bottom', 'border-top-width', 'padding-top', 'letter-spacing', 'line-height', 'font-size', 'font-weight', 'color'];
 const ACTIONS = ['display', 'justify-content', 'column-gap', 'margin-top'];
 
-// the crate's example, opened as a modal: the box, its backdrop, its parts
+// the Go module's example, opened as a modal: the box, its backdrop, its parts
 cases.push({
   name: 'dialog modal',
   html: ex('basic') + MODAL,
@@ -40,9 +40,9 @@ cases.push({
   checks: [{ target: '.vp-dialog', props: ['display'] }],
 });
 
-// the crate's example as it is: open in place, with no backdrop
+// the Go module's example as it is: open in place, with no backdrop
 cases.push({
-  name: "dialog open in place, the crate's markup",
+  name: "dialog open in place, the Go module's markup",
   html: ex('basic'),
   checks: [
     { target: '.vp-dialog', props: BOXP },

@@ -21,4 +21,4 @@ A title alone works, and so does a line of text with neither class.
 
 {{ <vp_example file="empty/line" title="A line of text" /> }}
 
-In Rust: [`Empty`](../../rust/vpkit/struct.Empty.html), from vpkit's [crate](@/guide/rust.md).
+In Go: `vpkit.Empty`, from vpkit's [Go module](@/guide/go.md).

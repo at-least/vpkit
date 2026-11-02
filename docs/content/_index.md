@@ -1,6 +1,6 @@
 +++
 title = "vpkit"
-description = "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the color contract, the utilities, the components, the Rust crate, the color themes and the docs theme."
+description = "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the color contract, the utilities, the components, the Go module, the color themes and the docs theme."
 
 [extra]
 layout = "home"
@@ -8,7 +8,7 @@ layout = "home"
 [extra.hero]
 name = "vpkit"
 text = "VitePress's look for applications"
-tagline = "A Tailwind v4 theme on a 34-color contract, components as classes, a Rust crate for their markup and stylesheets, and 222 color themes. Plain CSS for your Tailwind build."
+tagline = "A Tailwind v4 theme on a 34-color contract, components as classes, a Go module for their markup and stylesheets, and 222 color themes. Plain CSS for your Tailwind build."
 image = { src = "/logo.svg", alt = "vpkit" }
 actions = [
   { theme = "brand", text = "What is vpkit?", link = "@/guide/what-is-vpkit.md" },
@@ -31,11 +31,11 @@ link = "@/components/_index.md"
 link_text = "The components"
 
 [[extra.features]]
-icon = "🦀"
-title = "One crate, one pin"
-details = "hypertext components for the markup, Lucide's icons as inline SVG, and the stylesheets embedded: an app's cargo dependency at a commit pins its markup and its CSS together."
-link = "@/guide/rust.md"
-link_text = "Rust"
+icon = "📌"
+title = "One module, one pin"
+details = "gomponents components for the markup, Lucide's icons as inline SVG, and the stylesheets embedded: an app's Go dependency at a commit pins its markup and its CSS together."
+link = "@/guide/go.md"
+link_text = "Go"
 
 [[extra.features]]
 icon = "🌈"

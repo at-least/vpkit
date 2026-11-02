@@ -1,11 +1,11 @@
 +++
 title = "What is vpkit?"
-description = "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the color contract, the utilities, the components, the Rust crate, the color themes and the docs theme."
+description = "VitePress's look as a Tailwind CSS v4 theme and a kit of components for applications: the color contract, the utilities, the components, the Go module, the color themes and the docs theme."
 +++
 
 # What is vpkit?
 
-vpkit is the look of [VitePress](https://vitepress.dev)'s default theme, for applications: a [Tailwind CSS v4](https://tailwindcss.com) theme (the `--vp-*` variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode, the Inter webfonts), components as CSS classes (`vp-btn`, `vp-input`, `vp-dialog`, …), a Rust crate that writes their markup and carries the stylesheets, 222 color themes, and VitePress's docs layout as a product of its own.
+vpkit is the look of [VitePress](https://vitepress.dev)'s default theme, for applications: a [Tailwind CSS v4](https://tailwindcss.com) theme (the `--vp-*` variables, semantic utilities that resolve to them, VitePress's breakpoints, class-based dark mode, the Inter webfonts), components as CSS classes (`vp-btn`, `vp-input`, `vp-dialog`, …), a Go module that writes their markup and carries the stylesheets, 222 color themes, and VitePress's docs layout as a product of its own.
 
 It is plain CSS for Tailwind to compile. There is no build step: vpkit's own `npm install` is only for its tests and its generators.
 
@@ -15,7 +15,7 @@ You are reading a site built on it: [vpkit-zola](https://github.com/at-least/vpk
 
 - **The theme**: the color contract, 34 `--vp-c-*` variables named by their job, each a `light-dark()` pair, with the radii, the control height, the durations and the focus ring; the `dark:` variant; VitePress's breakpoints; and the utilities that resolve to the variables, such as `text-body`, `bg-soft`, `border-divider` and `text-brand`. [Utilities and Variables](@/guide/utilities.md)
 - **Components**: VitePress's look as classes an application page can use, one optional import each, in one directory each with its examples and its proof. [Components](@/components/_index.md)
-- **The Rust crate**: hypertext components for the markup that is more than one class, Lucide's icons as inline SVG, and the stylesheets embedded, so one commit pins both. [Rust](@/guide/rust.md)
+- **The Go module**: gomponents components for the markup that is more than one class, Lucide's icons as inline SVG, and the stylesheets embedded, so one commit pins both. [Go](@/guide/go.md)
 - **Color themes**: 222 of them, each a whole design for light and dark. [Themes](@/themes.md)
 - **The docs theme**: VitePress's page layout, on VitePress's own variables and palette, for a docs theme such as vpkit-zola. [Getting Started](@/guide/getting-started.md#the-docs-theme)
 

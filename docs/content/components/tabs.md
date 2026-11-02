@@ -23,4 +23,4 @@ vpkit's addition: a row of links that each open a page, a filter or a section, i
 
 {{ <vp_example file="tabs/links" title="Links to pages" /> }}
 
-In Rust: [`Tabs`](../../rust/vpkit/struct.Tabs.html), [`Tab`](../../rust/vpkit/struct.Tab.html), the row of links, from vpkit's [crate](@/guide/rust.md); tabs over panels are written with the classes.
+In Go: `vpkit.Tabs`, `vpkit.Tab`, the row of links, from vpkit's [Go module](@/guide/go.md); tabs over panels are written with the classes.

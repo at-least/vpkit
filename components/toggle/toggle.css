@@ -37,8 +37,8 @@
  *     </span></span>
  *   </button>
  *
- * The crate's `AppearanceSwitch` writes this markup, its label the page's.
- * The icons are inline SVGs (the crate's `vpkit::icon`, SUN and MOON, in
+ * The Go module's `vpkit.AppearanceSwitch` writes this markup, its label the page's.
+ * The icons are inline SVGs (the Go module's `icon.Sun` and `icon.Moon`, in
  * currentColor), not masks, so a page whose CSP refuses data: images
  * draws them too. A script of the page toggles `.dark` on <html> and keeps
  * aria-checked in step; vpkit ships none. The hover applies only on a

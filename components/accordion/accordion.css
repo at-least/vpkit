@@ -17,7 +17,7 @@
  *                        hovered, on a device that can hover (VitePress's
  *                        also stuck to a tapped row)
  *   vp-accordion-icon    the plus at the row's end, an inline SVG (the
- *                        crate's icon::PLUS, where VitePress masks a
+ *                        Go module's icon.Plus, where VitePress masks a
  *                        span) 1em square, which turns into a cross as
  *                        the section opens
  * A state: the open section (`[open]`, the element's own, where VitePress

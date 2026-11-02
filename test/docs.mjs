@@ -18,7 +18,8 @@
 // opens from their first frame; and the stock card must take the page
 // back to the stock colors, on the next pages too. Also held: a page of a
 // component that is vpkit's own carries the vpkit badge in its heading, a
-// port's none; the theme counts the prose states against the index; a pick's card pressed
+// port's none; each component type of the Go module is named on its page;
+// the theme counts the prose states against the index; a pick's card pressed
 // again on the next visit, an encoded name's too; two picks back to back
 // never through the stock colors; the stock card pressed while a pick loads
 // leaves no theme linked; a pick with no stylesheet is forgotten; with
@@ -33,7 +34,7 @@
 // outside that path. Exits 1, listing what fails.
 
 import { execFileSync } from 'node:child_process';
-import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, extname, join } from 'node:path';
 import { chromium } from 'playwright-chromium';
@@ -95,16 +96,14 @@ for (const product of ['', 'docs-theme']) {
   }
 }
 
-// the Rust crate: every component it exports (rust/src/lib.rs, one module
-// per component) is linked from the component's page, into the crate's
-// documentation, which test/rust.mjs builds into rust/target/doc and the
-// site serves under /rust/ (docs.yml copies it there; below, the links are
-// followed into it)
-const RUSTDOC = join(ROOT, 'rust/target/doc');
-for (const [, module, items] of readFileSync(join(ROOT, 'rust/src/lib.rs'), 'utf8').matchAll(/^pub use (\w+)::\{?([^};]+)\}?;/gm)) {
-  const page = readFileSync(join(DOCS, 'content/components', `${module}.md`), 'utf8');
-  for (const item of items.split(',').map((i) => i.trim()).filter((i) => /^[A-Z]/.test(i))) {
-    if (!page.includes(`(../../rust/vpkit/struct.${item}.html)`)) failures.push(`docs/content/components/${module}.md: no link to the crate's ${item}`);
+// the Go module: every component type of the root package (one file per
+// component, chip.go for components/chip) is named on the component's page,
+// with its package, as go doc names it (`vpkit.Chip`)
+for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.go') && !f.endsWith('_test.go') && f !== 'vpkit.go')) {
+  const name = file.slice(0, -'.go'.length);
+  const page = readFileSync(join(DOCS, 'content/components', `${name}.md`), 'utf8');
+  for (const [, type] of readFileSync(join(ROOT, file), 'utf8').matchAll(/^type ([A-Z]\w*) struct/gm)) {
+    if (!page.includes(`\`vpkit.${type}\``)) failures.push(`docs/content/components/${name}.md: does not name the Go module's vpkit.${type}`);
   }
 }
 
@@ -140,10 +139,6 @@ const site = join(dir, 'site');
 let frames = 0;
 try {
   execFileSync('zola', ['--root', DOCS, 'build', '--base-url', BASE, '--output-dir', site], { stdio: 'pipe' });
-  // the crate's documentation where docs.yml publishes it, and every link
-  // into it resolving to a file
-  if (!existsSync(join(RUSTDOC, 'vpkit/index.html'))) throw new Error('no rust/target/doc: run node test/rust.mjs first');
-  cpSync(RUSTDOC, join(site, 'rust'), { recursive: true });
   // the file a URL's path serves, as the route below serves it; null for none
   const fileFor = (pathname) => {
     const path = decodeURIComponent(pathname);
@@ -152,17 +147,10 @@ try {
     if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
     return existsSync(file) ? file : null;
   };
-  // the site's own pages, the crate's documentation aside, read once
+  // the site's pages, read once
   const built = readdirSync(site, { recursive: true })
-    .filter((f) => f.endsWith('index.html') && !f.startsWith('rust/'))
+    .filter((f) => f.endsWith('index.html'))
     .map((f) => ({ path: `/${f.slice(0, -'index.html'.length)}`, html: readFileSync(join(site, f), 'utf8') }));
-  for (const { path, html } of built) {
-    const at = new URL(`/vpkit${path}`, ORIGIN);
-    for (const [, href] of html.matchAll(/href="([^"#]*rust\/[^"#]*)"/g)) {
-      const url = new URL(href, at);
-      if (url.origin === ORIGIN && !fileFor(url.pathname)) failures.push(`/vpkit${path}: the link ${href} leads to no file`);
-    }
-  }
   const stylesheets = {
     '/vpkit/example.css': readFileSync(join(site, 'example.css'), 'utf8'),
     '/vpkit/example-docs-theme.css': readFileSync(join(site, 'example-docs-theme.css'), 'utf8'),

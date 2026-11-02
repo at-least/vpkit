@@ -11,7 +11,7 @@ VitePress's look as CSS classes for an application, one optional import each, so
 @import "vpkit/components/button/button.css";
 ```
 
-A component is a directory of its name: `vp-badge` is `components/badge/`, `vp-btn` is `components/button/`; `vp-label` and `vp-field-error` are `components/field/`'s. Each holds the stylesheet, its examples (`examples/*.html`, the markup these pages show, which the crate's tests render for its components) and its proof. Each page opens with its import.
+A component is a directory of its name: `vp-badge` is `components/badge/`, `vp-btn` is `components/button/`; `vp-label` and `vp-field-error` are `components/field/`'s. Each holds the stylesheet, its examples (`examples/*.html`, the markup these pages show, which the Go module's tests render for its components) and its proof. Each page opens with its import.
 
 A <span class="vp-badge" data-variant="tip">vpkit</span> badge beside a page's title marks a component VitePress has no original for: vpkit's own, on VitePress's tokens.
 

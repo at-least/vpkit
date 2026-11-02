@@ -15,7 +15,7 @@
  *   vp-chip-key      the key, in the secondary text
  *   vp-chip-value    the value, at weight 600 in the body text
  *   vp-chip-remove   the control that removes the filter, a link or a
- *                    button around an icon (the crate's icon::X, Lucide's
+ *                    button around an icon (the Go module's icon.X, Lucide's
  *                    x, 1rem here), secondary text, body text when hovered
  *                    on a device that can hover, in --vp-duration. Its
  *                    0.3125rem of padding is a hit area larger than the
@@ -30,7 +30,7 @@
  * it, so inside a vp-doc (prose.css) a link chip and the remove control
  * keep their look. The element supplies the pointer, a link's or a
  * button's. Name the control for a screen reader with aria-label: the
- * icon says nothing. The focus ring is base.css's. The crate's `Chip`
+ * icon says nothing. The focus ring is base.css's. The Go module's `vpkit.Chip`
  * writes this markup. This is the components layer, so a utility on the
  * element overrides it. */
 

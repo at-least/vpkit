@@ -1,5 +1,5 @@
 // vp-empty: vpkit's own, so golden: the box and its two lines (the
-// crate's example), a title alone, a line of text with neither class;
+// Go module's example), a title alone, a line of text with neither class;
 // and, vpkit against vpkit, the lines inside a vp-doc against themselves
 // outside one.
 
@@ -12,7 +12,7 @@ export const cases = [];
 const BOX = ['display', 'flex-direction', 'align-items', 'justify-content', 'row-gap', ...PADDING, ...RADIUS, 'text-align', ...COLORS, 'height'];
 const LINE = ['margin-top', 'margin-bottom', 'line-height', 'font-size', 'font-weight', 'color', 'max-width'];
 
-// the crate's example: the box, the title, the line under it
+// the Go module's example: the box, the title, the line under it
 cases.push({
   name: 'empty',
   html: ex('basic'),
@@ -23,7 +23,7 @@ cases.push({
   ],
 });
 
-// a title alone, as the crate renders one without a description
+// a title alone, as the Go module renders one without a description
 cases.push({
   name: 'empty title alone',
   html: '<div class="vp-empty"><p class="vp-empty-title">No jobs yet</p></div>',

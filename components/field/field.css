@@ -21,8 +21,8 @@
  * keeps its spacing, 0.375rem below the label and 0.5rem above the error
  * (`mb-0`, `mt-0` remove them). Tie the hint and the error to the control
  * with aria-describedby, and mark the control aria-invalid while there is
- * an error, which turns vp-input's border danger. The crate's `Field`,
- * `FieldHint` and `FieldError` write this markup. */
+ * an error, which turns vp-input's border danger. The Go module's `vpkit.Field`,
+ * `vpkit.FieldHint` and `vpkit.FieldError` write this markup. */
 
 @layer components {
   .vp-label {

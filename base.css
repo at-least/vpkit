@@ -18,7 +18,7 @@
  * iframe, embed and object at `vertical-align: middle`, VitePress's
  * version of it leaves them on the baseline. A block (both preflights
  * make them one) and a flex or grid item take neither; one made inline,
- * as the crate's `SUN.class("vp-icon")` is, sits on the baseline, where
+ * as the Go module's `icon.Sun.Class("vp-icon")` is, sits on the baseline, where
  * VitePress's VPIcon sits, and `align-middle` on it centers it on the
  * lowercase letters.
  *

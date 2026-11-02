@@ -24,6 +24,6 @@ Outside a field, a label keeps 0.375rem below it and an error line 0.5rem above 
 
 {{ <vp_example file="field/bare" title="A label and an error line on their own" /> }}
 
-## In Rust
+## In Go
 
-The crate's [`Field`](../../rust/vpkit/struct.Field.html) writes the box and the label around the control you give it, with a [`FieldHint`](../../rust/vpkit/struct.FieldHint.html) or a [`FieldError`](../../rust/vpkit/struct.FieldError.html) where there is one; `field_hint_id` and `field_error_id` are their ids, for the control's `aria-describedby`.
+The [Go module](@/guide/go.md)'s `vpkit.Field` writes the box and the label around the control you give it, with a `vpkit.FieldHint` or a `vpkit.FieldError` where there is one; `vpkit.FieldHintID` and `vpkit.FieldErrorID` are their ids, for the control's `aria-describedby`.

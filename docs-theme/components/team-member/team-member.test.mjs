@@ -21,7 +21,7 @@ export const cases = [];
 
 const SRC = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23888'/%3E%3C/svg%3E";
 const SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>';
-// Lucide's heart, the path of the docs theme's vpi-heart, as the crate writes an icon
+// Lucide's heart, the path of the docs theme's vpi-heart, as the Go module writes an icon
 const HEART = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2c-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
 const DESC = 'Writes the compiler and its manual, <a href="#">her notes</a> among them.';
 

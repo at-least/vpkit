@@ -14,7 +14,7 @@ VitePress's `VPSwitch`, with `VPSwitchAppearance` as a variant.
 {{ <vp_example file="toggle/switch" title="A switch, off and on" layout="row" /> }}
 
 - `vp-toggle`: the track, the control's border color on the gray wash, a brand border on hover. `vp-toggle-check`: the knob, which slides to the right while the button's `aria-checked` is `"true"`. That state is vpkit's addition (VPSwitch has none of its own; only the appearance switch moves its knob, by `.dark`): keep `aria-checked` in step with the setting, and the component reads nothing else.
-- `vp-toggle-icon`: the round clip for an icon in the knob, an inline SVG straight inside it, 0.75rem in secondary text (body text in dark), placed as VPSwitch places it. The icons are inline SVGs, not masks, so a page whose Content-Security-Policy refuses `data:` images draws them too; the crate's `vpkit::icon` writes them.
+- `vp-toggle-icon`: the round clip for an icon in the knob, an inline SVG straight inside it, 0.75rem in secondary text (body text in dark), placed as VPSwitch places it. The icons are inline SVGs, not masks, so a page whose Content-Security-Policy refuses `data:` images draws them too; the Go module's `icon` package writes them.
 
 The page's script keeps `aria-checked` in step; here an `onclick`:
 
@@ -26,6 +26,6 @@ The page's script keeps `aria-checked` in step; here an `onclick`:
 
 {{ <vp_example file="toggle/appearance" title="The appearance switch" layout="row" /> }}
 
-In Rust: [`AppearanceSwitch`](../../rust/vpkit/struct.AppearanceSwitch.html), from vpkit's [crate](@/guide/rust.md), writes it, with the `aria-label` you give it, an optional `title` (the action, shown on hover) and, for the page's script, an optional id.
+In Go: `vpkit.AppearanceSwitch`, from vpkit's [Go module](@/guide/go.md), writes it, with the `aria-label` you give it (`Label`), an optional `Title` (the action, shown on hover) and, for the page's script, an optional id.
 
 The script that toggles `.dark` and `aria-checked` is the page's ([vpkit-zola](https://github.com/at-least/vpkit-zola)'s `vpkit-zola.js` has VitePress's).

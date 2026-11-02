@@ -1,24 +1,22 @@
 +++
 title = "Getting Started"
-description = "Add vpkit to a Tailwind CSS v4 build: from the Rust crate or from npm, the entry, the page, the parts one by one, the components, the markdown, the fonts, a color theme."
+description = "Add vpkit to a Tailwind CSS v4 build: from the Go module or from npm, the entry, the page, the parts one by one, the components, the markdown, the fonts, a color theme."
 +++
 
 # Getting Started
 
 ## Installation
 
-vpkit is a Rust crate and a package of plain CSS in one repository. An app that renders its pages in Rust with [hypertext](https://crates.io/crates/hypertext) takes the crate, at a commit, and gets the CSS from it, so one pin covers the markup and the stylesheets:
-
-```toml
-[dependencies]
-vpkit = { git = "https://github.com/at-least/vpkit", rev = "<sha>", features = ["css"] }
-```
-
-Before the Tailwind build, write the stylesheets out of the crate at that same commit, with its `css` feature (the dependency's `vpkit-css` binary, built from the commit the lock file names in a target directory of its own; or `vpkit::css::write("target/vpkit")` from a binary of your own):
+vpkit is a Go module and a package of plain CSS in one repository. An app that renders its pages in Go with [gomponents](https://www.gomponents.com) takes the module, at a commit, and gets the CSS from it, so one pin covers the markup and the stylesheets:
 
 ```sh
-cargo build -p vpkit --bin vpkit-css --target-dir target/vpkit-css
-target/vpkit-css/debug/vpkit-css target/vpkit
+go get github.com/at-least/vpkit@<commit>
+```
+
+Before the Tailwind build, write the stylesheets out of the module at that same commit (the module's `vpkit-css` command, at the version `go.mod` names; or `vpkit.WriteCSS("target/vpkit")` from a program of your own):
+
+```sh
+go run github.com/at-least/vpkit/go/cmd/vpkit-css target/vpkit
 ```
 
 Anything else takes the CSS from npm, pinned to a commit with `#<sha>`:
@@ -81,7 +79,7 @@ The components are one import each, so a site ships only the ones it uses:
 @import "vpkit/components/input/input.css";
 ```
 
-[Components](@/components/_index.md) has the whole list. A component's markup is in its page, and in its directory as `examples/*.html`; the Rust crate writes the markup of the components that are more than one class ([Rust](@/guide/rust.md)).
+[Components](@/components/_index.md) has the whole list. A component's markup is in its page, and in its directory as `examples/*.html`; the Go module writes the markup of the components that are more than one class ([Go](@/guide/go.md)).
 
 ## Markdown
 
@@ -93,11 +91,11 @@ The components are one import each, so a site ships only the ones it uses:
 
 ## Icons
 
-An icon is an inline SVG in `currentColor`: the crate's `icon` module has Lucide's, the set VitePress draws and a few an app needs (`vpkit::icon::SUN`, `MOON`, `X`, `PLUS`, `SEARCH`, `CHEVRON_DOWN`, …), and any SVG written into the page does the same. [`vp-icon`](@/components/icon.md) sizes one at 1em; a button, an icon button or a chip sizes the SVG inside it. No mask and no `data:` image, so a strict Content-Security-Policy draws them.
+An icon is an inline SVG in `currentColor`: the Go module's `icon` package has Lucide's, the set VitePress draws and a few an app needs (`icon.Sun`, `Moon`, `X`, `Plus`, `Search`, `ChevronDown`, …), and any SVG written into the page does the same. [`vp-icon`](@/components/icon.md) sizes one at 1em; a button, an icon button or a chip sizes the SVG inside it. No mask and no `data:` image, so a strict Content-Security-Policy draws them.
 
 ## Fonts
 
-`fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Copy the repository's `fonts/` directory next to your built CSS once (the crate does not embed them).
+`fonts.css` refers to the files as `url("fonts/…")`, relative to the compiled stylesheet: the Tailwind CLI leaves these URLs as written. Copy the repository's `fonts/` directory next to your built CSS once (the Go module does not embed them).
 
 ## A color theme
 
