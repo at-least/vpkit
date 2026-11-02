@@ -170,7 +170,7 @@ The app kit needs `light-dark()`: Chrome 123, Safari 17.5, Firefox 120 (every co
 5. **The stock is the fitted palette.** tokens.css's defaults are VitePress's palette with its contrast shortfalls fitted, so no app imports a theme to reach AA; the docs theme carries VitePress's palette verbatim, since a docs site is VitePress exactly.
 6. **Variants are attributes.** `data-variant` and `data-size` for a mutually exclusive axis, classes for orthogonal switches, ARIA for states: one principle, uniform specificity, no compound-selector ordering, and a finite axis the Go module can type.
 7. **One control height, one focus ring.** 2.75rem for every control that shares a row, where VitePress's button was 40px, its social link 36px, the input 44px; base.css's `:focus-visible` outline for everything, where the input drew a box-shadow ring, the button kept the browser's and the choice an outline.
-8. **The Go module carries the CSS.** An app's Go dependency is the one pin; the three apps each had a CSS pin of their own kind and a markup dependency moved by hand, with nothing tying the two.
+8. **The Go module carries the CSS.** An app's Go dependency is the one pin; the three apps each had a CSS pin of their own kind and the Rust crate's git rev moved by hand, with nothing tying the two.
 9. **Golden values for vpkit's own, upstream for VitePress's.** The upstream clone stays the standard for what is meant to be VitePress's; what is vpkit's is held to its recorded values with its reason beside it; no list of known differences.
 10. **Two products.** The docs layout, VitePress's team page, sponsors and ads are the docs theme's, for vpkit-zola; the app kit holds what an application page uses.
 11. **The markdown stays in `@layer base`** (The markdown, above).
